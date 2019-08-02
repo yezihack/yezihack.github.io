@@ -1,5 +1,5 @@
 +++
-title = "chan实现一个pool"
+title = "基于通道chan实现一个pool"
 date = 2019-08-02T14:38:54+08:00
 description = "一个简单的池"
 draft = false
@@ -9,7 +9,9 @@ categories = [
 image = "pool.jpg"
 +++
 
-# chan实现一个pool
+# 基于通道chan实现一个pool
+> 来自于 go学习笔记 的例子
+
 ```go
 type PoolByte chan []byte
 
