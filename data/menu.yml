@@ -1,10 +1,14 @@
+- item: 首页
+  url: /
 - item: About
   url: /about/
-- item: Blog
-  url: /
-- item: Category A
-  url: /categories/development/
-- item: Category B
+- item: Golang
   url: /categories/golang/
-- item: Tag B
-  url: /tags/go/
+- item: PHP
+  url: /categories/php/
+- item: MYSQL
+  url: /categories/mysql/
+- item: LINUX
+  url: /categories/linux/
+- item: OTHER
+  url: /tags/other
