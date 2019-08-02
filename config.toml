@@ -1,4 +1,4 @@
-baseurl = "http://blog.sgfoot.com/"  # Include trailing slash
+baseurl = "https://yezihack.github.io/"  # Include trailing slash
 title = "百里博客"
 theme = "hugo-swift-theme"
 author = "Steve Francia"
