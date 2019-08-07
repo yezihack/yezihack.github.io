@@ -2,6 +2,8 @@
   url: /
 - item: About
   url: /about/
+- item: 蝙蝠三省
+  url: /categories/bluebat/
 - item: Golang
   url: /categories/golang/
 - item: PHP
