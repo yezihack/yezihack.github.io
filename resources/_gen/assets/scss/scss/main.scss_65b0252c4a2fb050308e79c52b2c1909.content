@@ -487,7 +487,7 @@ section p {
 }
 
 .wrap {
-  padding: 10px 0;
+  padding: 10px 30px;
   max-width: 1024px;
   margin: 0 auto;
 }
@@ -782,6 +782,7 @@ section p {
   border-radius: 10px;
   overflow: hidden;
   width: 100%;
+  display: inline;
 }
 
 .post_item:hover {
@@ -942,9 +943,12 @@ section p {
   position: relative;
   z-index: 1;
 }
+.hide{
+    display:none;
+}
 
 .excerpt_meta {
-  display: flex;
+  display: inline-block;
   justify-content: space-between;
   align-items: center;
   transform: translateY(-2.5rem);

@@ -26,7 +26,18 @@ function new_pages() {
         echo "$file 文件已存在,请选择其它名称!"
         exit 0
     fi
+    #自动爬图
+    img_name=$(php tutu.php first)
+    if [ $? != 0 ];then
+        echo "获取爬取图片出错啦"
+        exit 0
+    fi
+    if [ "$img_name" = "" ];then
+        echo "未获取图片"
+        exit 0
+    fi
     hugo new $pages
+   sed -i "" "s/default.jpg/$img_name/g" $file
     echo "创建成功"
 }
 # 创建三省
@@ -64,7 +75,7 @@ function rm_page() {
     echo "删除成功 $file"
 }
 # 发布github pages
-function issue() {
+function github() {
     comment=$1
     if [ "$comment" == "" ];then
         comment="fix"
@@ -73,8 +84,9 @@ function issue() {
     # 删除打包文件夹
     rm -rf public
 
+    site=$2
     #生成静态文件
-    hugo --theme=hugo-swift-theme
+    hugo --theme=hugo-swift-theme --baseURL=$site
 
     #进入public
     cd public/
@@ -85,6 +97,22 @@ function issue() {
     git commit -m "$comment"
     #推到master分支下
     git push -v -f $github master
+    echo "发布成功, $today"
+}
+
+# 发布github pages
+function sgfoot() {
+    comment=$1
+    if [ "$comment" == "" ];then
+        comment="fix"
+    fi
+
+    # 删除打包文件夹
+    rm -rf public
+
+    site=$2
+    #生成静态文件
+    hugo --theme=hugo-swift-theme --baseURL=$site
     echo "发布成功, $today"
 }
 
@@ -102,8 +130,11 @@ case $cate in
 "rm")
     rm_page $name
     ;;
-"issue")
-    issue $name
+"github")
+    github "发布" "https://yezihack.github.io/"
+    ;;
+"sgfoot")
+    sgfoot "发布" "http://blog.sgfoot.com/"
     ;;
 "help"|"h"|"?"|*)
     echo "请输入以下命令"

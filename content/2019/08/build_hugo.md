@@ -3,6 +3,7 @@ title = "hugo搭建github pages博客"
 date = 2019-08-02T18:39:54+08:00
 description = ""
 draft = false
+author = "百里"
 categories = [
     "golang",
 ]

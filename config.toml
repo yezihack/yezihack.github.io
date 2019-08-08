@@ -1,8 +1,8 @@
 baseurl = "https://yezihack.github.io/"  # Include trailing slash
 title = "百里の博客"
 theme = "hugo-swift-theme"
-author = "Steve Francia"
-copyright = "Copyright © 2008–2018, Steve Francia and the Hugo Authors; all rights reserved."
+author = "百里江山"
+copyright = "Copyright © 2019~2020, 百里江山"
 canonifyurls = false
 paginate = 10
 # Enable syntax highlighting
