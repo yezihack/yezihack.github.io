@@ -1,0 +1,23 @@
+{{ define "main" }}
+{{ $bgImage := ( absURL (printf "images/%s" .Params.image) ) }}
+<section class = 'post_header' style = 'background-image:url({{ $bgImage }});'>
+  <h1 class='post_title' itemprop='name headline'>{{ .Title }}</h1>
+</section>
+<div class = 'post'>
+  <article class='post_content'>
+    {{ .Content }}
+    <div class = 'post_extra'>
+      <div class = 'copy'></div>
+    </div>
+    {{ partial "author.html" . }}
+  </article>
+  {{ if .Site.Params.Staticman }}
+    {{ partial "comments.html" . }}
+  {{ end }}
+  <aside>
+    {{ partial "aside.html" . }}
+  </aside>
+</div>
+<script src = '{{ absURL "js/autosize.min.js" }}'></script>
+<script src = '{{ absURL "js/timeago.js" }}'></script>
+{{ end }}

@@ -1,0 +1,9 @@
+<footer class = 'footer'>
+  <div class = 'footer_inner wrap pale'>
+    <p>&copy; <span class = 'year'></span> {{ .Site.Title }}</p>
+    <p> <a href = '{{ .Site.Data.designer.url }}' target = '_blank' title = '{{ .Site.Data.designer.name }}'
+                rel = 'nonopener'> {{ .Site.Data.designer.name }}</a></p>
+  </div>
+</footer>
+{{ $scripts := resources.Get "js/index.js" | resources.ExecuteAsTemplate "js/index.js" . }}
+<script src = '{{ $scripts.Permalink }}'></script>
