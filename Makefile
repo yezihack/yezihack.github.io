@@ -3,7 +3,8 @@
 dev:
 	hugo server -w
 
-issue:
-	./start.sh issue
+github:
+	git add -A && git commit -m "fix" && git push
+	./start github
 
 .PHONY: dev issue "issue"
