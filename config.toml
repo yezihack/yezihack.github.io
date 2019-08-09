@@ -1,4 +1,4 @@
-baseurl = "https://yezihack.github.io/"  # Include trailing slash
+baseurl = ""  # Include trailing slash
 title = "百里の博客"
 theme = "hugo-swift-theme"
 author = "百里江山"
