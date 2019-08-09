@@ -57,6 +57,7 @@ function new_bat() {
     hugo new $pages
     echo "创建成功"
     sed -i "" "s/default.jpg/bluebat\/$count.jpg/g" $file
+    sed -i "" "s/categories \= \[\]/categories \= \[\"bluebat\"\,\]/g" $file
 }
 # 删除页面
 function rm_page() {

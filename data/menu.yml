@@ -5,12 +5,12 @@
 - item: 蝙蝠三省
   url: /categories/bluebat/
 - item: Golang
-  url: /categories/golang/
+  url: /tags/golang/
 - item: PHP
-  url: /categories/php/
+  url: /tags/php/
 - item: MYSQL
-  url: /categories/mysql/
+  url: /tags/mysql/
 - item: LINUX
-  url: /categories/linux/
+  url: /tags/linux/
 - item: OTHER
-  url: /tags/other
+  url: /tags/other/

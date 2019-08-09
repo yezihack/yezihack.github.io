@@ -1,18 +1,13 @@
 +++
-title = "About Hugo"
-date = "2014-04-09"
-image = 'read.jpg'
+title = "About 百里的博客"
+date = "2019-08-09"
+image = 'baili.jpg'
 +++
 
-Hugo is the **world’s fastest framework for building websites**. It is written in Go.
+- 保持自己的好奇心
+- 研究新技术
+- 分享一些自己平时的工作与日常的思考的东西
+- 结交志同道合之友
 
-It makes use of a variety of open source projects including:
-
-* https://github.com/russross/blackfriday
-* https://github.com/alecthomas/chroma
-* https://github.com/muesli/smartcrop
-* https://github.com/spf13/cobra
-* https://github.com/spf13/viper
-
-Learn more and contribute on [GitHub](https://github.com/gohugoio).
+了解更多 [GitHub](https://github.com/yezihack).
 
