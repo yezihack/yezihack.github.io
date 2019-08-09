@@ -4,7 +4,7 @@
   font-style: normal;
   font-weight: 400;
   src: local("Metropolis Regular"), local("Metropolis-Regular"), url("/fonts/Metropolis-Regular.woff2") format("woff2"),
-   url("http://localhost:1313/fonts/Metropolis-Regular.woff") format("woff");
+   url("/fonts/Metropolis-Regular.woff") format("woff");
 }
 
 @font-face {
