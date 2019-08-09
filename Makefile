@@ -5,6 +5,6 @@ dev:
 
 github:
 	git add -A && git commit -m "fix" && git push
-	./start github
+	./start.sh github
 
 .PHONY: dev issue "issue"
