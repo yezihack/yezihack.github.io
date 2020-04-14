@@ -2,13 +2,10 @@
 title: "算法第2天: 盛最多水的容器"
 date: 2020-02-24T11:21:11+08:00
 draft: false
-tags: ["golang", "算法", "leetcode"]
+tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
-menu:
-  main:
-    parent: "算法练习"
-    weight: 1
+
 ---
 
 ![算法第2天](/images/13827699-a32bc27e01768793.png)

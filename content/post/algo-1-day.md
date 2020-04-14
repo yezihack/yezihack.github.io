@@ -2,14 +2,10 @@
 title: "算法第1天: 缺失的第一个正数"
 date: 2020-02-24T11:21:11+08:00
 draft: false
-tags: ["golang", "算法", "leetcode"]
+tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
 comment: true
-menu:
-  main:
-    parent: "算法练习"
-    weight: 1
 ---
 ![img](/images/864897579003281434.webp)
 

@@ -2,7 +2,7 @@
 title: "算法第5天:最大子序和"
 date: 2020-02-24T15:16:57+08:00
 draft: false
-tags: ["golang", "算法", "leetcode"]
+tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
 # weight: 1
@@ -13,10 +13,6 @@ author: "百里"
 # description = ""
 # comment: false
 # toc: false
-menu:
-  main:
-    parent: "算法练习"
-    weight: 1
 ---
 
 ![img](/images/57458089674279878.webp)

@@ -2,7 +2,7 @@
 title: "算法第3天:最长公共前缀"
 date: 2020-02-24T15:16:51+08:00
 draft: false
-tags: ["golang", "算法", "leetcode"]
+tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
 # weight: 1
@@ -13,10 +13,6 @@ author: "百里"
 # description = ""
 # comment: false
 # toc: false
-menu:
-  main:
-    parent: "算法练习"
-    weight: 1
 ---
 
 ![img](/images/627969393203740883.webp)
