@@ -5,10 +5,11 @@ draft: false
 tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
-
+toc: true
+reward: true
 ---
 
-![算法第2天](/images/13827699-a32bc27e01768793.png)
+![算法第2天](http://img.sgfoot.com/b/20200417143026.png?imageslim)
 
 > LeetCode:11题, 中等
 

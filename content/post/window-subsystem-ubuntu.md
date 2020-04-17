@@ -2,11 +2,12 @@
 title: "Window Subsystem Ubuntu"
 date: 2020-03-14T22:36:14+08:00
 draft: false
-tags: ["工具", "win10", "subsystem", "ubuntu", "cmder"]
+tags: ["工具", "win10", "subsystem", "ubuntu"]
 categories: ["工具"]
 author: "百里"
 comment: true
 toc: true
+reward: true
 ---
 
 > 做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令
@@ -21,7 +22,7 @@ toc: true
 
 点击弹出窗口后, 向下拉找到"适用于Linux的Windows子系统"选项. 勾选后,确定. 重新电脑.
 
-![image-20200314225127361](/images/image-20200314225127361.png)
+![](http://img.sgfoot.com/b/20200417142630.png?imageslim)
 
 ## 第二步: 安装Ubuntu子系统
 
@@ -29,7 +30,7 @@ toc: true
 
 下载完, 在开始程序中找到.点击进行初使化, 数分钟后安装完毕.
 
-![image-20200314225158756](/images/image-20200314225158756.png)
+![](http://img.sgfoot.com/b/20200417142734.png?imageslim)
 
 ## 第三步: 设置新帐号
 
@@ -121,7 +122,8 @@ UseLogin yes
 
 
 **xshell连接ubuntu**
-![image-20200315211336899](/images/image-20200315211336899.png)
+
+![](http://img.sgfoot.com/b/20200417142818.png?imageslim)
 
 # 在window上如何优雅使用linux
 

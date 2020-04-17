@@ -7,6 +7,7 @@ categories: ["算法"]
 author: "百里"
 comment: true
 toc: true
+reward: true
 # weight: 1
 # lastmod: 2018-03-01T16:01:23+08:00
 # author: "xianmin"

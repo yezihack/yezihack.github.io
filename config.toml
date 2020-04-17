@@ -2,19 +2,23 @@
 # If you want to see the full configuration, please check `full-config.toml` .
 # And see https://gohugo.io/getting-started/configuration/ .
 
-baseURL = "https://yezihack.github.io/"
+baseURL = "https://www.sgfoot.com/"
+#baseURL = "https://yezihack.github.io/"
 #baseURL = "https://sgfoot.gitee.io/"
 title = "百里江山的博客"
 enableRobotsTXT = true
 enableEmoji = true
 theme = "jane"
 
+
 hasCJKLanguage = true     # has chinese/japanese/korean ? # 自动检测是否包含 中文\日文\韩文
 paginate = 10              # Number of articles displayed on the homepage  # 首页每页显示的文章数
 rssLimit = 20             # Limit Entry Count to Rss file # 限制 Rss 文章输出数量
 disqusShortname = ""      # disqus_shortname
 googleAnalytics = "UA-163385108-1"      # UA-XXXXXXXX-X
-copyright = ""            # default: author.name ↓        # 默认为下面配置的author.name ↓
+#copyright = "百里江山 | <a href='www.miitbeian.gov.cn'>京ICP备17053344号-1</a>" # default: author.name ↓        # 默认为下面配置的author.name ↓
+copyright = "<a href='https://www.sgfoot.com'>百里江山</a>" # default: author.name ↓        # 默认为下面配置的author.name ↓
+uglyURLs = true
 
 # Highlight options. 代码区的样式显示.
 # See https://gohugo.io/content-management/syntax-highlighting/
@@ -27,6 +31,10 @@ PygmentsOptions = "linenos=table"
 defaultContentLanguage = "zh-cn"  # 默认使用的语言
 [Languages.zh-cn]
   languageCode = "zh-cn"
+
+[permalinks]
+	post = "/:year/:month/:day/:filename"
+	#post = "/:year/:month/:day/:slug"
 
 [author]                  # essential                     # 必需
   name = "百里"
@@ -45,22 +53,22 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   name = "归档"
   weight = 20
   identifier = "archives"
-  url = "/post/"
+  url = "/post.html"
 [[menu.main]]
   name = "标签云"
   weight = 30
   identifier = "tags"
-  url = "/tags/"
+  url = "/tags.html"
 [[menu.main]]
   name = "分类"
   weight = 40
   identifier = "categories"
-  url = "/categories/"
+  url = "/categories.html"
 [[menu.main]]
   name = "每日算法"
   weight = 40
-  identifier = "categories"
-  url = "/tags/每日算法/"
+  identifier = "algo"
+  url = "/tags/每日算法.html"
 
 # 谷歌广告
 [params.adsense]
@@ -73,16 +81,19 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   rssFullContent = true     # if false, Rss feed instead of the summary
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
-  logoTitle = "百里江山"        # default: the title value    # 默认值: 上面设置的title值
-  keywords = ["golang", "mysql", "redis"]
-  description = "专注于技术,记录自己的成长"
+  logoTitle = "百里江山的博客"        # default: the title value    # 默认值: 上面设置的title值
+  keywords = ["Go语言", "MySQL", "Redis", "设计模式"]
+  description = "Go语言,Golang开发,算法,设计模式,架构,Linux,Kubernetes,Docker-百里江山的个人博客"
+
+  # paginate of archives, tags and categories             # 归档、标签、分类每页显示的文章数目，建议修改为一个较大的值
+  archive-paginate = 25
 
   # The date format to use; for a list of valid formats, see https://gohugo.io/functions/format/
   dateFormatToUse = "2006-01-02"
 
   # 一些全局开关，你也可以在每一篇内容的 front matter 中针对单篇内容关闭或开启某些功能，在 archetypes/default.md 查看更多信息。
   # Some global options, you can also close or open something in front matter for a single post, see more information from `archetypes/default.md`.
-  toc = true                                                                            # 是否开启目录
+  toc = false                                                                            # 是否开启目录
   photoswipe = true         # see https://github.com/dimsemenov/PhotoSwipe            # 是否启用PhotoSwipe（图片可点击）
   contentCopyright = '<a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a>'
 
@@ -101,7 +112,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   customJS = []             # if ['custom.js'], load '/static/js/custom.js' file
 
   # enable 'fork me on github', see https://blog.github.com/2008-12-19-github-ribbons/
-  #forkMeOnGithub = "https://github.com/yezihack/go-mygen"
+  forkMeOnGithub = "https://github.com/yezihack"
 
   # show word count and read time ?                       # 是否显示字数统计与阅读时间
   moreMeta = true
@@ -113,6 +124,27 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 
   [params.counter.busuanzi]  # a Chinese visitor counter  # 不蒜子计数器
       enable = true
+
+  [params.publicCDN]        # load these files from public cdn                          # 启用公共CDN，需自行定义
+      enable = true
+      jquery = '<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>'
+      slideout = '<script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>'
+      gitmentJS = '<script src="https://cdn.jsdelivr.net/npm/gitment@0.0.3/dist/gitment.browser.min.js" crossorigin="anonymous"></script>'
+      gitmentCSS = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitment@0.0.3/style/default.min.css" crossorigin="anonymous">'
+      photoswipe = '<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.js" integrity="sha256-AC9ChpELidrhGHX23ZU53vmRdz3FhKaN9E28+BbcWBw=" crossorigin="anonymous"></script>'
+      photoswipeUI = '<script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js" integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin="anonymous"></script>'
+      photoswipeCSS = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css" integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE=" crossorigin="anonymous">'
+      photoswipeSKIN = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">'
+
+  [params.search.google]    # google custom search, see https://cse.google.com
+      enable = true
+      id = "001496614017255051684:v8lrdwgteq1"
+      title = "Search"
+
+  [params.reward]                                         # 文章打赏
+      enable = true
+      wechat = "http://img.sgfoot.com/b/20200417142450.jpg?imageslim"           # 微信二维码
+      #alipay = "/path/to/your/alipay-qr-code.png"           # 支付宝二维码
 
   [params.social]                                         # 社交链接
     a-email = "mailto:freeit@126.com"

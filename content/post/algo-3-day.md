@@ -5,6 +5,8 @@ draft: false
 tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
+toc: true
+reward: true
 # weight: 1
 # lastmod: 2018-03-01T16:01:23+08:00
 # author: "xianmin"
@@ -15,7 +17,7 @@ author: "百里"
 # toc: false
 ---
 
-![img](/images/627969393203740883.webp)
+![img](http://img.sgfoot.com/b/20200417143019.webp?imageslim)
 
 > leetcode 14. 最长公共前缀 simple
 

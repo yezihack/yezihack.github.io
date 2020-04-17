@@ -52,7 +52,12 @@ defaultContentLanguage = "en"           # Default language to use
   name = "external-link"
   weight = 50
   url = "https://gohugo.io"
-
+[[menu.main]]
+  parent = "每日算法" # 子菜单, 填写主菜单的名称.
+  name = "每日算法1"
+  weight = 40
+  identifier = "algo1"
+  url = "/tags/每日算法.html"
 
 [params]
   since = "2017"            # Site creation time          # 站点建立时间

@@ -6,8 +6,11 @@ tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
 comment: true
+toc: true
+reward: true
+
 ---
-![img](/images/864897579003281434.webp)
+![](http://img.sgfoot.com/b/20200417143038.webp?imageslim)
 
 # 感触
 为了坚持学习算法, 每篇算法标题写上坚持多少天,以此鼓励自己坚持学下去. 

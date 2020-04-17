@@ -5,17 +5,18 @@ draft: false
 tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
+reward: true
+comment: true
+toc: true
 # weight: 1
 # lastmod: 2018-03-01T16:01:23+08:00
 # author: "xianmin"
-# reward: false
 # mathjax: false
 # description = ""
-# comment: false
-# toc: false
+
 ---
 
-![img](/images/57458089674279878.webp)
+![](http://img.sgfoot.com/b/20200417143007.webp?imageslim)
 
 > leetcode 53.  最大子序和 simple
 
