@@ -8,4 +8,5 @@
 1. 算法
 1. 架构设计
 1. Kubernetea
+1. Linux
 1. MYSQL
