@@ -15,10 +15,5 @@ reward: true
 # reward: false
 # mathjax: false
 # description = ""
-
-menu:
-  main:
-    parent: "算法练习"
-    weight: 1
 ---
 
