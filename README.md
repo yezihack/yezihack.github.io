@@ -3,6 +3,6 @@
 1. https://yezihack.github.io
 1. http://www.sgfoot.com
 
-Go语言
-设计模式
-算法
+1. Go语言
+1. 设计模式
+1. 算法
