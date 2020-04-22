@@ -10,4 +10,5 @@
 1. Kubernetea
 1. Linux
 1. Docker 
+1. 分布式
 1. MYSQL
