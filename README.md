@@ -9,4 +9,5 @@
 1. 架构设计
 1. Kubernetea
 1. Linux
+1. Docker 
 1. MYSQL
