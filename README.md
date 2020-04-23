@@ -11,4 +11,5 @@
 1. Linux
 1. Docker 
 1. 分布式
+1. 云计算
 1. MYSQL
