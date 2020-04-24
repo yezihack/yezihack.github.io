@@ -7,9 +7,10 @@
 1. 设计模式
 1. 算法
 1. 架构设计
-1. Kubernetea
+1. Kubernetes
 1. Linux
 1. Docker 
 1. 分布式
 1. 云计算
 1. MYSQL
+1. Istio
