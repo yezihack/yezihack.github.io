@@ -2,7 +2,7 @@
 title: "golang实现模板设计模式"
 date: 2020-04-15T20:26:26+08:00
 draft: false
-tags: ["golang", "设计模式", "模板模式"]
+tags: ["golang", "设计模式", "模板模式", "行为模式"]
 categories: ["设计模式"]
 author: "百里"
 comment: true

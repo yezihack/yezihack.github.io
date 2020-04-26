@@ -10,10 +10,6 @@ comment: true
 toc: true
 reward: true
 # weight: 1
-# lastmod: 2018-03-01T16:01:23+08:00
-# author: "xianmin"
-# reward: false
-# mathjax: false
 # description = ""
 ---
 
