@@ -1,9 +1,9 @@
 ---
-title: "Strategy Pattern"
+title: "golang策略模式"
 date: 2020-04-26T19:58:34+08:00
 lastmod: 2020-04-26T19:58:34+08:00
 draft: false
-tags: ["Go语言", "策略模式", "行为模式", "设计模式", "golang"]
+tags: ["Go语言", "策略模式", "行为模式", "设计模式", "golang", "strategy pattern"]
 categories: ["设计模式"]
 author: "百里"
 comment: true
@@ -13,7 +13,10 @@ reward: true
 # description = ""
 ---
 
+![](http://img.sgfoot.com/b/20200426201610.png?imageslim)
+
 # 原理
+
 ## 1. 概念
  策略模式的概念: 定义一系列的算法,把每一个算法封装起来, 并且使它们可相互替换。
  本模式使得算法可独立于使用它的客户而变化. 也称为政策模式(Policy)
