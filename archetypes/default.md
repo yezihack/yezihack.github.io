@@ -3,7 +3,7 @@ title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
 lastmod: {{ .Date }}
 draft: false
-tags: ["Go语言", "", ""]
+tags: ["golang", "", ""]
 categories: [""]
 author: "百里"
 comment: true

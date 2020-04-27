@@ -3,7 +3,7 @@ title: "github-webhook工具实现github自动构建"
 date: 2020-04-24T15:04:27+08:00
 lastmod: 2020-04-24T15:04:27+08:00
 draft: false
-tags: ["Go语言", "tool", "github-webhook", "自动构建"]
+tags: ["golang", "tool", "github-webhook", "自动构建"]
 categories: ["工具"]
 author: "百里"
 comment: true

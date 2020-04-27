@@ -3,7 +3,7 @@ title: "Go命令行下星号代替输入内容"
 date: 2020-04-17T19:34:16+08:00
 lastmod: 2020-04-17T19:34:16+08:00
 draft: false
-tags: ["Go语言", "每日一库", "Go优秀库", "密码", "gopass"]
+tags: ["golang", "每日一库", "Go优秀库", "密码", "gopass"]
 categories: ["每日一库"]
 author: "百里"
 comment: true

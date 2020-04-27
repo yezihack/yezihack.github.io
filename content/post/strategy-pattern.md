@@ -3,7 +3,7 @@ title: "golang策略模式"
 date: 2020-04-26T19:58:34+08:00
 lastmod: 2020-04-26T19:58:34+08:00
 draft: false
-tags: ["Go语言", "策略模式", "行为模式", "设计模式", "golang", "strategy pattern"]
+tags: ["golang", "策略模式", "行为模式", "设计模式", "golang", "strategy pattern"]
 categories: ["设计模式"]
 author: "百里"
 comment: true
