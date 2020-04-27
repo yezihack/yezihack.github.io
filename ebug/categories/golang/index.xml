@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Golang on 百里江山的博客</title>
+    <link>http://localhost:1313/categories/golang.html</link>
+    <description>Recent content in Golang on 百里江山的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&lt;a href=&#39;https://www.sgfoot.com&#39;&gt;百里江山&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 24 Apr 2020 20:19:39 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/categories/golang/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Golang持续集成服务之Travis教程</title>
+      <link>http://localhost:1313/2020/04/24/golang-travis.html</link>
+      <pubDate>Fri, 24 Apr 2020 20:19:39 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/24/golang-travis.html</guid>
+      <description>为什么使用集成服务呢 我们向github提交代码时, 我们得保证我们的代码是能运行的, 我们会写测试用例, 保证我们的代码功能能正常使用.常见大神们</description>
+    </item>
+    
+  </channel>
+</rss>

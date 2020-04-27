@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>设计模式 on 百里江山的博客</title>
+    <link>http://localhost:1313/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html</link>
+    <description>Recent content in 设计模式 on 百里江山的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&lt;a href=&#39;https://www.sgfoot.com&#39;&gt;百里江山&lt;/a&gt;</copyright>
+    <lastBuildDate>Sun, 26 Apr 2020 19:58:34 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>golang策略模式</title>
+      <link>http://localhost:1313/2020/04/26/strategy-pattern.html</link>
+      <pubDate>Sun, 26 Apr 2020 19:58:34 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/26/strategy-pattern.html</guid>
+      <description>原理 1. 概念 策略模式的概念: 定义一系列的算法,把每一个算法封装起来, 并且使它们可相互替换。 本模式使得算法可独立于使用它的客户而变化. 也称为政策</description>
+    </item>
+    
+    <item>
+      <title>golang模板方法</title>
+      <link>http://localhost:1313/2020/04/15/template-method.html</link>
+      <pubDate>Wed, 15 Apr 2020 20:26:26 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/15/template-method.html</guid>
+      <description>今天我们要使用WOW讲解模板设计模式, 使用golang实现代码 原理 定义一个稳定的算法的骨架, 而将一些步骤推迟到子类中实现. 模板方法使得子类可</description>
+    </item>
+    
+  </channel>
+</rss>

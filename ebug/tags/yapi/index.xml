@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>YAPI on 百里江山的博客</title>
+    <link>http://localhost:1313/tags/yapi.html</link>
+    <description>Recent content in YAPI on 百里江山的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&lt;a href=&#39;https://www.sgfoot.com&#39;&gt;百里江山&lt;/a&gt;</copyright>
+    <lastBuildDate>Fri, 13 Mar 2020 13:08:13 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/yapi/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Yapi入门笔记</title>
+      <link>http://localhost:1313/2020/03/13/yapi-note.html</link>
+      <pubDate>Fri, 13 Mar 2020 13:08:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/03/13/yapi-note.html</guid>
+      <description>什么是YAPI 写接口文档的软件, 支持RESTful, Mock假数据, 团队管理协作,非常方便好用.良心之作 内网安装 参考网上的教程吧. mac: https://www.cnblogs.com/yehuisir/p/12190446.html linux; https://www.jianshu.com/p/6c269d00bb38 安</description>
+    </item>
+    
+  </channel>
+</rss>

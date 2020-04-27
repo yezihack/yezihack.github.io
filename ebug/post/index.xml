@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 百里江山的博客</title>
+    <link>http://localhost:1313/post.html</link>
+    <description>Recent content in Posts on 百里江山的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <copyright>&lt;a href=&#39;https://www.sgfoot.com&#39;&gt;百里江山&lt;/a&gt;</copyright>
+    <lastBuildDate>Sun, 26 Apr 2020 19:58:34 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>golang策略模式</title>
+      <link>http://localhost:1313/2020/04/26/strategy-pattern.html</link>
+      <pubDate>Sun, 26 Apr 2020 19:58:34 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/26/strategy-pattern.html</guid>
+      <description>原理 1. 概念 策略模式的概念: 定义一系列的算法,把每一个算法封装起来, 并且使它们可相互替换。 本模式使得算法可独立于使用它的客户而变化. 也称为政策</description>
+    </item>
+    
+    <item>
+      <title>Golang持续集成服务之Travis教程</title>
+      <link>http://localhost:1313/2020/04/24/golang-travis.html</link>
+      <pubDate>Fri, 24 Apr 2020 20:19:39 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/24/golang-travis.html</guid>
+      <description>为什么使用集成服务呢 我们向github提交代码时, 我们得保证我们的代码是能运行的, 我们会写测试用例, 保证我们的代码功能能正常使用.常见大神们</description>
+    </item>
+    
+    <item>
+      <title>github-webhook工具实现github自动构建</title>
+      <link>http://localhost:1313/2020/04/24/github-webhook.html</link>
+      <pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/24/github-webhook.html</guid>
+      <description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用githu</description>
+    </item>
+    
+    <item>
+      <title>Go命令行下星号代替输入内容</title>
+      <link>http://localhost:1313/2020/04/17/gopass.html</link>
+      <pubDate>Fri, 17 Apr 2020 19:34:16 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/17/gopass.html</guid>
+      <description>(图片来自网络,有侵权,联系我删除) 当我们做命令行工具时, 遇到用户需要输入密码时, 常规处理是当字符串显示输入,这样并不是很好.应该像mysq</description>
+    </item>
+    
+    <item>
+      <title>golang模板方法</title>
+      <link>http://localhost:1313/2020/04/15/template-method.html</link>
+      <pubDate>Wed, 15 Apr 2020 20:26:26 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/15/template-method.html</guid>
+      <description>今天我们要使用WOW讲解模板设计模式, 使用golang实现代码 原理 定义一个稳定的算法的骨架, 而将一些步骤推迟到子类中实现. 模板方法使得子类可</description>
+    </item>
+    
+    <item>
+      <title>算法第6天:跳水板</title>
+      <link>http://localhost:1313/2020/04/14/algo-6-day.html</link>
+      <pubDate>Tue, 14 Apr 2020 21:22:39 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/04/14/algo-6-day.html</guid>
+      <description>leetcode: 16.11 https://leetcode-cn.com/problems/diving-board-lcci 题目 你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为shorter，长度较长的木板长度为longer。你必须正</description>
+    </item>
+    
+    <item>
+      <title>Window Subsystem Ubuntu</title>
+      <link>http://localhost:1313/2020/03/14/window-subsystem-ubuntu.html</link>
+      <pubDate>Sat, 14 Mar 2020 22:36:14 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/03/14/window-subsystem-ubuntu.html</guid>
+      <description>做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令 而window虽然有powershel</description>
+    </item>
+    
+    <item>
+      <title>Yapi入门笔记</title>
+      <link>http://localhost:1313/2020/03/13/yapi-note.html</link>
+      <pubDate>Fri, 13 Mar 2020 13:08:13 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/03/13/yapi-note.html</guid>
+      <description>什么是YAPI 写接口文档的软件, 支持RESTful, Mock假数据, 团队管理协作,非常方便好用.良心之作 内网安装 参考网上的教程吧. mac: https://www.cnblogs.com/yehuisir/p/12190446.html linux; https://www.jianshu.com/p/6c269d00bb38 安</description>
+    </item>
+    
+    <item>
+      <title>算法第5天:最大子序和</title>
+      <link>http://localhost:1313/2020/02/24/algo-5-day.html</link>
+      <pubDate>Mon, 24 Feb 2020 15:16:57 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/02/24/algo-5-day.html</guid>
+      <description>leetcode 53. 最大子序和 simple 题目 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。 示例: 输入: [-2,1,-3,4,-1,2,1,-5,4], 输出: 6 解释:</description>
+    </item>
+    
+    <item>
+      <title>算法第4天:LRU缓存机制</title>
+      <link>http://localhost:1313/2020/02/24/algo-4-day.html</link>
+      <pubDate>Mon, 24 Feb 2020 15:16:54 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/02/24/algo-4-day.html</guid>
+      <description>leetcode 146. LRU缓存机制 middle 题目 运用你所掌握的数据结构，设计和实现一个 LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。 获取数</description>
+    </item>
+    
+    <item>
+      <title>算法第3天:最长公共前缀</title>
+      <link>http://localhost:1313/2020/02/24/algo-3-day.html</link>
+      <pubDate>Mon, 24 Feb 2020 15:16:51 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/02/24/algo-3-day.html</guid>
+      <description>leetcode 14. 最长公共前缀 simple 题目 编写一个函数来查找字符串数组中的最长公共前缀。 如果不存在公共前缀，返回空字符串 &amp;ldquo;&amp;quot;。 输入: [&amp;ldquo;flower&amp;rdquo;,&amp;ldquo;flow&amp;rdquo;,&amp;ldquo;flight&amp;rdquo;] 输出</description>
+    </item>
+    
+    <item>
+      <title>算法第1天: 缺失的第一个正数</title>
+      <link>http://localhost:1313/2020/02/24/algo-1-day.html</link>
+      <pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/02/24/algo-1-day.html</guid>
+      <description>感触 为了坚持学习算法, 每篇算法标题写上坚持多少天,以此鼓励自己坚持学下去. 会把自己理解的都写在代码处, 你在看代码时也方便, 为什么这一行这么写</description>
+    </item>
+    
+    <item>
+      <title>算法第2天: 盛最多水的容器</title>
+      <link>http://localhost:1313/2020/02/24/algo-2-day.html</link>
+      <pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate>
+      
+      <guid>http://localhost:1313/2020/02/24/algo-2-day.html</guid>
+      <description>LeetCode:11题, 中等 解析题目 解析题目: 将数组想象成一个矩形, 寻找这个矩形盛最多水的大小. 决定盛水高度取决于最低的那根木板.也就是数</description>
+    </item>
+    
+  </channel>
+</rss>
