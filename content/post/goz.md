@@ -4,7 +4,7 @@ date: 2020-04-28T20:33:51+08:00
 lastmod: 2020-04-28T20:33:51+08:00
 draft: false
 tags: ["golang", "goz", "curl", "学习总结"]
-categories: ["学习笔记"]
+categories: ["代码分析"]
 author: "百里"
 comment: true
 toc: true
