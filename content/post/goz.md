@@ -16,6 +16,12 @@ reward: true
 
 # 分析
 项目四个Go文件, 每个文件仅描述一件事, 思路非常清淅, 故此学习并总结一下里面的精华.
+1. 定义Options结构体接受外部定义的配置
+1. 定义入口文件, 整个项目的入口, 并返回一个下一层处理的结构体
+1. 定义逻辑结构体, 下一层结构体担负着处理逻辑的任务,并返回处理结构的结构体.
+1. 定义收尾结构体, 将上一层的处理的结果进行进一步分析,最终展现给用户
+
+
 
 ## 入口文件 Goz.go
 - 只初使化了Request结构体. 
@@ -35,6 +41,7 @@ func NewClient(opts ...Options) *Request {
 ```
 ## 配置文件 Options.go
 - 定义了整个项目需要的外部参数
+- 变量首字母都大写
 - [options.go#L6](https://github.com/idoubi/goz/blob/master/options.go#L6)
 ```go
 // Options object
