@@ -3,7 +3,7 @@ title: "Golang学习资源收集"
 date: 2020-05-08T14:43:48+08:00
 lastmod: 2020-05-08T14:43:48+08:00
 draft: false
-tags: ["golang", "golang进阶"]
+tags: ["golang", "golang进阶", "go每日一库"]
 categories: ["golang"]
 author: "百里"
 comment: true
@@ -12,7 +12,8 @@ reward: true
 # weight: 1
 # description = ""
 ---
-# Golang进阶文章
+
+# Golang 系列进阶文章
 
 | Golang |系列文章|来源:|[飞雪无情](https://www.flysnow.org/tags/golang)|
 | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
@@ -24,7 +25,7 @@ reward: true
 | [Go 单元测试](https://www.flysnow.org/2017/05/16/go-in-action-go-unit-test.html) | [Go 基准测试](https://www.flysnow.org/2017/05/21/go-in-action-go-benchmark-test.html) | [ Go 调试](https://www.flysnow.org/2017/06/07/go-in-action-go-debug.html) | [Go 反射](https://www.flysnow.org/2017/06/13/go-in-action-go-reflect.html) |
 | [Go Struct Tag](https://www.flysnow.org/2017/06/25/go-in-action-struct-tag.html) | [Go unsafe 包之内存布局](https://www.flysnow.org/2017/07/02/go-in-action-unsafe-memory-layout.html) | [Go unsafe Pointer](https://www.flysnow.org/2017/07/06/go-in-action-unsafe-pointer.html) | [Go 后记](https://www.flysnow.org/2017/07/19/go-in-action-postscript.html) |
 
-
+# Golang 每日一库
 
 | Golang | 每日一库 | 来源 | [darjun](https://darjun.github.io/)  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
