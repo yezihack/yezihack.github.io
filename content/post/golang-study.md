@@ -26,3 +26,14 @@ reward: true
 
 
 
+| Golang | 每日一库 | 来源 | [darjun](https://darjun.github.io/)  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+|[flag](https://segmentfault.com/a/1190000021561407)|[go-flags](https://segmentfault.com/a/1190000021573343)|[go-homedir](https://segmentfault.com/a/1190000021585053)|[go-ini](https://segmentfault.com/a/1190000021595681)|
+|[cobra](https://segmentfault.com/a/1190000021616743)|[viper](https://segmentfault.com/a/1190000021625875)|[fsnotify](https://segmentfault.com/a/1190000021632889)|[cast](https://segmentfault.com/a/1190000021684109)|
+|[log](https://segmentfault.com/a/1190000021702701)|[logrus](https://segmentfault.com/a/1190000021706728)|[godotenv](https://segmentfault.com/a/1190000021735360)|[carbon](https://segmentfault.com/a/1190000021754301)|
+|[email](https://segmentfault.com/a/1190000021761747)|[dig](https://segmentfault.com/a/1190000021813270)|[gojsonq](https://segmentfault.com/a/1190000021830156)|[message-bus](https://segmentfault.com/a/1190000021850813)|
+|[watermill](https://segmentfault.com/a/1190000021881252)|[wire](https://segmentfault.com/a/1190000021895220)|[mergo](https://segmentfault.com/a/1190000021997004)|[copier](https://segmentfault.com/a/1190000022008881)|
+|[jennifer](https://segmentfault.com/a/1190000022018652)|[go-cmp](https://segmentfault.com/a/1190000022095737)|[buntdb](https://segmentfault.com/a/1190000022102931)|[gjson](https://segmentfault.com/a/1190000022134050)|
+|[sjson](https://segmentfault.com/a/1190000022148617)|[jj](https://segmentfault.com/a/1190000022163724)|[govaluate](https://segmentfault.com/a/1190000022235609)|[validator](https://segmentfault.com/a/1190000022272272)|
+|[gopsutil](https://segmentfault.com/a/1190000022281174)|[gentleman](https://segmentfault.com/a/1190000022308805)|[plot](https://segmentfault.com/a/1190000022398253)|[go-app](https://segmentfault.com/a/1190000022449545)|
+|[zap](https://segmentfault.com/a/1190000022461706)|[zerolog](https://segmentfault.com/a/1190000022468752)|[nutsdb](https://segmentfault.com/a/1190000022490989)|[sqlc](https://segmentfault.com/a/1190000022529075)|
