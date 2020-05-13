@@ -65,10 +65,10 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   identifier = "categories"
   url = "/categories.html"
 [[menu.main]]
-  name = "每日算法"
+  name = "分享"
   weight = 40
-  identifier = "algo"
-  url = "/tags/每日算法.html"
+  identifier = "share"
+  url = "/tags/分享.html"
 
 # 谷歌广告
 [params.adsense]

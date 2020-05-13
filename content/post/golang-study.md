@@ -3,8 +3,8 @@ title: "Golang学习资源收集"
 date: 2020-05-08T14:43:48+08:00
 lastmod: 2020-05-08T14:43:48+08:00
 draft: false
-tags: ["golang", "golang进阶", "go每日一库"]
-categories: ["golang"]
+tags: ["golang", "golang进阶", "go每日一库", "分享"]
+categories: ["分享"]
 author: "百里"
 comment: true
 toc: true
