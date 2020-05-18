@@ -13,7 +13,7 @@ reward: true
 # descripon = ""
 ---
 
-## 倒数第100期 2020.05.13
+## 2020.05.13 第1期
 1. [Golang 标准库限流器 time/rate 实现剖析](https://www.cyhone.com/articles/analisys-of-golang-rate/)
 1. [Makedown排版](https://www.mdnice.com/)
 1. [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines)
