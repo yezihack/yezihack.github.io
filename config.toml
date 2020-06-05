@@ -52,7 +52,7 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
 
 # 按日期显示路径
 [permalinks]
-	post = "/:year/:month/:day/:filename"
+	post = "/:filename"
 
 [markup]
   [markup.tableOfContents]
@@ -69,9 +69,9 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   gitRepo = ""
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
-  logoTitle = "百里的博客"        # default: the title value    # 默认值: 上面设置的title值
-  keywords = ["Go语言", "MySQL", "Redis", "设计模式", "百里"]
-  description = "Go语言,Golang开发,算法,设计模式,架构,Linux,Kubernetes,Docker-百里的博客"
+  logoTitle = "百里江山的博客"        # default: the title value    # 默认值: 上面设置的title值
+  keywords = ["Go语言", "MySQL", "Redis", "设计模式", "百里江山的博客", "百里", "百里江山"]
+  description = "Go语言,Golang开发,算法,设计模式,架构,Linux,Kubernetes,Docker-百里江山的博客"
 
   # paginate of archives, tags and categories             # 归档、标签、分类每页显示的文章数目，建议修改为一个较大的值
   archivePaginate = 100
@@ -116,7 +116,7 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
 
   # Link custom CSS and JS assets
   #   (relative to /static/css and /static/js respectively)
-  customCSS = []
+  customCSS = ["post.css", "toc.css"]
   customJS = []
 
   uglyURLs = false          # please keep same with uglyurls setting
