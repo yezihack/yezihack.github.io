@@ -98,7 +98,7 @@ https://graphviz.org/_pages/Download/Download_windows.html
 2. 线最粗的同理.
 3. 显示时有耗时与占比.一目了然.分析利器
 
-# 参考
+## 参考
 
 1. [Go 测试，go test 工具的具体指令 flag](https://deepzz.com/post/the-command-flag-of-go-test.html)
 2. [Go 基准测试](https://www.flysnow.org/2017/05/21/go-in-action-go-benchmark-test.html)
