@@ -30,6 +30,7 @@ default:
 ## 使用误区
 
 1. 39行, return 会一直阻塞? 希望大神解释下?
+    1. 答: return相当于返回,不再继续,将永远阻塞,直到主程序退出.一般用于结束这个goroutine才加上return,否则不要轻易使用.
 2. 如果return 换成break或continue就不会阻塞
 
 ```
