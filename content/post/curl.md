@@ -18,17 +18,17 @@ reward: true
 cli := &http.Client{}
 req, err := http.NewRequest(http.MethodGet, "http://www.google.com", nil)
 if err != nil {
-return
+	return
 }
 resp, err := cli.Do(req)
 if err != nil {
-return
+	return
 }
 // 必须关闭, 如果我们没有写关闭resp.Body打开的句柄,就会导致句柄泄露
 // defer resp.Body.Close() // 
 data, err := ioutil.ReadAll(resp.Body)
 if err != nil {
-return
+	return
 }
 fmt.Println(string(data))
 return
