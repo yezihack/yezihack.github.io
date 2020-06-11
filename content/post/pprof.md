@@ -1,10 +1,10 @@
 ---
-title: "Pprof"
+title: "pprof火焰图性能分析利器之入门"
 date: 2020-06-05T19:16:31+08:00
 lastmod: 2020-06-05T19:16:31+08:00
 draft: false
 tags: ["golang", "pprof", "性能分析", "火焰图"]
-categories: ["工具"]
+categories: ["pprof", "golang"]
 author: "百里"
 comment: true
 toc: true
@@ -16,6 +16,8 @@ reward: true
 ## 前言
 
 > 如果你的应用是一直运行的，比如 web 应用，那么可以使用 `net/http/pprof` 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
+
+可以先看下[pprof入门](https://www.sgfoot.com/pprof/)
 
 go1.10自带 go tool pprof工具
 
@@ -75,6 +77,12 @@ http://127.0.01:8080/debug/pprof/
 
 `touch Makefile`
 
+1. profile 分析cpu的使用情况
+2. allocs 内容的使用情况 
+3. goroutine 协和的使用情况
+4. mutex 锁的情况
+5. block 阻塞的情况
+
 ```
 #!/bin/bash
 PPort=6060
@@ -92,11 +100,40 @@ block:
 	go tool pprof http://localhost:${PPort}/debug/pprof/block
 ```
 
-例: make profile 进行命令行.
+例: make profile 进行命令行. 
+
+profile默认30s用于采集数据, 也可以自定义,添加?second=60秒.然后进入了一个交互式命令行.可以对解析的结果进行查看和导出.也可以通过help查看更多的命令.
+
+会自动在/root/pprof目录下生成一个分析结果的文件.可以使用`go tool pprof -http=:6006 file` 进行查看火焰图. 具体向下看.
 
 常用命令: top(排序),  png(生成一张图片), tree(列出一张表格)
 
+## 安装 Graphviz
+
+> Graphviz就画图工具,分析报告图与火焰图都依赖此工具.
+
+### window 安装
+
+https://graphviz.org/_pages/Download/Download_windows.html
+
+1. 选择mis安装, 一直下一步即可.注意安装的目录 
+2. 一般在: `C:\Program Files (x86)\Graphviz2.38\bin`
+3. 将bin目录添加到path环境变量里.
+
+### linux安装
+
+```
+ubuntu: apt-get install -y graphviz
+centos: yum install -y graphviz
+```
+
 ## 火焰图
+
+> 我们可以进入/root/pprof目录下, 
+>
+> 1. go tool pprof -http=:6060 file 开启web浏览查看火焰图.
+> 2. go tool pprof -web file 弹出浏览器显示svg图片
+> 3. go tool pprof  file 直接进入交互命令行模式
 
 获取最近10秒程序运行的cpuprofile,-seconds参数不填默认为30
 
@@ -120,3 +157,6 @@ go tool pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=10
 
 1. https://zhuanlan.zhihu.com/p/71529062
 1. https://gocn.vip/topics/10521
+1. https://www.cnblogs.com/linguoguo/p/10375224.html
+1. https://github.com/google/pprof/
+1. [官方文档](https://github.com/google/pprof/blob/master/doc/README.md)

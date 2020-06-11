@@ -1,9 +1,9 @@
 ---
-title: "go压测,pprof分析利器"
+title: "pprof火焰图分析利器之压测"
 date: 2020-06-09T11:21:11+08:00
 draft: false
 tags: ["golang", "bench", "pprof", "go压测", "go性能", "测试"]
-categories: ["golang", "性能"]
+categories: ["golang", "pprof"]
 author: "百里"
 comment: true
 toc: true
@@ -79,14 +79,6 @@ ok      openapi/app/util        4.493s
 - `-cpuprofile cpu.out`：在退出之前，将一个 CPU 概要文件写入指定的文件。
 - `-memprofile mem.out`：在所有测试通过后，将内存概要文件写到文件中。
 - `-memprofilerate n`：开启更精确的内存配置。如果为 1，将会记录所有内存分配到 profile。
-
-## 安装 Graphviz
-
-https://graphviz.org/_pages/Download/Download_windows.html
-
-1. 选择mis安装, 一直下一步即可.注意安装的目录 
-2. 一般在: `C:\Program Files (x86)\Graphviz2.38\bin`
-3. 将bin目录添加到path环境变量里.
 
 ## 使用Graphviz分析性能
 

@@ -1,5 +1,15 @@
-
-
+---
+title: "elaticsearch 入门"
+date: 2020-06-11T14:36:27+08:00
+lastmod: 2020-06-11T14:36:27+08:00
+draft: false
+tags: ["elaticsearch", "es", "全文检索引擎"]
+categories: ["elaticsearch"]
+author: "百里"
+comment: true
+toc: true
+reward: true
+---
 
 
 # 概述
