@@ -106,7 +106,12 @@ profile默认30s用于采集数据, 也可以自定义,添加?second=60秒.然�
 
 会自动在/root/pprof目录下生成一个分析结果的文件.可以使用`go tool pprof -http=:6006 file` 进行查看火焰图. 具体向下看.
 
-常用命令: top(排序),  png(生成一张图片), tree(列出一张表格)
+### 常用命令
+
+1. top 显示最高占比
+2. tree 性能分析占用比较函数
+3. png  生成png图片,显示性能分析详情
+4. list ttp 对ttp函数名称进行分析
 
 ## 安装 Graphviz
 
