@@ -1,10 +1,10 @@
 ---
 title: "golang http句柄泄露"
 date: 2020-06-11T14:36:27+08:00
-lastmod: 2020-06-11T14:36:27+08:00
+lastmod: 2020-06-13T08:22:27+08:00
 draft: false
-tags: ["elaticsearch", "es", "全文检索引擎"]
-categories: ["elaticsearch"]
+tags: ["golang", "curl", ""]
+categories: ["golang", "Golang常见问题"]
 author: "百里"
 comment: true
 toc: true
@@ -13,7 +13,9 @@ reward: true
 
 ## 前言
 平时我们做Web开发, 经常会遇到需要请求网络资源,使用http请求, 如下面代码,注释处如果没有打开话,会导致句柄泄露, 最终报: `dial tcp 127.0.0.1:80: socket: too many open files`
-这是为什么呢? 在linux中万物皆文件, 网络请求也相当于打开一个文件.如果打开文件忘记关闭的话, 没有及时回收资源, linux有文件打开上限,可以使用`ulimit -n` 最大支持文件打开数. 
+这是为什么呢? 在linux中万物皆文件, 网络请求也相当于打开一个文件.如果打开文件忘记关闭的话, 没有及时回收资源, linux有文件打开上限,可以使用`ulimit -n` 查看最大支持文件打开数.
+
+1. 如下代码会导致句柄泄露 
 ```
 cli := &http.Client{}
 req, err := http.NewRequest(http.MethodGet, "http://www.google.com", nil)
@@ -34,13 +36,13 @@ fmt.Println(string(data))
 return
 ```
 ## 分析 
-可以使用并发工具请求你的代码, 然后使用`lsof -p 18001 |wc -l` , 18001就你程序的进程, 可以查看当前程序打开文件数.
+可以使用并发工具请求你的代码, 如使用[Jmeter](https://www.sgfoot.com/jmeter/), 然后使用`lsof -p 18001 |wc -l` , `18001`就你程序的进程ID, 可以查看当前程序打开文件数.
 
-所有一定要忘记关闭: `defer resp.Body.Close()`
+**所有一定不要忘记关闭句柄**: `defer resp.Body.Close()`
 
 
 ## CURL函数
-> 写代码经常使用, 不如封装起来, 这样使用起来更香.哈哈.
+> 写代码经常使用, 不如将其封装起来, 这样使用起来更香.哈哈.
 
 ### Get 
 ```
