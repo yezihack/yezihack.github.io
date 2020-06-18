@@ -16,4 +16,6 @@ reward: true
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 | [fsnotify](https://github.com/fsnotify/fsnotify) | [用法](https://segmentfault.com/a/1190000021632889) | 监听文件修改进而自动重新加载|
-| [cron](https://github.com/robfig/cron)| [用法](https://godoc.org/github.com/robfig/cron) | 定时器 by linux crontab
+| [cron](https://github.com/robfig/cron) | [用法](https://godoc.org/github.com/robfig/cron) | 定时器 by linux crontab|
+| [grpool](https://github.com/ivpusic/grpool) |  | 轻量级协程池 |
+|[endless](https://github.com/fvbock/endless)||优雅重启 go 程序|
