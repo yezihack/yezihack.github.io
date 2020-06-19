@@ -79,3 +79,4 @@ show variables like 'long_query_time';
 ## 参数
 
 1. https://juejin.im/post/59d83f1651882545eb54fc7e
+2. https://coolshell.cn/articles/1846.html
