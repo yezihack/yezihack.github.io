@@ -1,5 +1,5 @@
 ---
-title: "MySQL优化"
+title: "MySQL 性能优化"
 date: 2020-06-19T20:23:17+08:00
 lastmod: 2020-06-19T20:23:17+08:00
 draft: false
