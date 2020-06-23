@@ -40,6 +40,8 @@ return
 
 **所有一定不要忘记关闭句柄**: `defer resp.Body.Close()`
 
+注: **lsof(list open files)是一个列出当前系统打开文件的工具。**
+
 
 ## CURL函数
 > 写代码经常使用网络请求, 不如将其封装起来, 这样使用起来更香.哈哈.

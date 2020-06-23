@@ -72,7 +72,16 @@ show variables like 'innodb_lock_wait_timeout'
 
 ```
 show variables like 'innodb_buffer_pool_size'
-innodb_buffer_pool_size=2048M
+
+# 对 my.cnf 设置
+innodb_buffer_pool_size = 2147483648  #设置2G
+或
+innodb_buffer_pool_size = 2G  #设置2G
+或
+innodb_buffer_pool_size = 500M  #设置500M
+
+# 命令行动态设置
+set global innodb_buffer_pool_size = 2097152; # 单位kb
 ```
 
 ### innodb_log_buffer_size
