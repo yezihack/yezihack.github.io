@@ -15,6 +15,27 @@ reward: true
 
 
 
+## 解析方案
+
+```
+// 替换 ioutil.ReadAll
+func ReadAll(data io.ReadCloser) (body []byte) {
+	buffer := bytes.NewBuffer(make([]byte, 0, 65536))
+	io.Copy(buffer, data)
+	temp := buffer.Bytes()
+	length := len(temp)
+	if cap(temp) > (length + length/10) {
+		body = make([]byte, length)
+		copy(body, temp)
+	} else {
+		body = temp
+	}
+	return
+}
+```
+
+
+
 
 
 # 参考
