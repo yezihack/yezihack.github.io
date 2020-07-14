@@ -69,7 +69,7 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   gitRepo = "https://github.com/yezihack/barry.git"
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
-  logoTitle = "百里江山的博客"        # default: the title value    # 默认值: 上面设置的title值
+  logoTitle = "百里江山"        # default: the title value    # 默认值: 上面设置的title值
   keywords = ["Go语言", "MySQL", "Redis", "设计模式", "百里江山的博客", "百里", "百里江山"]
   description = "Go语言,Golang开发,算法,设计模式,架构,Linux,Kubernetes,Docker-百里江山的博客"
 
