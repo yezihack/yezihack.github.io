@@ -3,8 +3,8 @@ title: "Elasticsearch 入门(三) Head 助手安装"
 date: 2020-07-16T19:38:51+08:00
 lastmod: 2020-07-16T19:38:51+08:00
 draft: false
-tags: ["elasticsearch ", "elasticsearch-head"]
-categories: ["Elasticsearch"]
+tags: ["elasticsearch", "elk", "elasticsearch-head"]
+categories: ["elasticsearch"]
 author: "百里"
 comment: true
 toc: true

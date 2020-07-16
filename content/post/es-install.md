@@ -3,8 +3,8 @@ title: "Elasticsearch 入门(二)安装"
 date: 2020-06-11T14:36:27+08:00
 lastmod: 2020-06-11T14:36:27+08:00
 draft: false
-tags: ["elasticsearch", "es"]
-categories: ["Elasticsearch 入门教程"]
+tags: ["elasticsearch", "elk"]
+categories: ["elasticsearch"]
 author: "百里"
 comment: true
 toc: true

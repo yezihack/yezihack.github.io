@@ -3,7 +3,7 @@ title: "Elasticsearch 入门(四) 查询"
 date: 2020-07-15T19:52:52+08:00
 lastmod: 2020-07-15T19:52:52+08:00
 draft: false
-tags: ["elaticsearch ", "ELK"]
+tags: ["elasticsearch", "elk"]
 categories: ["elasticsearch"]
 author: "百里"
 comment: true

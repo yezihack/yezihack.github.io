@@ -3,8 +3,8 @@ title: "Elaticsearch 学习(一) 介绍"
 date: 2020-07-16T14:22:17+08:00
 lastmod: 2020-07-16T14:22:17+08:00
 draft: false
-tags: ["elaticsearch ", "ELK"]
-categories: ["Elaticsearch"]
+tags: ["elasticsearch", "elk"]
+categories: ["elasticsearch"]
 author: "百里"
 comment: true
 toc: true
@@ -67,6 +67,10 @@ Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全�
 
 注: 文档中的`是`等词没有什么实际意义, 这些不代表概念的词是可以过滤掉的.
 
+# 推荐阅读
+
+1. [Elasticsearch 入门(三) Head 助手安装](https://www.sgfoot.com/es-head.html)
+2. [Elasticsearch 入门(四) 查询](https://www.sgfoot.com/es-search.html)
 
 # 参考
 
