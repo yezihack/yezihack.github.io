@@ -1,10 +1,10 @@
 ---
-title: "Ab"
+title: "Ab 压测"
 date: 2020-07-07T15:36:03+08:00
 lastmod: 2020-07-07T15:36:03+08:00
 draft: false
-tags: ["golang", "", ""]
-categories: [""]
+tags: ["ab", "测试"]
+categories: ["测试"]
 author: "百里"
 comment: true
 toc: true

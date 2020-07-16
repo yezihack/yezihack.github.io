@@ -11,10 +11,11 @@ toc: true
 reward: true
 # weight: 1
 # description = "prometheus实时收集数据，通过报警及时发现问题，及时处理。数据为优化也可以提供依据。"
+# {{< bilibili BV16J411z7SQ >}}
 ---
 
 ## 入门视频
-{{< bilibili BV16J411z7SQ >}}
+
 
 ## 准备
 ### 安装

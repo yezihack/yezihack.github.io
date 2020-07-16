@@ -42,8 +42,11 @@
     </header>
 
     <!-- TOC -->
-    {{ partial "post/toc.html" . }}
-
+    {{ partial "post/new-toc.html" . }}
+    <!-- TOC -->
+{{/*    <div style="position: fixed; right:5px;max-width:300px; z-index: 9999;display: block; overflow:auto; top: 100px; width: 20rem; bottom:50px">*/}}
+{{/*      {{ partial "post/new-toc.html" . }}*/}}
+{{/*    </div>*/}}
     <!-- Content -->
     <div class="post-content">
       {{ .Content }}

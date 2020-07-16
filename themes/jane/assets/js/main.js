@@ -84,15 +84,13 @@ var mobileNavbar = function() {
  */
 function initToc() {
   const $toc = $('#post-toc');
-  if ($toc.length && $(window)
-    .width() >= 1080) {
-    $(window)
-      .scroll(function() {
-        if ($(window)
-          .scrollTop() > 100) {
+  if ($toc.length && $(window).width() >= 1080) {
+    $(window).scroll(function() {
+        tocAttr()
+        if ($(window).scrollTop() > 100) {
           $toc.fadeIn(1000);
         } else {
-          $toc.fadeOut(100);
+          $toc.fadeIn(1000);
         }
       });
   }
@@ -110,6 +108,105 @@ var toc = function() {
     }
   }
 }
+var tocAttr = function () {
+  // 设置高度
+  const win_height = $(window).height();
+  const height = $("#post-toc").height();
+  const top = win_height/2 - height-50;
+  // console.log("top", top)
+  if(top > 50) {
+    $("#post-toc").css("top", top+"px")
+  } else {
+    $("#post-toc").css("top", "125px")
+  }
+  const body_width = $(".bg-white").outerWidth();
+  const win_width = $(window).width();
+  const toc_width = $("#post-toc").outerWidth();
+  // console.log("win_width", win_width);
+  // console.log("body_width", body_width);
+  // console.log("toc_width", toc_width);
+  // console.log("pp", (win_width - body_width)/2-toc_width)
+  if (win_width - body_width > toc_width) {
+     const right = (win_width - body_width)/2-toc_width-10;
+     $("#post-toc").css("right", right+"px")
+  }
+}
+
+var initTocEven = function() {
+  const SPACING = 20;
+  const $toc = $('.post-toc');
+  const $footer = $('.post-footer');
+
+  if ($toc.length) {
+    const minScrollTop = $toc.offset().top - SPACING;
+    const maxScrollTop = $footer.offset().top - $toc.height() - SPACING;
+
+    const tocState = {
+      start: {
+        'position': 'fixed',
+        'top': minScrollTop,
+      },
+      process: {
+        'position': 'fixed',
+        'top': SPACING,
+      },
+      end: {
+        'position': 'fixed',
+        'top': maxScrollTop,
+      },
+    };
+
+    $(window).scroll(function() {
+      const scrollTop = $(window).scrollTop();
+
+      if (scrollTop < minScrollTop) {
+        $toc.css(tocState.start);
+      } else if (scrollTop > maxScrollTop) {
+        $toc.css(tocState.end);
+      } else {
+        $toc.css(tocState.process);
+      }
+    });
+  }
+
+  const HEADERFIX = 30;
+  const $toclink = $('.toc-link');
+  const $headerlink = $('.headerlink');
+  const $tocLinkLis = $('.post-toc-content li');
+
+  const headerlinkTop = $.map($headerlink, function(link) {
+    return $(link).offset().top;
+  });
+
+  const headerLinksOffsetForSearch = $.map(headerlinkTop, function(offset) {
+    return offset - HEADERFIX;
+  });
+
+  const searchActiveTocIndex = function(array, target) {
+    for (let i = 0; i < array.length - 1; i++) {
+      if (target > array[i] && target <= array[i + 1]) return i;
+    }
+    if (target > array[array.length - 1]) return array.length - 1;
+    return -1;
+  };
+
+  $(window).scroll(function() {
+    const scrollTop = $(window).scrollTop();
+    const activeTocIndex = searchActiveTocIndex(headerLinksOffsetForSearch, scrollTop);
+
+    $($toclink).removeClass('active');
+    $($tocLinkLis).removeClass('has-active');
+
+    if (activeTocIndex !== -1) {
+      $($toclink[activeTocIndex]).addClass('active');
+      let ancestor = $toclink[activeTocIndex].parentNode;
+      while (ancestor.tagName !== 'NAV') {
+        $(ancestor).addClass('has-active');
+        ancestor = ancestor.parentNode.parentNode;
+      }
+    }
+  });
+};
 
 
 /**
@@ -221,6 +318,7 @@ $(document).ready(function () {
   backToTop();
   mobileNavbar();
   toc();
+  // initToc()
   headerAnchor();
   fnTooltip();
 });
