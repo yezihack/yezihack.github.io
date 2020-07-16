@@ -13,7 +13,7 @@ reward: true
 # description = ""
 ---
 
-# Elasticsearch 是什么
+## Elasticsearch 是什么
 
 Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全文搜索引擎.
 
@@ -27,7 +27,8 @@ Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全�
 3. 高可用:提供复制(replica)机制,一个分片可以设置多个复制,使得某台服务器在宕机的情况下,集群仍可以照常运行,并会把服务器宕机丢失的数据信息复制恢复到其它可用节点上.
 4. 使用简单:解压即可使用. 无需安装(bin/elasticsearch).
 
-# Beats
+## 相关产品
+### Beats
 它是一个代理, 将不同类型的数据发送到Elasticsearch中.
 1. Filebeat: 主要用于转发和集中日志数据。
 2. Metricbeat: 定期收集操作系统、软件或服务的指标数据
@@ -38,7 +39,7 @@ Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全�
 6. Heartbeat: 主要是检测服务或主机是否正常运行或存活，Heartbeat 能够通过 ICMP、TCP 和 HTTP 进行 ping 检测。
 7. Functionbeat: 是在无服务器环境中部署的Elastic Beat，用于收集由云服务生成的事件并将事件发送到Elasticsearch。
 
-# Lucene 倒排索引
+## Lucene 倒排索引
 倒排索引与之相对是正向索引. 正向索引是通过 `key` 找 `value`, 倒排索引是对关键字建立倒排索引
 
 例如, 假设我们有两个文档, 每个文档的内容如下:
@@ -67,14 +68,14 @@ Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全�
 
 注: 文档中的`是`等词没有什么实际意义, 这些不代表概念的词是可以过滤掉的.
 
-# 推荐阅读
+## 推荐阅读
 
 1. [Elaticsearch 学习(一) 介绍](https://www.sgfoot.com/es-info.html)
 2. [Elasticsearch 入门(二)安装](https://www.sgfoot.com/es-install.html)
 3. [Elasticsearch 入门(三) Head 助手安装](https://www.sgfoot.com/es-head.html)
 4. [Elasticsearch 入门(四) 查询](https://www.sgfoot.com/es-search.html)
 
-# 参考
+## 参考
 
 [elastic之beats各组件使用](https://blog.csdn.net/yu849893679/article/details/99640921)
 

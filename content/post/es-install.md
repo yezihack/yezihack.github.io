@@ -15,9 +15,9 @@ reward: true
 
 > 基于es 7.x版本
 
-# 安装
+## 安装
 
-## 1. 安装jdk1.8
+### 1. 安装jdk1.8
 
 > 浏览不同的es版本对java版本的要求: https://www.elastic.co/cn/support/matrix#matrix_jvm
 
@@ -41,11 +41,11 @@ apt-get -y install java-1.8.0-openjdk-devel.x86_64
 java -version
 ```
 
-## 2. 下载es
+### 2. 下载es
 1. v7.6.2
 https://www.elastic.co/cn/downloads/elasticsearch
 
-## 3. linux/win环境安装
+### 3. linux/win环境安装
 
 > 目录概述
 1. bin 执行文件目录 
@@ -84,7 +84,7 @@ network.host: 0.0.0.0
 
 上面代码中，设成`0.0.0.0`让任何人都可以访问。线上服务不要这样设置，要设成具体的 IP。
 
-## 安装遇到的坑
+### 安装遇到的坑
 
 1. 不能使用root权限运行 (linux)
 
@@ -101,17 +101,17 @@ useradd es
 chown -R es:es /usr/local/es
 ```
 
-#　修改配置
+##　修改配置
 
 > 对于 elasticsearch 配置并没有某个万能的配置项, 让性能提升100倍.
 
-## 修改集群名称
+### 修改集群名称
 
 ```
 cluster.name: es-school
 ```
 
-## 修改节点名称
+### 修改节点名称
 
 设置一个有意义的节点名称
 
@@ -119,7 +119,7 @@ cluster.name: es-school
 node.name: student-node
 ```
 
-## 修改索引存储路径
+### 修改索引存储路径
 
 用于存储 ES 所有的索引数据路径,**非常重要**, 最好不要默认设置
 
@@ -127,13 +127,13 @@ node.name: student-node
 path.data: /data/es/data
 ```
 
-## 修改日志路径 
+### 修改日志路径 
 
 ```
 path.logs: /data/es/logs
 ```
 
-## 修改绑定地址
+### 修改绑定地址
 
 ```
 network.host: 10.0.0.10
@@ -141,13 +141,13 @@ network.host: 10.0.0.10
 
 最好指定域局网的IP, 也可以使用`0.0.0.0` 表示任意都可以访问.也可以设置`localhost`只允许本机访问.
 
-##  修改端口
+###  修改端口
 
 ```
 http.port: 9200
 ```
 
-## 修改集群配置
+### 修改集群配置
 
 > 以下配置只限于7.x后版本使用.
 >
@@ -162,7 +162,7 @@ cluster.initial_master_nodes: ["node-1"]
 
 
 
-## 修改内存
+### 修改内存
 
 设置环境变量,修改堆内存
 
@@ -204,14 +204,14 @@ bootstrap.memory_lock: true
 
 
 
-# 推荐阅读
+## 推荐阅读
 
 1. [Elaticsearch 学习(一) 介绍](https://www.sgfoot.com/es-info.html)
 2. [Elasticsearch 入门(二)安装](https://www.sgfoot.com/es-install.html)
 3. [Elasticsearch 入门(三) Head 助手安装](https://www.sgfoot.com/es-head.html)
 4. [Elasticsearch 入门(四) 查询](https://www.sgfoot.com/es-search.html)
 
-# 参考
+## 参考
 
 1. [全文搜索引擎 Elasticsearch 入门教程](http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html)
 2. [堆内存:大小和交换](https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html)

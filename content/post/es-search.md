@@ -13,7 +13,7 @@ reward: true
 # description = ""
 ---
 
-# 概要
+## 概要
 
 Elasticsearch对外提供的API遵循REST原则
 
@@ -22,9 +22,9 @@ Elasticsearch对外提供的API遵循REST原则
 3. PUT
 4. DELETE
 
-# 数据操作
+## 数据操作
 
-## 新增记录
+### 新增记录
 
 ```
 curl -X PUT 'localhost:9200/accounts/person/1' -d '
@@ -151,13 +151,13 @@ curl http://192.168.70.220:9200/accounts/person/_search -d '
 
 
 
-# 推荐阅读
+## 推荐阅读
 
 1. [Elaticsearch 学习(一) 介绍](https://www.sgfoot.com/es-info.html)
 2. [Elasticsearch 入门(二)安装](https://www.sgfoot.com/es-install.html)
 3. [Elasticsearch 入门(三) Head 助手安装](https://www.sgfoot.com/es-head.html)
 4. [Elasticsearch 入门(四) 查询](https://www.sgfoot.com/es-search.html)
 
-# 参考
+## 参考
 
 1.[全文搜索引擎 Elasticsearch 入门教程](http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html)
