@@ -1,5 +1,5 @@
 ---
-title: "Elaticsearch 学习(一) 介绍"
+title: "Elaticsearch 入门(一) 介绍"
 date: 2020-07-16T14:22:17+08:00
 lastmod: 2020-07-16T14:22:17+08:00
 draft: false
