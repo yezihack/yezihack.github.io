@@ -20,6 +20,8 @@ reward: true
 ### 1. 安装jdk1.8
 
 > 浏览不同的es版本对java版本的要求: https://www.elastic.co/cn/support/matrix#matrix_jvm
+>
+> elasticsearch 7以后自带 java jdk, 无需以下安装操作.
 
 [JDK1.8下载与安装](https://www.jianshu.com/p/efef80171a4a)
 
@@ -84,26 +86,13 @@ network.host: 0.0.0.0
 
 上面代码中，设成`0.0.0.0`让任何人都可以访问。线上服务不要这样设置，要设成具体的 IP。
 
-## 安装遇到的坑
-
-1. 不能使用root权限运行 (linux)
-
-   ![](http://img.sgfoot.com/b/20200714155701.png?imageslim)
-
-解决办法就是新建一个 es帐号与组运行
-
-```
-# 创建组
-groupadd es
-# 创建用户名
-useradd es
-# 对 elaticsearch 目录添加到es组里
-chown -R es:es /usr/local/es
-```
-
 ## 修改配置
 
 > 对于 elasticsearch 配置并没有某个万能的配置项, 让性能提升100倍.
+
+```
+vim config/elasticsearch.yml 
+```
 
 ### 修改集群名称
 
@@ -202,6 +191,38 @@ sudo swapoff -a
 bootstrap.memory_lock: true
 ```
 
+## 安装遇到的坑
+
+1. 不能使用root权限运行 (linux)
+
+   ![](http://img.sgfoot.com/b/20200714155701.png?imageslim)
+
+解决办法就是新建一个 es帐号与组运行
+
+```
+# 创建组
+groupadd es
+# 创建用户名
+useradd es
+# 对 elaticsearch 目录添加到es组里
+chown -R es:es /usr/local/es
+```
+2. max_map_count is too low
+
+`max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]`
+
+临时解决
+```
+sysctl -w vm.max_map_count=262144
+```
+永久解决
+```
+vim  /etc/sysctl.conf
+
+vm.max_map_count = 262144
+
+sysctl -p #生效
+```
 
 
 ## 推荐阅读
