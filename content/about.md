@@ -7,9 +7,13 @@ weight: 50
 
 # you can close something for this content if you open it in config.toml.
 comment: true
-mathjax: true
+mathjax: false
 ---
+## 关于博客
 
-格言: 我们一起寻着梦向前走,不放弃.
+在这里大部分是技术的文章, 也许有你感兴趣的, 也可能你不感兴趣, 这都没关系.我只是记录
+一下自己学习或工作之余的笔记或想法. 技术还太菜, 没有高深的文章, 只有清淅的笔记. 
+从事 golang 开发相关的工作.最近也在学习一些架构,微服务和大数据相关的知识.  
+ 
 
 

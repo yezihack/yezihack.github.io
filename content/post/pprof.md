@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "pprof", "性能分析", "火焰图"]
 categories: ["pprof", "golang"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "提高效率", "技巧"]
 categories: ["goland"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

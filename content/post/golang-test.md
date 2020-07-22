@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "测试", "压测"]
 categories: ["golang"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

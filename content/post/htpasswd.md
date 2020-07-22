@@ -6,7 +6,7 @@ draft: false
 tags: ["nginx", "权限"]
 categories: ["nginx"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

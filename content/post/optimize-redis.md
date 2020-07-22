@@ -6,7 +6,7 @@ draft: false
 tags: ["redis", "性能分析"]
 categories: ["redis"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

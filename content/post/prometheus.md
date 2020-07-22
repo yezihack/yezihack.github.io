@@ -6,7 +6,7 @@ draft: false
 tags: ["prometheus", "grafana", "监控"]
 categories: ["工具"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

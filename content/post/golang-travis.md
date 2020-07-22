@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "travis", "集成测试"]
 categories: ["工具", "Golang", "Go语言"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

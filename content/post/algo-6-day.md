@@ -5,7 +5,7 @@ draft: false
 tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

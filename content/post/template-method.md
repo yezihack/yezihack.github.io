@@ -5,7 +5,7 @@ draft: false
 tags: ["golang", "设计模式", "模板方法", "行为模式"]
 categories: ["设计模式"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

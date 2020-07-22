@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "goz", "curl", "学习总结"]
 categories: ["代码分析"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

@@ -6,7 +6,7 @@ draft: false
 tags: ["镜像", "mirror", "工具"]
 categories: ["工具"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

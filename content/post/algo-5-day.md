@@ -6,7 +6,7 @@ tags: ["golang", "算法", "leetcode", "每日算法"]
 categories: ["算法"]
 author: "百里"
 reward: true
-comment: true
+comment: false
 toc: true
 # weight: 1
 # lastmod: 2018-03-01T16:01:23+08:00

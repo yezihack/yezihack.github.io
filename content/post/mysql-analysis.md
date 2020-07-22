@@ -6,7 +6,7 @@ draft: false
 tags: ["mysql", "性能分析", "技巧", "工具"]
 categories: ["mysql"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

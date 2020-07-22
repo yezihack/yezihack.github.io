@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "策略模式", "行为模式", "设计模式", "golang", "strategy pattern"]
 categories: ["设计模式"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

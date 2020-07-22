@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "每日一库", "Go优秀库", "密码", "gopass"]
 categories: ["每日一库"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

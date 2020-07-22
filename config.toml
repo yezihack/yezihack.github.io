@@ -103,7 +103,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   baidu_push = false        # baidu push                  # 百度
   baidu_analytics = ""      # Baidu Analytics
   baidu_verification = ""   # Baidu Verification
-  google_verification = "google8e92341d63465cfb"  # Google_Verification         # 谷歌
+  #google_verification = "google8e92341d63465cfb"  # Google_Verification         # 谷歌
 
 
   # Link custom CSS and JS assets
@@ -112,7 +112,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   customJS = []             # if ['custom.js'], load '/static/js/custom.js' file
 
   # enable 'fork me on github', see https://blog.github.com/2008-12-19-github-ribbons/
-  forkMeOnGithub = "https://github.com/yezihack"
+  # forkMeOnGithub = "https://github.com/yezihack"
 
   # show word count and read time ?                       # 是否显示字数统计与阅读时间
   moreMeta = true
@@ -137,7 +137,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
       photoswipeSKIN = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">'
 
   [params.search.google]    # google custom search, see https://cse.google.com
-      enable = true
+      enable = false
       id = "001496614017255051684:v8lrdwgteq1"
       title = "Search"
 

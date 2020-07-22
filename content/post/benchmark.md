@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "bench", "pprof", "go压测", "go性能", "测试"]
 categories: ["golang", "pprof"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 ---

@@ -6,7 +6,7 @@ draft: false
 tags: ["linux", "命令"]
 categories: ["linux"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

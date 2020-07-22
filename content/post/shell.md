@@ -6,7 +6,7 @@ draft: false
 tags: ["linux", "shell", "运算符"]
 categories: ["shell"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

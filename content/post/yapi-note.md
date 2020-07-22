@@ -5,7 +5,7 @@ draft: false
 tags: ["工具", "YAPI", "良心软件"]
 categories: ["工具"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 ---

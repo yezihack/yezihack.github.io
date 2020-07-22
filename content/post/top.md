@@ -6,7 +6,7 @@ draft: false
 tags: ["linux", "top", "性能分析", "性能", "技巧", "优化"]
 categories: ["linux"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

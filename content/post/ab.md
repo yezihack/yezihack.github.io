@@ -6,7 +6,7 @@ draft: false
 tags: ["ab", "测试"]
 categories: ["测试"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

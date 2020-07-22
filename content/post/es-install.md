@@ -6,7 +6,7 @@ draft: false
 tags: ["elasticsearch", "elk"]
 categories: ["elasticsearch"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 ---

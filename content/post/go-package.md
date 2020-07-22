@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "分享", "golang库"]
 categories: ["分享"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

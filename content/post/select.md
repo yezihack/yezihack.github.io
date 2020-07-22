@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "select", "chan"]
 categories: ["golang"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 # weight: 1

@@ -6,7 +6,7 @@ draft: false
 tags: ["golang", "curl", ""]
 categories: ["golang", "Golang常见问题"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 ---

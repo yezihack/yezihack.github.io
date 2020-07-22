@@ -5,7 +5,7 @@ draft: false
 tags: ["工具", "win10", "subsystem", "ubuntu"]
 categories: ["工具"]
 author: "百里"
-comment: true
+comment: false
 toc: true
 reward: true
 ---
