@@ -1,3 +1,6 @@
+
+<!-- google adsense -->
+{{- if .Site.Params.Adsense.enable -}}
 <script data-ad-client="{{.Site.Params.Adsense.client}}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -9,3 +12,4 @@
 
   gtag('config', '{{.Site.Params.Adsense.gtag}}');
 </script>
+{{- end }}

@@ -72,8 +72,9 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 
 # 谷歌广告
 [params.adsense]
-  # client = "ca-pub-6145899430951391"
-  # gtag = "UA-163385108-1"
+  enable = false
+  client = "ca-pub-6145899430951391"
+  gtag = "UA-163385108-1"
 
 [params]
   since = "2020"            # Site creation time          # 站点建立时间
