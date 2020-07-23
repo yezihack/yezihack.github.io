@@ -65,6 +65,14 @@ https://www.elastic.co/cn/downloads/elasticsearch
 1.  modules 模块目录
 1.  plugins 插件目录 
 
+**后台启动**
+
+```
+./bin/elasticsearch -d -p /var/elasticsearch/es.pid
+```
+
+
+
 > 启动ElaticSearch 
 
 window: 双击bin/elasticsearch.bat 文件, 差不多需要1~2分钟, 注意屏幕不动, 敲个回车.
@@ -96,17 +104,41 @@ vim config/elasticsearch.yml
 
 ### 修改集群名称
 
+> 如果配置多台联合一个集群, cluster.name 需要都相同.
+
 ```
 cluster.name: es-school
 ```
 
 ### 修改节点名称
 
-设置一个有意义的节点名称
+> 每个节点都是集群的一部分, 每个节点名称都不能相同, 可以使用编号命名.
+
+1. 设置一个有意义的节点名称
 
 ```
-node.name: student-node
+node.name: student-node-1
 ```
+
+### 是否为主节点
+
+> 如果是主节点,则参入集群选举.非主节点可以当数据节点或负载节点.
+
+```
+node.master: true
+```
+
+### 是否是数据节点
+
+> 如果设置了主节点也可以设置成数据节点, 如果都不是,则成为负载节点.
+
+```
+node.data: true
+```
+
+
+
+ 
 
 ### 修改索引存储路径
 
@@ -143,10 +175,21 @@ http.port: 9200
 > 参考: [官方配置](https://www.elastic.co/guide/en/elasticsearch/reference/7.0/discovery-settings.html)
 
 ```
-# 设置集群的地址, ip:port 格式
-discovery.seed_hosts: ["host1", "host2"]
-# 设置主节点 ip:port格式
+# 设置集群的地址, ip 格式
+discovery.seed_hosts: ["10.0.0.1", "10.0.0.2:9201"]
+# 以下格式都可以
+   - 192.168.1.10:9300
+   - 192.168.1.11 
+   - seeds.mydomain.com 
+   - [0:0:0:0:0:ffff:c0a8:10c]:9301 
+# 配置那些节点可以有资格被选为主节点。 
 cluster.initial_master_nodes: ["node-1"]
+```
+
+### 设置收集监控数据
+
+```
+xpack.monitoring.collection.enabled: true
 ```
 
 
@@ -162,7 +205,8 @@ export ES_HEAP_SIZE=10g
 启动时设置堆内存最小值(Xms)与最大值(Xmx)
 
 ```
-./bin/elasticsearch -Xmx10g -Xms10g 
+ES_JAVA_OPTS="-Xms2g -Xmx2g" ./bin/elasticsearch 
+ES_JAVA_OPTS="-Xms4000m -Xmx4000m" ./bin/elasticsearch 
 ```
 
 注: 设置物理内存的一半, 最大不要超过32g
@@ -236,3 +280,5 @@ sysctl -p #生效
 
 1. [全文搜索引擎 Elasticsearch 入门教程](http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html)
 2. [堆内存:大小和交换](https://www.elastic.co/guide/cn/elasticsearch/guide/current/heap-sizing.html)
+3. [手把手教你搭建一个 Elasticsearch 集群  by 6.x](https://juejin.im/post/5bad9520f265da0afe62ed95)]
+4. [Elasticsearch集群搭建（基于Elasticsearch7.5.1)](https://segmentfault.com/a/1190000021589726)
