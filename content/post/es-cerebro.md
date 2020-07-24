@@ -1,10 +1,10 @@
 ---
-title: "cerebro elaticsearch 集群管理工具"
+title: "Elasticsearch 入门(六) cerebro 集群管理工具"
 date: 2020-07-22T15:32:52+08:00
 lastmod: 2020-07-22T15:32:52+08:00
 draft: false
-tags: ["elaticsearch", "elk"]
-categories: ["elaticsearch"]
+tags: ["elasticsearch", "elk"]
+categories: ["elasticsearch"]
 author: "百里"
 comment: false
 toc: true

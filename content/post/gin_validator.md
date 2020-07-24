@@ -4,7 +4,7 @@ date: 2020-06-15T18:35:49+08:00
 lastmod: 2020-06-15T18:35:49+08:00
 draft: false
 tags: ["golang", "", ""]
-categories: [""]
+categories: ["golang"]
 author: "百里"
 comment: false
 toc: true

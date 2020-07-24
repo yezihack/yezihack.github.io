@@ -1,5 +1,5 @@
 ---
-title: "Elasticsearch HD 可视化界面"
+title: "Elasticsearch 入门(五) HD 可视化界面"
 date: 2020-07-22T11:33:08+08:00
 lastmod: 2020-07-22T11:33:08+08:00
 draft: false
