@@ -319,6 +319,7 @@ $(document).ready(function () {
   mobileNavbar();
   toc();
   // initToc()
+  tocAttr()
   headerAnchor();
   fnTooltip();
 });
