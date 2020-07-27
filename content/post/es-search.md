@@ -338,6 +338,30 @@ POST /student/_msearch
 
 ## 查询
 
+### 分词使用
+
+官方提供标准的分词器, 对于亚洲语言, 可以安装
+
+```
+bin/elasticsearch-plugin list # 查看安装过的插件
+bin/elasticsearch-plugin install analysis-icu # 安装icu, 支持亚洲语言的插件
+# 更好的支持中文, 使用 ik
+https://github.com/medcl/elasticsearch-analysis-ik/releases 
+选择 zip包 , 解压安装
+```
+
+
+
+```
+GET _analyze
+{
+   "analyzer": "standard", # 使用指定的分词器. 或者 icu_analyzer
+   "text":"10.A date math index name takes the following form:分词器哦"
+}
+```
+
+
+
 ### URI 方式查询
 
 > profile:"true"查看查询详情过程
@@ -412,8 +436,8 @@ GET /student/_search?q=name:(诗 and 人)
 ```
 #### 分组
 
-   	1. `+` 表示 must
-        	2. `-` 表示 must_not
+      	1. `+` 表示 must
+      	2. `-` 表示 must_not
 
 ### Request Body 查询
 
@@ -436,8 +460,8 @@ GET /student/_search
 
 ```
 
+#### 指定某字段查询
 
-指定某字段查询
 ```
 # 不加操作类型, 默认为 or 
 GET /student/_search
@@ -462,7 +486,10 @@ GET /student/_search
 }
 ```
 
-进行整体查询
+#### 进行整体查询
+
+
+
 ```
 
 # 整体查询, 前后一致
@@ -489,7 +516,10 @@ GET /student/_search
   }
 }
 ```
-query_string 查询方法
+#### query_string 查询方法
+
+
+
 ```
 # 使用 query_string 查询
 
@@ -524,6 +554,538 @@ POST /student/_search
 }
 ```
 
+## 高级查询
+
+### 指定返回字段
+
+```
+GET /student/_search
+{
+   "_source": ["name", "age"],
+   "from": 0
+}
+```
+
+### 聚合查询
+
+max, min, avg 最大, 最小, 平均值.
+
+age_avg, age_max, age_min 是自定义的字段名称.
+
+```
+GET /student/_search
+{
+  "size":0,
+  "aggs": {
+    "age_avg": {
+      "avg": { 
+        "field": "age"
+      }
+    },
+    "age_max":{
+      "max": {
+        "field": "age"
+      }
+    },
+    "age_min":{
+      "min": {
+        "field": "age"
+      }
+    }
+  }
+}
+```
+
+### 嵌套查询聚合
+
+aggs , terms 按bucker统计, 再在当前bucker里再求avg和stat
+
+```
+GET /student/_search
+{
+  "size":0,
+  "aggs": {
+    "age_aggs": {
+      "terms": {
+        "field": "age",
+        "size": 10
+      },
+      "aggs": {
+        "age_avg": {
+          "avg": {
+            "field": "age"
+          }
+        },
+        "stats_age":{
+          "stats": {
+            "field": "age"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+### term 查询
+
+term 查询对输入不做分词, 会将输入作为一个整体.  
+
+插入新数据
+
+```
+POST /products/_bulk
+{"index":{"_id":1}}
+{"productID":"a2020-kk-#001", "desc":"iPhone"}
+{"index":{"_id":2}}
+{"productID":"a2020-kk-#002", "desc":"iPad"}
+{"index":{"_id":3}}
+{"productID":"a2020-kk-#003", "desc":"MP3"}
+```
+
+```
+# 直接搜索无法找到, 因为es在做 index 时会做一个分词处理. 
+POST /products/_search
+{
+  "profile": "true", 
+  "query": {
+    "term": {
+      "desc": {
+        "value": "iPhone"
+      }
+    }
+  }
+}
+```
+
+````
+# 使用小写进行查询, 能查询到.
+POST /products/_search
+{
+  "profile": "true", 
+  "query": {
+    "term": {
+      "desc": {
+        "value": "iphone"
+      }
+    }
+  }
+}
+````
+
+```
+# 或者 使用 keyword
+POST /products/_search
+{
+  "profile": "true", 
+  "query": {
+    "term": {
+      "desc.keyword": {
+        "value": "iPhone"
+      }
+    }
+  }
+}
+```
+
+```
+# 以下查询并不会查询到任何结果, 因为index时对 prodoctID 进行了分词操作.
+POST /products/_search
+{
+  "query": {
+    "term": {
+      "productID": {
+        "value": "a2020-kk-#003"
+      }
+    }
+  }
+}
+# 上面查询不到,等价于以下标准分词
+
+GET _analyze
+{
+  "analyzer": "standard",
+  "text": ["a2020-kk-#003"]
+}
+```
+
+```
+# 以上可以使用 keyword 解决
+
+POST /products/_search
+{
+  "query": {
+    "term": {
+      "productID.keyword": {
+        "value": "a2020-kk-#003"
+      }
+    }
+  }
+}
+```
+
+### 复合查询
+
+复合查询, Constant Score 转为 Filter
+
+避免相关性的算分开销, 利用 Filter 缓存提高查询效率 
+
+```
+POST /products/_search
+{
+  "explain": true,
+  "query": {
+    "constant_score": {
+      "filter": {
+        "term": {
+          "productID.keyword": "a2020-kk-#003"
+        }
+      },
+      "boost": 1
+    }
+  }
+}
+```
+
+```
+# 全文本查询
+
+# 以下查询是一种全文查询, 会采用 or 
+# 将"kk 003" 切分成"kk" or "003" 
+# 也就是说只要包括 kk 或 003的都返回.
+POST /products/_search
+{
+  "profile": "true"
+  , "query": {
+    "match": {
+      "productID": "kk 003"
+    }
+  }
+}
+
+```
+
+````
+
+# 以下是添加额外条件查询. 采用 and. 必须全都出现.
+POST /products/_search
+{
+  "profile": "true"
+  , "query": {
+    "match": {
+      "productID": {
+        "query": "kk 003"
+        , "operator": "and"
+      }
+    }
+  }
+}
+````
+
+minimum_should_match 的使用
+
+意思是最小匹配一个
+
+```
+# 设定最小匹配数量
+POST /products/_search
+{
+  "profile": "true", 
+  "query": {
+    "match": {
+      "productID": {
+        "query": "a2020 003",
+        "minimum_should_match": 1
+      }
+    }
+  }
+}
+```
+
+### 范围查询
+
+#### 数字 range 查询 
+
+```
+# 数字 range 查询
+POST products/_search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "range": {
+          "price": {
+            "gte": 20,
+            "lte": 30
+          }
+        }
+      }
+      ,"boost": 1.2
+    }
+  }
+}
+```
+
+#### 日期 range
+
+```
+# 日期 range
+# now-ly 当前时间减去1年, 相当于去年的数据. gte 就是大于2019年的数据, 全返回
+# y 年, M 月, w 周, d 天, H/h 小时, m 分钟, s秒
+POST products/_search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "now-1y"
+          }
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+```
+
+### 字段存在否
+
+```
+# exists 查找只包含这个字段的数据.
+POST products/_search
+{
+  "query": {
+    "constant_score": {
+      "filter": {
+        "exists": {
+          "field": "date"
+        }
+      },
+      "boost": 1.2
+    }
+  }
+}
+```
+
+## BOOL 查询
+
+1. must 算分
+2. must_not 算分
+3. filter 不算分
+4. shoud 算分
+
+新增一下数据
+
+```
+POST /news/_bulk
+{"index":{"_id":1}}
+{"content":"Apple Mac"}
+{"index":{"_id":2}}
+{"content":"Apple Ipad"}
+{"index":{"_id":3}}
+{"content":"Apple employee like Apple Pie and Apple Juice"}
+
+```
+
+#### 单个must
+
+```
+# 普通搜索, 只要含有apple的文本就返回
+POST news/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "content": "apple"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+#### must, must_not组合
+
+```
+# 要求只返回与苹果公司相关产品的信息, 过滤吃苹果汁的信息
+POST news/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "content": "apple"
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "match": {
+            "content": "pie"
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+#### 对顺序调整, 分值
+
+```
+
+# 我们要求把苹果公司的信息显示最上面, 吃苹果的信息也显示, 显示在最下面.
+# 就可以使用算分来控制
+# positive 正面的, 加分
+# negative 负面的, 减分
+POST news/_search
+{
+  "query": {
+    "boosting": {
+      "positive": {
+        "match": {
+          "content": "apple"
+        }
+      },
+      "negative": {
+        "match": {
+          "content": "pie"
+        }
+      },
+      "negative_boost": 0.2
+    }
+  }
+}
+```
+
+
+
+```
+# must 算分, must_not 算分, filter不算分,shoud算分
+
+POST move/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "genere.keyword": {
+              "value": "jack"
+            }
+          }
+        },
+        {
+          "term": {
+            "genere_count": {
+              "value": 2
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+
+
+
+
+##  自定义分词器
+
+```
+# 自定义分词器
+DELETE my_index
+PUT my_index
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_custom_analyzer":{
+          "type":"custom",
+          "char_filter":["emoticons"],
+          "tokenizer":"punctuation",
+          "filter":["lowercase", "english_stop"]
+        }
+      },
+      "tokenizer": {
+        "punctuation":{
+          "type":"pattern",
+          "pattern":"[ .,!?]"
+        }
+      },
+      "char_filter": {
+        "emoticons":{
+          "type":"mapping",
+          "mappings":[
+            ":) => _happy_"
+            ]
+        }
+      },
+      "filter": {
+        "english_stop":{
+          "type":"stop",
+          "stopwords":"_english_"
+        }
+      }
+    }
+  }
+}
+```
+
+使用自定义分词器
+
+```
+POST my_index/_analyze
+{
+  "analyzer": "my_custom_analyzer",
+  "text": [":) person man, HELLO"]
+}
+
+```
+
+
+
+
+
+## 设置 mappings & settings
+
+```
+PUT index
+{
+  "settings": {
+    "number_of_shards": 3,
+    "number_of_replicas": 1,
+    "analysis": {
+      "analyzer": {
+        "ik": {
+          "tokenizer": "ik_max_word"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "test1":{
+      "properties": {
+        "content": {
+          "type": "text",
+          "analyzer": "ik",
+          "search_analyzer": "ik_max_word"
+        }
+      }
+    }
+  }
+}
+————————————————
+版权声明：本文为CSDN博主「gxx_csdn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/gxx_csdn/article/details/79110384
+```
 
 
 
