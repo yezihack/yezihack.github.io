@@ -13,27 +13,49 @@ reward: true
 # description = ""
 ---
 
-# 文件类
+## 文件类
 
-## 
+### 
 
-# RPM
+## RPM
 
-## 安装
+### 安装
 
 `rpm -ivh rpm软件包`
 
-## 搜索
+###  搜索
 
 `rpm -qa 搜索的名称`
 
-## 卸载
+### 卸载
 
 `rpm -e rpm包名(搜索后的结果名称)`
 
-# grep 
+## grep 
 
-# curl
+### 或的关系 
+
+```
+cat 1.txt |grep a |grep b
+```
+
+### 并集的关系 
+```
+cat 1.txt |grep -E "a" |grep -E "b"
+```
+
+## awk
+
+提出内存大小
+1. awk '{print $1}' 提出第1列的数据
+2. sed -n '2p' 提出第二行的数据
+```
+free -m |awk '{print $3}' |sed -n '2p'
+```
+
+
+
+## curl
 
 POST JSON请求
 
