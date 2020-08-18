@@ -1,10 +1,10 @@
 ---
-title: "Go Concurrence"
+title: "Go 并发"
 date: 2020-08-06T12:01:45+08:00
 lastmod: 2020-08-06T12:01:45+08:00
 draft: false
-tags: ["golang"]
-categories: ["golang 嵌套并发"]
+tags: ["golang", "go"]
+categories: ["golang"]
 author: "百里"
 comment: false
 toc: true

@@ -4,7 +4,7 @@ date: 2020-08-03T19:18:30+08:00
 lastmod: 2020-08-03T19:18:30+08:00
 draft: false
 tags: ["jmeter", "压测"]
-categories: ["jmeter linux安装"]
+categories: ["工具"]
 author: "百里"
 comment: false
 toc: true

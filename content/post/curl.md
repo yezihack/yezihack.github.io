@@ -3,8 +3,8 @@ title: "golang http句柄泄露"
 date: 2020-06-11T14:36:27+08:00
 lastmod: 2020-06-13T08:22:27+08:00
 draft: false
-tags: ["golang", "curl", ""]
-categories: ["golang", "Golang常见问题"]
+tags: ["golang", "curl"]
+categories: ["golang"]
 author: "百里"
 comment: false
 toc: true

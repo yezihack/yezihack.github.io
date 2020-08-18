@@ -3,8 +3,8 @@ title: "Golang持续集成服务之Travis教程"
 date: 2020-04-24T20:19:39+08:00
 lastmod: 2020-04-24T20:19:39+08:00
 draft: false
-tags: ["golang", "travis", "集成测试"]
-categories: ["工具", "Golang", "Go语言"]
+tags: ["golang", "travis", "集成测试", "工具"]
+categories: ["golang"]
 author: "百里"
 comment: false
 toc: true

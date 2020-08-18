@@ -3,8 +3,8 @@ title: "Goland 提高效率的技巧"
 date: 2020-06-17T11:31:17+08:00
 lastmod: 2020-06-17T11:31:17+08:00
 draft: false
-tags: ["golang", "提高效率", "技巧"]
-categories: ["goland"]
+tags: ["golang", "效率", "goland"]
+categories: ["工具"]
 author: "百里"
 comment: false
 toc: true
