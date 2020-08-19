@@ -1,9 +1,9 @@
 ---
-title: "golang策略模式"
+title: "go 策略模式(一)"
 date: 2020-04-26T19:58:34+08:00
-lastmod: 2020-04-26T19:58:34+08:00
+lastmod: 2020-08-19T10:58:34+08:00
 draft: false
-tags: ["golang", "策略模式", "行为模式", "设计模式", "golang", "strategy pattern"]
+tags: ["golang", "策略模式",, "设计模式"]
 categories: ["设计模式"]
 author: "百里"
 comment: false
@@ -15,26 +15,26 @@ reward: true
 
 ![](http://img.sgfoot.com/b/20200426201610.png?imageslim)
 
-# 原理
+## 原理
 
-## 1. 概念
+### 1. 概念
  策略模式的概念: 定义一系列的算法,把每一个算法封装起来, 并且使它们可相互替换。
  本模式使得算法可独立于使用它的客户而变化. 也称为政策模式(Policy)
 
  策略模式 属于行为模式, 可以改变对象的形为操作
  主要解决可以互相替代的算法族, 可以通过动态去替换Context使用的算法.
 
- ## 2. 适用于
+### 2. 适用于
  1. 消除了一些if else条件语句
  2. 实现的选择 Strategy模式可以提供相同行为的不同实现
 
- ## 3. 缺点
+### 3. 缺点
  1. 客户端必须知道所有的策略类，并自行决定使用哪一个策略类
  2. Strategy和Context之间的通信开销
  3. 策略模式将造成产生很多策略类
 
-# 代码实现
-## 1. 定义策略接口
+## 代码实现
+### 1. 定义策略接口
 - 文件名:strategy.go
 ```
 // 定义一个策略接口, 可以独立于具体算法.
@@ -44,7 +44,7 @@ type Strategy interface {
 	DoOperation(x, y int) int
 }
 ```
-## 2. 定义上下文Context
+### 2. 定义上下文Context
 - 文件名:context.go
 - 如何实现不同算法使用同一个框架呢? 由Context完成操作.
 - Context叫做上下文角色，起承上启下封装作用，屏蔽高层模块对策略、算法的直接访问，封装可能存在的变化。 ---<<设计模式之禅>>
@@ -65,7 +65,7 @@ func (c *Context) ExecuteStrategy(x, y int) int {
 }
 ```
 
-## 3. 实现策略接口(1)
+### 3. 实现策略接口(1)
 - 文件名: add.go
 ```
 // 实现策略接口
@@ -77,7 +77,7 @@ func (a *Add) DoOperation(x, y int) int {
 }
 ```
 
-## 4. 实现策略接口(2)
+### 4. 实现策略接口(2)
 - 文件名 sub.go
 ```
 // 实现策略接口
@@ -91,7 +91,7 @@ func (s *Sub) DoOperation(x, y int)int {
 
 ```
 
-## 5. main实现策略模式的调用
+### 5. main实现策略模式的调用
 - 文件名:main.go
 ```
 func main() {
@@ -106,6 +106,6 @@ func main() {
 }
 ```
 
-# 参考
+## 参考
  1. https://blog.csdn.net/hguisu/article/details/7558249
  2. https://www.runoob.com/design-pattern/strategy-pattern.html
