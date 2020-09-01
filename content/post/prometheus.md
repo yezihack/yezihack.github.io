@@ -1,10 +1,10 @@
 ---
-title: "Prometheus入门(一)"
+title: "监控 Prometheus入门(一)"
 date: 2020-06-05T10:59:18+08:00
 lastmod: 2020-08-31T10:59:18+08:00
 draft: false
 tags: ["prometheus", "grafana", "监控"]
-categories: ["prometheus"]
+categories: ["监控"]
 author: "百里"
 comment: false
 toc: true
@@ -13,7 +13,7 @@ reward: true
 description = "prometheus实时收集数据，通过报警及时发现问题，及时处理。数据为优化也可以提供依据。"
 ---
 
-> CentOS 7 64x
+> 基于 CentOS 7 amd64 系统
 
 ## Prometheus 
 1. 多维数据模型（有metric名称和键值对确定的时间序列）
