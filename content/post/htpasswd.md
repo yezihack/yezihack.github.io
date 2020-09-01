@@ -3,7 +3,7 @@ title: "nginx 添加权限验证"
 date: 2020-07-21T19:57:25+08:00
 lastmod: 2020-07-21T19:57:25+08:00
 draft: false
-tags: ["nginx", "权限"]
+tags: ["nginx", "权限", "htpasswd"]
 categories: ["nginx"]
 author: "百里"
 comment: false
@@ -56,6 +56,14 @@ auth_basic "Restricted Access";      # 验证
 auth_basic_user_file /etc/nginx/htpasswd.users;    
 ```
 
+也可以关闭
+
+```shell
+auth_basic off;      # 关闭验证
+```
+
+
+
 完整的配置
 
 ```
@@ -71,5 +79,12 @@ server {
    }
 }
 
+```
+
+## 问题
+
+```shell
+nginx: [emerg] unknown directive "auth_basic " in /usr/local/nginx/conf/vhost/prometheus.conf:4
+nginx: configuration file /usr/local/nginx/conf/nginx.conf test failed
 ```
 

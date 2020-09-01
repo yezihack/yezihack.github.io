@@ -95,6 +95,23 @@ http://localhost:9090
 
 http://192.168.61.66:9090/metrics 
 
+### nginx 反向代理
+
+> [htpasswd 参考](https://www.sgfoot.com/htpasswd.html)
+
+```powershell
+server {
+	listen 80;
+	server_name prome.sgfoot.com;
+	auth_basic "Auth";
+	auth_basic_user_file /usr/local/nginx/conf/vhost/htpasswd.users;
+	location / {
+		proxy_pass http://127.0.0.1:9090;
+		index index.html index.htm;
+	}
+}
+```
+
 ## node_exporter 安装
 
 > 监控远程 linux 服务器CPU、内存、磁盘、I/O等信息

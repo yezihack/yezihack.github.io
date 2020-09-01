@@ -30,22 +30,13 @@ wget https://dl.grafana.com/oss/release/grafana-7.1.5.linux-amd64.tar.gz
 tar -zxvf /grafana-7.1.5.linux-amd64.tar.gz -C /usr/local
 # 重命名文件夹 grafana
 mv /usr/local/grafana-7.1.5.linux-amd64 /usr/local/grafana
-# 自定义配置文件
-cp /usr/local/grafana/conf/defaults.ini /usr/local/grafana/conf/user.ini 
-# 编辑配置文件
-
 ```
 
-编辑配置文件
 
-```shell
-vim /usr/local/grafana/conf/user.ini 
-# 将 logs, plugins, provisioning
-```
-
-![image-20200901105957662](http://img.sgfoot.com/b/20200901105958.png?imageslim)
 
 创建 systemd 服务
+
+1. -homepath  grafana的工作目录。
 
 ```powershell
 cat > /lib/systemd/system/grafana.service << EOF
@@ -53,13 +44,13 @@ cat > /lib/systemd/system/grafana.service << EOF
 Description=Grafana
 Documentation=https://grafana.com/
 After=network.target
- 
+
 [Service]
-Type=simple
-ExecStart=/usr/local/grafana/bin/grafana-server -config /usr/local/grafana/conf/user.ini
+Type=notify
+ExecStart=/usr/local/grafana/bin/grafana-server -homepath /usr/local/grafana/
 Restart=on-failure
 RestartSec=42s
- 
+
 [Install]
 WantedBy=multi-user.target
 EOF

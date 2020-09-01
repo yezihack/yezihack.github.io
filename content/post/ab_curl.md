@@ -1,5 +1,5 @@
 ---
-title: "Ab_curl"
+title: "Ab和curl使用"
 date: 2020-07-30T15:06:52+08:00
 lastmod: 2020-07-30T15:06:52+08:00
 draft: false
