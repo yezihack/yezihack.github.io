@@ -3,7 +3,7 @@ title: "软件列表"
 date: 2020-09-01T11:32:56+08:00
 lastmod: 2020-09-01T11:32:56+08:00
 draft: false
-tags: ["soft"]
+tags: ["soft", "分享"]
 categories: ["工具"]
 author: "百里"
 comment: true
