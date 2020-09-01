@@ -15,6 +15,8 @@ reward: true
 
 > 因国内环境原因，下载国外的软件非常慢，固提供网盘(蓝凑)下载. 软件版本可能与官方有所差别，也可留言，我将更新，以供大家享用。
 
+## 软件列表
+
 | 软件类                                                       | 插件类                                                       | 应用插件类                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
 | [Prometheus-2.21.0.linux-amd64](https://freemt.lanzous.com/iXVhLg8exlc) | [mysqld_exporter-0.12.1.linux-amd64](https://freemt.lanzous.com/id5UKg94adc) | [RSA TOKEN APP APK](https://freemt.lanzous.com/id5UKg94adc) |
@@ -28,3 +30,20 @@ reward: true
 |                                                              |                                                              |                                                             |
 |                                                              |                                                              |                                                             |
 
+
+
+## 使用方法
+
+1. 按住 Ctrl 单击鼠标，新页打开
+
+   ![image-20200901161045213](http://img.sgfoot.com/b/20200901161046.png?imageslim)
+
+2. 使用 IDM 下载
+
+   > 如果没有 IDM，直接下载吧。使用 rz 上传 (yum install -y lrzsz)
+
+   ![image-20200901161412614](http://img.sgfoot.com/b/20200901161413.png?imageslim)
+
+3. 从 IDM 复制下载地址
+
+   > 复制下载地址方便在服务器里下载。
