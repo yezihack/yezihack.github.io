@@ -9,8 +9,8 @@ author: "百里"
 comment: false
 toc: true
 reward: true
-# weight: 1
-description = "prometheus实时收集数据，通过报警及时发现问题，及时处理。数据为优化也可以提供依据。"
+#weight: 1
+#description: ""
 ---
 
 > 基于 CentOS 7 amd64 系统
@@ -195,5 +195,4 @@ http://192.168.61.66:9090/targets
 
 1. [node_exporter1.0.1.linux.amd64](https://freemt.lanzous.com/ieS67g8exab)
 2. [prometheus-2.21.0.linux.amd64](https://freemt.lanzous.com/iXVhLg8exlc)
-3. [grafana-7.1.5.linux.amd64](https://freemt.lanzous.com/iQEcXg8f8qd)
 
