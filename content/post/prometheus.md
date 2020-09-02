@@ -44,6 +44,8 @@ reward: true
 ### 安装
 
 > prometheus提供二进制,直接解压即可用.由 go 编写
+>
+> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
 
 [官网下载](https://prometheus.io/download/)
 
@@ -115,6 +117,8 @@ server {
 ## node_exporter 安装
 
 > 监控远程 linux 服务器CPU、内存、磁盘、I/O等信息
+>
+> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
 
 https://prometheus.io/download/
 

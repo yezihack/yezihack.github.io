@@ -3,8 +3,8 @@ title: "监控 mysql(三)"
 date: 2020-09-02T11:02:44+08:00
 lastmod: 2020-09-02T11:02:44+08:00
 draft: false
-tags: ["", ""]
-categories: [""]
+tags: ["监控", "mysql"]
+categories: ["监控"]
 author: "百里"
 comment: false
 toc: true
@@ -16,6 +16,8 @@ reward: true
 
 
 ## mysqld_exporter 安装
+
+> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
 
 https://prometheus.io/download/
 
@@ -143,3 +145,9 @@ scrape_configs:
    ![image-20200902163255102](http://img.sgfoot.com/b/20200902163256.png?imageslim)
 
 ![image-20200902163326760](http://img.sgfoot.com/b/20200902163327.png?imageslim)
+
+
+
+## 分享
+
+1.  https://www.sgfoot.com/soft.html 提供软件快速下载

@@ -22,6 +22,8 @@ https://grafana.com/
 
 ## 源码安装
 
+> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
+
 ```powershell
 # 下载
 cd /usr/local/src
