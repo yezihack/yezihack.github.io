@@ -1,7 +1,7 @@
 ---
 title: "Go Package优秀的包"
 date: 2020-05-13T14:40:23+08:00
-lastmod: 2020-05-13T14:40:23+08:00
+lastmod: 2020-09-09T14:40:23+08:00
 draft: false
 tags: ["golang", "分享", "golang库"]
 categories: ["分享"]
@@ -10,7 +10,7 @@ comment: false
 toc: true
 reward: true
 # weight: 1
-# description = ""
+# description: ""
 ---
 
 | pkg | 文档 | 描述 |
@@ -19,3 +19,14 @@ reward: true
 | [cron](https://github.com/robfig/cron) | [用法](https://godoc.org/github.com/robfig/cron) | 定时器 by linux crontab|
 | [grpool](https://github.com/ivpusic/grpool) |  | 轻量级协程池 |
 |[endless](https://github.com/fvbock/endless)||优雅重启 go 程序|
+|[com](https://github.com/unknwon/com)||工具包|
+|[cast](https://github.com/spf13/cast)||全类型转换|
+|[ratelimit](https://github.com/uber-go/ratelimit)||漏桶率限制算法|
+|[errors](https://github.com/pkg/errors)||错误处理|
+|[zerolog](https://github.com/rs/zerolog)||零拷贝日志|
+|[cache2go](https://github.com/muesli/cache2go)||go 进程内缓存|
+|[gin](https://github.com/gin-gonic/gin)||web 高效框架|
+|[ini](https://github.com/go-ini/ini)||ini 配置文件|
+|[uuid](http://github.com/satori/go.uuid)||uuid 码|
+|[sonyflake](https://github.com/sony/sonyflake)||sony 雪花算法|
+

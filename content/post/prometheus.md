@@ -29,7 +29,11 @@ reward: true
    - Pushgateway 程序，主要是实现接收由Client push过来的指标数据，在指定的时间间隔，由主程序来抓取。
    - node_exporter 这类是不同系统已经实现了的集成。
 
-### 架构图
+### 生态架构图
+
+> 普罗米修斯的体系结构及其一些生态系统组件
+>
+> https://prometheus.io/docs/introduction/overview/
 
 ![img](https://img-blog.csdnimg.cn/20181228233707328)
 

@@ -1,5 +1,5 @@
 ---
-title: "Computer Systems 深入理解计算机-小林系列文章"
+title: "Computer Systems 深入理解计算机"
 date: 2020-09-02T14:59:56+08:00
 lastmod: 2020-09-02T14:59:56+08:00
 draft: false
