@@ -29,4 +29,5 @@ reward: true
 |[ini](https://github.com/go-ini/ini)||ini 配置文件|
 |[uuid](http://github.com/satori/go.uuid)||uuid 码|
 |[sonyflake](https://github.com/sony/sonyflake)||sony 雪花算法|
+|[gopass](https://github.com/howeyc/gopass)||交互模式输入密码|
 
