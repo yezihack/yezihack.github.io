@@ -6,7 +6,7 @@ draft: false
 tags: ["Go实践教程","golang"]
 categories: ["Go教程"]
 author: "百里"
-comment: false
+comment: true
 toc: true
 reward: true
 # weight: 1
@@ -53,6 +53,8 @@ tar -zxvf go1.15.2.darwin-amd64.tar.gz -C /usr/local/
 
 **window设置方法**
 
+1. 临时生效设置方法
+
 ```shell
 # 启用 Go Modules 功能
 $env:GO111MODULE="on"
@@ -60,10 +62,13 @@ $env:GO111MODULE="on"
 $env:GOPROXY="https://goproxy.io,direct"
 ```
 
-永久生效设置方法
+2. 永久生效设置方法
 
 > 1. `计算机` 图标上鼠标右击 选择 `属性`
 > 2. 选择左侧 `高级系统设置`
+
+1. `GO111MODULE="on"`
+2. `GOPROXY="https://goproxy.io,direct"`
 
 ![image-20200914162609696](http://img.sgfoot.com/b/20200914162610.png?imageslim)
 
@@ -83,7 +88,7 @@ source /etc/profile # 使其生效
 
 ## 设置GO环境变量
 
-**window 添加环境变量**
+### window 环境变量
 
 1. 新建 GOROOT 目录 
 
@@ -97,7 +102,7 @@ c:\Go\bin
 
 ![image-20200914161546609](http://img.sgfoot.com/b/20200914161555.png?imageslim)
 
-2. 新建工作目录(可不设置)
+2. 新建 GOPATH 目录(可不设置)
 
    >  D 盘新建"gopath" 目录， gopath目录下再新建三个文件夹："bin", "pkg", "src"
 
@@ -107,7 +112,9 @@ c:\Go\bin
 
    ![image-20200914161824026](http://img.sgfoot.com/b/20200914161825.png?imageslim)
 
-3. 设置 gopath 环境变量
+3. 设置 GOPATH 环境变量
+
+   > 需要设置 GOBIN, GOPATH 两个环境变量，见图示
 
    ![image-20200914162024372](http://img.sgfoot.com/b/20200914162025.png?imageslim)
 
@@ -118,4 +125,42 @@ c:\Go\bin
     ```shell
     go env
     ```
+
+### Linux, macOS 环境变量
+
+1. 新建 GOPATH 目录 
+
+   ```shell
+   mkdir -p ~/gopath/{src,pkg,bin}
+   ```
+2. 设置环境变量
+> 包括 GOROOT,GOPATH,GOBIN 目录一起设置
+
+```shell
+vim /etc/profile
+# 跳到最后一行(快捷键：shift+g), 新建一行(按o)
+
+# 设置GO安装目录 
+export GOROOT=/usr/local/go
+# # 设置gopath
+export GOPATH=~/gopath
+# # 设置gobin
+export GOBIN=~/gopath/bin
+# # 加入PATH
+export PATH=$PATH:$GOROOT/bin:$GOBIN
+```
+
+生效设置
+
+```shell
+source /etc/profile
+```
+
+3. 查看 GO ENV
+
+   > 也可以查看版本: go version
+
+```
+go env
+```
 
