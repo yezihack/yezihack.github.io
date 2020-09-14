@@ -73,7 +73,6 @@ Golang在中国发展非常不错，国内关于 Golang 的书籍也挺多，网
 ## 推荐教程
 
 1. [Go入门指南](https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md)
-2. [全面介绍 Go 教程](http://www.topgoer.com/)
-3. [Go 语言设计与实现 --- 底层实现原理一一讲透](https://draveness.me/golang/) 
-4. [Go 语言101---也是讲底层实现的不可多得的教程](https://gfw.go101.org/article/101.html)
+2. [Go 语言设计与实现 --- 底层实现原理一一讲透](https://draveness.me/golang/) 
+3. [Go 语言101---也是讲底层实现的不可多得的教程](https://gfw.go101.org/article/101.html)
 
