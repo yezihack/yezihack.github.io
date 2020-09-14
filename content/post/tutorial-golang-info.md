@@ -60,12 +60,15 @@ Golang在中国发展非常不错，国内关于 Golang 的书籍也挺多，网
 3. 并发编程
 4. 分布式编程
 
-## 成功项目
+## 知名项目
 
 1. Kubernetes
 2. Etcd
 3. Prometheus
-4. Docker
+4. Grafana
+5. Docker
+6. Hugo
+7. Influxdb
 
 ## 推荐教程
 
