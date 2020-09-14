@@ -2,7 +2,7 @@
 title: "lsof linux命令"
 date: 2020-09-09T14:57:09+08:00
 lastmod: 2020-09-09T14:57:09+08:00
-draft: false
+draft: true
 tags: ["linux", "lsof", "工具"]
 categories: ["linux"]
 author: "百里"
