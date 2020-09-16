@@ -3,7 +3,7 @@ title: "Go 实践教程-简介(一)"
 date: 2020-09-11T18:10:03+08:00
 lastmod: 2020-09-11T18:10:03+08:00
 draft: false
-tags: ["Go实践教程"]
+tags: ["Go实践教程", "golang"]
 categories: ["Go教程"]
 author: "百里"
 comment: false
@@ -75,4 +75,5 @@ Golang在中国发展非常不错，国内关于 Golang 的书籍也挺多，网
 1. [Go入门指南](https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md)
 2. [Go 语言设计与实现 --- 底层实现原理一一讲透](https://draveness.me/golang/) 
 3. [Go 语言101---也是讲底层实现的不可多得的教程](https://gfw.go101.org/article/101.html)
+4. [Go 语言学习资料与社区索引](https://github.com/unknwon/go-study-index)
 

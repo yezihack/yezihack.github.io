@@ -3,7 +3,7 @@ title: "监控 MySQL(三)"
 date: 2020-09-02T11:02:44+08:00
 lastmod: 2020-09-02T11:02:44+08:00
 draft: false
-tags: ["监控", "mysql"]
+tags: ["监控", "mysql", "prometheus"]
 categories: ["监控"]
 author: "百里"
 comment: false
@@ -35,7 +35,7 @@ mv /usr/local/mysqld_exporter-0.12.1.darwin-amd64 /usr/local/mysqld_exporter
    3. password mysql密码
 
    ```shell
-   cat > /usr/local/mysqld_exporter/.my.conf << EOF
+   cat > /usr/local/mysqld_exporter/.my.cnf << EOF
    [client]
    host=127.0.0.1 
    user=root
