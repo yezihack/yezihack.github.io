@@ -41,7 +41,13 @@ reward: true
 
 4. 设置 Go Modules 
 
-   	`GOPROXY=https://goproxy.cn,direct`      	![image-20200916170456456](http://img.sgfoot.com/b/20200916170457.png?imageslim)
+   	File -> Settings -> Go -> Go Modules 
+   	
+   	![image-20200916200143415](http://img.sgfoot.com/b/20200916200144.png?imageslim)
+   	
+   	将 `GOPROXY=https://goproxy.cn,direct`  填写到 Environment 处。
+   	
+   	用于 Go GET 加速下载依赖包。![image-20200916170456456](http://img.sgfoot.com/b/20200916170457.png?imageslim)
 
 
 
@@ -89,7 +95,7 @@ reward: true
 
 ## Go 工具链
 
-> go 的工具链非常丰富强大，比如：交叉编译，性能分析，文档自动生成等等。
+> go 的工具链非常丰富强大，比如：交叉编译，性能分析，单元测试，压力测试及文档自动生成等等。
 >
 > 本篇只介绍常用的几个，想要进一步了解，移步：[Go 命令教程-郝林](http://wiki.jikexueyuan.com/project/go-command-tutorial/)
 
@@ -107,13 +113,13 @@ reward: true
 
 2. 整理 tidy
 
-   将未引用的包删除，已引用未`go get` ，则自动下载并引用
+   将未引用的依赖包删除，已使用但未加载的依赖包 ，则自动下载并引用
 
 3. 实践
 
    将上面的代码进行进一步改写如下：
 
-   > 以下代码有标红，查看图片，因为没有引用`github.com/satori/go.uuid`包
+   > 以下代码有标红，查看图片，因为没有引用`github.com/satori/go.uuid`依赖包
 
    ```
    // 包名，main 是一个特殊的包，在 golang 里跟 C 一样，只有一个入口，即 main
@@ -145,14 +151,12 @@ reward: true
 
    tidy 整理包
 
-   > 会自动从远程下载未引用的依赖包
->
-   > 红色的代码会自动消除
-   
+   > 会自动从远程下载未引用的依赖包，红色的代码会自动消除
+
    ```shell
-go mod tidy
+   go mod tidy
    ```
-   
+
    ![image-20200916180900411](http://img.sgfoot.com/b/20200916180901.png?imageslim)
 
 ### go run 
