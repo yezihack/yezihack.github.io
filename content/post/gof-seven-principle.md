@@ -1,9 +1,9 @@
 ---
-title: "设计模式七大原则(二)"
+title: "设计模式-七大原则(二)"
 date: 2020-08-19T11:00:55+08:00
 lastmod: 2020-08-19T11:00:55+08:00
 draft: false
-tags: ["设计模式", "七大原则"]
+tags: ["设计模式", "七大原则", "教程"]
 categories: ["设计模式"]
 author: "百里"
 comment: false

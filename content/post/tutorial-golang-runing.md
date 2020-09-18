@@ -3,7 +3,7 @@ title: "Go 实践教程-工具及运行(三)"
 date: 2020-09-16T16:45:10+08:00
 lastmod: 2020-09-16T16:45:10+08:00
 draft: false
-tags: ["Go实践教程", "golang"]
+tags: ["Go实践教程", "golang", "教程"]
 categories: ["Go教程"]
 author: "百里"
 comment: false
@@ -42,12 +42,12 @@ reward: true
 4. 设置 Go Modules 
 
    	File -> Settings -> Go -> Go Modules 
-   	
-   	![image-20200916200143415](http://img.sgfoot.com/b/20200916200144.png?imageslim)
-   	
-   	将 `GOPROXY=https://goproxy.cn,direct`  填写到 Environment 处。
-   	
-   	用于 Go GET 加速下载依赖包。![image-20200916170456456](http://img.sgfoot.com/b/20200916170457.png?imageslim)
+      	
+      	![image-20200916200143415](http://img.sgfoot.com/b/20200916200144.png?imageslim)
+      	
+      	将 `GOPROXY=https://goproxy.cn,direct`  填写到 Environment 处。
+      	
+      	用于 Go GET 加速下载依赖包。![image-20200916170456456](http://img.sgfoot.com/b/20200916170457.png?imageslim)
 
 
 

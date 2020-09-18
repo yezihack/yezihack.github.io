@@ -3,7 +3,7 @@ title: "监控 Grafana入门(二)"
 date: 2020-08-31T20:29:51+08:00
 lastmod: 2020-08-31T20:29:51+08:00
 draft: false
-tags: ["监控", "grafana", "prometheus"]
+tags: ["监控", "grafana", "prometheus", "教程"]
 categories: ["监控"]
 author: "百里"
 comment: false

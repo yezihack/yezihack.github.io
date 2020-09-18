@@ -1,8 +1,8 @@
 ---
-title: "golang模板方法"
+title: "设计模式-Go模板方法(三)"
 date: 2020-04-15T20:26:26+08:00
 draft: false
-tags: ["golang", "设计模式", "模板方法", "行为模式"]
+tags: ["golang", "设计模式", "模板方法", "行为模式", "教程"]
 categories: ["设计模式"]
 author: "百里"
 comment: false

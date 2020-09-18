@@ -3,7 +3,7 @@ title: "Go 实践教程-简介(一)"
 date: 2020-09-11T18:10:03+08:00
 lastmod: 2020-09-11T18:10:03+08:00
 draft: false
-tags: ["Go实践教程", "golang"]
+tags: ["Go实践教程", "golang", "教程"]
 categories: ["Go教程"]
 author: "百里"
 comment: false

@@ -1,9 +1,9 @@
 ---
-title: "设计模式(一)"
+title: "设计模式-简介(一)"
 date: 2020-08-19T11:39:20+08:00
 lastmod: 2020-08-19T11:39:20+08:00
 draft: false
-tags: ["设计模式", "GOF"]
+tags: ["设计模式", "GOF", "教程"]
 categories: ["设计模式"]
 author: "百里"
 comment: false

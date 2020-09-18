@@ -3,7 +3,7 @@ title: "监控 Prometheus入门(一)"
 date: 2020-08-31T10:59:18+08:00
 lastmod: 2020-08-31T10:59:18+08:00
 draft: false
-tags: ["prometheus", "grafana", "监控"]
+tags: ["prometheus", "grafana", "监控", "教程"]
 categories: ["监控"]
 author: "百里"
 comment: false
