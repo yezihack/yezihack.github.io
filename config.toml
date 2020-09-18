@@ -51,24 +51,29 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   url = "/"
 [[menu.main]]
   name = "归档"
-  weight = 20
+  weight = 15
   identifier = "archives"
   url = "/post.html"
 [[menu.main]]
   name = "标签云"
-  weight = 30
+  weight = 20
   identifier = "tags"
   url = "/tags.html"
 [[menu.main]]
   name = "分类"
-  weight = 40
+  weight = 25
   identifier = "categories"
   url = "/categories.html"
 [[menu.main]]
   name = "分享"
-  weight = 40
+  weight = 30
   identifier = "share"
   url = "/tags/分享.html"
+[[menu.main]]
+  name = "教程"
+  weight = 35
+  identifier = "tutorial"
+  url = "/tags/教程.html"
 
 # 谷歌广告
 [params.adsense]
