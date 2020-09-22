@@ -66,11 +66,11 @@ reward: true
 
 3. 对指点磁盘进行分区操作(fdisk /dev/vdc 每个人的磁盘分区名称不一样)
 
-![image-20200922201034206](C:\Users\Administrator.SC-202008151107\AppData\Roaming\Typora\typora-user-images\image-20200922201034206.png)
+![image-20200922201034206](http://img.sgfoot.com/b/20200922212117.png?imageslim)
 
 4. 创建物理卷
 
-![image-20200922201426094](C:\Users\Administrator.SC-202008151107\AppData\Roaming\Typora\typora-user-images\image-20200922201426094.png)
+![image-20200922201426094](http://img.sgfoot.com/b/20200922212126.png?imageslim)
 
 5. 创建卷组
 
