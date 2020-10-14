@@ -295,7 +295,7 @@ const AGE int = 19 // 也可以指定类型
 > int8 占1个字节， int16占2个字节，int32占4个字节, int64占8个字节 
 
 1. 布尔型  `false,true`
-2. 数字类型`int, int8, int16, int32, int64, uint, uint8,uint16,uint32,uint64
+2. 数字类型`int, int8, int16, int32, int64, uint, uint8,uint16,uint32,uint64`
 3. 字符串类型`float32,float64,complex64,complex128`
 4. 其它类型`byte, rune,uint, uintptr`
 
