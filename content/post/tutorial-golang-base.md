@@ -4,7 +4,7 @@ title: "Go 实践教程-基本语法(四)"
 date: 2020-09-29T17:29:55+08:00
 lastmod: 2020-09-29T17:29:55+08:00
 draft: false
-tags: ["Go实践教程", "golang", "教程"]
+tags: ["Go实践教程", "golang", "                "]
 categories: ["Go教程"]
 author: "百里"
 comment: false
@@ -233,12 +233,71 @@ const AGE int = 19 // 也可以指定类型
    }
    ```
 
+### defer 
+
+> 这个关键字的作用是延时操作，也是 go 独特的发明。非常好用。
+
+1. 一般用于忘记关闭连接操作，如文件句柄关闭，数据库关闭
+
+2. 多个 defer 的话，采用栈的方式执行，也就是先进后执行的顺序，这个非常重要。
+
+3. 如果同一个函数内存在`os.Exit(0)`， defer 不会执行的。
+
+   ```go
+   package main
+   
+   func main() {
+   	defer print("a")
+   	defer print("b")
+   	defer print("c")
+   }
+   // cba
+   ```
+
+   ```go
+   package main
+   
+   import "os"
+   
+   func main() {
+   	defer print("a")
+   	defer print("b")
+   	defer print("c")
+   	os.Exit(0)
+   }
+   // 什么也不输出，因为 os.Exit 的存在
+   ```
+
+   ```go
+   import "time"
+   
+   func main() {
+   	go func() {
+   		defer print("a")
+   	}()
+   	go func() {
+   		defer print("b")
+   	}()
+   	go func() {
+   		defer print("c")
+   	}()
+   	time.Sleep(time.Millisecond * 10)
+   }
+   // 输出结果可能是 abc, cba 不确定。因为 goroutine 执行没有顺序可言
+   ```
+
+   
+
 ## 基础类型
 
+> 类型非常丰富， int 比较特殊，如果运行的机器当前是32位，int = int32, 如果64位 int=int64
+>
+> int8 占1个字节， int16占2个字节，int32占4个字节, int64占8个字节 
+
 1. 布尔型  `false,true`
-2. 数字类型`int, int8, int16, int32, int64, uint, uint8,uint16,uint32,uint64 uintptr`
+2. 数字类型`int, int8, int16, int32, int64, uint, uint8,uint16,uint32,uint64
 3. 字符串类型`float32,float64,complex64,complex128`
-4. 其它类型`byte, rune,uint, int, uintptr`
+4. 其它类型`byte, rune,uint, uintptr`
 
 ## 控制操作
 
@@ -619,6 +678,8 @@ println("arr[2]=", arr[2]) // 3
 > 切片底层是指向数组的指针，即动态数组，在实际中常用。
 >
 > 线程不安全的数据结构
+>
+> 关于cap的扩容规则: 小于等于1024大小时采用2倍扩容，大于1024则按1.25倍扩容。
 
 1. 第一种用法
     ```go
