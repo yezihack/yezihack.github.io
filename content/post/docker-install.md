@@ -3,7 +3,7 @@ title: "Docker笔记(二) 安装"
 date: 2020-10-15T17:12:16+08:00
 lastmod: 2020-10-15T17:12:16+08:00
 draft: false
-tags: ["docker", "教程"]
+tags: ["docker", "docker教程", "教程"]
 categories: ["docker"]
 author: "百里"
 comment: false
