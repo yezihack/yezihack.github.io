@@ -106,8 +106,8 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   changyanAppid = ""        # Changyan app id             # 畅言
   changyanAppkey = ""       # Changyan app key
   tencent_analytics = ""    # Tencent Analytics
-  baidu_push = false        # baidu push                  # 百度
-  baidu_analytics = ""      # Baidu Analytics
+  baidu_push = true        # baidu push                  # 百度
+  baidu_analytics = "90b270e075265ec9aad9847f47bb1f42"      # Baidu Analytics
   baidu_verification = ""   # Baidu Verification
   #google_verification = "google8e92341d63465cfb"  # Google_Verification         # 谷歌
 
@@ -116,7 +116,6 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   #   (relative to /static/css and /static/js respectively)
   customCSS = ["toc.css"]            # if ['custom.css'], load '/static/css/custom.css' file
   customJS = []             # if ['custom.js'], load '/static/js/custom.js' file
-  baiduTongJi = "baidu.js"
 
   # enable 'fork me on github', see https://blog.github.com/2008-12-19-github-ribbons/
   # forkMeOnGithub = "https://github.com/yezihack"
