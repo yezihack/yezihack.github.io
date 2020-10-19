@@ -4,7 +4,7 @@ title: "Go 实践教程-基本语法(四)"
 date: 2020-09-29T17:29:55+08:00
 lastmod: 2020-09-29T17:29:55+08:00
 draft: false
-tags: ["Go实践教程", "golang", "                "]
+tags: ["Go实践教程", "golang", "教程"]
 categories: ["Go教程"]
 author: "百里"
 comment: false

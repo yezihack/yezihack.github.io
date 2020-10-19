@@ -13,7 +13,7 @@ reward: true
 # description: ""
 ---
 
-
+> 仅适合用 CentOS 7
 
 ## node_export 安装
 
