@@ -1,9 +1,9 @@
 ---
-title: "书籍或软件分享"
+title: "书籍 BOOK"
 date: 2020-10-19T17:33:12+08:00
 lastmod: 2020-10-19T17:33:12+08:00
 draft: false
-tags: ["分享", "BOOK"]
+tags: ["分享", "book"]
 categories: ["分享"]
 author: "百里"
 comment: true

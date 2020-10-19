@@ -1,10 +1,10 @@
 ---
-title: "网盘软件列表"
+title: "软件 SOFT"
 date: 2020-09-01T11:32:56+08:00
 lastmod: 2020-09-01T11:32:56+08:00
 draft: false
 tags: ["soft", "分享"]
-categories: ["工具"]
+categories: ["分享"]
 author: "百里"
 comment: true
 toc: true
