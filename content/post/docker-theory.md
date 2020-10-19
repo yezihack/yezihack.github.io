@@ -42,8 +42,15 @@ Docker 英文意思是“搬运工",  是一种容器化技术，将您的运行
 
 ## Docker 核心技术
 
+> Docker 的基础是 Linux 容器(LXC) 等技术
+>
 > 三大底层技术实现 Docker 的关键技术
 
-1. Namespaces
-2. CGroups
-3. UnionFS
+1. Namespaces 解决了进程，网络及文件系统的隔离
+   1. 命名空间（namespaces）是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法
+2. CGroups 解决了CPU,内存等资源隔离
+   1. Namespaces 并不能够为我们提供物理资源上的隔离。比如CPU，内存等。这样会导致多个Docker抢占物理资源。
+   2. Control Groups（简称 CGroups）就是能够隔离宿主机器上的物理资源，例如 CPU、内存、磁盘 I/O 和网络带宽。
+3. UnionFS 解决了镜像隔离
+   1. Union File System，联合文件系统
+   2. 将多个不同位置的目录联合挂载到同一个目录，将相同的部分合并
