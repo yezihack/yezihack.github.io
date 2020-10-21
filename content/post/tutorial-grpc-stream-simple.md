@@ -21,14 +21,6 @@ reward: true
 2. 如何实现gRPC流服务端代码
 3. 如何实现gRPC流客户端代码
 
-
-
-**你将会学到**
-
-1. 一个完整的gRPC实例
-2. 如何实现gRPC服务端代码
-3. 如何实现gRPC客户端代码
-
 ## 准备
 
 1. 新建一个文件夹 go-grpc-simple-stream
@@ -375,3 +367,4 @@ go mod tidy
 
 ## 源码
 
+[github.com/go-grpc-simple-stream](https://github.com/yezihack/grpc/tree/master/go-grpc-simple-stream)

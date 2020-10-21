@@ -10,7 +10,7 @@ comment: false
 toc: true
 reward: true
 # weight: 1
-# description: ""
+# description: ""你
 ---
 
 
@@ -30,7 +30,7 @@ reward: true
 3. 使用 `go mod` 管理代码
 4. 在 go-grpc-simple 目录下执行 `go mod init grpc-simple`
 
-## 编写一个 proto 文件
+## 编写 proto 文件
 
 > 在 go-grpc-simple/proto 目录下新建 hello.proto 文件
 
@@ -61,7 +61,7 @@ message StringResponse {
 }
 ```
 
-## 生成 pb golang 代码
+## 生成 pb go 代码
 
 > 在 go-grpc-simple/proto 目录下新建  gen.sh 文件
 >
@@ -178,6 +178,10 @@ go mod tidy
 ```
 
 
+
+## 源码
+
+[github.com/go-grpc-simple](https://github.com/yezihack/grpc/tree/master/go-grpc-simple)
 
 
 
