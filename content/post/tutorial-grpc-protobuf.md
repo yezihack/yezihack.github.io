@@ -26,7 +26,7 @@ reward: true
 **你将会学到**
 
 1. 如何编写 protobuf 文件
-2. 如何使用 proto 文件生成 golang代码
+2. 如何通过`protoc`工具生成 go 代码
 
 
 
@@ -157,7 +157,7 @@ go get -u github.com/golang/protobuf/protoc-gen-go
 go get -u google.golang.org/grpc
 ```
 
-## 生成 golang 代码
+## 生成 go 代码
 
 1. `hello.proto` 文件的当前目录下
 2. `--go_out` 表示加载插件`grpc`
@@ -196,3 +196,13 @@ protoc --go_out=plugins=grpc:. *.proto
 
 [Protobuf语言指南](https://juejin.im/post/6844903942170624008)
 
+[Protobuf生成Go代码指南](https://juejin.im/post/6844903944511029262)
+
+[gRPC 官方文档中文版](http://doc.oschina.net/grpc)
+
+
+
+## 推荐学习
+
+3. [gRPC入门 搭建完整gRPC](https://www.sgfoot.com/tutorial-grpc-simple.html)
+4. [gRPC入门 实现双向流](https://www.sgfoot.com/tutorial-grpc-stream-simple.html)
