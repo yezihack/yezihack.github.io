@@ -74,6 +74,11 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   weight = 35
   identifier = "tutorial"
   url = "/tags/教程.html"
+[[menu.main]]
+  name = "脚本"
+  weight = 35
+  identifier = "script"
+  url = "/tags/脚本.html"
 
 # 谷歌广告
 [params.adsense]
