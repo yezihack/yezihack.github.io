@@ -44,9 +44,9 @@
     <!-- TOC -->
     {{ partial "post/new-toc.html" . }}
     <!-- TOC -->
-{{/*    <div style="position: fixed; right:5px;max-width:300px; z-index: 9999;display: block; overflow:auto; top: 100px; width: 20rem; bottom:50px">*/}}
-{{/*      {{ partial "post/new-toc.html" . }}*/}}
-{{/*    </div>*/}}
+    
+    <!-- Music -->
+    {{ partial "post/music_163.html" . }}
     <!-- Content -->
     <div class="post-content">
       {{ .Content }}
@@ -57,6 +57,8 @@
 
     <!-- Reward -->
     {{ partial "post/reward.html" . }}
+
+
 
     <footer class="post-footer">
       {{ with .Params.tags -}}
