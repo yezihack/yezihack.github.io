@@ -101,7 +101,7 @@ server {
 
 ## 参考
 
-[promethues监听MySQL](http://localhost:1313/mysqld_exporter.html)
+[promethues监听MySQL](https://www.sgfoot.com/mysqld_exporter.html)
 
 [nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
 

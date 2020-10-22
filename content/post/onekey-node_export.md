@@ -86,7 +86,7 @@ server {
 
 ## 参考
 
-[prometheus监听node_exporter](http://localhost:1313/prometheus.html#node_exporter-%E5%AE%89%E8%A3%85)
+[prometheus监听node_exporter](https://www.sgfoot.com/prometheus.html#node_exporter-%E5%AE%89%E8%A3%85)
 
 [nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
 
