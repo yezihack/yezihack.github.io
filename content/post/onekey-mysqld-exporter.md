@@ -10,9 +10,9 @@ comment: false
 toc: true
 reward: true
 # 音乐开关，true/false
-music: false
+music: true
 # 只支持163的音乐，在生成外链播放器获取ID
-music_id: "22748787"
+music_id: "1335350269"
 # 是否自动播放 1是，0否
 music_auto: 1
 # weight: 1
@@ -102,3 +102,6 @@ server {
 ## 参考
 
 [promethues监听MySQL](http://localhost:1313/mysqld_exporter.html)
+
+[nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
+
