@@ -30,7 +30,7 @@ music_auto: 1
 一键安装
 
 ```shell
-curl -sSL http://s1.sgfoot.com/sh/mysql_exporter.sh |sh
+curl -sSL http://s1.sgfoot.com/sh/mysql_exporter.sh | sudo bash
 ```
 
 ## 验证
