@@ -10,9 +10,9 @@ comment: false
 toc: true
 reward: true
 # 音乐开关，true/false
-music: false
+music: true
 # 只支持163的音乐，在生成外链播放器获取ID
-music_id: "22748787"
+music_id: "4064255"
 # 是否自动播放 1是，0否
 music_auto: 1
 # weight: 1
