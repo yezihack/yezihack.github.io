@@ -31,4 +31,5 @@ reward: true
 |[sonyflake](https://github.com/sony/sonyflake)||sony 雪花算法|
 |[gopass](https://github.com/howeyc/gopass)||交互模式输入密码|
 |[Jaeger](https://github.com/jaegertracing/jaeger)||分布式追踪系统|
+|[hystrix-go](https://github.com/afex/hystrix-go)||流量控制,熔断,容错,隔离功能|
 
