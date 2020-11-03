@@ -15,12 +15,23 @@ reward: true
 
 > 适合于 CentOS 系统
 
-## 一键安装
+## docker 一键安装
+
 ```shell
-curl -sSL http://img.sgfoot.com/sh/docker-install.sh |sh
+curl -sSL http://img.sgfoot.com/sh/docker-install.sh |sudo sh
 ```
 
+## docker-compose 安装
 
+> 　docker-compose 是负责 docker 编排使用的
+
+```shell
+curl -L https://github.com/docker/compose/releases/download/1.25.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+
+chmod +x /usr/local/bin/docker-compose
+
+docker-compose -h
+```
 
 ## docker 加速
 

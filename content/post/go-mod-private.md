@@ -208,3 +208,10 @@ export GOPRIVATE=mygit.sgfoot.com
 ```sh
 go get -v -insecure mygit.sgfoot.com/common
 ```
+
+### 3. 保存 git 输入的帐号和密码
+
+```shell
+git config --global credential.helper store
+```
+
