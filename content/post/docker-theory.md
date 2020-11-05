@@ -1,7 +1,7 @@
 ---
 title: "Docker笔记(一) 原理"
-date: 2020-10-15T18:11:18+08:00
-lastmod: 2020-10-15T18:11:18+08:00
+date: 2020-10-14T18:11:18+08:00
+lastmod: 2020-10-14T18:11:18+08:00
 draft: false
 tags: ["docker", "docker教程", "教程"]
 categories: ["docker"]
