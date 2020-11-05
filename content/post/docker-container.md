@@ -18,7 +18,10 @@ music_auto: 1
 # weight: 1
 # description: ""
 ---
+> Docker 倡导的理念是: “一个容器一个进程”
+
 ## 容器管理
+
 > dockerID 是由128位组成, 前16位保证唯一. `docker ps --no-trunc`
 
 ### 容器运行
