@@ -72,8 +72,30 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 [[menu.main]]
   name = "教程"
   weight = 35
-  identifier = "tutorial"
-  url = "/tags/教程.html"
+[[menu.main]]
+  parent = "教程"
+  name = "Go 实践教程"
+  weight = 1
+  identifier = "golang"
+  url = "/categories/go教程.html"
+[[menu.main]]
+  parent = "教程"
+  name = "Docker笔记"
+  weight = 5
+  identifier = "docker"
+  url = "/tags/docker教程.html"
+[[menu.main]]
+  parent = "教程"
+  name = "Prometheus"
+  weight = 10
+  identifier = "prometheus"
+  url = "/tags/prometheus.html"
+[[menu.main]]
+  parent = "教程"
+  name = "设计模式"
+  weight = 15
+  identifier = "design"
+  url = "/tags/设计模式.html"
 [[menu.main]]
   name = "脚本"
   weight = 35
