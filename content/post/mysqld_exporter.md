@@ -3,7 +3,7 @@ title: "监控 MySQL(三)"
 date: 2020-09-02T11:02:44+08:00
 lastmod: 2020-09-02T11:02:44+08:00
 draft: false
-tags: ["监控", "mysql", "prometheus", "教程"]
+tags: ["监控", "mysql", "prometheus", "教程", "grafana"]
 categories: ["监控"]
 author: "百里"
 comment: false
