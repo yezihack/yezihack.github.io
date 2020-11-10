@@ -1,13 +1,19 @@
 ---
 title: "关于"
 date: 2020-02-24T21:38:52+08:00
-lastmod: 2020-04-16T21:41:52+08:00
+lastmod: 2020-11-10T13:04:52+08:00
 menu: "main"
 weight: 50
 
 # you can close something for this content if you open it in config.toml.
 comment: true
 mathjax: false
+# 音乐开关，true/false
+music: true
+# 只支持163的音乐，在生成外链播放器获取ID
+music_id: "346576"
+# 是否自动播放 1是，0否
+music_auto: 1
 ---
 ## 激励斗志
 
