@@ -71,6 +71,8 @@ music_auto: 1
 
 ## 番外网
 
-| 配色大师 | https://peiseka.com/ |
+| 名称 | 网址 |
 | -------- | -------------------- |
+| 配色大师 | https://peiseka.com/ |
+| 百宝箱 | https://yezihack.github.io/
 
