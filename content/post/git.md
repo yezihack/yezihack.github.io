@@ -110,11 +110,41 @@ git merge dev
 
 ## 推送
 
+### 添加文件
+
+`git add .`
+
+### 提交暂存区
+
+`git commit -m "fix"`
+
+### 提交远程仓库
+
+`git push origin dev`
+
 ## 回滚
 
+###  丢弃工作区改动
 
+`git checkout -- [file]`
 
+### 丢弃暂存区改动
 
+`git reset HEAD`
+
+`git reset [file]`
+
+### 恢复指定CommitID
+
+`git reset --hard [commit]`
+
+### 暂存未提交文件
+
+`git stash`
+
+### 恢复暂存文件
+
+`git stash pop`
 
 ## 参考
 
