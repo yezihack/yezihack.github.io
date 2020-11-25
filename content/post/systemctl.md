@@ -84,6 +84,8 @@ ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
 ExecReload=/usr/local/bin/redis-server -s reload
 ExecStop=/usr/local/bin/redis-server -s stop
 PrivateTmp=true
+Type=simple
+KillMode=process
 Restart=on-failure
 RestartSec=3s
 
