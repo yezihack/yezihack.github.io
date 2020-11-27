@@ -49,11 +49,11 @@ music_auto: 1
 | 名称           | 网址                                   | 推荐星 |
 | -------------- | -------------------------------------- | ------ |
 | 酷壳-耗子叔    | https://coolshell.cn/                  | ✫✫✫✫✫  |
+| 面向信仰       | https://draveness.me/                  | ✫✫✫✫✫  |
 | 飞雪无情       | https://www.flysnow.org/               | ✫✫✫    |
 | 阮一峰         | http://www.ruanyifeng.com/             | ✫✫✫✫   |
 | 美团技术       | https://tech.meituan.com/              | ✫✫✫    |
 | 峰云           | http://xiaorui.cc/                     | ✫✫✫    |
-| 面向信仰       | https://draveness.me/                  | ✫✫✫✫   |
 | PHP鸟哥        | https://www.laruence.com/              | ✫✫✫    |
 | 鸟窝           | https://colobu.com/                    | ✫✫✫    |
 | 淘宝数据库月报 | http://mysql.taobao.org/monthly/       | ✫✫✫✫   |
