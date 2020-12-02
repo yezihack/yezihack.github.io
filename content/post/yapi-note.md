@@ -10,22 +10,22 @@ toc: true
 reward: true
 ---
 
-# 什么是YAPI
+## 什么是YAPI
  写接口文档的软件, 支持RESTful, Mock假数据, 团队管理协作,非常方便好用.良心之作
 
-# 内网安装
+## 内网安装
 > 参考网上的教程吧.
 mac: https://www.cnblogs.com/yehuisir/p/12190446.html
 linux; https://www.jianshu.com/p/6c269d00bb38
 
-# 安装cross-request插件
+## 安装cross-request插件
 
 > 可以在Yapi运行假数据.
 
 百度云：https://pan.baidu.com/s/1iB6GMXRqaj9Ovs8KbFFBhA
 提取码: akdk
 
-# 使用mock假数据
+## 使用mock假数据
 ```json5
 {
     "status": 200,//状态码
@@ -48,32 +48,39 @@ linux; https://www.jianshu.com/p/6c269d00bb38
 ```
 
 ## mock常用规则
-1. @cname() 生成名字
-2. @date("yyyy-MM-dd") 生成日期， "2013-05-07"
-3. @boolean() 生成true, false
-4. @url 生成url 
-5. @domain() 生成域名
-6. @email() 生成邮箱
-7. @region() 生成地区， 如华中，华北
-8. @province() 生成省份，如北京，山东，湖南省
-9. @city() 生成城市， 如玉林市，拉萨， @city(true)
-10. @county() 生成区域 ， 龙亭区
-11. @county(true)  生成完整的区域， 如山西省 忻州市 神池县
-12. @zip() 生成区号
-13. @pick(["a", "e", "i", "o", "u"]) 选择一个元素
-14. @guid() 生成uuid
-15. @id() 生成ID
-16. @increment() 递增1，2，3
-17. @increment(100) 递增步长100
-18. @title() 生成标头
-19. @word(），@word(3），@word(3, 5)生成字母，可以指定大小，也可以是范围。
-20. @sentence() @sentence(3) @sentence(3， 5) 生成单词数量 同上
-21. @cparagraph()，@cparagraph(2)， @cparagraph(2，5) 生成句子 同上
-22. @integer(1, 10) 生成数字， @integer ， @integer(5）
-23. @csentence 中文句子
-24. @rgba() 生成RBG颜色值 如"rgb(129, 121, 242)"
-25. @color()  生成颜色值， 如"#f2798f"
 
+### 字符串
+1. @cname() 生成名字
+1. @url 生成url 
+2. @domain() 生成域名
+3. @email() 生成邮箱
+4. @region() 生成地区， 如华中，华北
+5. @province() 生成省份，如北京，山东，湖南省
+6. @city() 生成城市， 如玉林市，拉萨， @city(true)
+8. @county() 生成区域 ， 龙亭区
+9. @county(true)  生成完整的区域， 如山西省 忻州市 神池县
+10. @pick(["a", "e", "i", "o", "u"]) 选择一个元素
+11. @title() 生成标头
+12. @word(），@word(3），@word(3, 5)生成字母，可以指定大小，也可以是范围。
+13. @sentence() @sentence(3) @sentence(3， 5) 生成单词数量 同上
+14. @cparagraph()，@cparagraph(2)， @cparagraph(2，5) 生成句子 同上
+15. @csentence 中文句子
+### 日期
+1. @date("yyyy-MM-dd") 生成日期， "2013-05-07"
+2. @date("yyyy-MM-dd HH:mm:ss") "2020-01-02 17:15:04"
+### 数字
+1. @guid() 生成uuid
+1. @id() 生成ID
+1. @id(10) 生成10位的ID
+1. @increment() 递增1，2，3
+1. @increment(100) 递增步长100
+1. @natural(1,100000) 生成自然数
+1. @zip() 生成区号
+1. @integer(1, 10) 生成数字， @integer ， @integer(5）
+### 其它
+1. @boolean() 生成true, false
+1. @rgba() 生成RBG颜色值 如"rgb(129, 121, 242)"
+1. @color()  生成颜色值， 如"#f2798f"
 
 # 参考
 1. github https://github.com/YMFE/yapi

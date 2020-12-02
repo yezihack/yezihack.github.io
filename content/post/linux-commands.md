@@ -97,7 +97,10 @@ tar -tvf target.tar.gz
 # 压缩,排除其它文件
 # 打包test目录下所有文件，排除以.log结尾的文件
 # --exclude选项，支持通配符和正则表达式，因此也非常强大。
-tar -zcvf target.tar.gz --exclude=test/*.log test/* 
+tar -zcvf target.tar.gz test/ --exclude=test/*.log
+
+# 忽略.git文件
+tar -zcvf target.tar.gz  test/ --exclude=*.git
 ```
 
 
