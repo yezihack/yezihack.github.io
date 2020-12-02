@@ -22,8 +22,7 @@ linux; https://www.jianshu.com/p/6c269d00bb38
 
 > 可以在Yapi运行假数据.
 
-百度云：https://pan.baidu.com/s/1iB6GMXRqaj9Ovs8KbFFBhA
-提取码: akdk
+蓝凑云：https://freemt.lanzous.com/i0pDFfo582j
 
 ## 使用mock假数据
 ```json5
