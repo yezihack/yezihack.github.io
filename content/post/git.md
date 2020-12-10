@@ -108,6 +108,20 @@ git merge dev
 
 `git push origin --delete dev`
 
+### 删除远程分支2
+
+```sh
+//删除 dev_test 分支
+git push origin :refs/heads/dev_test
+```
+
+### 删除远程 tag
+
+```sh
+//删除 dev_test 标签
+git push origin :refs/tags/dev_test
+```
+
 ## 推送
 
 ### 添加文件
