@@ -34,4 +34,6 @@ reward: true
 |[hystrix-go](https://github.com/afex/hystrix-go)||流量控制,熔断,容错,隔离功能|
 |[goConvey](https://github.com/smartystreets/goconvey)||单元测试框架, 自带 Web 界面|
 |[cobra](https://github.com/spf13/cobra)||命令行框架, spf13大神出品|
+|[gjson](github.com/tidwall/gjson)|[用法](https://darjun.github.io/2020/03/22/godailylib/gjson/)|用于读取 JSON 串|
+|[sjson](github.com/tidwall/sjson)|[用法](https://darjun.github.io/2020/03/24/godailylib/sjson/)|用于设置 JSON 串|
 
