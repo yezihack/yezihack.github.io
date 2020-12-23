@@ -79,8 +79,30 @@ music_auto: 1
 1. 执行内部命令: `docker exec 5ad ps aux` (5ad是ID的前三位)
 2. 进入容器内:`docker exec -it 5ad /bin/bash`
 
+## 重启启动
+
+### 系统开机启动
+
+```sh
+systemctl enable docker
+```
+
+### 容器开机启动
+
+运行时加入以下参数即可
+
+```sh
+docker run -itd --restart=always --name dev_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql 
+```
+
+已经运行的程序更新参数
+
+```sh
+docker update --restart=always <容器ID>
+```
 
 ## 多容器管理
+
 > Docker 倡导的理念是: "一个容器一个进程", 如果一个服务由多个进程组成, 就需要创建
 > 多个容器组成一个系统, 相互分工和配合来对外提供完整的服务.
 
