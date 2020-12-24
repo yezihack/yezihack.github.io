@@ -67,7 +67,13 @@ music_auto: 1
 | 小米技术       | https://xiaomi-info.github.io/         | ✫✫✫    |
 | linkedin技术   | https://engineering.linkedin.com/blog  | ✫✫✫    |
 
+## 摄影网
 
+| 名称                | 网址                   |
+| ------------------- | ---------------------- |
+| 1x 高质量摄影图片网 | https://1x.com/        |
+| 徕卡旗下的作品廊    | https://lfi-online.de/ |
+| 知名的500PX         | https://500px.com/     |
 
 ## 番外网
 
