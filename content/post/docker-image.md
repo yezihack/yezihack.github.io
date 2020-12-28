@@ -265,7 +265,9 @@ docker logs -f top
 
 ### 存出镜像
 
-`docker save top.tar.gz top:1.0`
+1. ID 为镜像的ID `docker images 查看`
+
+`docker save ID > top.tar.gz`
 
 ### 载入镜像
 
