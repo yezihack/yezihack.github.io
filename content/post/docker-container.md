@@ -79,6 +79,58 @@ music_auto: 1
 1. 执行内部命令: `docker exec 5ad ps aux` (5ad是ID的前三位)
 2. 进入容器内:`docker exec -it 5ad /bin/bash`
 
+### 复制文件(相互)
+
+> docker ps 查看容器, 假设容器ID: 7709d56792f9
+
+从宿主机 复制到 容器里
+
+```sh
+docker cp  /home/sgfoot.txt 7709d56792f9:/home/
+```
+
+
+
+从容器里 复制到 宿主机
+
+```sh
+docker cp  7709d56792f9:/home/sgfoot.txt /home/sgfoot.txt 
+```
+
+
+
+### 导入导出
+
+**导出容器**
+
+1. 先保存当前容器为镜像
+2. 再将镜像导出
+
+使用 `docker commit` 将容器创建一个镜像
+
+```
+-a :提交的镜像作者；
+-c :使用Dockerfile指令来创建镜像；
+-m :提交时的说明文字；
+-p :在commit时，将容器暂停。
+```
+
+```sh
+docker commit -a "sgfoot" -m "this is test" 7709d56792f9 dev_mysql:v1
+```
+
+查看镜像 会多出一个叫: dev_mysql:v1 镜像
+
+`docker images ` 假设镜像ID: 9f3eb21abf31
+
+导出吧
+
+`docker save 9f3eb21abf31 > dev_mysql_v1.tar.gz `
+
+**导入镜像**
+
+`docker load < dev_mysql_v1.tar.gz`
+
 ## 重启启动
 
 ### 系统开机启动
