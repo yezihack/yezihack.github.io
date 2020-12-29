@@ -261,21 +261,44 @@ docker logs -f top
 
 
 
-## 存出与载入镜像
+## 导入与导出镜像
 
-### 存出镜像
+> 使用 docker images 查看镜像列表. 
 
-1. ID 为镜像的ID `docker images 查看`
+测试镜像信息
 
-`docker save ID > top.tar.gz`
+```sh
+REPOSITORY              TAG       IMAGE ID       CREATED         SIZE
+test/top                latest    f2b97b51ecab   4 seconds ago   65.6MB
+```
 
-### 载入镜像
+### 导出镜像
 
-`docker load -i top.tar.gz`
+> 如果需要跨操作系统, 请使用 `-o` 方式
 
-or
+```sh
+docker save -o top_v1.tar f2b97b51ecab
+#或者
+docker save f2b97b51ecab > top_v1.1.tar
+```
 
-`docker load < top.tar.gz`
+### 导入镜像
+
+> 如果需要跨操作系统, 请使用 `-i` 方式
+
+以下方式不能对载入的镜像重命名
+
+```sh
+docker load -i top_v1.tar
+#或者
+docker load < top_v1.tar
+```
+
+以下方式可以对载入的镜像重命名
+
+```sh
+docker import top_v1.tar sgfoot/top:v1
+```
 
 ## 上传镜像
 
@@ -288,3 +311,4 @@ or
    docker tag top:1.0 sgfoot/top:1.0
    docker push sgfoot/top:1.0
    ```
+

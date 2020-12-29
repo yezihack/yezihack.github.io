@@ -97,39 +97,59 @@ docker cp  /home/sgfoot.txt 7709d56792f9:/home/
 docker cp  7709d56792f9:/home/sgfoot.txt /home/sgfoot.txt 
 ```
 
+## 导入导出容器
 
-
-### 导入导出
-
-**导出容器**
-
-1. 先保存当前容器为镜像
-2. 再将镜像导出
-
-使用 `docker commit` 将容器创建一个镜像
-
-```
--a :提交的镜像作者；
--c :使用Dockerfile指令来创建镜像；
--m :提交时的说明文字；
--p :在commit时，将容器暂停。
-```
+> docker ps 查看容器信息
 
 ```sh
-docker commit -a "sgfoot" -m "this is test" 7709d56792f9 dev_mysql:v1
+CONTAINER ID   IMAGE                        COMMAND                  CREATED       STATUS      PORTS                               NAMES
+08a1edd9e89e   redis:5.0.0                  "docker-entrypoint.s…"   12 days ago   Up 5 days   0.0.0.0:6379->6379/tcp              dev_redis
 ```
 
-查看镜像 会多出一个叫: dev_mysql:v1 镜像
+### 导出容器
 
-`docker images ` 假设镜像ID: 9f3eb21abf31
+方式一: 先提交容器保存为镜像
 
-导出吧
+```sh
+#保存容器
+docker commit -a "sgfoot" -m "this is test" 08a1edd9e89e test_redis:v1
+#导出镜像
+docker save -o test_redis.tar test_redis:v1
+#或者
+docker save test_redis:v1 > test_redis_1.tar
+```
 
-`docker save 9f3eb21abf31 > dev_mysql_v1.tar.gz `
+方式二: 直接使用`docker export` 保证容器
 
-**导入镜像**
+```sh
+docker export -o test_redis_v1.tar 08a1edd9e89e
+```
 
-`docker load < dev_mysql_v1.tar.gz`
+### 导入容器
+
+> 载入docker 打包文件只能是镜像, 使用docker run 运行镜像才能成为容器
+
+> 如果需要跨操作系统, 请使用 `-i` 方式
+
+以下方式不能对载入的镜像重命名
+
+```sh
+docker load -i test_redis_v1.tar
+#或者
+docker load < test_redis_v1.tar
+```
+
+以下方式可以对载入的镜像重命名
+
+```sh
+docker import test_redis_v1.tar sgfoot/redis:v1
+```
+
+运行容器
+
+```sh
+docker run -it -d --name dev_redis -p 6379:6379 -v $PWD/data:/data sgfoot/redis:v1 --requirepass "123456"
+```
 
 ## 重启启动
 
