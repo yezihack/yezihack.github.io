@@ -97,10 +97,10 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   identifier = "design"
   url = "/tags/设计模式.html"
 [[menu.main]]
-  name = "脚本"
+  name = "鲁班工具"
   weight = 35
   identifier = "script"
-  url = "/tags/脚本.html"
+  url = "/tags/鲁班工具.html"
 
 # 谷歌广告
 [params.adsense]
