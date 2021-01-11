@@ -97,10 +97,16 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   identifier = "design"
   url = "/tags/设计模式.html"
 [[menu.main]]
-  name = "鲁班工具"
-  weight = 35
-  identifier = "script"
-  url = "/tags/鲁班工具.html"
+  name = "自我驱动"
+  weight = 36
+  identifier = "self-drive"
+[[menu.main]]
+  parent = "自我驱动"
+  name = "程序员的边车"
+  weight = 1
+  identifier = "program-side"
+  url = "/tags/工程师.html"
+
 
 # 谷歌广告
 [params.adsense]
