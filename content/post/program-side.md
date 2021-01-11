@@ -35,7 +35,7 @@ Tip: 推荐 keep or fit app.
 
 > 豆瓣分:9.0
 
-原英文名<<The Pragmatic Programmer>>](https://book.douban.com/subject/35006892/)  直译为: 务实的程序员, 即靠谱的程序员.
+原英文名[<<The Pragmatic Programmer>>](https://book.douban.com/subject/35006892/)  直译为: 务实的程序员, 即靠谱的程序员.
 
 这是一本如同航海的指南般的书, 被一代代开发者奉为圭臬.
 
