@@ -45,7 +45,27 @@ Tip: 推荐 keep or fit app.
 
 > 豆瓣分: 9.7
 
-原英文名[Computer Systems: A programmer's Perp](https://book.douban.com/subject/26835090/)
+原英文名[Computer Systems: A programmer's Perpective](https://book.douban.com/subject/5333562/)
+
+工程师人人必读之书, 没有之一. 
+
+本书最大的优点是从程序员的视角详细阐述计算机系统的本质概念. 
+
+主要包括: 
+
+	1. 信息的表示和处理
+ 	2. 程序的机器级表示
+ 	3. 处理器体系结构 
+ 	4. 优化程序性能
+ 	5. 存储器层次结构 
+ 	6. 链接
+ 	7. 异常控制流
+ 	8. 虚拟存储器
+ 	9. 系统级I/O
+ 	10. 网络编程
+ 	11. 并发编程
+
+Tip: 书比较厚, 读之前做好心理准备, 打硬仗.
 
 ### 代码大全(第2版)
 
