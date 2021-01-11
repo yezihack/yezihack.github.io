@@ -65,11 +65,6 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   identifier = "categories"
   url = "/categories.html"
 [[menu.main]]
-  name = "分享"
-  weight = 30
-  identifier = "share"
-  url = "/tags/分享.html"
-[[menu.main]]
   name = "教程"
   weight = 35
 [[menu.main]]
@@ -99,13 +94,18 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 [[menu.main]]
   name = "自我驱动"
   weight = 36
-  identifier = "self-drive"
 [[menu.main]]
   parent = "自我驱动"
   name = "程序员的边车"
   weight = 1
   identifier = "program-side"
   url = "/tags/工程师.html"
+[[menu.main]]
+  parent = "自我驱动"
+  name = "价值分享"
+  weight = 2
+  identifier = "share"
+  url = "/tags/分享.html"
 
 
 # 谷歌广告
