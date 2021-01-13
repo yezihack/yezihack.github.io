@@ -96,7 +96,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   weight = 36
 [[menu.main]]
   parent = "自我驱动"
-  name = "程序员的边车"
+  name = "工程师"
   weight = 1
   identifier = "program-side"
   url = "/tags/工程师.html"
