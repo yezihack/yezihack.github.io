@@ -1,5 +1,5 @@
 ---
-title: "Git"
+title: "Git 简明命令"
 date: 2020-11-20T17:10:43+08:00
 lastmod: 2020-11-20T17:10:43+08:00
 draft: false
