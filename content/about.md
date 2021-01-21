@@ -75,10 +75,33 @@ music_auto: 1
 | 徕卡旗下的作品廊    | https://lfi-online.de/ |
 | 知名的500PX         | https://500px.com/     |
 
+## 工具箱
+
+| 名称 | 网址 |
+| -------- | -------------------- |
+|Markdown => 微信公众号|https://doocs.github.io/md/|
+|画图工具|https://www.processon.com/|
+|搜索书|https://www.jiumodiary.com/|
+|蓝凑云|https://www.lanzou.com/|
+
+## 徽章
+
+> Github 生成各种不同的徽章
+
+| 名称 | 网址 |
+| -------- | -------------------- |
+|通用徽章|https://shields.io/|
+|评价项目质量|https://goreportcard.com/|
+|GO生成文档| https://pkg.go.dev/, https://go.dev/|
+|自定义讨论|https://gitter.im/|
+|项目测试结果分析| https://codecov.io/|
+|持续集成服务|https://travis-ci.org/|
+
 ## 番外网
 
 | 名称 | 网址 |
 | -------- | -------------------- |
+|电子书转换器|http://cn.epubee.com/|
 | 配色大师 | https://peiseka.com/ |
 | 百宝箱 | https://yezihack.github.io/ |
 
