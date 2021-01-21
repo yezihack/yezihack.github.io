@@ -19,9 +19,12 @@ music_auto: 1
 # description: ""
 ---
 
+![github.com/yezihack/e](http://img.sgfoot.com/b/20210121205418.png?imageslim)
+
 > Golang tracks stack error package. 优雅追踪堆栈错误包
 
 ## 安装(Install)
+
 ```
 go get github.com/yezihack/e
 ```
@@ -110,6 +113,7 @@ file:doc.go, line:75, func:Convey
 file:1.how_test.go, line:17, func:TestFoo
 ```
 
+
 ## 实例(Example)
 
 1. [基本用法](https://github.com/yezihack/e/example/1.how_test.go)
@@ -192,3 +196,5 @@ func main() {
 	//file:2.code.go, line:15, func:main
 }
 ```
+
+![空树之空-白](http://img.sgfoot.com/b/20210121210259.png?imageslim)
