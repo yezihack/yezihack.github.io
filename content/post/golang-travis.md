@@ -1,17 +1,17 @@
 ---
 title: "Golang持续集成服务之Travis教程"
 date: 2020-04-24T20:19:39+08:00
-lastmod: 2020-04-24T20:19:39+08:00
+lastmod: 2021-01-22T14:28:39+08:00
 draft: false
-tags: ["golang", "travis", "集成测试", "工具"]
-categories: ["golang"]
+tags: ["golang", "徽章", "工具"]
+categories: ["工具"]
 author: "百里"
 comment: false
 toc: true
 reward: true
 # weight: 1
 # lastmod: 2018-03-01T16:01:23+08:00
-# author: "xianmin"
+# author: ""
 # reward: false
 # mathjax: false
 # description = ""
