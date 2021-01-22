@@ -83,6 +83,7 @@ music_auto: 1
 |画图工具|https://www.processon.com/|
 |搜索书|https://www.jiumodiary.com/|
 |蓝凑云|https://www.lanzou.com/|
+|图片压缩|https://www.iloveimg.com/zh-cn|
 
 ## 徽章
 
@@ -105,4 +106,4 @@ music_auto: 1
 | 配色大师 | https://peiseka.com/ |
 | 百宝箱 | https://yezihack.github.io/ |
 
-![空树之空-白](http://img.sgfoot.com/b/20210121210259.png?imageslim)
+![big-white](https://img.sgfoot.com/b/20210122112114.png?imageslim)
