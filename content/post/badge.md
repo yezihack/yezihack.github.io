@@ -1,7 +1,7 @@
 ---
-title: "github 徽章制作"
+title: "GitHub 徽章制作"
 date: 2021-01-22T14:23:07+08:00
-lastmod: 2021-01-22T14:23:07+08:00
+lastmod: 2021-01-22T16:23:07+08:00
 draft: false
 tags: ["徽章", "工具"]
 categories: ["工具"]
@@ -39,7 +39,7 @@ music_auto: 1
 
 ## CI&CD 徽章
 
-> github 于2018. 10月推荐 GitHub Actions 持续集成服务, 在此之前大家都是使用 https://travis-ci.org/ 持续集成服务, 之前我也写过相关文章. [Golang持续集成服务之Travis教程](https://www.sgfoot.com/golang-travis.html),
+> github 于2018. 10月推荐 GitHub Actions 持续集成服务, 在此之前大家都是使用 https://travis-ci.org/ 持续集成服务, 之前我也写过相关文章. [Golang持续集成服务之Travis教程](https://www.sgfoot.com/golang-travis.html).
 
 持续集成和持续部署目前 github 官方自带支持, 官方称之为 GitHub Actions. 
 
@@ -47,35 +47,34 @@ music_auto: 1
 
 如何使用可以参考阮一峰写的[GitHub Actions 入门教程](http://www.ruanyifeng.com/blog/2019/09/getting-started-with-github-actions.html)
 
-关于GO的持续集成服务模板
+**关于GO的持续集成服务模板参考:**
 
 > 使用 GitHub Actions 后会在你的项目里自带生成一个`.github`文件夹, 即`.github/workflows/go.yml`
 
 ```yml
-name: Go
+name: Go # 使用语言
 
-on:
-  push:
-    branches: [ main ]
+on:     # 监听动作
+  push: # 监听 push 动作
+    branches: [ main ] # 监听哪个分支 branch
   pull_request:
     branches: [ main ]
 
-jobs:
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
+jobs: # 工作 job
+  build: # 构建动作
+    runs-on: ubuntu-latest # 基于 ubuntu 系统
+    steps: 
     - uses: actions/checkout@v2
 
-    - name: Set up Go
+    - name: Set up Go 
       uses: actions/setup-go@v2
       with:
         go-version: 1.15
 
-    - name: Build
+    - name: Build # 构建项目
       run: go build -v ./...
 
-    - name: Test
+    - name: Test # 运行用例
       run: go test -v .
 ```
 
