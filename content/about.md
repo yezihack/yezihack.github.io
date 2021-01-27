@@ -84,6 +84,7 @@ music_auto: 1
 |搜索书|https://www.jiumodiary.com/|
 |蓝凑云|https://www.lanzou.com/|
 |图片压缩|https://www.iloveimg.com/zh-cn|
+|calibre-ebook|https://calibre-ebook.com/|
 
 ## 徽章
 
