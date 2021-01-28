@@ -19,6 +19,8 @@ music_auto: 1
 # description: ""
 ---
 
+![img](https://img.sgfoot.com/b/how-book.png?imageslim)
+
 ## 阅读的艺术
 
 > 阅读是一件主动的事，而非被动。
