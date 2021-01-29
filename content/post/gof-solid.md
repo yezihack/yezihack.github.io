@@ -122,11 +122,39 @@ Tip: 扩展性是有代价的, 会牺牲可读性. 我们需要在扩展性与�
 
 
 
+## 里氏替换原则(LSP)
+
+> LSP: Liskov Substitution Principle
+
+Barbara Liskov: 
+
+>  If S is a subtype of T, then object of type T may be replaced with objects of type S, without breaking the program 
+
+如果S是T的子类型，则类型T的对象可以替换为类型S的对象，而不会破坏程序
+
+Robert Martin:
+
+> Functions that use pointers of references to base classes must be able to use objects of derived classes without knowing it.
+
+使用基类引用指针的函数必须能够在不知情的情况下使用派生类的对象。
 
 
 
+综合两者的描述：子类对象能够替换程序中父类对象出现的任何地方，并且保证原来程序的逻辑行为不变及正确性不被破坏。
+
+**一种更接地气的描述： Design By Contract.  按照协议来设计**
+
+### 违反里氏替换原则
+
+1. 子类违背父类声明要实现的功能。
+2. 子类违背父类对输入，输出，异常的约定。
+3. 子类违背父类注释中所罗列的任何特殊说明
 
 
+
+遵守协议，保证一致性，即符合里氏替换原则。
+
+*tip: 小窍门，拿父类的单元测试去验证子类代码，验证里否符合里氏替换原则。*
 
 
 
