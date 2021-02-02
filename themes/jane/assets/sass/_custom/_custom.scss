@@ -1,0 +1,27 @@
+// ==============================
+// Custom style
+// ==============================
+// You can override the variables in _variables.scss to customize the style
+@media only screen and (max-width: 1224px) {
+    .post-toc {
+        display: none;
+    }
+}
+.post-toc{
+    position: fixed; left:20px;max-width:300px; overflow:auto; top: 100px; bottom:50px;
+}
+
+.toc-wrapper {
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+      height: 40px;
+      background-color: #eee;
+      border-radius: 16px;
+      &:hover {
+        background-color: #ddd;
+      }
+    }
+}

@@ -1,0 +1,7 @@
+public
+.vs
+public/
+/public/
+gen.sh
+*.swp
+resources

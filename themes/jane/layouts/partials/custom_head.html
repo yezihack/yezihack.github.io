@@ -1,0 +1,15 @@
+
+<!-- google adsense -->
+{{- if .Site.Params.Adsense.enable -}}
+<script data-ad-client="{{.Site.Params.Adsense.client}}" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id={{.Site.Params.Adsense.gtag}}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{.Site.Params.Adsense.gtag}}');
+</script>
+{{- end }}
