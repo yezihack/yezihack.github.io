@@ -96,16 +96,23 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   weight = 36
 [[menu.main]]
   parent = "自我驱动"
-  name = "工程师"
+  name = "读书笔记"
   weight = 1
+  identifier = "read-marking"
+  url = "/tags/读书笔记.html"
+[[menu.main]]
+  parent = "自我驱动"
+  name = "工程师"
+  weight = 5
   identifier = "program-side"
   url = "/tags/工程师.html"
 [[menu.main]]
   parent = "自我驱动"
   name = "价值分享"
-  weight = 2
+  weight = 10
   identifier = "share"
   url = "/tags/分享.html"
+
 
 
 # 谷歌广告
@@ -121,8 +128,8 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 
   # site info (optional)                                  # 站点信息（可选，不需要的可以直接注释掉）
   logoTitle = "空樹之空"        # default: the title value    # 默认值: 上面设置的title值
-  keywords = ["Go语言", "MySQL", "Redis", "设计模式"]
-  description = "Go语言,Golang开发,算法,设计模式,架构,Linux,Kubernetes,Docker-空樹之空的个人博客"
+  keywords = ["Go语言", "MySQL", "Redis", "设计模式", "读书笔记", "人生感悟"]
+  description = "Go语言,Golang开发,算法,设计模式,架构,Linux,Kubernetes,Docker,读书笔记及人生感悟-空樹之空的个人博客"
 
   # paginate of archives, tags and categories             # 归档、标签、分类每页显示的文章数目，建议修改为一个较大的值
   archive-paginate = 100
@@ -142,7 +149,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   baidu_push = true        # baidu push                  # 百度
   baidu_analytics = "90b270e075265ec9aad9847f47bb1f42"      # Baidu Analytics
   baidu_verification = ""   # Baidu Verification
-  #google_verification = "google8e92341d63465cfb"  # Google_Verification         # 谷歌
+  #google_verification = "google8e92341d63465cfb"  # Google_Verification  # 谷歌
 
 
   # Link custom CSS and JS assets
@@ -176,7 +183,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
       photoswipeSKIN = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">'
 
   [params.search.google]    # google custom search, see https://cse.google.com
-      enable = false
+      enable = true
       id = "001496614017255051684:v8lrdwgteq1"
       title = "Search"
 
