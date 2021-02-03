@@ -1,10 +1,10 @@
 ---
-title: "Jenkins Build Rollback"
+title: "Jenkins 构建及回滚任务"
 date: 2021-02-03T14:47:04+08:00
 lastmod: 2021-02-03T14:47:04+08:00
 draft: false
-tags: ["", ""]
-categories: [""]
+tags: ["工具", "jenkins", "golang"]
+categories: ["工具"]
 author: "百里"
 comment: false
 toc: true
