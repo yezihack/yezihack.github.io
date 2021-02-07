@@ -165,7 +165,7 @@ case $status in
         # 生成可执行文件
         /usr/local/go/bin/go build -mod=vendor -tags=jsoniter -o "${program_name}" .
         # 压缩打包
-        tar -zcf ${program_filename} --exclude=docs ${program_name}
+        tar -czf ${program_filename} --exclude=docs ${program_name}
         # 将压缩好的程序复制到备份文件夹里
         cp -f ${program_filename} ${back_path_num}
         # 将压缩好的程序复制到 target 文件里
@@ -195,21 +195,31 @@ esac
 
 ![image-20210203172124561](https://img.sgfoot.com/b/20210203172125.png?imageslim)
 
+*注意： Source files，填写 `target/go_test.tar.gz`， 即 target目录下的文件。*
+
 源码：
 
 ```sh
 set -x
 # 项目名称
-app_name=go_test.tar.gz
+app_name=go_test
+app_name_tar=${app_name}.tar.gz
 # 项目路径
-app_path=/data/tmp/
-# 复制目标目录
+app_path=/data/work/
+# 源文件目录
 origin_path=/root/target/
 # 源文件
 origin_filename=${origin_path}${app_name}
 
+# 进入到源文件目录 
+cd ${origin_path}
 # 解压文件
-sudo tar -zxvf ${origin_filename} -C ${app_path}
+tar -xzvf ${app_name}
+# 添加执行权限
+chmod +x ${app_name}
+# 将执行文件复制到项目路径下
+cp ${app_name} ${app_path}
+
 # 复制完后，删除源始文件
 if [ -f "${origin_filename}" ];then 
    rm -f ${origin_filename}

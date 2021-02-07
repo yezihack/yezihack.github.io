@@ -2,7 +2,7 @@
 # If you want to see the full configuration, please check `full-config.toml` .
 # And see https://gohugo.io/getting-started/configuration/ .
 
-baseURL = "https://www.sgfoot.com/"
+#baseURL = "https://www.sgfoot.com/"
 #baseURL = "https://yezihack.github.io/"
 #baseURL = "https://sgfoot.gitee.io/"
 title = "空樹之空的博客"
@@ -172,7 +172,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
       enable = true
 
   [params.publicCDN]        # load these files from public cdn                          # 启用公共CDN，需自行定义
-      enable = true
+      enable = false
       jquery = '<script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>'
       slideout = '<script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>'
       gitmentJS = '<script src="https://cdn.jsdelivr.net/npm/gitment@0.0.3/dist/gitment.browser.min.js" crossorigin="anonymous"></script>'
@@ -183,7 +183,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
       photoswipeSKIN = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css" integrity="sha256-c0uckgykQ9v5k+IqViZOZKc47Jn7KQil4/MP3ySA3F8=" crossorigin="anonymous">'
 
   [params.search.google]    # google custom search, see https://cse.google.com
-      enable = true
+      enable = false
       id = "001496614017255051684:v8lrdwgteq1"
       title = "Search"
 

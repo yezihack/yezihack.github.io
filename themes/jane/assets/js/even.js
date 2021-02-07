@@ -50,7 +50,7 @@ Even.mobileNavbar = function() {
 
 Even._initToc = function() {
   const SPACING = 20;
-  const $toc = $('.post-toc');
+  const $toc = $('#post-toc');
   const $footer = $('.post-footer');
 
   if ($toc.length) {
@@ -74,7 +74,7 @@ Even._initToc = function() {
 
     $(window).scroll(function() {
       const scrollTop = $(window).scrollTop();
-
+      alert(scrollTop)
       if (scrollTop < minScrollTop) {
         $toc.css(tocState.start);
       } else if (scrollTop > maxScrollTop) {

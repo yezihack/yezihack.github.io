@@ -21,6 +21,8 @@ music_auto: 1
 
 [TOC]
 
+> SOLID原则包括单一职责，开闭原则，里氏替换原则，接口隔离原则，依赖倒置原则。
+
 ## 单一职责原则(SRP)
 
 > SRP: Single Responsibility Principle
@@ -192,7 +194,7 @@ Robert Martin:
 
 
 
-
+## 依赖倒置原则(DIP)
 
 
 

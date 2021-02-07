@@ -134,7 +134,7 @@ var tocAttr = function () {
 
 var initTocEven = function() {
   const SPACING = 20;
-  const $toc = $('.post-toc');
+  const $toc = $('#post-toc');
   const $footer = $('.post-footer');
 
   if ($toc.length) {
@@ -170,9 +170,9 @@ var initTocEven = function() {
   }
 
   const HEADERFIX = 30;
-  const $toclink = $('.toc-link');
+  const $toclink = $('#post-toc li');
   const $headerlink = $('.headerlink');
-  const $tocLinkLis = $('.post-toc-content li');
+  const $tocLinkLis = $('#post-toc li');
 
   const headerlinkTop = $.map($headerlink, function(link) {
     return $(link).offset().top;

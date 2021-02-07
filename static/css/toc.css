@@ -1,9 +1,8 @@
 #post-toc {
     position: fixed;
     padding: 10px;
-    top: 150px;
-    right: 20px;
     border-radius: 10px;
+    background-color:#fff;
 }
 @media screen and (max-width:1080px){
     #post-toc {
