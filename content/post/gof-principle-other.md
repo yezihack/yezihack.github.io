@@ -6,7 +6,7 @@ draft: false
 tags: ["设计模式", "教程"]
 categories: ["设计模式"]
 author: "百里"
-comment: false
+comment: true
 toc: true
 reward: true
 # 音乐开关，true/false

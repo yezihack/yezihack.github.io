@@ -211,6 +211,12 @@ origin_path=/root/target/
 # 源文件
 origin_filename=${origin_path}${app_name}
 
+#解压之前删除掉源文件
+if [ -f $origin_filename ];then 
+	rm -f ${origin_filename}
+	echo "${origin_filename} delete success."
+fi 
+
 # 进入到源文件目录 
 cd ${origin_path}
 # 解压文件
