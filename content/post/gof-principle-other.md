@@ -21,7 +21,7 @@ music_auto: 1
 
 ## 纲要
 
-![KISS,YAGNI,DRY 原则](https://img.sgfoot.com/b/20210208203949.png?imageslim)
+![KISS,YAGNI,DRY,LOD 原则](https://img.sgfoot.com/b/20210209203935.png?imageslim)
 
 ## KISS原则
 
