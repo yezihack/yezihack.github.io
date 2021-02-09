@@ -1,5 +1,6 @@
 public
 .vs
+.idea
 public/
 /public/
 gen.sh
