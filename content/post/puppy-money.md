@@ -25,7 +25,7 @@ music_auto: 1
 >
 > 本书的副标题：从此拥有财富，开启富足快乐的人生。
 
-## 思维导图
+## 大纲
 
 ![小狗钱钱](https://img.sgfoot.com/b/20210214084533.png?imageslim)
 
