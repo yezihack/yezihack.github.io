@@ -3,7 +3,7 @@ title: "小狗钱钱"
 date: 2021-02-13T21:50:42+08:00
 lastmod: 2021-02-14T07:53:42+08:00
 draft: false
-tags: ["读书笔记"]
+tags: ["读书笔记", "理财"]
 categories: ["读书笔记"]
 author: "百里"
 comment: false

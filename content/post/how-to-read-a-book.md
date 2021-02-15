@@ -3,7 +3,7 @@ title: "如何阅读一本书(一)"
 date: 2021-01-27T19:53:05+08:00
 lastmod: 2021-01-27T19:53:05+08:00
 draft: false
-tags: ["读书笔记", "如何阅读一本书"]
+tags: ["读书笔记", "社会科学"]
 categories: ["读书笔记"]
 author: "百里"
 comment: false
