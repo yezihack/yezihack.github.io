@@ -27,7 +27,7 @@ music_auto: 1
 
 ## 大纲
 
-![小狗钱钱](https://img.sgfoot.com/b/20210214084533.png?imageslim)
+![小狗钱钱](https://img.sgfoot.com/b/20210217153029.png?imageslim)
 
 ## 正视金钱
 
