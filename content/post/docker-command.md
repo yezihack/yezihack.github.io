@@ -2,7 +2,7 @@
 title: "Docker笔记(七) 命令"
 date: 2020-11-03T19:49:09+08:00
 lastmod: 2020-11-03T19:49:09+08:00
-draft: true
+draft: false
 tags: ["docker", "docker教程", "教程"]
 categories: ["docker"]
 author: "百里"
@@ -77,3 +77,29 @@ music_auto: 1
 ### 重启容器
 
 `docker restart ID`
+
+### 开机启动
+
+```sh
+# 创建时带参数实现开机启动
+docker run -itd --restart=always ...
+
+# 对于已经运行的容器更新为开机启动
+docker update --restart=always <容器id>
+```
+
+
+
+## 磁盘空间
+
+### 查看磁盘空间情况
+
+`docker system df`
+
+### 清理磁盘
+
+`docker system prune`
+
+### 彻底清理
+
+`docker system prune -a`

@@ -62,6 +62,69 @@ sysctl -p /etc/sysctl.conf
 docker info
 ```
 
+## docker 磁盘不足
+
+**第一步： 查看服务的磁盘情况**
+
+`df -h`
+
+**第二步：查看 docker 使用的磁盘路径**
+
+`docker info` 找到 `Docker Root Dir`节点。
+
+![image-20210218150344102](https://img.sgfoot.com/b/20210218150344.png?imageslim)
+
+一般默认目录是在:`/var/lib/docker`
+
+**第三步：迁移数据之前查看哪个磁盘空间最大，新建新的docker目录**
+
+```sh
+du -h 
+mkdir -p /data/docker/lib
+```
+
+**第四步：编辑 `/etc/docker/daemon.json` 添加参数**
+
+```sh
+{
+	”graph": "/data/docker/lib/docker"
+}
+```
+
+**第五步：停止docker服务**
+
+```sh
+systemctl stop docker
+```
+
+**第六步：迁移数据**
+
+```sh
+rsync -avz /var/lib/docker /data/docker/lib/
+```
+
+**第七步：重新启动 docker 服务**
+
+```sh
+docker daemon-reload && docker start docker
+```
+
+**第八步：检查迁移是否成功**
+
+```sh
+# 也就是第二步时的 docker root dir 目录是否更改为： /data/docker/lib 
+docker info 
+
+```
+
+**第九步：删除 docker 旧目录**
+
+```sh
+rm -rf /var/lib/docker
+```
+
+
+
 ## 参考
 
 1. https://juejin.im/post/6844903953793024014
