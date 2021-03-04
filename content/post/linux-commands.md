@@ -121,20 +121,24 @@ tar -zcvf target.tar.gz  test/ --exclude=*.git
 
 `rpm -e rpm包名(搜索后的结果名称)`
 
-## grep 
 
-### 或的关系 
+
+## 文本处理
+
+### grep 
+
+#### 或的关系 
 
 ```
 cat 1.txt |grep a |grep b
 ```
 
-### 并集的关系 
+#### 并集的关系 
 ```
 cat 1.txt |grep -E "a" |grep -E "b"
 ```
 
-## awk
+### awk
 
 提出内存大小
 1. awk '{print $1}' 提出第1列的数据
@@ -145,13 +149,132 @@ free -m |awk '{print $3}' |sed -n '2p'
 
 
 
-## curl
+
+
+## 传输
+
+### scp
+
+> scp [参数] [原路径] [目标路径]
+
+```sh
+# 1. 从本地复制到远程目录
+scp /opt/soft/demo.tar root@10.6.159.147:/opt/soft/scptest
+# 2. 从本地递归复制整个目录到远程目录
+scp -r /opt/soft/test root@10.6.159.147:/opt/soft/scptest
+
+# 3. 从远程复制文件到本地
+scp root@10.6.159.147:/opt/soft/demo.tar /opt/soft/
+# 4. 从远程复制文件到本地 递归复制整个目录
+scp -r root@10.6.159.147:/opt/soft/demo.tar /opt/soft/
+```
+
+
+
+### rsync
+
+### curl
 
 POST JSON请求
 
 ```
 curl -H "Content-type:application/json" -X POST -d '{"name":"king"}' http://localhost/test
 ```
+
+
+
+## 调试
+
+### gdb
+
+### pstack
+
+### strace
+
+## 查看进程及端口
+
+### netstat 
+
+```sh 
+# 查看 tcp 所有的进程
+netstat -nplt 
+```
+
+
+
+### lsof
+
+1. 列出谁在使用某个端口
+
+```sh
+lsof -i :80 
+```
+
+2. 查找某个文件相关进程
+
+```sh
+lsof /bin/bash
+```
+
+3. 列出某个用户打开的文件信息
+
+```sh
+lsof -u root
+```
+
+4. **列出某个程序进程所打开的文件信息**
+
+```sh
+lsof -c mysql
+```
+
+5. 列出某个用户以及某个进程所打开的文件信息
+
+```sh
+lsof -u root -c mysql
+```
+
+6. 通过某个进程显示该进程打开的文件
+```sh
+lsof -p 11201
+```
+
+7. 列出所有网络连接
+```sh
+lsof -i 
+# 列出tcp 
+lsof -i tcp
+```
+
+   
+
+## 优化
+
+### free
+
+查看内容情况
+
+```sh
+free -m # 显示以 km 为单位
+free -g # 显示以 kg 为单位
+```
+
+释放缓冲内容
+
+```sh
+echo 3 > /proc/sys/vm/drop_caches
+```
+
+### ldd
+
+查看程序依赖库
+
+```sh
+# 查看 nginx 执行命令 依赖库
+ldd /usr/sbin/nginx
+```
+
+
 
 
 
@@ -176,4 +299,14 @@ SCRIPTPATH=$(cd `dirname -- $0` && pwd)
 
 
 
-![image-20201117193818034](http://img.sgfoot.com/b/20201117193827.png?imageslim)
+### 定时删除日志
+
+```sh
+#!/bin/sh
+set -x
+
+day=7
+
+find /data/logs/ -mtime +${day} -exec rm -rf {} \;
+```
+
