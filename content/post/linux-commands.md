@@ -1,7 +1,7 @@
 ---
 title: "Linux 命令集"
 date: 2020-07-06T18:07:38+08:00
-lastmod: 2020-07-06T18:07:38+08:00
+lastmod: 2021-03-05 T11:37:38+08:00
 draft: false
 tags: ["linux", "命令"]
 categories: ["linux"]
@@ -137,6 +137,21 @@ cat 1.txt |grep a |grep b
 ```
 cat 1.txt |grep -E "a" |grep -E "b"
 ```
+
+#### 搜索多个文件内容
+
+```sh
+# 普通搜索
+grep "搜索内容" *.conf
+
+# 显示行号
+grep -n "搜索内容" *.conf
+
+# 显示上下文及行号
+grep -n -C 10 "搜索内容" *.conf
+```
+
+
 
 ### awk
 
