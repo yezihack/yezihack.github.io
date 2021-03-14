@@ -63,6 +63,7 @@ reward: true
 | -------| ------ |------ |
 |[uuid](http://github.com/satori/go.uuid)||uuid 码|
 |[sonyflake](https://github.com/sony/sonyflake)||sony 雪花算法|
+|[xid](https://github.com/rs/xid)||全局唯一ID生成器 20个字符长度|
 
 ## 工具包
 | pkg | 文档 | 描述 |
