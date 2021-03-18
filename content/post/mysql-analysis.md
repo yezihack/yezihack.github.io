@@ -223,7 +223,120 @@ mysqldumpslow -s t -t 10 -g “left join” /data/logs/slow-mysql.log
 mysqldumpslow -s r -t 20 /data/logs/slow-mysql.log | more
 ```
 
-## 参数
+## percona-toolkit  分析慢日志
+
+1. 下载
+
+   ```sh
+   wget https://www.percona.com/downloads/percona-toolkit/3.2.1/binary/redhat/7/x86_64/percona-toolkit-3.2.1-1.el7.x86_64.rpm
+   ```
+
+2. 依赖包
+
+   ```sh
+   [root@xxx ~]# yum install perl-DBI.x86_64
+   [root@xxx ~]# yum install perl-DBD-MySQL.x86_64
+   [root@xxx ~]# yum install perl-IO-Socket-SSL.noarch
+   [root@xxx ~]# yum install perl-Digest-MD5.x86_64
+   [root@xxx ~]# yum install perl-TermReadKey.x86_64
+   ```
+
+3. 安装
+
+   ```sh
+   rpm -iv percona-toolkit-3.2.1-1.el7.x86_64.rpm
+   ```
+
+4. 位置
+
+   ```sh
+   whereis pt-query-digest
+   ```
+
+5. 分析慢日志
+
+   > 回看上面如何开启慢日志
+
+   ```sh
+   pt-query-digest mysql-slow.log
+   ```
+
+   
+
+## mysqlslap 基准压测
+
+**参考说明：**
+
+1. `--concurrency` 并发数,可指定多个值，以逗号
+2. `--iterations` 运行次数
+3. `--auto-generate-sql` 自动生成测试表和数据
+4. `--auto-generate-sql-load-type` 测试语句的类型,read，key，write，update和mixed(默认)。
+5. `--auto-generate-sql-add-auto-increment` 代表对生成的表自动添加auto_increment列，从5.1.18版本开始支持。
+6. `--engine=engine_name` 代表要测试的引擎，可以有多个，用分隔符隔开。例如：--engines=myisam,innodb。
+7. `--number-of-queries` 总的测试查询次数(并发客户数×每客户查询次数)
+8. `--query 自己的SQL`　　　　　　　　  脚本执行测试
+9. `--only-print` 　　　　　　　　　　    如果只想打印看看SQL语句是什么，可以用这个选项
+
+
+
+**运行命令**
+
+1. 测试单SQL	
+
+   ```mysql
+   mysqlslap -a -uroot -p123456
+   ```
+
+2. 测试多并发
+
+   ```mysql
+   mysqlslap -a -c 100 -uroot -p123456 -h 127.0.0.1
+   ```
+
+3. 模拟不同并发，并打印错误信息
+
+   ```mysql
+   # 执行一次测试，分别50和100个并发，执行1000次总查询：
+   mysqlslap -a --concurrency=50,100 --number-of-queries 1000 --debug-info -uroot -p12345
+   ```
+
+4. 更复杂的测试
+
+    ```mysql
+    mysqlslap -h 127.0.0.1 -u root -p123456 --concurrency=100 --iterations=1 --auto-generate-sql --auto-generate-sql-load-type=mixed --auto-generate-sql-add-autoincrement --engine=innodb --number-of-queries=5000
+    # -p密码 密码与p没有空格
+    ```
+
+5. 查看SQL
+
+   ```mysql
+   mysqlslap -a --concurrency=50,100 --number-of-queries 1000 --iterations=5 --debug-info -uroot -p123456 -h 127.0.0.1 --only-print
+   ```
+
+**结果分析：**
+
+```
+Benchmark
+	Average number of seconds to run all queries: 0.160 seconds  # 平均响应时间
+	Minimum number of seconds to run all queries: 0.156 seconds	 # 最小响应时间
+	Maximum number of seconds to run all queries: 0.166 seconds  # 最大响应时间
+	Number of clients running queries: 50 	 # 模拟客户端数量
+	Average number of queries per client: 20 # 每个客户端的平均查询SQL条数
+
+
+
+User time 0.24, System time 0.37 # 用户响应时间，系统响应时间
+Maximum resident set size 14568, Integral resident set size 0
+Non-physical pagefaults 8068, Physical pagefaults 0, Swaps 0
+Blocks in 0 out 0, Messages in 0 out 0, Signals 0
+Voluntary context switches 19587, Involuntary context switches 723
+```
+
+
+
+
+
+## 参考
 
 1. https://juejin.im/post/59d83f1651882545eb54fc7e
 2. https://coolshell.cn/articles/1846.html
