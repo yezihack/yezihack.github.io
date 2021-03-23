@@ -1,5 +1,5 @@
 ---
-title: "Docker笔记(六) 安装phpmyadin"
+title: "Docker笔记(六) 安装 PHPMyAdmin"
 date: 2021-02-03T14:47:10+08:00
 lastmod: 2021-02-03T14:47:10+08:00
 draft: false
