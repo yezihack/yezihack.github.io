@@ -275,7 +275,24 @@ kill -9 $(lsof -t -i :3306)
 
 
 
-## 优化
+## 监控&优化
+
+### 工具合集
+
+1. sysstat
+   - iostat
+   - mpstat
+   - pidstat
+   - tapestat
+   - cifsiostat
+   - sadf
+
+```sh
+# Linux 性能监视工具合集
+yum -y install sysstat  
+```
+
+
 
 ### free
 
@@ -299,6 +316,19 @@ echo 3 > /proc/sys/vm/drop_caches
 ```sh
 # 查看 nginx 执行命令 依赖库
 ldd /usr/sbin/nginx
+```
+
+## 权限管理
+
+```sh
+# 创建用户组
+groupadd work
+# 创建用户并加入用户组
+useradd work -g work # -g 加入用户组
+# 创建不登陆的用户 
+useradd -s /sbin/nologin bear
+# 修改用户组权限
+usermod -s /bin/bash bear
 ```
 
 
@@ -337,3 +367,102 @@ day=7
 find /data/logs/ -mtime +${day} -exec rm -rf {} \;
 ```
 
+高级级，支持多个目录。
+
+```sh
+#!/bin/bash
+###################
+# 功能：定时删除日志文件
+# 作者：百里
+# 时间：2021/03/25
+###################
+
+# 保留多少天
+day=$1
+
+shell_name=$(basename $0)
+
+if [ -z $day ];then
+    day=31
+    echo "默认删除${day}天的日志,可以自定义过期天数.${shell_name} 7"
+fi
+
+# 日志列表,支持多个目录
+logs_list=(
+"/data/logs/"
+)
+
+
+# 删除方法
+function rm_file() {
+   dir_path=$1
+   expired=$2
+   if [ ! -d $dir_path ];then
+	echo "${dir_path},目录不存在"
+        return 10
+   fi
+   if [ -z $expired ];then
+	echo "过期时间不能为空"
+	return 11
+   fi 
+   logs=$(find $dir_path -mtime +${expired} -name "*.log")
+   for log in ${logs[@]};do
+	now=$(date +%F_%T)
+	if test ! -f $log;then
+		echo "${log} 文件不存在"
+		continue
+	fi 
+	echo "${log} 已删除 in ${now}"
+	rm -f $log	
+   done
+   return 0
+}
+
+
+# 执行
+for item in ${logs_list[@]};do
+	rm_file $item $day
+	if [ $? -ne 0 ];then
+		exit 0
+	fi 
+done
+echo "successful!"
+exit 0
+```
+
+
+
+## 其它
+
+### 时间
+
+```sh
+#!/bin/bash
+echo $(date +%F)
+```
+
+时间格式列表：
+
+| `date +%c`       | locale’s date time                                | Sat May 9 11:49:47 2020 |
+| ---------------- | ------------------------------------------------- | ----------------------- |
+| `date +%x`       | locale’s date                                     | 05/09/20                |
+| `date +%X`       | locale’s time                                     | 11:49:47                |
+| `date +%A`       | locale’s full weekday name                        | Saturday                |
+| `date +%B`       | locale’s full month name                          | May                     |
+| `date +%m-%d-%Y` | MM-DD-YYYY date format                            | 05-09-2020              |
+| `date +%D`       | MM/DD/YY date format                              | 05/09/20                |
+| `date +%F`       | YYYY-MM-DD date format                            | 2020-05-09              |
+| `date +%T`       | HH:MM:SS time format                              | 11:44:15                |
+| `date +%u`       | Day of Week                                       | 6                       |
+| `date +%U`       | Week of Year with Sunday as first day of week     | 18                      |
+| `date +%V`       | ISO Week of Year with Monday as first day of week | 19                      |
+| `date +%j`       | Day of Year                                       | 130                     |
+| `date +%Z`       | Timezone                                          | PDT                     |
+| `date +%m`       | Month of year (MM)                                | 05                      |
+| `date +%d`       | Day of Month (DD)                                 | 09                      |
+| `date +%Y`       | Year (YY)                                         | 2020                    |
+| `date +%H`       | Hour (HH)                                         | 11                      |
+| `date +%H`       | Hour (HH) in 24-hour clock format                 | 11                      |
+| `date +%I`       | Hour in 12-hour clock format                      | 11                      |
+| `date +%p`       | locale’s equivalent of AM or PM                   | AM                      |
+| `date +%P`       | same as %p but in lower case                      | am                      |
