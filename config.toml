@@ -87,7 +87,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   url = "/tags/prometheus.html"
 [[menu.main]]
   parent = "教程"
-  name = "ELK"
+  name = "ELK入门"
   weight = 10
   identifier = "ELK"
   url = "/tags/elk.html"
