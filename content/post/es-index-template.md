@@ -2,7 +2,7 @@
 title: "Elasticsearch Template"
 date: 2020-07-23T20:51:05+08:00
 lastmod: 2020-07-23T20:51:05+08:00
-draft: false
+draft: true
 tags: ["elasticsearch", "elk"]
 categories: ["elasticsearch"]
 author: "百里"
