@@ -55,182 +55,19 @@ reward: true
    2. 如CPU的负载，协程数，并发请求量，内存使用量等
 3. Histogram 柱状图
    1. 是一种累积直方图，在一段时间范围内对数据进行采样，并将其计入可配置的存储桶（bucket）中。
-   2. 如请求持续时间或响应大小等。
+   2. histogram并不会保存数据采样点值，每个bucket只有记录样本数的counter,即histogram存储是区间的样本数据统计值。
+   3. 如请求持续时间或响应大小等。
 4. Summary 摘要
-
-### 安装
-
-> prometheus提供二进制,直接解压即可用.由 go 编写
->
-> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
-
-[官网下载](https://prometheus.io/download/)
-
-Centos 64x 选择下载 `*linux-amd64.tar.gz`
-
-```shell
-wget -c https://github.com/prometheus/prometheus/releases/download/v2.18.1/prometheus-2.18.1.darwin-amd64.tar.gz
-tar -xvf prometheus-2.18.1.darwin-amd64.tar.gz -C /usr/local/
-```
-
-### 运行
-
-创建 systemd 服务
-
-```shell
-cat > /usr/lib/systemd/system/prometheus.service << EOF
-[Unit]
-Description=Prometheus
-Documentation=https://prometheus.io/
-After=network.target
- 
-[Service]
-Type=simple
-ExecStart=/usr/local/prometheus/prometheus --config.file=/usr/local/prometheus/prometheus.yml --storage.tsdb.path=/usr/local/prometheus/data
-Restart=on-failure
-RestartSec=42s
- 
-[Install]
-WantedBy=multi-user.target
-EOF
-```
-
-刷新 systemd && 运行 && 查看
-
-```
-systemctl daemon-reload # 刷新 systemd 配置
-systemctl enable prometheus # 加入开机启动
-systemctl start prometheus # 启动服务 
-systemctl status prometheus # 查看详情
-```
-
-### 预览
-
-http://localhost:9090
-
-![image-20200831170056207](http://img.sgfoot.com/b/20200831170057.png?imageslim)
-
-自带也会产生监控数据
-
-http://192.168.61.66:9090/metrics 
-
-### nginx 反向代理
-
-> [htpasswd 参考](https://www.sgfoot.com/htpasswd.html)
-
-```powershell
-server {
-	listen 80;
-	server_name prome.sgfoot.com;
-	auth_basic "Auth";
-	auth_basic_user_file /usr/local/nginx/conf/vhost/htpasswd.users;
-	location / {
-		proxy_pass http://127.0.0.1:9090;
-		index index.html index.htm;
-	}
-}
-```
-
-## node_exporter 安装
-
-> 监控远程 linux 服务器CPU、内存、磁盘、I/O等信息
->
-> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
-
-https://prometheus.io/download/
-
-![image-20200831161413148](http://img.sgfoot.com/b/20200831161414.png?imageslim)
-
-```
-cd /usr/local/src
-wget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gz
-tar -zxvf node_exporter-1.0.1.linux-amd64.tar.gz -C /usr/local/
-cd /usr/local/
-mv node_exporter-1.0.1.linux-amd64 node_exporter
-cd node_exporter
-```
-
-### 运行
-
-先创建 systemd 服务
-
-```
-cat > /usr/lib/systemd/system/node_exporter.service << EOF
-[Unit]
-Description=node_exporter
-Documentation=https://prometheus.io/
-After=network.target
-
-[Service]
-Type=simple
-User=root
-ExecStart=/usr/local/node_exporter/node_exporter
-KillMode=process
-Restart=on-failure
-RestartSec=10s
-
-[Install]
-WantedBy=multi-user.target
-EOF
-```
-
-刷新 systemd && 运行 && 查看
-
-```
-systemctl daemon-reload # 刷新 systemd 配置
-systemctl enable node_exporter # 加入开机启动
-systemctl start node_exporter # 启动服务 
-systemctl status node_exporter # 查看详情
-```
-
-### 预览
-
-http://192.168.61.66:9100/metrics
-
-![image-20200831170126304](http://img.sgfoot.com/b/20200831170127.png?imageslim)
-
-
-
-## 添加监控节点
-
-### 添加 node_exporter
-
-```
-vim /usr/local/prometheus/prometheus.yml
-# 在最后一个节点 scrape_configs 下添加  job_name 
-# 空2个空格
-
-- job_name: 'node'  # 一定要全局唯一, 采集本机的 metrics，需要在本机安装 node_exporter
-    scrape_interval: 10s # 采集的间隔时间
-    static_configs:
-      - targets: ['localhost:9100']  # 本机 node_exporter 的 endpoint
-```
-
-![image-20200831171238397](http://img.sgfoot.com/b/20200831171239.png?imageslim)
-
-重启服务 
-
-```powershell
-systemctl restart prometheus
-```
-
-
-
-浏览器上查看添加是否成功
-
-http://192.168.61.66:9090/targets
-
-![image-20200831171651802](http://img.sgfoot.com/b/20200831171652.png?imageslim)
+   1. 是对百分数进行统计的。
+   2. 即在一段时间内（默认10分钟）的每个采样点进行统计，并形成分位图 （如：正态分布一样，统计低于60分不及格的同学比例，统计低于80分的同学比例，统计低于95分的同学比例） 
 
 
 
 ## 参考
 
 1. [文档下载](https://freemt.lanzous.com/iqhTfg8bzuf)
-2. [CentOS7.5 Prometheus2.5+Grafana5.4监控部署](https://blog.csdn.net/xiegh2014/article/details/84936174)
-
-## 软件下载
-
-1. [node_exporter1.0.1.linux.amd64](https://freemt.lanzous.com/ieS67g8exab)
-2. [prometheus-2.21.0.linux.amd64](https://freemt.lanzous.com/iXVhLg8exlc)
+2. [官方文档](https://prometheus.io/docs/introduction/overview/)
+3. [非官方中文文档](https://yunlzheng.gitbook.io/prometheus-book)
+4. [CentOS7.5 Prometheus2.5+Grafana5.4监控部署](https://blog.csdn.net/xiegh2014/article/details/84936174)
+5. https://blog.csdn.net/wtan825/article/details/94616813
 

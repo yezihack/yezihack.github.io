@@ -1,7 +1,7 @@
 ---
-title: "监控 Grafana入门(二)"
+title: "监控 Grafana 入门(四)"
 date: 2020-08-31T20:29:51+08:00
-lastmod: 2020-08-31T20:29:51+08:00
+lastmod: 2021-09-24T20:29:51+08:00
 draft: false
 tags: ["监控", "grafana", "prometheus", "教程"]
 categories: ["监控"]
@@ -69,6 +69,20 @@ systemctl start grafana
 ```
 
 ![image-20200901105728756](http://img.sgfoot.com/b/20200901105729.png?imageslim)
+
+
+
+## docker 安装
+
+```sh
+docker run -d \
+  -p 3000:3000 \
+  --name=grafana \
+  -v /opt/grafana-storage:/var/lib/grafana \
+  grafana/grafana
+```
+
+
 
 
 

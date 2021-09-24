@@ -2,9 +2,9 @@
 title: "Prometheus Nginx"
 date: 2020-11-05T20:08:17+08:00
 lastmod: 2020-11-05T20:08:17+08:00
-draft: false
-tags: ["", ""]
-categories: [""]
+draft: true
+tags: ["prometheus", "监控", "教程"]
+categories: ["监控"]
 author: "百里"
 comment: false
 toc: true
