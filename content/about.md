@@ -67,6 +67,15 @@ music_auto: 1
 | 小米技术       | https://xiaomi-info.github.io/         | ✫✫✫    |
 | linkedin技术   | https://engineering.linkedin.com/blog  | ✫✫✫    |
 
+## Golang
+
+| 名称                | 网址                   |
+| ------------------- | ---------------------- |
+| Awesome Go | https://sgfoot.com/awesome-go.html   |
+
+
+
+
 ## 摄影网
 
 | 名称                | 网址                   |
