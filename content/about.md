@@ -72,7 +72,12 @@ music_auto: 1
 | 名称                | 网址                   |
 | ------------------- | ---------------------- |
 | Awesome Go | https://sgfoot.com/awesome-go.html   |
+| Awesmoe Go Cn 更全 | https://github.com/yinggaozhen/awesome-go-cn |
 
+## 云原生 CNCF
+| 名称                | 网址                   |
+| ------------------- | ---------------------- |
+| CNCF 官网毕业项目 | https://www.cncf.io/projects/   |
 
 
 
