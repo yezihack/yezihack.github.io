@@ -21,11 +21,9 @@ music_auto: 1
 
 
 
-## 第一章 kubernetes 介绍
+> 本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
 
-本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
-
-### 应用部署方式演变
+## 应用部署方式演变
 
 在部署应用程序的方式上，主要经历了三个时代：
 
@@ -66,7 +64,7 @@ music_auto: 1
 
 ![](https://img.sgfoot.com/b/image-20200524150339551.png?imageslim)
 
-### kubernetes简介
+## kubernetes简介
 
 ![](https://img.sgfoot.com/b/v2-353855dec58fcaa1477e90a869b30ad0_1440w.jpg?imageslim)
 
@@ -83,7 +81,7 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 - **版本回退**：如果发现新发布的程序版本有问题，可以立即回退到原来的版本
 - **存储编排**：可以根据容器自身的需求自动创建存储卷
 
-### kubernetes组件
+## kubernetes组件
 
 一个kubernetes集群主要是由**控制节点(master)**、**工作节点(node)**构成，每个节点上都会安装不同的组件。
 
@@ -129,7 +127,7 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 
 ![](https://img.sgfoot.com/b/image-20200403224313355.png?imageslim)
 
-### kubernetes概念
+## kubernetes概念
 
 **Master**：集群控制节点，每个集群需要至少一个master节点负责集群的管控
 
