@@ -35,9 +35,10 @@ music_auto: 1
 
   - 可以在根容器上设置Ip地址，其它容器都此Ip（Pod IP），以实现Pod内部的网路通信
 
-    ~~~md
-    这里是Pod内部的通讯，Pod的之间的通讯采用虚拟二层网络技术来实现，我们当前环境用的是Flannel
-    ~~~
+
+这里是Pod内部的通讯，Pod的之间的通讯采用虚拟二层网络技术来实现，我们当前环境用的是Flannel
+
+  
 
 ### Pod定义
 
@@ -302,9 +303,9 @@ Events:
 
 ### 启动命令
 
-    在前面的案例中，一直有一个问题没有解决，就是的busybox容器一直没有成功运行，那么到底是什么原因导致这个容器的故障呢？
-    
-    原来busybox并不是一个程序，而是类似于一个工具类的集合，kubernetes集群启动管理后，它会自动关闭。解决方法就是让其一直在运行，这就用到了command配置。
+在前面的案例中，一直有一个问题没有解决，就是的busybox容器一直没有成功运行，那么到底是什么原因导致这个容器的故障呢？
+
+原来busybox并不是一个程序，而是类似于一个工具类的集合，kubernetes集群启动管理后，它会自动关闭。解决方法就是让其一直在运行，这就用到了command配置。
 
 创建pod-command.yaml文件，内容如下：
 
@@ -355,14 +356,12 @@ pod-command   2/2     Runing   0          2s
 13:35:41
 ~~~
 
-```md
 特别说明：
     通过上面发现command已经可以完成启动命令和传递参数的功能，为什么这里还要提供一个args选项，用于传递参数呢?这其实跟docker有点关系，kubernetes中的command、args两项其实是实现覆盖Dockerfile中ENTRYPOINT的功能。
  1 如果command和args均没有写，那么用Dockerfile的配置。
  2 如果command写了，但args没有写，那么Dockerfile默认的配置会被忽略，执行输入的command
  3 如果command没写，但args写了，那么Dockerfile中配置的ENTRYPOINT的命令会被执行，使用当前args的参数
  4 如果command和args都写了，那么Dockerfile的配置被忽略，执行command并追加上args参数
-```
 
 ###  环境变量
 
@@ -465,7 +464,7 @@ spec:
 
 ### 资源配额
 
-    容器中的程序要运行，肯定是要占用一定资源的，比如cpu和内存等，如果不对某个容器的资源做限制，那么它就可能吃掉大量资源，导致其它容器无法运行。针对这种情况，kubernetes提供了对内存和cpu的资源进行配额的机制，这种机制主要通过resources选项实现，他有两个子选项：
+容器中的程序要运行，肯定是要占用一定资源的，比如cpu和内存等，如果不对某个容器的资源做限制，那么它就可能吃掉大量资源，导致其它容器无法运行。针对这种情况，kubernetes提供了对内存和cpu的资源进行配额的机制，这种机制主要通过resources选项实现，他有两个子选项：
 
 - limits：用于限制运行时容器的最大占用资源，当容器占用资源超过limits时会被终止，并进行重启
 
@@ -754,7 +753,7 @@ postStart...
 
 ### 容器探测
 
-    容器探测用于检测容器中的应用实例是否正常工作，是保障业务可用性的一种传统机制。如果经过探测，实例的状态不符合预期，那么kubernetes就会把该问题实例" 摘除 "，不承担业务流量。kubernetes提供了两种探针来实现容器探测，分别是：
+容器探测用于检测容器中的应用实例是否正常工作，是保障业务可用性的一种传统机制。如果经过探测，实例的状态不符合预期，那么kubernetes就会把该问题实例" 摘除 "，不承担业务流量。kubernetes提供了两种探针来实现容器探测，分别是：
 
 - liveness probes：存活性探针，用于检测应用实例当前是否处于正常运行状态，如果不是，k8s会重启容器
 
@@ -986,7 +985,7 @@ spec:
 
 ### 重启策略
 
-    在上一节中，一旦容器探测出现了问题，kubernetes就会对容器所在的Pod进行重启，其实这是由pod的重启策略决定的，pod的重启策略有 3 种，分别如下：
+在上一节中，一旦容器探测出现了问题，kubernetes就会对容器所在的Pod进行重启，其实这是由pod的重启策略决定的，pod的重启策略有 3 种，分别如下：
 
 - Always ：容器失效时，自动重启该容器，这也是默认值。
 - OnFailure ： 容器终止运行且退出码不为0时重启
@@ -1038,7 +1037,7 @@ pod-restartpolicy      0/1     Running   0          5min42s
 
 ## Pod调度
 
-    在默认情况下，一个Pod在哪个Node节点上运行，是由Scheduler组件采用相应的算法计算出来的，这个过程是不受人工控制的。但是在实际使用中，这并不满足的需求，因为很多情况下，我们想控制某些Pod到达某些节点上，那么应该怎么做呢？这就要求了解kubernetes对Pod的调度规则，kubernetes提供了四大类调度方式：
+在默认情况下，一个Pod在哪个Node节点上运行，是由Scheduler组件采用相应的算法计算出来的，这个过程是不受人工控制的。但是在实际使用中，这并不满足的需求，因为很多情况下，我们想控制某些Pod到达某些节点上，那么应该怎么做呢？这就要求了解kubernetes对Pod的调度规则，kubernetes提供了四大类调度方式：
 
 - 自动调度：运行在哪个节点上完全由Scheduler经过一系列的算法计算得出
 - 定向调度：NodeName、NodeSelector
@@ -1047,11 +1046,11 @@ pod-restartpolicy      0/1     Running   0          5min42s
 
 ### 定向调度
 
-    定向调度，指的是利用在pod上声明nodeName或者nodeSelector，以此将Pod调度到期望的node节点上。注意，这里的调度是强制的，这就意味着即使要调度的目标Node不存在，也会向上面进行调度，只不过pod运行失败而已。
+定向调度，指的是利用在pod上声明nodeName或者nodeSelector，以此将Pod调度到期望的node节点上。注意，这里的调度是强制的，这就意味着即使要调度的目标Node不存在，也会向上面进行调度，只不过pod运行失败而已。
 
 **NodeName**
 
-    NodeName用于强制约束将Pod调度到指定的Name的Node节点上。这种方式，其实是直接跳过Scheduler的调度逻辑，直接将Pod调度到指定名称的节点。
+NodeName用于强制约束将Pod调度到指定的Name的Node节点上。这种方式，其实是直接跳过Scheduler的调度逻辑，直接将Pod调度到指定名称的节点。
 
 接下来，实验一下：创建一个pod-nodename.yaml文件
 
@@ -1093,7 +1092,7 @@ pod-nodename   0/1     Pending   0          6s    <none>   node3   ......
 
 **NodeSelector**
 
-    NodeSelector用于将pod调度到添加了指定标签的node节点上。它是通过kubernetes的label-selector机制实现的，也就是说，在pod创建之前，会由scheduler使用MatchNodeSelector调度策略进行label匹配，找出目标node，然后将pod调度到目标节点，该匹配规则是强制约束。
+NodeSelector用于将pod调度到添加了指定标签的node节点上。它是通过kubernetes的label-selector机制实现的，也就是说，在pod创建之前，会由scheduler使用MatchNodeSelector调度策略进行label匹配，找出目标node，然后将pod调度到目标节点，该匹配规则是强制约束。
 
 接下来，实验一下：
 
@@ -1156,9 +1155,9 @@ Events:
 
 ### 亲和性调度
 
-    上一节，介绍了两种定向调度的方式，使用起来非常方便，但是也有一定的问题，那就是如果没有满足条件的Node，那么Pod将不会被运行，即使在集群中还有可用Node列表也不行，这就限制了它的使用场景。
-    
-    基于上面的问题，kubernetes还提供了一种亲和性调度（Affinity）。它在NodeSelector的基础之上的进行了扩展，可以通过配置的形式，实现优先选择满足条件的Node进行调度，如果没有，也可以调度到不满足条件的节点上，使调度更加灵活。
+上一节，介绍了两种定向调度的方式，使用起来非常方便，但是也有一定的问题，那就是如果没有满足条件的Node，那么Pod将不会被运行，即使在集群中还有可用Node列表也不行，这就限制了它的使用场景。
+
+基于上面的问题，kubernetes还提供了一种亲和性调度（Affinity）。它在NodeSelector的基础之上的进行了扩展，可以通过配置的形式，实现优先选择满足条件的Node进行调度，如果没有，也可以调度到不满足条件的节点上，使调度更加灵活。
 
 Affinity主要分为三类：
 
@@ -1569,7 +1568,7 @@ taint3-6d78dbd749-tktkq   0/1     Pending   0          6s    <none>   <none>   <
 
 **容忍（Toleration）**
 
-    上面介绍了污点的作用，我们可以在node上添加污点用于拒绝pod调度上来，但是如果就是想将一个pod调度到一个有污点的node上去，这时候应该怎么做呢？这就要使用到**容忍**。
+上面介绍了污点的作用，我们可以在node上添加污点用于拒绝pod调度上来，但是如果就是想将一个pod调度到一个有污点的node上去，这时候应该怎么做呢？这就要使用到**容忍**。
 
 ![image-20200514095913741](https://img.sgfoot.com/b/image-20200514095913741.png?imageslim)
 
@@ -1630,7 +1629,7 @@ FIELDS:
 ## 参考
 
 1. 以上笔记来自于黑马视频课程整理.
-2. 视频入口：https://www.bilibili.com/video/BV1cK4y1L7Am
+2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
 
 ## 关于作者
 我的博客：https://www.sgfoot.com

@@ -39,7 +39,7 @@ music_auto: 1
 
 ## YAML语言介绍
 
-    YAML是一个类似 XML、JSON 的标记性语言。它强调以**数据**为中心，并不是以标识语言为重点。因而YAML本身的定义比较简单，号称"一种人性化的数据格式语言"。
+YAML是一个类似 XML、JSON 的标记性语言。它强调以**数据**为中心，并不是以标识语言为重点。因而YAML本身的定义比较简单，号称"一种人性化的数据格式语言"。
 
 ~~~xml
 <heima>
@@ -111,7 +111,7 @@ address: [顺义,昌平]
 > 小提示：
 >
 > 	1  书写yaml切记`:` 后面要加一个空格
-> 		
+> 			
 > 	2  如果需要将多段yaml配置放在一个文件中，中间要使用`---`分隔
 >
 >  3 下面是一个yaml转json的网站，可以通过它验证yaml是否书写正确
@@ -142,7 +142,7 @@ address: [顺义,昌平]
 
 **kubectl命令**
 
-    kubectl是kubernetes集群的命令行工具，通过它能够对集群本身进行管理，并能够在集群上进行容器化应用的安装部署。kubectl命令的语法如下：
+kubectl是kubernetes集群的命令行工具，通过它能够对集群本身进行管理，并能够在集群上进行容器化应用的安装部署。kubectl命令的语法如下：
 
 ~~~md
 kubectl [command] [type] [name] [flags]
@@ -542,10 +542,6 @@ scp  -r  HOME/.kube   node1: HOME/
  删除资源              使用命令式对象配置 kubectl delete -f  XXX.yaml
 
  查询资源              使用命令式对象管理 kubectl get(describe) 资源名称
-
-
-
-
 
 
 

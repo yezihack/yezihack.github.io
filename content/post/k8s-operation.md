@@ -397,9 +397,9 @@ spec:
 
 ## Deployment
 
-    在kubernetes中，Pod是最小的控制单元，但是kubernetes很少直接控制Pod，一般都是通过Pod控制器来完成的。Pod控制器用于pod的管理，确保pod资源符合预期的状态，当pod的资源出现故障时，会尝试进行重启或重建pod。
-    
-     在kubernetes中Pod控制器的种类有很多，本章节只介绍一种：Deployment。
+在kubernetes中，Pod是最小的控制单元，但是kubernetes很少直接控制Pod，一般都是通过Pod控制器来完成的。Pod控制器用于pod的管理，确保pod资源符合预期的状态，当pod的资源出现故障时，会尝试进行重启或重建pod。
+
+ 在kubernetes中Pod控制器的种类有很多，本章节只介绍一种：Deployment。
 
 <img src="https://img.sgfoot.com/b/image-20200408193950807.png?imageslim" alt="image-20200408193950807" style="border: 1px solid; zoom: 80%;" />
 
