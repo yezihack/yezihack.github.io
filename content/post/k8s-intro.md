@@ -19,6 +19,14 @@ music_auto: 1
 # description: ""
 ---
 
+- [应用部署方式演变](#应用部署方式演变)
+- [kubernetes简介](#kubernetes简介)
+- [kubernetes组件](#kubernetes组件)
+- [kubernetes概念](#kubernetes概念)
+- [参考](#参考)
+
+  
+
 
 
 > 本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
