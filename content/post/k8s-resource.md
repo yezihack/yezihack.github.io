@@ -111,7 +111,7 @@ address: [顺义,昌平]
 > 小提示：
 >
 > 	1  书写yaml切记`:` 后面要加一个空格
-> 			
+> 					
 > 	2  如果需要将多段yaml配置放在一个文件中，中间要使用`---`分隔
 >
 >  3 下面是一个yaml转json的网站，可以通过它验证yaml是否书写正确
@@ -548,9 +548,7 @@ scp  -r  HOME/.kube   node1: HOME/
 ## 参考
 
 1. 以上笔记来自于黑马视频课程整理.
-2. 视频入口：https://www.bilibili.com/video/BV1cK4y1L7Am
-
-
+2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
 
 
 

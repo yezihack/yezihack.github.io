@@ -101,7 +101,10 @@ kubectl cluster-info --context kind-kind
 kind delete cluster
 ```
 
+## 参考
 
+1. 以上笔记来自于黑马视频课程整理.
+2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
 
 
 ## 关于作者
