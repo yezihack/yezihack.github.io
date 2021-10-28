@@ -1,5 +1,5 @@
 ---
-title: "第八章 Kubernetes 数据存储"
+title: "第九章 Kubernetes 数据存储"
 date: 2021-10-28T18:08:54+08:00
 lastmod: 2021-10-28T18:08:54+08:00
 draft: false

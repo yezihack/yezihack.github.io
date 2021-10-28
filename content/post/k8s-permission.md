@@ -1,5 +1,5 @@
 ---
-title: "第九章 Kubernetes 权限认证"
+title: "第十章 Kubernetes 权限认证"
 date: 2021-10-28T18:18:07+08:00
 lastmod: 2021-10-28T18:18:07+08:00
 draft: false

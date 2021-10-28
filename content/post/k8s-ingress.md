@@ -1,5 +1,5 @@
 ---
-title: "第七章 Kubernetes Ingress 介绍"
+title: "第八章 Kubernetes Ingress 介绍"
 date: 2021-10-28T17:58:04+08:00
 lastmod: 2021-10-28T17:58:04+08:00
 draft: false

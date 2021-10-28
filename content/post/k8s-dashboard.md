@@ -1,5 +1,5 @@
 ---
-title: "第十章 Kubernetes Dashboard"
+title: "第十一章 Kubernetes Dashboard"
 date: 2021-10-28T18:18:16+08:00
 lastmod: 2021-10-28T18:18:16+08:00
 draft: false
