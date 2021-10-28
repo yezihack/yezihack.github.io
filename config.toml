@@ -98,6 +98,12 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   identifier = "design"
   url = "/tags/设计模式.html"
 [[menu.main]]
+  parent = "教程"
+  name = "Kubernetes 笔记整理"
+  weight = 15
+  identifier = "k8s"
+  url = "/tags/kubernetes.html"
+[[menu.main]]
   name = "自我驱动"
   weight = 36
 [[menu.main]]
