@@ -91,11 +91,11 @@ ca.crt:     1025 bytes
 
 在登录页面上输入上面的token
 
-<img src="https://img.sgfoot.com/b/image-20200520144548997.png?imageslim" alt="image-20200520144548997" style="zoom:80%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520144548997.png?imageslim)
 
 出现下面的页面代表成功
 
-<img src="https://img.sgfoot.com/b/image-20200520144959353.png?imageslim" alt="image-20200520144959353" style="zoom:80%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520144959353.png?imageslim)
 
 ## 使用DashBoard
 
@@ -105,31 +105,31 @@ ca.crt:     1025 bytes
 
 选择指定的命名空间`dev`，然后点击`Deployments`，查看dev空间下的所有deployment
 
-<img src="https://img.sgfoot.com/b/image-20200520154628679.png?imageslim" style="zoom:90%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520154628679.png?imageslim)
 
 **扩缩容**
 
 在`Deployment`上点击`规模`，然后指定`目标副本数量`，点击确定
 
-<img src="https://img.sgfoot.com/b/image-20200520162605102.png?imageslim" style="zoom:90%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520162605102.png?imageslim)
 
 **编辑**
 
 在`Deployment`上点击`编辑`，然后修改`yaml文件`，点击确定
 
-<img src="https://img.sgfoot.com/b/image-20200520163253644.png?imageslim" alt="image-20200520163253644" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520163253644.png?imageslim)
 
 **查看Pod**
 
 点击`Pods`, 查看pods列表
 
-<img src="https://img.sgfoot.com/b/image-20200520163552110.png?imageslim" style="zoom:90%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520163552110.png?imageslim)
 
 **操作Pod**
 
 选中某个Pod，可以对其执行日志（logs）、进入执行（exec）、编辑、删除操作
 
-<img src="https://img.sgfoot.com/b/image-20200520163832827.png?imageslim" style="zoom:90%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520163832827.png?imageslim)
 
 > Dashboard提供了kubectl的绝大部分功能，这里不再一一演示
 

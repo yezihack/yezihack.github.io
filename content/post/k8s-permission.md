@@ -33,7 +33,7 @@ music_auto: 1
 
 - **Service Account**：kubernetes管理的账号，用于为Pod中的服务进程在访问Kubernetes时提供身份标识。
 
-<img src="https://img.sgfoot.com/b/image-20200520102949189.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520102949189.png?imageslim)
 
 **认证、授权与准入控制**   
 
@@ -43,7 +43,7 @@ ApiServer是访问及管理资源对象的唯一入口。任何一个请求访�
 - Authorization（授权）：  判断用户是否有权限对访问的资源执行特定的动作
 - Admission Control（准入控制）：用于补充授权机制以实现更加精细的访问控制功能。
 
-<img src="https://img.sgfoot.com/b/image-20200520103942580.png?imageslim" style="zoom:100%; border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200520103942580.png?imageslim)
 
 ## 认证管理
 
@@ -61,7 +61,7 @@ Kubernetes集群安全的最关键点在于如何识别并认证客户端身份�
 
 	- 这种认证方式是安全性最高的一种方式，但是同时也是操作起来最麻烦的一种方式。
 
-<img src="https://img.sgfoot.com/b/image-20200518211037434.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200518211037434.png?imageslim)
 
 **HTTPS认证大体分为3个过程：**
 
@@ -119,7 +119,7 @@ RBAC(Role-Based Access Control) 基于角色的访问控制，主要是在描述
 - 角色：代表着一组定义在资源上的可操作动作(权限)的集合
 - 绑定：将定义好的角色跟用户绑定在一起
 
-<img src="https://img.sgfoot.com/b/image-20200519181209566.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200519181209566.png?imageslim)
 
 RBAC引入了4个顶级资源对象：
 

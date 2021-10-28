@@ -47,7 +47,7 @@ kubernetes的Volume支持多种类型，比较常见的有下面几个：
 
 ​    在一个Pod中准备两个容器nginx和busybox，然后声明一个Volume分别挂在到两个容器的目录中，然后nginx容器负责向Volume中写日志，busybox中通过命令将日志内容读到控制台。
 
-<img src="https://img.sgfoot.com/b/image-20200413174713773.png?imageslim" style="zoom:80%;border:solid 1px" />
+![](https://img.sgfoot.com/b/image-20200413174713773.png?imageslim)
 
 创建一个volume-emptydir.yaml
 
@@ -102,7 +102,7 @@ volume-emptydir   2/2     Running   0          97s   10.244.1.100   node1  .....
 
 ​    HostPath就是将Node主机中一个实际目录挂在到Pod中，以供容器使用，这样的设计就可以保证Pod销毁了，但是数据依据可以存在于Node主机上。
 
-<img src="https://img.sgfoot.com/b/image-20200413214031331.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200413214031331.png?imageslim)
 
 创建一个volume-hostpath.yaml：
 
@@ -172,7 +172,7 @@ access.log  error.log
 
 ​    NFS是一个网络文件存储系统，可以搭建一台NFS服务器，然后将Pod中的存储直接连接到NFS系统上，这样的话，无论Pod在节点上怎么转移，只要Node跟NFS的对接没问题，数据就可以成功访问。
 
-<img src="https://img.sgfoot.com/b/image-20200413215133559.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200413215133559.png?imageslim)
 
 1）首先要准备nfs的服务器，这里为了简单，直接是master节点做nfs服务器
 
@@ -256,7 +256,7 @@ access.log  error.log
 
 ​    PVC（Persistent Volume Claim）是持久卷声明的意思，是用户对于存储需求的一种声明。换句话说，PVC其实就是用户向kubernetes系统发出的一种资源需求申请。
 
-<img src="https://img.sgfoot.com/b/image-20200514194111567.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200514194111567.png?imageslim)
 
 使用了PV和PVC之后，工作可以得到进一步的细分：
 
@@ -624,7 +624,7 @@ PVC和PV是一一对应的，PV和PVC之间的相互作用遵循以下生命周�
 
   对于PV，管理员可以设定回收策略，用于设置与之绑定的PVC释放资源之后如何处理遗留数据的问题。只有PV的存储空间完成回收，才能供新的PVC绑定和使用
 
-<img src="https://img.sgfoot.com/b/image-20200515002806726.png?imageslim" style="zoom:100%;border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200515002806726.png?imageslim)
 
 ## 配置存储
 

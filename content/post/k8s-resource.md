@@ -33,7 +33,7 @@ music_auto: 1
 >
 >    当然，如果Pod中程序的数据需要持久化，kubernetes还提供了各种`存储`系统。
 
-<img src="https://img.sgfoot.com/b/image-20200406225334627.png?imageslim" alt="image-20200406225334627" style="zoom:200%;" />
+![](https://img.sgfoot.com/b/image-20200406225334627.png?imageslim)
 
 >  学习kubernetes的核心，就是学习如何对集群上的`Pod、Pod控制器、Service、存储`等各种资源进行操作
 

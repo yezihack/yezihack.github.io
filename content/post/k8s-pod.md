@@ -24,7 +24,7 @@ music_auto: 1
 
 ## Pod结构
 
-<img src="https://img.sgfoot.com/b/image-20200407121501907.png?imageslim" alt="image-20200407121501907" style="zoom:80%;" />
+![](https://img.sgfoot.com/b/image-20200407121501907.png?imageslim)
 
 每个Pod中都可以包含一个或者多个容器，这些容器可以分为两类：
 
@@ -548,7 +548,7 @@ Warning  FailedScheduling  <unknown>  default-scheduler  0/2 nodes are available
 
 - pod终止过程
 
-<img src="https://img.sgfoot.com/b/image-20200412111402706.png?imageslim" alt="image-20200412111402706" style="border:solid 1px" />
+![](https://img.sgfoot.com/b/image-20200412111402706.png?imageslim)
 
 
 在整个生命周期中，Pod会出现5种**状态**（**相位**），分别如下：
@@ -575,7 +575,7 @@ Warning  FailedScheduling  <unknown>  default-scheduler  0/2 nodes are available
 
 6. apiServer将接收到的pod状态信息存入etcd中
 
-   <img src="https://img.sgfoot.com/b/image-20200406184656917.png?imageslim" alt="image-20200406184656917" style="zoom:100%;" />
+   ![](https://img.sgfoot.com/b/image-20200406184656917.png?imageslim)
 
 
 **pod的终止过程**
@@ -1505,7 +1505,7 @@ pod-podantiaffinity-required   1/1     Running   0          30s   10.244.1.96   
 - NoSchedule：kubernetes将不会把Pod调度到具有该污点的Node上，但不会影响当前Node上已存在的Pod
 - NoExecute：kubernetes将不会把Pod调度到具有该污点的Node上，同时也会将Node上已存在的Pod驱离
 
-<img src="https://img.sgfoot.com/b/image-20200605021831545.png?imageslim" alt="image-20200605021606508" style="border:1px solid" />
+![](https://img.sgfoot.com/b/image-20200605021831545.png?imageslim)
 
 使用kubectl设置和去除污点的命令示例如下：
 
