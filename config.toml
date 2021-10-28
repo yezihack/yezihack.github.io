@@ -100,7 +100,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 [[menu.main]]
   parent = "教程"
   name = "Kubernetes 笔记整理"
-  weight = 15
+  weight = 16
   identifier = "k8s"
   url = "/tags/kubernetes.html"
 [[menu.main]]
