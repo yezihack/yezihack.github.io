@@ -1,7 +1,7 @@
 ---
-title: "第三章 Kubernetes 实战操作"
-date: 2021-10-28T16:19:54+08:00
-lastmod: 2021-10-28T16:19:54+08:00
+title: "第四章 Kubernetes 实战操作"
+date: 2021-10-28T16:33:37+08:00
+lastmod: 2021-10-28T16:33:37+08:00
 draft: false
 tags: ["k8s", "云原生", "kubernetes"]
 categories: ["kubernetes"]
@@ -605,9 +605,8 @@ spec:
 
 ## 参考
 
-1. 以上笔记来自于黑马视频课程整理，入口：https://www.bilibili.com/video/BV1cK4y1L7Am
-
-
+1. 以上笔记来自于黑马视频课程整理.
+2. 视频入口：https://www.bilibili.com/video/BV1cK4y1L7Am
 
 ## 关于作者
 我的博客：https://www.sgfoot.com
