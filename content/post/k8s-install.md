@@ -27,6 +27,8 @@ music_auto: 1
 
 > kubernetes 安装比较复杂，用于学习可以搭建单机集群安装。
 > 推荐使用 linux 系统安装实验。
+>
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
 
 kubernetes有多种部署方式，目前主流的方式有kind、kubeadm、minikube、二进制包
 
@@ -101,10 +103,14 @@ kubectl cluster-info --context kind-kind
 kind delete cluster
 ```
 
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+
 ## 参考
 
 1. 以上笔记来自于黑马视频课程整理.
 2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
+
+   
 
 
 ## 关于作者

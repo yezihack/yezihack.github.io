@@ -21,6 +21,8 @@ music_auto: 1
 
 
 >  本章节将介绍如何在kubernetes集群中部署一个nginx服务，并且能够对其进行访问。
+>
+>  找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
 
 ## Namespace
 
@@ -604,10 +606,14 @@ spec:
 
 
 
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+
 ## 参考
 
 1. 以上笔记来自于黑马视频课程整理.
 2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
+
+   
 
 ## 关于作者
 我的博客：https://www.sgfoot.com

@@ -30,6 +30,8 @@ music_auto: 1
 
 
 > 本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
+>
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
 
 ## 应用部署方式演变
 
@@ -153,10 +155,14 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 
 
 
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+
 ## 参考
 
 1. 以上笔记来自于黑马视频课程整理.
 2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
+
+   
 
 ## 关于作者
 我的博客：https://www.sgfoot.com

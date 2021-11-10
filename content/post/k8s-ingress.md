@@ -20,6 +20,8 @@ music_auto: 1
 ---
 
 > 本章节主要介绍kubernetes的流量负载组件：Ingress。
+>
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
 
    在前面课程中已经提到，Service对集群之外暴露服务的主要方式有两种：NotePort和LoadBalancer，但是这两种方式，都有一定的缺点：
 
@@ -292,12 +294,14 @@ tomcat.itheima.com /  tomcat-service:8080(10.244.1.99:8080,10.244.2.117:8080,10.
 # 下面可以通过浏览器访问https://nginx.itheima.com:31335 和 https://tomcat.itheima.com:31335来查看了
 ~~~
 
-
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
 
 ## 参考
 
 1. 以上笔记来自于黑马视频课程整理.
 2. 视频入口：[https://www.bilibili.com/video/BV1cK4y1L7Am](https://www.bilibili.com/video/BV1cK4y1L7Am)
+
+   
 
 ## 关于作者
 我的博客：https://www.sgfoot.com

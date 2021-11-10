@@ -1,10 +1,10 @@
 ---
-title: "K8s Mindmap"
+title: "Kubernetes 总纲及脑图"
 date: 2021-11-09T18:42:18+08:00
 lastmod: 2021-11-09T18:42:18+08:00
 draft: false
-tags: ["", ""]
-categories: [""]
+tags: ["k8s", "云原生", "kubernetes"]
+categories: ["kubernetes"]
 author: "百里"
 comment: false
 toc: true
