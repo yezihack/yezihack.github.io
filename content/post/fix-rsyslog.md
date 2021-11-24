@@ -17,7 +17,7 @@ reward: true
 
 使用`top` 再按大写`M`， 对内存采用降序显示，一目了然看到谁占用内存最高。
 
-![image-20201016104223772](http://img.sgfoot.com/b/20201016104225.png?imageslim)
+![image-20201016104223772](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201016104225.png?imageslim)
 
 定位到`rsyslogd`进程占用内存25.7%，非常可怕，需要急需解决掉它。
 
@@ -29,7 +29,7 @@ reward: true
 
 `rsyslogd`是它的守护进程，可以通过`systemctl status rsyslog` 查看运行状态
 
-![image-20201016110056427](http://img.sgfoot.com/b/20201016110057.png?imageslim)
+![image-20201016110056427](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201016110057.png?imageslim)
 
 红色显示错误信息。
 

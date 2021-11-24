@@ -126,7 +126,7 @@ scrape_configs:
 
    http://127.0.0.1:9090/targets
 
-   ![image-20200902162755205](http://img.sgfoot.com/b/20200902162756.png?imageslim)
+   ![image-20200902162755205](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200902162756.png?imageslim)
 
 ## MySQL Over 图表安装
 
@@ -134,17 +134,17 @@ scrape_configs:
 
 1. 在 Grafana 导入 ID： 7362 添加图表
 
-![image-20200902163025933](http://img.sgfoot.com/b/20200902163027.png?imageslim)
+![image-20200902163025933](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200902163027.png?imageslim)
 
 2. Import ID: 7362
 
-![image-20200902163203183](http://img.sgfoot.com/b/20200902163204.png?imageslim)
+![image-20200902163203183](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200902163204.png?imageslim)
 
 3. 查看图表
 
-   ![image-20200902163255102](http://img.sgfoot.com/b/20200902163256.png?imageslim)
+   ![image-20200902163255102](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200902163256.png?imageslim)
 
-![image-20200902163326760](http://img.sgfoot.com/b/20200902163327.png?imageslim)
+![image-20200902163326760](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200902163327.png?imageslim)
 
 
 

@@ -47,7 +47,7 @@ reward: true
 
 最终实现了数据从发送端到接收端的传递。
 
-![](http://img.sgfoot.com/b/20200708102218?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200708102218?imageslim)
 ### TCP 传输控制协议
 传输层中一个可靠的, 面向连接的协议. 面向连接的协议提供更复杂的流量控制和错误控制, 相比UDP更可靠.因额外需要错误检查,所以比UDP慢
 ### UDP 用户数据报协议

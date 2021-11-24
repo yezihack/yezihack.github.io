@@ -23,7 +23,7 @@ music_auto: 1
 
 > 以 golang 构建项目为例。
 
-![cicd](https://img.sgfoot.com/b/20210203173409.png?imageslim)
+![cicd](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203173409.png?imageslim)
 
 
 
@@ -34,9 +34,9 @@ music_auto: 1
 3. 可选：也可以复制已创建的任务
 4. 确定提交
 
-![image-20210203153829359](https://img.sgfoot.com/b/20210203153838.png?imageslim)
+![image-20210203153829359](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203153838.png?imageslim)
 
-![image-20210203153954925](https://img.sgfoot.com/b/20210203153955.png?imageslim)
+![image-20210203153954925](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203153955.png?imageslim)
 
 
 
@@ -44,7 +44,7 @@ music_auto: 1
 
 > 再次编辑刚创建的任务
 
-![image-20210203154135859](https://img.sgfoot.com/b/20210203154136.png?imageslim)
+![image-20210203154135859](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203154136.png?imageslim)
 
 
 
@@ -62,7 +62,7 @@ music_auto: 1
 8. 重启服务
 9. 等等
 
-![image-20210203171056828](https://img.sgfoot.com/b/20210203171058.png?imageslim)
+![image-20210203171056828](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171058.png?imageslim)
 
 ## Job Notifications
 
@@ -71,14 +71,14 @@ music_auto: 1
 > 构选： 参数化构建过程
 
 1. GIT参数
-   1. ![image-20210203171232726](https://img.sgfoot.com/b/20210203171234.png?imageslim)
+   1. ![image-20210203171232726](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171234.png?imageslim)
 2. 选项参数
    1. 配置“构建” 和 “回滚” 参数。供构建时选择
-   2. ![image-20210203171306056](https://img.sgfoot.com/b/20210203171307.png?imageslim)
+   2. ![image-20210203171306056](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171307.png?imageslim)
 3. 字符参数
    1. 设置填写构建ID号。
-   2. ![image-20210203171413932](https://img.sgfoot.com/b/20210203171415.png?imageslim)
-   3. ![image-20210203171503041](https://img.sgfoot.com/b/20210203171504.png?imageslim)
+   2. ![image-20210203171413932](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171415.png?imageslim)
+   3. ![image-20210203171503041](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171504.png?imageslim)
 
 
 
@@ -88,7 +88,7 @@ music_auto: 1
 
 **填写有效的 GIT 地址。并使用授权的用户帐号，保证可以访问仓库代码。**
 
-![image-20210203171635027](https://img.sgfoot.com/b/20210203171635.png?imageslim)
+![image-20210203171635027](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171635.png?imageslim)
 
 ### 构建
 
@@ -97,7 +97,7 @@ music_auto: 1
 1. 执行Shell
 2. Send files or execute commands over SSH
 
-![image-20210203171832703](https://img.sgfoot.com/b/20210203171834.png?imageslim)
+![image-20210203171832703](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203171834.png?imageslim)
 
 ### 构建项目的SHELL
 
@@ -105,7 +105,7 @@ music_auto: 1
 2. 删除或创建目录
 3. 判断用户是“构建”还是“回滚”进行区别操作
 
-![image-20210203172045718](https://img.sgfoot.com/b/20210203172046.png?imageslim)
+![image-20210203172045718](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203172046.png?imageslim)
 
 源码：
 
@@ -193,7 +193,7 @@ esac
 
 将 jenkins 打包好的文件复制到远程机器上。
 
-![image-20210203172124561](https://img.sgfoot.com/b/20210203172125.png?imageslim)
+![image-20210203172124561](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203172125.png?imageslim)
 
 *注意： Source files，填写 `target/go_test.tar.gz`， 即 target目录下的文件。*
 
@@ -244,7 +244,7 @@ jenkins 里的备份不可能无限的使用，否则磁盘会无法使用。必
 
 我们可以设置保留 10 个版本的数据。
 
-![image-20210203172414790](https://img.sgfoot.com/b/20210203172415.png?imageslim)
+![image-20210203172414790](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203172415.png?imageslim)
 
 源码：
 
@@ -278,7 +278,7 @@ ls -l $file_dir
 2. 选择分支
 3. 选择 status
 
-![image-20210203172706624](https://img.sgfoot.com/b/20210203172707.png?imageslim)
+![image-20210203172706624](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203172707.png?imageslim)
 
 ### 回滚
 
@@ -286,7 +286,7 @@ ls -l $file_dir
 2. 选择 status: rollback
 3. 设置 version 版本号
 
-![image-20210203172929159](https://img.sgfoot.com/b/20210203172930.png?imageslim)
+![image-20210203172929159](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210203172930.png?imageslim)
 
 
 
@@ -299,7 +299,7 @@ Jenkins 保证了项目的持续集成与构建，加速了项目构建过程，
 
 
 
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
 
 
 
@@ -316,4 +316,4 @@ Jenkins 保证了项目的持续集成与构建，加速了项目构建过程，
 
 
 
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

@@ -18,7 +18,7 @@ reward: true
 
 ---
 
-![(图片来自网络,有侵权,联系我删除)](http://img.sgfoot.com/b/20200417194055.png?imageslim)
+![(图片来自网络,有侵权,联系我删除)](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200417194055.png?imageslim)
 
 (图片来自网络,有侵权,联系我删除)
 

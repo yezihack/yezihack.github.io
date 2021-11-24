@@ -21,7 +21,7 @@ reward: true
 
 下载二进制包: https://github.com/lmenezes/cerebro/releases
 
-![](http://img.sgfoot.com/b/20200722163421.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200722163421.png?imageslim)
 
 1. 集群名称
 2. 节点数

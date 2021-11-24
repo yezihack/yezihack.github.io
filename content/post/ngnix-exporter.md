@@ -66,7 +66,7 @@ configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-htt
    cd /usr/local/src/nginx-1.19.1
    ```
 
-   ![image-20201106174938671](http://img.sgfoot.com/b/20201106174946.png?imageslim)
+   ![image-20201106174938671](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201106174946.png?imageslim)
 
    复制`nginx -V` 打印的参数,需要添加一下 `--add-module=/usr/local/src/nginx-module-vts` 也就是第一步时下载的`nginx-module-vts` 目录
 
@@ -93,7 +93,7 @@ configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-htt
    cp objs/nginx /usr/local/nginx/sbin/
    ```
 
-   ![image-20201106175445640](http://img.sgfoot.com/b/20201106175446.png?imageslim)
+   ![image-20201106175445640](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201106175446.png?imageslim)
 
 4. 热启动
 
@@ -104,7 +104,7 @@ configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-htt
    kill -USR2 2520
    ```
 
-   ![image-20201106175645475](http://img.sgfoot.com/b/20201106175646.png?imageslim)
+   ![image-20201106175645475](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201106175646.png?imageslim)
 
 5. 验证是否安装成功
 
@@ -113,7 +113,7 @@ configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-htt
    nginx -V 
    ```
 
-   ![image-20201106175808601](http://img.sgfoot.com/b/20201106175809.png?imageslim)
+   ![image-20201106175808601](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201106175809.png?imageslim)
 
 ### 配置 server 信息
 
@@ -258,4 +258,4 @@ scrape_configs:
 
 > 选择 2949 [具体操作参数 mysqld_exporter](https://www.sgfoot.com/mysqld_exporter.html#mysql-over-%E5%9B%BE%E8%A1%A8%E5%AE%89%E8%A3%85)
 
-![image-20201106181928076](http://img.sgfoot.com/b/20201106181929.png?imageslim)
+![image-20201106181928076](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201106181929.png?imageslim)

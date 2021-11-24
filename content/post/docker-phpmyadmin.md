@@ -145,4 +145,4 @@ docker-composer -f mysql-phpmyadmin.yml start
 ```
 
 
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

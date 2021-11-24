@@ -19,7 +19,7 @@ music_auto: 1
 # description: ""
 ---
 
-![img](https://img.sgfoot.com/b/how-book.png?imageslim)
+![img](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/how-book.png?imageslim)
 
 ## 阅读的艺术
 
@@ -123,4 +123,4 @@ music_auto: 1
 
 
 
-![big-white](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

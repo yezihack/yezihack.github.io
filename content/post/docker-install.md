@@ -18,7 +18,7 @@ reward: true
 ## docker 一键安装
 
 ```shell
-curl -sSL http://img.sgfoot.com/sh/docker-install.sh |sudo sh
+curl -sSL https://cdn.jsdelivr.net/gh/yezihack/assets@master/sh/docker-install.sh |sudo sh
 ```
 
 ```sh
@@ -84,7 +84,7 @@ docker-compose -h
 
 找到镜像加速器
 
-![image-20200826111636483](http://img.sgfoot.com/b/20200826111637.png?imageslim)
+![image-20200826111636483](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200826111637.png?imageslim)
 
 ```
 sudo mkdir -p /etc/docker

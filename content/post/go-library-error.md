@@ -19,7 +19,7 @@ music_auto: 1
 # description: ""
 ---
 
-![github.com/yezihack/e](https://img.sgfoot.com/b/20210121205418.png?imageslim)
+![github.com/yezihack/e](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210121205418.png?imageslim)
 
 > Golang tracks stack error package. 优雅追踪堆栈错误包
 
@@ -197,4 +197,4 @@ func main() {
 }
 ```
 
-![big-white](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

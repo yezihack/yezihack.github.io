@@ -84,7 +84,7 @@ linux : bin/elasticsearch  or bin/elasticsearch -d (后台运行)
 1. `curl 'http://localhost:9200/?pretty'`
 2. http://localhost:9200/
 
-   ![](http://img.sgfoot.com/b/20200416212147.png?imageslim)
+   ![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200416212147.png?imageslim)
 
 默认情况下，Elastic 只允许本机访问，如果需要远程访问，可以修改 Elastic 安装目录的`config/elasticsearch.yml`文件，去掉`network.host`的注释，将它的值改成`0.0.0.0`，然后重新启动 Elastic。
 
@@ -241,7 +241,7 @@ bootstrap.memory_lock: true
 
 1. 不能使用root权限运行 (linux)
 
-   ![](http://img.sgfoot.com/b/20200714155701.png?imageslim)
+   ![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200714155701.png?imageslim)
 
 解决办法就是新建一个 es帐号与组运行
 

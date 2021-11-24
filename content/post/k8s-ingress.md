@@ -30,7 +30,7 @@ music_auto: 1
 
 ​    基于这种现状，kubernetes提供了Ingress资源对象，Ingress只需要一个NodePort或者一个LB就可以满足暴露多个Service的需求。工作机制大致如下图表示：
 
-![](https://img.sgfoot.com/b/image-20200623092808049.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200623092808049.png?imageslim)
 
 ​    实际上，Ingress相当于一个7层的负载均衡器，是kubernetes对反向代理的一个抽象，它的工作原理类似于Nginx，可以理解成在**Ingress里建立诸多映射规则，Ingress Controller通过监听这些配置规则并转化成Nginx的反向代理配置 , 然后对外部提供服务**。在这里有两个核心概念：
 
@@ -44,7 +44,7 @@ Ingress（以Nginx为例）的工作原理如下：
 3. Ingress控制器会将生成的Nginx配置写入到一个运行着的Nginx服务中，并动态更新
 4. 到此为止，其实真正在工作的就是一个Nginx了，内部配置了用户定义的请求转发规则
 
-![](https://img.sgfoot.com/b/image-20200516112704764.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200516112704764.png?imageslim)
 ## Ingress使用
 
 ### 环境准备
@@ -81,7 +81,7 @@ ingress-nginx   NodePort   10.98.75.163   <none>        80:32240/TCP,443:31335/T
 
 为了后面的实验比较方便，创建如下图所示的模型
 
-![](https://img.sgfoot.com/b/image-20200516102419998.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200516102419998.png?imageslim)
 
 创建tomcat-nginx.yaml
 
@@ -307,4 +307,4 @@ tomcat.itheima.com /  tomcat-service:8080(10.244.1.99:8080,10.244.2.117:8080,10.
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

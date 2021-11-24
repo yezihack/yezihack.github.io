@@ -23,7 +23,7 @@ music_auto: 1
 
 ## 本节纲要图示
 
-![数据结构基本概念 ](https://img.sgfoot.com/b/20210126210945.png?imageslim)
+![数据结构基本概念 ](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210126210945.png?imageslim)
 
 
 
@@ -71,19 +71,19 @@ Tip: 什么叫性质相同呢?在人这个数据元素中, 都有相同的数据
 
 各个数据元素是"平等"的. 
 
-![image-20210126203852796](https://img.sgfoot.com/b/20210126203901.png?imageslim)
+![image-20210126203852796](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210126203901.png?imageslim)
 
 #### 线性结构 
 
 线性结构中的数据元素之间是一对一的关系
 
-![image-20210126204101002](https://img.sgfoot.com/b/20210126204101.png?imageslim)
+![image-20210126204101002](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210126204101.png?imageslim)
 
 #### 树形结构 
 
 树形结构中的数据元素之间存在一种一对多的层次关系
 
-![image-20210126204136991](https://img.sgfoot.com/b/20210126204137.png?imageslim)
+![image-20210126204136991](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210126204137.png?imageslim)
 
 #### 图形结构
 
@@ -146,4 +146,4 @@ Tip: 如游戏里, 一组基本操作, 走(前进, 后退, 上, 下), 跳, 使�
 
 
 
-![big-white](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

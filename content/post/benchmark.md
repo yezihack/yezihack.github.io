@@ -83,9 +83,9 @@ ok      openapi/app/util        4.493s
 
 ## 使用Graphviz分析性能
 
-![image-20200609195024098](http://img.sgfoot.com/b/20200609195024.png?imageslim)
+![image-20200609195024098](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200609195024.png?imageslim)
 
-![image-20200609195052354](http://img.sgfoot.com/b/20200609195052.png?imageslim)
+![image-20200609195052354](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200609195052.png?imageslim)
 
 1. 标红的矩形是cpu耗时最长的.
 2. 线最粗的同理.

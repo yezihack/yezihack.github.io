@@ -74,7 +74,7 @@ Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全�
 
 ### 倒排索引的核心组成
 
-![](http://img.sgfoot.com/b/20200723155219.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200723155219.png?imageslim)
 
 
 

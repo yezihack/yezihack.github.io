@@ -19,7 +19,7 @@ music_auto: 1
 # description: ""
 ---
 
-![image-20201224162811056](http://img.sgfoot.com/b/20201224162820.png?imageslim)
+![image-20201224162811056](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201224162820.png?imageslim)
 
 ## 复现
 

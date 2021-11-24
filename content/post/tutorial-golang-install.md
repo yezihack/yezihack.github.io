@@ -70,7 +70,7 @@ $env:GOPROXY="https://goproxy.io,direct"
 1. `GO111MODULE="on"`
 2. `GOPROXY="https://goproxy.io,direct"`
 
-![image-20200914162609696](http://img.sgfoot.com/b/20200914162610.png?imageslim)
+![image-20200914162609696](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200914162610.png?imageslim)
 
 **Linux && macOS**
 
@@ -104,7 +104,7 @@ source /etc/profile # 使其生效
 c:\Go\bin
 ```
 
-![image-20200914161546609](http://img.sgfoot.com/b/20200914161555.png?imageslim)
+![image-20200914161546609](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200914161555.png?imageslim)
 
 2. 新建 GOPATH 目录(可不设置)
 
@@ -114,13 +114,13 @@ c:\Go\bin
    2. pkg 编译时生成的中间文件
    3. src 存放源代码
 
-   ![image-20200914161824026](http://img.sgfoot.com/b/20200914161825.png?imageslim)
+   ![image-20200914161824026](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200914161825.png?imageslim)
 
 3. 设置 GOPATH 环境变量
 
    > 需要设置 GOBIN, GOPATH 两个环境变量，见图示
 
-   ![image-20200914162024372](http://img.sgfoot.com/b/20200914162025.png?imageslim)
+   ![image-20200914162024372](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200914162025.png?imageslim)
 
 4. 查看 GO ENV
 
@@ -168,4 +168,4 @@ source /etc/profile
 go env
 ```
 
-![image-20200914165712911](http://img.sgfoot.com/b/20200914165713.png?imageslim)
+![image-20200914165712911](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200914165713.png?imageslim)

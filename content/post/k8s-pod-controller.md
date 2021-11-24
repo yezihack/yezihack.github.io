@@ -55,7 +55,7 @@ Pod是kubernetes的最小管理单元，在kubernetes中，按照pod的创建方
 
 ReplicaSet的主要作用是**保证一定数量的pod正常运行**，它会持续监听这些Pod的运行状态，一旦Pod发生故障，就会重启或重建。同时它还支持对pod数量的扩缩容和镜像版本的升降级。
 
-![](https://img.sgfoot.com/b/image-20200612005334159.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200612005334159.png?imageslim)
 
 ReplicaSet的资源清单文件：
 
@@ -229,7 +229,7 @@ replicaset.apps "pc-replicaset" deleted
 
 为了更好的解决服务编排的问题，kubernetes在V1.2版本开始，引入了Deployment控制器。值得一提的是，这种控制器并不直接管理pod，而是通过管理ReplicaSet来简介管理Pod，即：Deployment管理ReplicaSet，ReplicaSet管理Pod。所以Deployment比ReplicaSet功能更加强大。
 
-![](https://img.sgfoot.com/b/image-20200612005524778.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200612005524778.png?imageslim)
 
 Deployment主要功能有下面几个：
 
@@ -466,7 +466,7 @@ pc-deployment-c848d767-rrqcn    0/1     Terminating         0          34m
 
 滚动更新的过程：
 
-![](https://img.sgfoot.com/b/image-20200416140251491.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200416140251491.png?imageslim)
 
 镜像更新中rs的变化:
 
@@ -592,7 +592,7 @@ deployment.apps "pc-deployment" deleted
 
 HPA可以获取每个Pod利用率，然后和HPA中定义的指标进行对比，同时计算出需要伸缩的具体值，最后实现Pod的数量的调整。其实HPA与之前的Deployment一样，也属于一种Kubernetes资源对象，它通过追踪分析RC控制的所有目标Pod的负载变化情况，来确定是否需要针对性地调整目标Pod的副本数，这是HPA的实现原理。
 
-![](https://img.sgfoot.com/b/image-20200608155858271.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200608155858271.png?imageslim)
 
 接下来，我们来做一个实验
 
@@ -616,7 +616,7 @@ args:
 - --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP
 ~~~
 
-![image-20200608163326496](https://img.sgfoot.com/b/image-20200608163326496.png?imageslim)
+![image-20200608163326496](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200608163326496.png?imageslim)
 
 ~~~powershell
 # 安装metrics-server
@@ -781,7 +781,7 @@ nginx-7df9756ccc-sl9c6   1/1     Terminating         0          6m50s
 
 DaemonSet类型的控制器可以保证在集群中的每一台（或指定）节点上都运行一个副本。一般适用于日志收集、节点监控等场景。也就是说，如果一个Pod提供的功能是节点级别的（每个节点都需要且只需要一个），那么这类Pod就适合使用DaemonSet类型的控制器创建。
 
-![](https://img.sgfoot.com/b/image-20200612010223537.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200612010223537.png?imageslim)
 
 DaemonSet控制器的特点：
 
@@ -871,7 +871,7 @@ Job，主要用于负责**批量处理(一次要处理指定数量任务)**短�
 - 当Job创建的pod执行成功结束时，Job将记录成功结束的pod数量
 - 当成功结束的pod达到指定的数量时，Job将完成执行
 
-![](https://img.sgfoot.com/b/image-20200618213054113.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200618213054113.png?imageslim)
 
 Job的资源清单文件：
 
@@ -990,7 +990,7 @@ job.batch "pc-job" deleted
 
 CronJob控制器以Job控制器资源为其管控对象，并借助它管理pod资源对象，Job控制器定义的作业任务在其控制器资源创建之后便会立即执行，但CronJob可以以类似于Linux操作系统的周期性任务作业计划的方式控制其运行**时间点**及**重复运行**的方式。也就是说，**CronJob可以在特定的时间点(反复的)去运行job任务**。
 
-![](https://img.sgfoot.com/b/image-20200618213149531.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200618213149531.png?imageslim)
 
 CronJob的资源清单文件：
 
@@ -1119,4 +1119,4 @@ cronjob.batch "pc-cronjob" deleted
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

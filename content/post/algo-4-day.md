@@ -16,7 +16,7 @@ reward: true
 # comment: false
 # toc: false
 ---
-![](http://img.sgfoot.com/b/20200417143014.webp?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200417143014.webp?imageslim)
 
 > leetcode 146.  LRU缓存机制 middle
 

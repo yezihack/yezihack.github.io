@@ -24,7 +24,7 @@ music_auto: 1
 
 ## Pod结构
 
-![](https://img.sgfoot.com/b/image-20200407121501907.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200407121501907.png?imageslim)
 
 每个Pod中都可以包含一个或者多个容器，这些容器可以分为两类：
 
@@ -548,7 +548,7 @@ Warning  FailedScheduling  <unknown>  default-scheduler  0/2 nodes are available
 
 - pod终止过程
 
-![](https://img.sgfoot.com/b/image-20200412111402706.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200412111402706.png?imageslim)
 
 
 在整个生命周期中，Pod会出现5种**状态**（**相位**），分别如下：
@@ -575,7 +575,7 @@ Warning  FailedScheduling  <unknown>  default-scheduler  0/2 nodes are available
 
 6. apiServer将接收到的pod状态信息存入etcd中
 
-   ![](https://img.sgfoot.com/b/image-20200406184656917.png?imageslim)
+   ![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200406184656917.png?imageslim)
 
 
 **pod的终止过程**
@@ -1505,7 +1505,7 @@ pod-podantiaffinity-required   1/1     Running   0          30s   10.244.1.96   
 - NoSchedule：kubernetes将不会把Pod调度到具有该污点的Node上，但不会影响当前Node上已存在的Pod
 - NoExecute：kubernetes将不会把Pod调度到具有该污点的Node上，同时也会将Node上已存在的Pod驱离
 
-![](https://img.sgfoot.com/b/image-20200605021831545.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200605021831545.png?imageslim)
 
 使用kubectl设置和去除污点的命令示例如下：
 
@@ -1570,7 +1570,7 @@ taint3-6d78dbd749-tktkq   0/1     Pending   0          6s    <none>   <none>   <
 
 上面介绍了污点的作用，我们可以在node上添加污点用于拒绝pod调度上来，但是如果就是想将一个pod调度到一个有污点的node上去，这时候应该怎么做呢？这就要使用到**容忍**。
 
-![image-20200514095913741](https://img.sgfoot.com/b/image-20200514095913741.png?imageslim)
+![image-20200514095913741](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200514095913741.png?imageslim)
 
 > 污点就是拒绝，容忍就是忽略，Node通过污点拒绝pod调度上去，Pod通过容忍忽略拒绝
 >
@@ -1635,4 +1635,4 @@ FIELDS:
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

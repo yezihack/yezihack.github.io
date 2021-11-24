@@ -29,7 +29,7 @@ music_auto: 1
 
 如果继承层次过深, 过复杂, 会影响到代码的可维护性, 可读性. 
 
-![image-20210111202903783](http://img.sgfoot.com/b/20210111202911.png?imageslim)
+![image-20210111202903783](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210111202911.png?imageslim)
 
 如上面, 继承带来的后果就是代码变得复杂, 因为层次过深, 继承关系过于复杂, 影响到代码的可读性与可维护性. 
 

@@ -59,7 +59,7 @@ music_auto: 1
   >
   >  容器化的应用程序可以跨云服务商、跨Linux操作系统发行版进行部署
 
-![image-20200505183738289](https://img.sgfoot.com/b/image-20200505183738289.png?imageslim)
+![image-20200505183738289](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200505183738289.png?imageslim)
 
 容器化部署方式给带来很多的便利，但是也会出现一些问题，比如说：
 
@@ -72,11 +72,11 @@ music_auto: 1
 - **Mesos**：Apache的一个资源统一管控的工具，需要和Marathon结合使用
 - **Kubernetes**：Google开源的的容器编排工具
 
-![](https://img.sgfoot.com/b/image-20200524150339551.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200524150339551.png?imageslim)
 
 ## kubernetes简介
 
-![](https://img.sgfoot.com/b/v2-353855dec58fcaa1477e90a869b30ad0_1440w.jpg?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/v2-353855dec58fcaa1477e90a869b30ad0_1440w.jpg?imageslim)
 
 ​    
 
@@ -113,7 +113,7 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 >
 > **Docker** : 负责节点上容器的各种操作
 
-![](https://img.sgfoot.com/b/image-20200406184656917.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200406184656917.png?imageslim)
 
 下面，以部署一个nginx服务来说明kubernetes系统各个组件调用关系：
 
@@ -135,7 +135,7 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 
         这样，外界用户就可以访问集群中的nginx服务了
 
-![](https://img.sgfoot.com/b/image-20200403224313355.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200403224313355.png?imageslim)
 
 ## kubernetes概念
 
@@ -168,4 +168,4 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)

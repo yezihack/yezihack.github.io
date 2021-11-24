@@ -37,17 +37,17 @@ reward: true
 
    http://idea.medeming.com/jetbrains/
 
-   ![image-20200916170208682](http://img.sgfoot.com/b/20200916170209.png?imageslim)
+   ![image-20200916170208682](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916170209.png?imageslim)
 
 4. 设置 Go Modules 
 
    	File -> Settings -> Go -> Go Modules 
       	
-      	![image-20200916200143415](http://img.sgfoot.com/b/20200916200144.png?imageslim)
+      	![image-20200916200143415](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916200144.png?imageslim)
       	
       	将 `GOPROXY=https://goproxy.cn,direct`  填写到 Environment 处。
       	
-      	用于 Go GET 加速下载依赖包。![image-20200916170456456](http://img.sgfoot.com/b/20200916170457.png?imageslim)
+      	用于 Go GET 加速下载依赖包。![image-20200916170456456](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916170457.png?imageslim)
 
 
 
@@ -57,7 +57,7 @@ reward: true
 
    File -> New -> Project
 
-   ![image-20200916170725101](http://img.sgfoot.com/b/20200916170731.png?imageslim)
+   ![image-20200916170725101](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916170731.png?imageslim)
 
 2. 新建 Go 文件
 
@@ -75,7 +75,7 @@ reward: true
    }
    ```
 
-   ![image-20200916171144649](http://img.sgfoot.com/b/20200916171146.png?imageslim)
+   ![image-20200916171144649](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916171146.png?imageslim)
 
 4. 解释代码
 
@@ -137,11 +137,11 @@ reward: true
    }
    ```
 
-   ![image-20200916174849623](http://img.sgfoot.com/b/20200916174850.png?imageslim)
+   ![image-20200916174849623](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916174850.png?imageslim)
 
    打开命令行：右击项目名称->Open In Terminal
 
-   ![image-20200916180206273](http://img.sgfoot.com/b/20200916180207.png?imageslim)
+   ![image-20200916180206273](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916180207.png?imageslim)
 
    初使 mod
 
@@ -157,7 +157,7 @@ reward: true
    go mod tidy
    ```
 
-   ![image-20200916180900411](http://img.sgfoot.com/b/20200916180901.png?imageslim)
+   ![image-20200916180900411](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200916180901.png?imageslim)
 
 ### go run 
 

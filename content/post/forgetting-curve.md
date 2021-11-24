@@ -21,7 +21,7 @@ music_auto: 1
 
 ## 48天计划表
 
-![image-20201120192756172](http://img.sgfoot.com/b/20201120192757.png?imageslim)
+![image-20201120192756172](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201120192757.png?imageslim)
 
 
 
@@ -29,4 +29,4 @@ music_auto: 1
 
 > 下载 https://pan.baidu.com/s/1SNhx_N3mkELewuJdPiOj7w 密码:fdd7
 
-![image-20201120193237756](http://img.sgfoot.com/b/20201120193238.png?imageslim)
+![image-20201120193237756](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201120193238.png?imageslim)

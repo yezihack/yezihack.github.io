@@ -33,7 +33,7 @@ music_auto: 1
 >
 >    当然，如果Pod中程序的数据需要持久化，kubernetes还提供了各种`存储`系统。
 
-![](https://img.sgfoot.com/b/image-20200406225334627.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200406225334627.png?imageslim)
 
 >  学习kubernetes的核心，就是学习如何对集群上的`Pod、Pod控制器、Service、存储`等各种资源进行操作
 
@@ -558,4 +558,4 @@ scp  -r  HOME/.kube   node1: HOME/
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://img.sgfoot.com/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
