@@ -21,7 +21,7 @@ Filebeat是用于转发和集中日志数据的轻量级传送程序。作为服
 
 工作原理是启动 filebeat 时, 它将启动一个或多个输入, 这些输入将在日志数据指定位置中查找, 对于 filebeat 所找到的每个日志, filebeat 都会启动收集器, 每个收割机都读取单个日志以获取新内容，并将新日志数据发送到libbeat，libbeat将聚集事件，并将聚集的数据发送到为Filebeat配置的输出。
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200726161901.png)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200726161901.png)
 
 1. 配置输入源, 可以是日志(log), 也可以是标准输入(stdin), 可以配置多个输入(input)
 2. 为每个日志启一个(Harvester) 收集器, 将不停的读取数据

@@ -33,7 +33,7 @@ reward: true
 
 2. 工作原理 
 
-   1. ![image-20200922210127568](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922210129.png?imageslim)
+   1. ![image-20200922210127568](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922210129.png?imageslim)
 
 3. 常用命令操作
 
@@ -58,31 +58,31 @@ reward: true
 
 1. 查看你的磁盘分区信息(df -h)
 
-![image-20200922200604067](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922205021.png?imageslim)
+![image-20200922200604067](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922205021.png?imageslim)
 
 2. 查看你的磁盘信息(fdisk -l)
 
-![image-20200922200742131](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922210928.png?imageslim)
+![image-20200922200742131](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922210928.png?imageslim)
 
 3. 对指点磁盘进行分区操作(fdisk /dev/vdc 每个人的磁盘分区名称不一样)
 
-![image-20200922201034206](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922212117.png?imageslim)
+![image-20200922201034206](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922212117.png?imageslim)
 
 4. 创建物理卷
 
-![image-20200922201426094](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922212126.png?imageslim)
+![image-20200922201426094](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922212126.png?imageslim)
 
 5. 创建卷组
 
-![image-20200922204409131](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922211048.png?imageslim)
+![image-20200922204409131](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922211048.png?imageslim)
 
 6. 创建逻辑卷
 
-![image-20200922204533606](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922211110.png?imageslim)
+![image-20200922204533606](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922211110.png?imageslim)
 
 7. 对逻辑卷进行格式化 ext4
 
-![image-20200922201958090](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200922211140.png?imageslim)
+![image-20200922201958090](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200922211140.png?imageslim)
 
 8. 挂载某目录
 

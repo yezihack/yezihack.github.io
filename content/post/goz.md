@@ -12,7 +12,7 @@ reward: true
 # weight: 1
 # description = ""
 ---
-![](http://img.sgfoot.com/b/20200428203103.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200428203103.png?imageslim)
 
 # 分析
 项目四个Go文件, 每个文件仅描述一件事, 思路非常清淅, 故此学习并总结一下里面的精华.

@@ -24,7 +24,7 @@ music_auto: 1
 
 > 描述代码质量所有常用词汇
 
-![image-20201229205932923](http://img.sgfoot.com/b/20201229205934.png?imageslim)
+![image-20201229205932923](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201229205934.png?imageslim)
 
 
 

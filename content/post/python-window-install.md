@@ -13,7 +13,7 @@ reward: true
 # description = ""
 ---
 
-![img](http://img.sgfoot.com/b/20200727113627.webp?imageslim)
+![img](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200727113627.webp?imageslim)
 
 window 10环境下安装 python3.8 版本. 采用国内镜像, 国内官方下载实在太慢, 无法忍受. 
 
@@ -25,11 +25,11 @@ https://mirrors.huaweicloud.com/python/3.8.0/
 
 选择 window 64 位
 
-![](http://img.sgfoot.com/b/20200727111833.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200727111833.png?imageslim)
 
 下载后,双击文件
 
-![](http://img.sgfoot.com/b/20200727112728.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200727112728.png?imageslim)
 
 
 1.  python 安装的目录
@@ -56,7 +56,7 @@ timeout = 120
 
 打开你的`cmd`工具, 输入 `python -m pip install --upgrade  pip`即可更新
 
-![image-20200727113234399](http://img.sgfoot.com/b/20200727113235.png?imageslim)
+![image-20200727113234399](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200727113235.png?imageslim)
 
 划线部分显示采用了刚才配置的源信息.说明没有走官网的源.这样非常快的更新完了. 如果你的界面没有动, 回车一下即可.(window常见的毛病)
 

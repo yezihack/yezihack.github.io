@@ -25,7 +25,7 @@ music_auto: 1
 2. 镜像(Image)
 3. 容器(Container)
 
-![image-20201105160413765](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201105160421.png?imageslim)
+![image-20201105160413765](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201105160421.png?imageslim)
 
 实例命令:　`docker run --name db --env MYSQL_ROOT_PASSWORD=sgfoot.com -d mariadb`
 1. 先在本机查找有没有 mariadb 镜像, 如果没有,就到 docker 的仓库查找 `mariadb` 镜像, 然后下载到本机

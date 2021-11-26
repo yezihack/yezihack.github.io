@@ -13,7 +13,7 @@ reward: true
 # description: ""
 ---
 
-![img](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201015181807.png?imageslim)
+![img](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201015181807.png?imageslim)
 
 ## 什么是docker
 
@@ -31,7 +31,7 @@ Docker 英文意思是“搬运工",  是一种容器化技术，将您的运行
 
 采用 c/s 模式体系架构， Docker 客户端与 Docker Daemon 守护进程通信。
 
-![image-20201016113641239](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20201016113642.png?imageslim)
+![image-20201016113641239](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201016113642.png?imageslim)
 
 1. Docker Daemon: 是Docker服务端的守护进程， 用来监听 Docker API 的请求和管理 Docker 对象，比如镜像、容器、网络和 Volume。
 2. Docker Client: docker client 是我们和 Docker 进行交互的最主要的方式方法

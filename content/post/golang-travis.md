@@ -24,11 +24,11 @@ reward: true
 
 ## 1. 添加仓库
 
-![image-20200424202808582](http://img.sgfoot.com/b/20200424202810.png?imageslim)
+![image-20200424202808582](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424202810.png?imageslim)
 
 ## 2. 开启集成
 
-![image-20200424202943071](http://img.sgfoot.com/b/20200424202945.png?imageslim)
+![image-20200424202943071](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424202945.png?imageslim)
 
 ## 3. 项目根目录添加.travis.yml文件
 
@@ -97,17 +97,17 @@ script:
 
 点击你刚才开启的仓库名称, 进入监听页面.
 
-![image-20200424203303828](http://img.sgfoot.com/b/20200424203305.png?imageslim)
+![image-20200424203303828](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424203305.png?imageslim)
 
 以下是linux环境下的运行结果,很详细的步骤,哪里出错,你就对应的修改.如果测试不通过. 不会显示**小绿图标**的
 
-![image-20200424203940184](http://img.sgfoot.com/b/20200424203943.png?imageslim)
+![image-20200424203940184](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424203943.png?imageslim)
 
 
 
 ## 4. 将绿色小图标放在你的项目里.
 
-![image-20200424204250683](http://img.sgfoot.com/b/20200424204252.png?imageslim)
+![image-20200424204250683](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424204252.png?imageslim)
 
 将小图标Copy到你的项目README.md文件里.
 

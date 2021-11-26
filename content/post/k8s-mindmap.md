@@ -41,7 +41,7 @@ music_auto: 1
 
 若下图不方便查看，直接查看原链接[轻点，脑图](https://www.mubucm.com/doc/4vvLrwlmuSC)
 
-![image-20211109184251026](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20211109184251026.png?imageslim)
+![image-20211109184251026](https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20211109184251026.png?imageslim)
 
 
 
@@ -59,4 +59,4 @@ music_auto: 1
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

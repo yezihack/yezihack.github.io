@@ -17,13 +17,13 @@ reward: true
 
 ### 使用 pprof top分析 
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200701190658.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200701190658.png?imageslim)
 
 可见 json.Marshal占第一内存. 为什么呢? 我们进一步分析
 
 ### 使用 `tree ` 分析
 
-![image-20200701190848060](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200701190849.png?imageslim)
+![image-20200701190848060](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200701190849.png?imageslim)
 
 查看到 `zerolog AppendInterface` 方法占用 73.32%的内存量. 而 zerolog 是一个很优秀的日志库, 比 `zap` 还优秀. 为什么呢?我们需要查看源码
 

@@ -27,7 +27,7 @@ music_auto: 1
 
 > 当你浏览一个开源项目时,看到各种徽章, 有些徽章是直接反应这个开源库的质量和完整性等等.
 
-![image-20210122143122198](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122143123.png?imageslim)
+![image-20210122143122198](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122143123.png?imageslim)
 
 如上图所示
 
@@ -138,7 +138,7 @@ after_success: # 上传测试报告
 
 点击Settings -> Badge 
 
-![image-20210122160148601](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122160150.png?imageslim)
+![image-20210122160148601](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122160150.png?imageslim)
 
 ## 文档徽章
 
@@ -166,7 +166,7 @@ https://img.shields.io/badge/go.dev-reference-brightgreen?logo=go&logoColor=whit
 
 打开 https://goreportcard.com/  直接填写你的项目访问地址即可. 
 
-![image-20210122161750380](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122161752.png?imageslim)
+![image-20210122161750380](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122161752.png?imageslim)
 
 
 
@@ -198,6 +198,6 @@ https://goreportcard.com/badge/github.com/yezihack/e
 
 打开 https://shields.io 可以自定义很多个性的图标, 让你的项目更专业. 
 
-![image-20210122162326038](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122162326.png?imageslim)
+![image-20210122162326038](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122162326.png?imageslim)
 
-![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

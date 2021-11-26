@@ -26,18 +26,18 @@ music_auto: 1
 1. 使用上下键选择不同的内核（可能有些机器就只有一个内核）
 2. 选中内核后，按`e` 键进入编辑状态
 
-![image-20210303160002306](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210303160003.png?imageslim)
+![image-20210303160002306](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210303160003.png?imageslim)
 
 ## 编辑
 
 1. 以下内容都是可以编辑，添加或删除的代码。（谨慎操作）
 
-![image-20210303160104283](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210303160105.png?imageslim)
+![image-20210303160104283](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210303160105.png?imageslim)
 
 2. 找到`linux16`的字符串， 然后再在本行中找到`ro`的字母，将其替换成`rw init=/sysroot/bin/sh` 
 3. 然后按`ctrl+x`组合键，系统进入emergency(紧急情况)模式
 
-![image-20210303160719076](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210303160720.png?imageslim)
+![image-20210303160719076](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210303160720.png?imageslim)
 
 4. ```sh
    chroot /sysroot/ # 切换回原始系统
@@ -48,11 +48,11 @@ music_auto: 1
    reboot # 重启命令
    ```
 
-![image-20210318192331000](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210318192332.png?imageslim)
+![image-20210318192331000](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210318192332.png?imageslim)
 
 
 
-![image-20210318191741120](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210318191749.png?imageslim)
+![image-20210318191741120](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210318191749.png?imageslim)
 
 
 
@@ -60,4 +60,4 @@ music_auto: 1
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

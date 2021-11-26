@@ -2,7 +2,7 @@
 
 ## 图解
 
-![Timeouts](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200610152339.png?imageslim)
+![Timeouts](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200610152339.png?imageslim)
 
 ## 参考
 

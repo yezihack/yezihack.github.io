@@ -25,7 +25,7 @@ top
 
 ## top 详情
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200622103249.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200622103249.png?imageslim)
 
 a. 如图编号(1) 
 ```
@@ -133,14 +133,14 @@ top
 按数字: 1 即可
 ```
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200622110832.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200622110832.png?imageslim)
 
 ### 彩色显示
 top 使用大写 Z, 进入如下界面后, 进行使用数字 `0 ~ 7` 共8种颜色可以选择. 也可以使用
 
 `a`或`w` 轮询选择(注意是小写的 a , w). 然后按回车即可.
 
-![image-20200622111153523](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200622111154.png?imageslim)
+![image-20200622111153523](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200622111154.png?imageslim)
 
 如果想取消则按小写的: `z` 恢复默认色.
 
@@ -148,13 +148,13 @@ top 使用大写 Z, 进入如下界面后, 进行使用数字 `0 ~ 7` 共8种颜
 
 进入`top` 界面后, 使用小写: `b` , 取消再次按:`b`
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200622111746.png?imageslim) 
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200622111746.png?imageslim) 
 
 ### 显示完整命令
 
 使用`top -c` 回车即可.
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200622111956.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200622111956.png?imageslim)
 
 ### **显示指定的进程信息**
 

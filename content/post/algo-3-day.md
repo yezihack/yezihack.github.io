@@ -17,7 +17,7 @@ reward: true
 # toc: false
 ---
 
-![img](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200417143019.webp?imageslim)
+![img](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417143019.webp?imageslim)
 
 > leetcode 14. 最长公共前缀 simple
 

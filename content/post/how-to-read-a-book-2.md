@@ -21,7 +21,7 @@ music_auto: 1
 
 ## 纲要
 
-![阅读的层次](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210128211229.png?imageslim)
+![阅读的层次](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210128211229.png?imageslim)
 
 ## 基础阅读
 
@@ -148,4 +148,4 @@ music_auto: 1
 
 
 
-![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

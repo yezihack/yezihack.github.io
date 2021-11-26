@@ -20,24 +20,24 @@ reward: true
 > File->Settings->Go->Go Modules
 
 1. 填写 goproxy: `GOPROXY=https://goproxy.cn,direct`
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200617114544.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200617114544.png?imageslim)
 
 ## 结构体添加 tags
 
 > File->Settings->Editor->Live Templates -> Go
 
 1. 复制一个 tag
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200617113853.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200617113853.png?imageslim)
 
 2. 新建一个 "gorm"
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200617114046.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200617114046.png?imageslim)
 
 3. 使用
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200617114300.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200617114300.png?imageslim)
 
 ## 保存时并格式代码
 
 > File->Settings->Tools->File Watchers
 
 1. 选择 `go fmt`
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200617115019.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200617115019.png?imageslim)

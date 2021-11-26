@@ -27,7 +27,7 @@ vim /etc/default/grub
 
 在第6行中增加 `ipv6.disable=1`
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200826110835.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200826110835.png?imageslim)
 
 ```sh
 GRUB_CMDLINE_LINUX="ipv6.disable=1 crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet"
@@ -72,7 +72,7 @@ docker info
 
 `docker info` 找到 `Docker Root Dir`节点。
 
-![image-20210218150344102](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210218150344.png?imageslim)
+![image-20210218150344102](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210218150344.png?imageslim)
 
 一般默认目录是在:`/var/lib/docker`
 

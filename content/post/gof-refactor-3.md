@@ -44,7 +44,7 @@ music_auto: 1
 
 引入中间层能简化模块或类之间的依赖关系。
 
-![image-20210220213635763](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210220213635.png?imageslim)
+![image-20210220213635763](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210220213635.png?imageslim)
 
 我们在进行重构的时候，引入中间层可以起到过渡的作用，能够让开发和重构同步进行，不互相干扰。
 
@@ -79,4 +79,4 @@ music_auto: 1
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

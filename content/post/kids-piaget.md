@@ -19,7 +19,7 @@ music_auto: 1
 # description: ""
 ---
 
-![img](http://img.sgfoot.com/b/20210113175007.jpeg?imageslim)
+![img](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210113175007.jpeg?imageslim)
 
 ## 让.皮亚杰
 
@@ -74,7 +74,7 @@ Tip: 中国俗语称: 吃一堑长一智.
 
 **什么是认知过程**： 是通过对外界刺激的同化与顺应，然后让心理状态从平衡变到不平衡，然后再到更高水平的平衡。我们的图式就越来越丰富，越来越完善。于是我们就认识了世界。也称皮亚杰的构建主义。
 
-![构建主义理论模型](http://img.sgfoot.com/b/20210113190609.png?imageslim)
+![构建主义理论模型](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210113190609.png?imageslim)
 
 ## 教育实践
 
@@ -114,4 +114,4 @@ Tip: 中国俗语称: 吃一堑长一智.
 
 > 参考李永乐老师的油管视频
 
-![](http://img.sgfoot.com/b/20210113194448.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210113194448.png?imageslim)

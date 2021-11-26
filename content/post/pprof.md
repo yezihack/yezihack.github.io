@@ -69,7 +69,7 @@ func main() {
 http://127.0.01:8080/debug/pprof/
 ```
 
-![image-20200605192934762](http://img.sgfoot.com/b/20200605200515.png?imageslim)
+![image-20200605192934762](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200605200515.png?imageslim)
 
 ## 命令行使用
 
@@ -154,7 +154,7 @@ go tool pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=10
 
 然后浏览器上: http://127.0.0.1:6061
 
-![image-20200605195833389](http://img.sgfoot.com/b/20200605200536.png?imageslim)
+![image-20200605195833389](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200605200536.png?imageslim)
 
 图中,从上往下是方法的调用栈,长度代表cpu时长。
 

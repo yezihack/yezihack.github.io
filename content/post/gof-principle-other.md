@@ -21,7 +21,7 @@ music_auto: 1
 
 ## 纲要
 
-![KISS,YAGNI,DRY,LOD 原则](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210209203935.png?imageslim)
+![KISS,YAGNI,DRY,LOD 原则](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210209203935.png?imageslim)
 
 ## KISS原则
 
@@ -140,7 +140,7 @@ music_auto: 1
 
 **何为“高内聚，松耦合”**
 
-![image-20210209203036244](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210209203044.png?imageslim)
+![image-20210209203036244](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210209203044.png?imageslim)
 
 **一句话：**高内聚用来指导类本身的设计，松耦合用来指导类与类之间依赖关系的设计。
 
@@ -187,4 +187,4 @@ music_auto: 1
 
 
 
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

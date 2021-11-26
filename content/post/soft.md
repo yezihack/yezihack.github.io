@@ -36,19 +36,19 @@ reward: true
 
 1. 按住 Ctrl 单击鼠标，新页打开
 
-   ![image-20200901161045213](http://img.sgfoot.com/b/20200901161046.png?imageslim)
+   ![image-20200901161045213](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901161046.png?imageslim)
 
 2. 使用 IDM 下载
 
    > 如果没有 IDM，直接下载吧。使用 rz 上传 (yum install -y lrzsz)
 
-   ![image-20200901161412614](http://img.sgfoot.com/b/20200901161413.png?imageslim)
+   ![image-20200901161412614](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901161413.png?imageslim)
 
 3. 从 IDM 复制下载地址
 
    > 复制下载地址方便在服务器里下载。
 
-   ![image-20200901161914361](http://img.sgfoot.com/b/20200901161915.png?imageslim)
+   ![image-20200901161914361](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901161915.png?imageslim)
 
 4. 在服务器里使用 wget 下载
 

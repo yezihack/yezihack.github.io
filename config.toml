@@ -201,7 +201,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
 
   [params.reward]                                         # 文章打赏
       enable = true
-      wechat = "http://img.sgfoot.com/b/20200417142450.jpg?imageslim"           # 微信二维码
+      wechat = "https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417142450.jpg?imageslim"           # 微信二维码
       #alipay = "/path/to/your/alipay-qr-code.png"           # 支付宝二维码
 
   [params.social]                                         # 社交链接

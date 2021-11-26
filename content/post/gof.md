@@ -37,4 +37,4 @@ reward: true
 
 ------
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200819144839.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200819144839.png?imageslim)

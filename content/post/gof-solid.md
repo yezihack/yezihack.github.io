@@ -233,4 +233,4 @@ Robert Martin:
 
 
 
-![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![big-white](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

@@ -54,10 +54,10 @@ jmeter -n -t test.jmx -l test.jtl
 
 图示: 保存 test.jmx 文件
 
-![image-20200803192529974](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200803192531.png?imageslim)
+![image-20200803192529974](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200803192531.png?imageslim)
 
-![image-20200803192551511](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200803192552.png?imageslim)
+![image-20200803192551511](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200803192552.png?imageslim)
 
 图示: 导入分析结果
 
-![image-20200803192721153](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200803192722.png?imageslim)
+![image-20200803192721153](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200803192722.png?imageslim)

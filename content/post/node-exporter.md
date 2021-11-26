@@ -28,7 +28,7 @@ music_auto: 1
 
 https://prometheus.io/download/
 
-![image-20200831161413148](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200831161414.png?imageslim)
+![image-20200831161413148](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831161414.png?imageslim)
 
 ```
 cd /usr/local/src
@@ -76,7 +76,7 @@ systemctl status node_exporter # 查看详情
 
 http://192.168.61.66:9100/metrics
 
-![image-20200831170126304](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200831170127.png?imageslim)
+![image-20200831170126304](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831170127.png?imageslim)
 
 
 
@@ -95,7 +95,7 @@ vim /usr/local/prometheus/prometheus.yml
       - targets: ['localhost:9100']  # 本机 node_exporter 的 endpoint
 ```
 
-![image-20200831171238397](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200831171239.png?imageslim)
+![image-20200831171238397](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831171239.png?imageslim)
 
 重启服务 
 
@@ -124,7 +124,7 @@ docker run -d -p 9100:9100 \
 
 http://192.168.61.66:9090/targets
 
-![image-20200831171651802](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200831171652.png?imageslim)
+![image-20200831171651802](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831171652.png?imageslim)
 
 
 
@@ -141,4 +141,4 @@ http://192.168.61.66:9090/targets
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

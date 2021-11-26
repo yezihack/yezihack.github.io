@@ -16,7 +16,7 @@ reward: true
 description: "使用WOW讲解模板设计模式, 使用golang实现代码"
 share: true  # 是否开启分享
 ---
-![image-20200415202441813](http://img.sgfoot.com/b/20200415202443.png?imageslim)
+![image-20200415202441813](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200415202443.png?imageslim)
 
 > 今天我们要使用WOW讲解模板设计模式, 使用golang实现代码
 

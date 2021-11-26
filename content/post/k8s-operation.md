@@ -32,7 +32,7 @@ Namespace是kubernetes系统中的一种非常重要资源，它的主要作用�
 
 可以通过kubernetes的授权机制，将不同的namespace交给不同租户进行管理，这样就实现了多租户的资源隔离。此时还能结合kubernetes的资源配额机制，限定不同租户能占用的资源，例如CPU使用量、内存使用量等等，来实现租户可用资源的管理。
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200407100850484.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200407100850484.png?imageslim)
 
 kubernetes在集群启动之后，会默认创建几个namespace
 
@@ -132,7 +132,7 @@ Pod是kubernetes集群进行管理的最小单元，程序要运行必须部署�
 
 Pod可以认为是容器的封装，一个Pod中可以存在一个或者多个容器。
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200407121501907.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200407121501907.png?imageslim)
 
 kubernetes在集群启动之后，集群中的各个组件也都是以Pod方式运行的。可以通过下面命令查看：
 
@@ -403,7 +403,7 @@ spec:
 
  在kubernetes中Pod控制器的种类有很多，本章节只介绍一种：Deployment。
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200408193950807.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200408193950807.png?imageslim)
 
 **命令操作**
 
@@ -520,7 +520,7 @@ spec:
 
 Service可以看作是一组同类Pod**对外的访问接口**。借助Service，应用可以方便地实现服务发现和负载均衡。
 
-![image-20200408194716912](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/image-20200408194716912.png?imageslim)
+![image-20200408194716912](https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200408194716912.png?imageslim)
 
 **操作一：创建集群内部可访问的Service**
 
@@ -619,4 +619,4 @@ spec:
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

@@ -13,6 +13,6 @@ reward: true
 # description = ""
 ---
 
-![image-20200701175949028](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200702202100.png?imageslim)
+![image-20200701175949028](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200702202100.png?imageslim)
 
-![image-20200701180115487](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200702202105.png?imageslim)
+![image-20200701180115487](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200702202105.png?imageslim)

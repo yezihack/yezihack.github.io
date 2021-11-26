@@ -23,7 +23,7 @@ gRPC 是 Google 开源的基于 Protobuf 和 Http2.0 协议的通信框架，底
 
 是一款语言中立、平台中立、开源的远程过程调用(RPC)系统。
 
-![image-20201021145555841](http://img.sgfoot.com/b/20201021145604.png?imageslim)
+![image-20201021145555841](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201021145604.png?imageslim)
 
 ## 特点
 

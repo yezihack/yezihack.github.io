@@ -68,7 +68,7 @@ EOF
 systemctl start grafana
 ```
 
-![image-20200901105728756](http://img.sgfoot.com/b/20200901105729.png?imageslim)
+![image-20200901105728756](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901105729.png?imageslim)
 
 
 
@@ -92,7 +92,7 @@ docker run -d \
 
 http://127.0.0.1:3000/
 
-![image-20200901110252897](http://img.sgfoot.com/b/20200901110253.png?imageslim)
+![image-20200901110252897](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901110253.png?imageslim)
 
 
 
@@ -100,15 +100,15 @@ http://127.0.0.1:3000/
 
 1. 第一步：点击齿轮图标，选择 Data Sources
 
-![image-20200901110554879](http://img.sgfoot.com/b/20200901110555.png?imageslim)
+![image-20200901110554879](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901110555.png?imageslim)
 
 2. 添加数据源
 
-   ![image-20200901110707055](http://img.sgfoot.com/b/20200901110708.png?imageslim)
+   ![image-20200901110707055](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901110708.png?imageslim)
 
 3. 选择 Prometheus 小火炬
 
-   ![image-20200901110811716](http://img.sgfoot.com/b/20200901110813.png?imageslim)
+   ![image-20200901110811716](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901110813.png?imageslim)
 
 4. 设置基本参数
 
@@ -116,7 +116,7 @@ http://127.0.0.1:3000/
    2. http://localhost:9090
    3. GET
 
-   ![image-20200901111029490](http://img.sgfoot.com/b/20200901111030.png?imageslim)
+   ![image-20200901111029490](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901111030.png?imageslim)
 
 ## 安装 Dashboards
 
@@ -124,23 +124,23 @@ http://127.0.0.1:3000/
 
 https://grafana.com/grafana/dashboards
 
-![image-20200901111546055](http://img.sgfoot.com/b/20200901111547.png?imageslim)
+![image-20200901111546055](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901111547.png?imageslim)
 
 下载： https://grafana.com/grafana/dashboards/8919
 
-![image-20200901111639166](http://img.sgfoot.com/b/20200901111639.png?imageslim)
+![image-20200901111639166](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901111639.png?imageslim)
 
 导入 JSON 仪表板， 也可以使用ID快捷导入。
 
-![image-20200901111902641](http://img.sgfoot.com/b/20200901111903.png?imageslim)
+![image-20200901111902641](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901111903.png?imageslim)
 
 使用ID导入JSON仪表板
 
-![image-20200901112707015](http://img.sgfoot.com/b/20200901112708.png?imageslim)
+![image-20200901112707015](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901112708.png?imageslim)
 
 效果：
 
-![image-20200831203441031](http://img.sgfoot.com/b/20200831203442.png?imageslim)
+![image-20200831203441031](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831203442.png?imageslim)
 
 ## 软件下载
 

@@ -27,7 +27,7 @@ music_auto: 1
 
 ## 大纲
 
-![小狗钱钱](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210217153029.png?imageslim)
+![小狗钱钱](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210217153029.png?imageslim)
 
 ## 正视金钱
 
@@ -197,4 +197,4 @@ music_auto: 1
 我的博客：https://yezihack.github.io，https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

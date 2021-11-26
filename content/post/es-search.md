@@ -1091,7 +1091,7 @@ PUT index
 
 ## 常见错误 
 
-![](http://img.sgfoot.com/b/20200723154626.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200723154626.png?imageslim)
 
 ## 推荐阅读
 

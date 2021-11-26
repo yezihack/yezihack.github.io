@@ -52,7 +52,7 @@ vim Gruntfile.js
 # 大约96行, connect.server.options 节点
 ```
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200716200648.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200716200648.png?imageslim)
 
 ## 修改连接 es 服务的配置
 
@@ -62,7 +62,7 @@ vim _site/app.js
 # 大约 4374 行
 ````
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200716201136.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200716201136.png?imageslim)
 
 ## 修改 elasticsearch.yml 文件
 

@@ -16,7 +16,7 @@ toc: true
 
 ---
 
-![](http://img.sgfoot.com/b/20200417143007.webp?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417143007.webp?imageslim)
 
 > leetcode 53.  最大子序和 simple
 

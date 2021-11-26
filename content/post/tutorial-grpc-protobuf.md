@@ -141,7 +141,7 @@ message UserListResponse {
 
 https://github.com/protocolbuffers/protobuf/releases 
 
-![image-20201021162116165](http://img.sgfoot.com/b/20201021162117.png?imageslim)
+![image-20201021162116165](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201021162117.png?imageslim)
 
 下载完后，加入到环境变量或path中, 保证全局可用。
 验证: `protoc --version`

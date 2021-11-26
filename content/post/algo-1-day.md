@@ -10,7 +10,7 @@ toc: true
 reward: true
 
 ---
-![](http://img.sgfoot.com/b/20200417143038.webp?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417143038.webp?imageslim)
 
 # 感触
 为了坚持学习算法, 每篇算法标题写上坚持多少天,以此鼓励自己坚持学下去. 

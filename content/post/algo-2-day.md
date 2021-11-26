@@ -9,7 +9,7 @@ toc: true
 reward: true
 ---
 
-![算法第2天](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200417143026.png?imageslim)
+![算法第2天](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417143026.png?imageslim)
 
 > LeetCode:11题, 中等
 

@@ -21,7 +21,7 @@ reward: true
 1. 图表格式显示, 展示比较丰富
 2. 可以自定义`elasticsearch` 的地址, 并显示服务的健康状态
 
-![](http://img.sgfoot.com/b/20200722113701.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200722113701.png?imageslim)
 
 ## 安装使用
 

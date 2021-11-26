@@ -173,7 +173,7 @@ GET _cat/indices?v
 
 红线区就是filebeat创建的索引名称.
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200726150603.png)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200726150603.png)
 
 ## 配置 modules
 

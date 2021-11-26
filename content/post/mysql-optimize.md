@@ -103,7 +103,7 @@ innodb_log_buffer_size=32M
 
 > from->on->join->where->group by->having->select field->order by-> limit
 
-	![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200619200641.png?imageslim)
+	![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200619200641.png?imageslim)
 
 ### 正则查询
 

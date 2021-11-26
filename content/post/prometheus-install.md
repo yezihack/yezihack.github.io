@@ -73,7 +73,7 @@ systemctl status prometheus # 查看详情
 
 http://localhost:9090
 
-![image-20200831170056207](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200831170057.png?imageslim)
+![image-20200831170056207](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831170057.png?imageslim)
 
 自带也会产生监控数据
 
@@ -150,4 +150,4 @@ docker run -d -p 9090:9090 --name=prometheus  -v  ~/prometheus/conf/:/etc/promet
 我的博客：https://www.sgfoot.com
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20210122112114.png?imageslim)
+![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

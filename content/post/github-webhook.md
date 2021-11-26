@@ -19,7 +19,7 @@ reward: true
 # 原理
 当本地`git push origin master`向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求，
 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建
-![github-webhook](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200424151246?imageslim)
+![github-webhook](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424151246?imageslim)
 
 # github-webhook 文档
 
@@ -35,7 +35,7 @@ reward: true
 
  github release下载太慢, 试试这个
 ```
-wget https://cdn.jsdelivr.net/gh/yezihack/assets@master/github-webhook1.4.1.linux-amd64.tar.gz
+wget https://cdn.jsdelivr.net/gh/yezihack/assets/github-webhook1.4.1.linux-amd64.tar.gz
 ```
 
 ## 2. 运行github-webhook
@@ -65,11 +65,11 @@ nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe >> ~/logs/webhook.log 2>&1 &
 - 填写你服务器的地址, http://ip:2020/web-hook
 - 设置的密码必须与服务器运行`github-webhook -s `设置的密码一致.
 
-![配置第一步](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200424151305?imageslim)
+![配置第一步](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424151305?imageslim)
 
-![配置第二步](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200424151216?imageslim)
+![配置第二步](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424151216?imageslim)
 
-![配置第三步](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200424151223?imageslim)
+![配置第三步](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200424151223?imageslim)
 
 
 # 测试

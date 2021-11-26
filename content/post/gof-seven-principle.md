@@ -15,7 +15,7 @@ reward: true
 > 用最少的语言记住更多的东西
 
 ## 本文提纲
-![七大原则](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200819161947.png?imageslim)
+![七大原则](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200819161947.png?imageslim)
 
 ## 设计模式的目的
 

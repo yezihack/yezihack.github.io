@@ -13,7 +13,7 @@ reward: true
 # description = ""
 ---
 
-![](https://cdn.jsdelivr.net/gh/yezihack/assets@master/b/20200426201610.png?imageslim)
+![](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200426201610.png?imageslim)
 
 ## 原理
 
