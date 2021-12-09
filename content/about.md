@@ -67,14 +67,16 @@ music_auto: 1
 | 小米技术       | https://xiaomi-info.github.io/         | ✫✫✫    |
 | linkedin技术   | https://engineering.linkedin.com/blog  | ✫✫✫    |
 
-## Golang
+## Golang&Other
 
 | 名称                | 网址                   |
 | ------------------- | ---------------------- |
 | Awesome Go | https://sgfoot.com/awesome-go.html   |
 | Awesmoe Go Cn 更全 | https://github.com/yinggaozhen/awesome-go-cn |
+| Go 周刊| https://github.com/polaris1119/golangweekly | 
+| 科技周刊| https://github.com/ruanyf/weekly | 
 
-## 云原生 CNCF
+## 云原生
 | 名称                | 网址                   |
 | ------------------- | ---------------------- |
 | CNCF 官网毕业项目 | https://www.cncf.io/projects/   |
