@@ -1,8 +1,10 @@
-# 百里江山的博客
+# 空树之空的博客
 
+## 访问站点
 1. https://yezihack.github.io
-1. http://www.sgfoot.com
+1. https://sgfoot.com
 
+## 涉猎技术
 1. Go语言
 1. 设计模式
 1. 算法
@@ -14,4 +16,3 @@
 1. 云计算
 1. MYSQL
 1. Istio
-1. 深入理解计算机系统

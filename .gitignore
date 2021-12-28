@@ -6,3 +6,5 @@ public/
 gen.sh
 *.swp
 resources
+.DS_Store
+*.lock

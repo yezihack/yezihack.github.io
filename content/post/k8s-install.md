@@ -3,7 +3,7 @@ title: "第二章 Kubernetes 安装"
 date: 2021-10-28T15:24:42+08:00
 lastmod: 2021-10-28T15:24:42+08:00
 draft: false
-tags: ["k8s", "云原生", "kubernetes"]
+tags: ["k8s", "云原生", "kubernetes", "k8s安装"]
 categories: ["kubernetes"]
 author: "百里"
 comment: false
@@ -41,6 +41,8 @@ kubernetes有多种部署方式，目前主流的方式有kind、kubeadm、minik
 ## kubectl 安装
 > 参考: https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-linux/
 
+kubectl 是 kubernetes 运行命令工具，用于部署应用、监测和管理集群资源以及查看日志。
+
 ```sh
 # 下载安装
 
@@ -72,7 +74,7 @@ mv ./kind /usr/local/bin/kind
 
 
 
-## 创建一个集群
+### 创建一个集群
 
 > 一个节点也叫集群。
 
@@ -84,9 +86,7 @@ kind create cluster
 kind create cluster --name kind-2
 ```
 
-
-
-## 查看集群
+### 查看集群
 
 ```sh
 kind get clusters
@@ -95,15 +95,16 @@ kind get clusters
 kubectl cluster-info --context kind-kind
 ```
 
-
-
-## 删除集群
+### 删除集群
 
 ```sh
 kind delete cluster
 ```
 
 > 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+
+## minikube 安装
+快通车：https://sgfoot.com/k8s-minikube.md
 
 ## 参考
 
