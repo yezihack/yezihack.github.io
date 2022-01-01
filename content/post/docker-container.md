@@ -19,6 +19,31 @@ music_auto: 1
 # description: ""
 ---
 
+<!-- TOC -->
+
+- [容器管理](#%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86)
+    - [容器运行](#%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C)
+    - [查看容器](#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8)
+    - [查看容器日志](#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E6%97%A5%E5%BF%97)
+    - [容器删除](#%E5%AE%B9%E5%99%A8%E5%88%A0%E9%99%A4)
+    - [查看容器系统资源信息](#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E4%BF%A1%E6%81%AF)
+    - [容器内部命令](#%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E5%91%BD%E4%BB%A4)
+    - [复制文件相互](#%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%E7%9B%B8%E4%BA%92)
+- [导入导出容器](#%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%B9%E5%99%A8)
+    - [导出容器](#%E5%AF%BC%E5%87%BA%E5%AE%B9%E5%99%A8)
+    - [导入容器](#%E5%AF%BC%E5%85%A5%E5%AE%B9%E5%99%A8)
+- [重启启动](#%E9%87%8D%E5%90%AF%E5%90%AF%E5%8A%A8)
+    - [系统开机启动](#%E7%B3%BB%E7%BB%9F%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8)
+    - [容器开机启动](#%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8)
+- [多容器管理](#%E5%A4%9A%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86)
+    - [Docker Compose](#docker-compose)
+    - [docker-compose 安装](#docker-compose-%E5%AE%89%E8%A3%85)
+        - [启动/停止](#%E5%90%AF%E5%8A%A8%E5%81%9C%E6%AD%A2)
+        - [操作指定文件yml的容器](#%E6%93%8D%E4%BD%9C%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6yml%E7%9A%84%E5%AE%B9%E5%99%A8)
+- [参考](#%E5%8F%82%E8%80%83)
+
+<!-- /TOC -->
+
 > Docker 倡导的理念是: “一个容器一个进程”
 >
 > 容器是镜像运行的一个实例
@@ -30,6 +55,7 @@ music_auto: 1
 > dockerID 是由128位组成, 前16位保证唯一. `docker ps --no-trunc`
 
 ### 容器运行
+
 基本命令: `docker run`
 
 例`docker run --name db --env MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mariadb`
@@ -55,24 +81,30 @@ music_auto: 1
 `docker run -it ubuntu:18.04 /bin/bash`
 
 ### 查看容器
+
 基本命令: `docker ps`
+
 1. 查看所有的容器: `docker ps -a`
 2. 查看已经停止的容器: `docker ps -a`
 
 ### 查看容器日志
+
 1. 查看日志: `docker logs ID`
 2. 动态查看日志: `docker logs -f ID`
 
 ### 容器删除
+
 1. 删除容器: `docker rm ID`
 2. 强制删除容器: `docker rm -f ID`
 
 ### 查看容器系统资源信息
+
 1. `docker stats ID`
 2. `docker top ID`
 
 ### 容器内部命令
-> 一个容器一个进程 
+
+> 一个容器一个进程
 
 `docker exec + 容器名 + 容器内部执行命令`
 
@@ -88,8 +120,6 @@ music_auto: 1
 ```sh
 docker cp  /home/sgfoot.txt 7709d56792f9:/home/
 ```
-
-
 
 从容器里 复制到 宿主机
 
@@ -161,6 +191,27 @@ systemctl enable docker
 
 ### 容器开机启动
 
+查看当前容器重启状态？
+
+```bash
+docker inspect <容器ID> |grep -A 3 RestartPolicy
+```
+
+```sh
+"RestartPolicy": {
+        "Name": "always",
+        "MaximumRetryCount": 0
+},
+```
+
+RestartPolicy.Name 共四种状态
+
+1. no，默认策略，在容器退出时不重启容器
+1. on-failure，在容器非正常退出时（退出状态非0），才会重启容器
+1. on-failure:3，在容器非正常退出时重启容器，最多重启3次
+1. always，在容器退出时总是重启容器
+1. unless-stopped，在容器退出时总是重启容器，但是不考虑在Docker守护进程启动时就已经停止了的容器
+
 运行时加入以下参数即可
 
 ```sh
@@ -180,15 +231,17 @@ docker update --restart=always <容器ID>
 
 通过 `--link container` 命令互联容器.
 
-```
+```sh
 docker run --name mdb --env MYSQL_ROOT_PASSWORD=qweqwe -d mariadb 
 docker run --name my_wordpress --link mdb:mysql -p 8080:80 -d wordpress
 ```
 
 ### Docker Compose
+
 > Docker 提供一个容器编排工具. Docker Compose. 它允许用户在一个模板(YAML格式)中定义一组相关联的应用容器, 这组容器会根据配置模板中的`--link`等参数, 对启动的优先级自动排序,简单执行一条`docker-compose up`, 就可以把同一个服务中的多个容器依次创建和启动.
 
 ### docker-compose 安装
+
 > 通过修改`1.25.0`版本号,使用最新版本
 
 ```sh
@@ -204,7 +257,9 @@ mkdir ~/docker-wordpress/
 cd ~/docker-wordpress
 touch docker-compose.yml
 ```
+
 docker-compose.yml 文件
+
 ```yml
 wordpress:
         image: wordpress
@@ -217,6 +272,7 @@ mydb:
         environment:
                 MYSQL_ROOT_PASSWORD: qweqwe
 ```
+
 1. `wordpress, mydb` 是节点名称
 2. `links` 是互联哪个节点.支持多个
 3. `image` 指定镜像
@@ -224,15 +280,21 @@ mydb:
 5. `environment` 设置环境变量
 
 #### 启动/停止
+
 > 必须在 docker-compose.yml 文件的当前目录下.
 
 1. `docker-compose up` 非后台运行
 2. `docker-compose up -d` 后台运行
 3. `docker-compose stop` 停止
-3. `docker-compose start` 启动
-4. `docker-compose -f a.yml up` 指定`a.yml`文件启动(默认为 docker-compose.yml)
+4. `docker-compose start` 启动
+5. `docker-compose -f a.yml up` 指定`a.yml`文件启动(默认为 docker-compose.yml)
 
 #### 操作指定文件(yml)的容器
+
 1. 状态 `docker-compose -f ~/docker-wordpress/a.yml ps`
 2. 停止 `docker-compose -f ~/docker-wordpress/a.yml stop`
 3. 启动 `docker-compose -f ~/docker-wordpress/a.yml start`
+
+## 参考
+
+1. <https://docs.docker.com/config/containers/start-containers-automatically/>

@@ -8,3 +8,4 @@ gen.sh
 resources
 .DS_Store
 *.lock
+.markdownlint.json
