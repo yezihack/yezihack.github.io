@@ -46,8 +46,7 @@ music_auto: 1
 
 <!-- /TOC -->
 
-
-## 1. 前提准备
+## 前提准备
 
 1. harbor 2.4.1 版本
 1. 基于 CentOS 7
@@ -55,11 +54,11 @@ music_auto: 1
 1. 自定义域名: harbor.me
 1. Harbor 安装目录：/data/harbor
 
-## 2. 安装 Docker 和 Docker-Compose
+## 安装 Docker 和 Docker-Compose
 
 参考：[https://sgfoot.com/docker-install.html](https://sgfoot.com/docker-install.html#docker-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85)
 
-## 3. 离线安装之非安全模式
+## 离线安装之非安全模式
 
 > 分离线与在线安装。自由选择。offline 表示离线，online 表示在线。
 > 本文选择离线安装
@@ -68,7 +67,7 @@ music_auto: 1
 
 选择对应的安装版本
 
-### 3.1 下载安装软件
+### 下载安装软件
 
 > 只配置 http，此步不配置 https，配置 https 往下看
 
@@ -84,7 +83,7 @@ cd harbor
 cp harbor.yml.tmpl harbor.yml
 ```
 
-### 3.2 编辑配置文件
+### 编辑配置文件
 
 编辑 `vim harbor.yml` 文件
 
@@ -116,7 +115,7 @@ harbor_admin_password: 请替换您的密码
 data_volume: /data/harbor/data
 ```
 
-### 3.3 运行安装脚本
+### 运行安装脚本
 
 ```bash
 # 创建目录和删除旧版本的镜像
@@ -126,14 +125,14 @@ data_volume: /data/harbor/data
 ./install
 ```
 
-### 3.4 查看验证
+### 查看验证
 
 ```bash
 # 查看安装的容器,必须在 harbor 目录，含有 docker-compose.yml 运行才有效
 docker-compose ps 
 ```
 
-### 3.5 登陆 Harbor 管理页面
+### 登陆 Harbor 管理页面
 
 <http://192.168.100.8:9900>
 
@@ -141,7 +140,7 @@ docker-compose ps
 
 用户名默认为 admin 和密码即是 `harbor.yml` 配置 harbor_admin_password 项
 
-### 3.6 Docker 配置
+### Docker 配置
 
 > 客户端的 Docker
 
@@ -162,7 +161,7 @@ docker-compose ps
 Error response from daemon: Get https://192.168.100.8:9900/v2/: http: server gave HTTP response to HTTPS client
 ```
 
-### 3.7 Docker 登陆 harbor
+### Docker 登陆 harbor
 
 ```bash
 -> % docker login 192.168.100.8:9900
@@ -173,7 +172,7 @@ Login Succeeded
 # 这里使用的帐号和密码与页面上使用的是一样的，也可以自建专属帐号进行登陆
 ```
 
-### 3.8 测试上传镜像
+### 测试上传镜像
 
 Docker 推送与拉取命令格式
 
@@ -204,7 +203,7 @@ docker push 192.168.100.8:9900/library/nginx:1.21.5
 docker pull 192.168.100.8:9900/library/nginx:1.21.5
 ```
 
-## 4. 生成自签名
+## 生成自签名
 
 > 💡 安全模式，即使用 https 签名方式访问，这样更加安全。
 > 签名分 CA 机构购买或免费自签名
@@ -214,7 +213,7 @@ docker pull 192.168.100.8:9900/library/nginx:1.21.5
 
 生成目录：`mkdir -p ~/cert`
 
-### 4.1 生成证书颁发机构证书
+### 生成证书颁发机构证书
 
 生成CA证书私钥
 
@@ -233,7 +232,7 @@ openssl req -x509 -new -nodes -sha512 -days 3650 \
  -out ca.crt
 ```
 
-### 4.2 生成服务器证书
+### 生成服务器证书
 
 生成私钥
 
@@ -291,9 +290,9 @@ openssl x509 -req -sha512 -days 3650 \
 -rw-r--r--  1 root  staff   228B 12 31 18:00 v3.ext
 ```
 
-## 5 离线安装之安全模式
+## 离线安装之安全模式
 
-### 5.1 下载安装软件
+### 下载安装软件
 
 ```bash
 # 下载离线包：
@@ -307,7 +306,7 @@ cd harbor
 cp harbor.yml.tmpl harbor.yml
 ```
 
-### 5.2 向 Harbor 提供证书
+### 向 Harbor 提供证书
 
 > 查看第4步骤生成的证书，目录：`ls -l ~/cert`
 
@@ -321,7 +320,7 @@ cp ~/cert/harbor.me.key /data/harbor/cert/
 
 ```
 
-### 5.3 编辑配置文件
+### 编辑配置文件
 
 > 需要配置 https 项
 
@@ -355,7 +354,7 @@ harbor_admin_password: 请替换您的密码
 data_volume: /data/harbor/data
 ```
 
-### 5.4 运行安装脚本
+### 运行安装脚本
 
 如何之前没有配置过非安全模式，运行以下即可
 
@@ -380,7 +379,7 @@ sudo docker-compose down -v
 sudo docker-compose up -d 
 ```
 
-### 5.5 Docker 客户端使用证书
+### Docker 客户端使用证书
 
 将 crt 转换为 cert ，以供客户端的 Docker 使用
 
@@ -400,7 +399,7 @@ cp harhor.me.key /etc/docker/certs.d/harhor.me/
 cp ca.crt /etc/docker/certs.d/harhor.me/
 ```
 
-### 5.6 Docker 登陆测试
+### Docker 登陆测试
 
 ```sh
 # 先配置 host 
@@ -413,7 +412,6 @@ docker login harbor.me
 
 ## 参考
 
-1. <https://www.wangxiaofeng.site/harbor-https-cert.html>
 1. <https://goharbor.io/docs/1.10/install-config/configure-https/>
 
 ## 关于作者
