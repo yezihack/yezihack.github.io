@@ -35,11 +35,13 @@ music_auto: 1
     - [生成证书颁发机构证书](#%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6%E9%A2%81%E5%8F%91%E6%9C%BA%E6%9E%84%E8%AF%81%E4%B9%A6)
     - [生成服务器证书](#%E7%94%9F%E6%88%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E8%AF%81%E4%B9%A6)
 - [离线安装之安全模式](#%E7%A6%BB%E7%BA%BF%E5%AE%89%E8%A3%85%E4%B9%8B%E5%AE%89%E5%85%A8%E6%A8%A1%E5%BC%8F)
+    - [下载安装软件](#%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6)
     - [向 Harbor 提供证书](#%E5%90%91-harbor-%E6%8F%90%E4%BE%9B%E8%AF%81%E4%B9%A6)
+    - [编辑配置文件](#%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6)
+    - [运行安装脚本](#%E8%BF%90%E8%A1%8C%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC)
     - [Docker 客户端使用证书](#docker-%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%BD%BF%E7%94%A8%E8%AF%81%E4%B9%A6)
     - [Docker 登陆测试](#docker-%E7%99%BB%E9%99%86%E6%B5%8B%E8%AF%95)
 - [参考](#%E5%8F%82%E8%80%83)
-- [重启服务](#%E9%87%8D%E5%90%AF%E6%9C%8D%E5%8A%A1)
 - [关于作者](#%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85)
 
 <!-- /TOC -->
@@ -111,7 +113,7 @@ http:
 harbor_admin_password: 请替换您的密码
 
 # 47行，修改 harbor 数据存储目录。默认 /data
-data_volume: /data/harbor
+data_volume: /data/harbor/data
 ```
 
 ### 3.3 运行安装脚本
@@ -291,13 +293,25 @@ openssl x509 -req -sha512 -days 3650 \
 
 ## 5 离线安装之安全模式
 
-1. 下载软件，参考：
+### 5.1 下载安装软件
 
-> 证书已生成，目录：`ls -l ~/cert`
+```bash
+# 下载离线包：
+wget [https://github.com/goharbor/harbor/releases/download/v2.4.1/harbor-offline-installer-v2.4.1.tgz](https://github.com/goharbor/harbor/releases/download/v2.4.1/harbor-offline-installer-v2.4.1.tgz)
 
-### 5.1 向 Harbor 提供证书
+# 解压
+tar -zxvf harbor-offline-installer-v2.4.1.tgz
 
-将 `*.csr` 和 `*.key` 复制到新的 /data/harbor/cert 目录下
+# 复制配置文件
+cd harbor
+cp harbor.yml.tmpl harbor.yml
+```
+
+### 5.2 向 Harbor 提供证书
+
+> 查看第4步骤生成的证书，目录：`ls -l ~/cert`
+
+生成的 `harhor.me.csr` 和 `harhor.me.key` 复制到新的 /data/harbor/cert 目录下
 
 ```bash
 mkdir -p /data/harbor/cert/
@@ -307,11 +321,71 @@ cp ~/cert/harbor.me.key /data/harbor/cert/
 
 ```
 
-### 5.2 Docker 客户端使用证书
+### 5.3 编辑配置文件
+
+> 需要配置 https 项
+
+编辑 `vim harbor.yml` 文件
+
+共5处修改。
+
+```bash
+# 5行，修改 hostname，可以是ip，域名，不建议使用 localhost, 127.0.0.1
+hostname: 192.168.100.8
+
+# 10行，修改端口，默认80，建议修改其它端口，此区修改为9900
+http:
+    port: 9900
+
+# 此处不采用 https，建议注释掉 13～18行
+
+# https related config
+https:
+    # https port for harbor, default is 443
+    port: 443
+    # The path of cert and key files for nginx
+    certificate: /data/harbor/cert/harhor.me.crt
+    private_key: /data/harbor/cert/harbor.me.key
+
+# 34行，修改 UI 界面的登陆密码,推荐随机16位密码。
+# 在线随机密码：https://suijimimashengcheng.bmcx.com/
+harbor_admin_password: 请替换您的密码
+
+# 47行，修改 harbor 数据存储目录。默认 /data
+data_volume: /data/harbor/data
+```
+
+### 5.4 运行安装脚本
+
+如何之前没有配置过非安全模式，运行以下即可
+
+```bash
+# 创建目录和删除旧版本的镜像
+./prepare
+
+# 安装脚本，实际是通过 docker-compose up -d 进行安装 harbor 镜像的
+./install
+```
+
+之前配置过非安全模式，采用重启方式启动
+
+```bash
+# 清理配置数据，然后重建。不会清理镜像和用户信息。
+./prepare
+
+# 停止 docker 容器
+sudo docker-compose down -v
+
+# 启动服务
+sudo docker-compose up -d 
+```
+
+### 5.5 Docker 客户端使用证书
 
 将 crt 转换为 cert ，以供客户端的 Docker 使用
 
 ```sh
+cd ~/cert/
 openssl x509 -inform PEM -in harhor.me.crt -out harhor.me.cert
 ```
 
@@ -326,7 +400,7 @@ cp harhor.me.key /etc/docker/certs.d/harhor.me/
 cp ca.crt /etc/docker/certs.d/harhor.me/
 ```
 
-### 5.3 Docker 登陆测试
+### 5.6 Docker 登陆测试
 
 ```sh
 # 先配置 host 
@@ -341,25 +415,6 @@ docker login harbor.me
 
 1. <https://www.wangxiaofeng.site/harbor-https-cert.html>
 1. <https://goharbor.io/docs/1.10/install-config/configure-https/>
-
-本地配置 host
-
-```bash
-ip hostname
-```
-
-## 重启服务
-
-```bash
-# 清理配置数据，然后重建。不会清理镜像和用户信息。
-./prepare
-
-# 停止 docker 容器
-sudo docker-compose down -v
-
-# 启动服务
-sudo docker-compose up -d 
-```
 
 ## 关于作者
 
