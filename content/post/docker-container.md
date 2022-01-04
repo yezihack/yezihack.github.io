@@ -20,28 +20,26 @@ music_auto: 1
 ---
 
 <!-- TOC -->
-
-- [容器管理](#%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86)
-    - [容器运行](#%E5%AE%B9%E5%99%A8%E8%BF%90%E8%A1%8C)
-    - [查看容器](#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8)
-    - [查看容器日志](#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E6%97%A5%E5%BF%97)
-    - [容器删除](#%E5%AE%B9%E5%99%A8%E5%88%A0%E9%99%A4)
-    - [查看容器系统资源信息](#%E6%9F%A5%E7%9C%8B%E5%AE%B9%E5%99%A8%E7%B3%BB%E7%BB%9F%E8%B5%84%E6%BA%90%E4%BF%A1%E6%81%AF)
-    - [容器内部命令](#%E5%AE%B9%E5%99%A8%E5%86%85%E9%83%A8%E5%91%BD%E4%BB%A4)
-    - [复制文件相互](#%E5%A4%8D%E5%88%B6%E6%96%87%E4%BB%B6%E7%9B%B8%E4%BA%92)
-- [导入导出容器](#%E5%AF%BC%E5%85%A5%E5%AF%BC%E5%87%BA%E5%AE%B9%E5%99%A8)
-    - [导出容器](#%E5%AF%BC%E5%87%BA%E5%AE%B9%E5%99%A8)
-    - [导入容器](#%E5%AF%BC%E5%85%A5%E5%AE%B9%E5%99%A8)
-- [重启启动](#%E9%87%8D%E5%90%AF%E5%90%AF%E5%8A%A8)
-    - [系统开机启动](#%E7%B3%BB%E7%BB%9F%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8)
-    - [容器开机启动](#%E5%AE%B9%E5%99%A8%E5%BC%80%E6%9C%BA%E5%90%AF%E5%8A%A8)
-- [多容器管理](#%E5%A4%9A%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86)
-    - [Docker Compose](#docker-compose)
-    - [docker-compose 安装](#docker-compose-%E5%AE%89%E8%A3%85)
-        - [启动/停止](#%E5%90%AF%E5%8A%A8%E5%81%9C%E6%AD%A2)
-        - [操作指定文件yml的容器](#%E6%93%8D%E4%BD%9C%E6%8C%87%E5%AE%9A%E6%96%87%E4%BB%B6yml%E7%9A%84%E5%AE%B9%E5%99%A8)
-- [参考](#%E5%8F%82%E8%80%83)
-
+- [.1. 容器管理](#1-容器管理)
+        - [.1.1. 容器运行](#11-容器运行)
+        - [.1.2. 查看容器](#12-查看容器)
+        - [.1.3. 查看容器日志](#13-查看容器日志)
+        - [.1.4. 容器删除](#14-容器删除)
+        - [.1.5. 查看容器系统资源信息](#15-查看容器系统资源信息)
+        - [.1.6. 容器内部命令](#16-容器内部命令)
+        - [.1.7. 复制文件(相互)](#17-复制文件相互)
+- [.2. 导入导出容器](#2-导入导出容器)
+        - [.2.1. 导出容器](#21-导出容器)
+        - [.2.2. 导入容器](#22-导入容器)
+- [.3. 重启启动](#3-重启启动)
+        - [.3.1. 系统开机启动](#31-系统开机启动)
+        - [.3.2. 容器开机启动](#32-容器开机启动)
+- [.4. 多容器管理](#4-多容器管理)
+        - [.4.1. Docker Compose](#41-docker-compose)
+        - [.4.2. docker-compose 安装](#42-docker-compose-安装)
+                - [.4.2.1. 启动/停止](#421-启动停止)
+                - [.4.2.2. 操作指定文件(yml)的容器](#422-操作指定文件yml的容器)
+- [.5. 参考](#5-参考)
 <!-- /TOC -->
 
 > Docker 倡导的理念是: “一个容器一个进程”
@@ -50,11 +48,11 @@ music_auto: 1
 >
 > 它们的区别是镜像是一个静态只读文件, 而容器是一个运行时可写的文件层.
 
-## 容器管理
+## .1. 容器管理
 
 > dockerID 是由128位组成, 前16位保证唯一. `docker ps --no-trunc`
 
-### 容器运行
+### .1.1. 容器运行
 
 基本命令: `docker run`
 
@@ -80,29 +78,29 @@ music_auto: 1
 
 `docker run -it ubuntu:18.04 /bin/bash`
 
-### 查看容器
+### .1.2. 查看容器
 
 基本命令: `docker ps`
 
 1. 查看所有的容器: `docker ps -a`
 2. 查看已经停止的容器: `docker ps -a`
 
-### 查看容器日志
+### .1.3. 查看容器日志
 
 1. 查看日志: `docker logs ID`
 2. 动态查看日志: `docker logs -f ID`
 
-### 容器删除
+### .1.4. 容器删除
 
 1. 删除容器: `docker rm ID`
 2. 强制删除容器: `docker rm -f ID`
 
-### 查看容器系统资源信息
+### .1.5. 查看容器系统资源信息
 
 1. `docker stats ID`
 2. `docker top ID`
 
-### 容器内部命令
+### .1.6. 容器内部命令
 
 > 一个容器一个进程
 
@@ -111,7 +109,7 @@ music_auto: 1
 1. 执行内部命令: `docker exec 5ad ps aux` (5ad是ID的前三位)
 2. 进入容器内:`docker exec -it 5ad /bin/bash`
 
-### 复制文件(相互)
+### .1.7. 复制文件(相互)
 
 > docker ps 查看容器, 假设容器ID: 7709d56792f9
 
@@ -127,7 +125,7 @@ docker cp  /home/sgfoot.txt 7709d56792f9:/home/
 docker cp  7709d56792f9:/home/sgfoot.txt /home/sgfoot.txt 
 ```
 
-## 导入导出容器
+## .2. 导入导出容器
 
 > docker ps 查看容器信息
 
@@ -136,7 +134,7 @@ CONTAINER ID   IMAGE                        COMMAND                  CREATED    
 08a1edd9e89e   redis:5.0.0                  "docker-entrypoint.s…"   12 days ago   Up 5 days   0.0.0.0:6379->6379/tcp              dev_redis
 ```
 
-### 导出容器
+### .2.1. 导出容器
 
 方式一: 先提交容器保存为镜像
 
@@ -155,7 +153,7 @@ docker save test_redis:v1 > test_redis_1.tar
 docker export -o test_redis_v1.tar 08a1edd9e89e
 ```
 
-### 导入容器
+### .2.2. 导入容器
 
 > 载入docker 打包文件只能是镜像, 使用docker run 运行镜像才能成为容器
 
@@ -181,15 +179,15 @@ docker import test_redis_v1.tar sgfoot/redis:v1
 docker run -it -d --name dev_redis -p 6379:6379 -v $PWD/data:/data sgfoot/redis:v1 --requirepass "123456"
 ```
 
-## 重启启动
+## .3. 重启启动
 
-### 系统开机启动
+### .3.1. 系统开机启动
 
 ```sh
 systemctl enable docker
 ```
 
-### 容器开机启动
+### .3.2. 容器开机启动
 
 查看当前容器重启状态？
 
@@ -224,7 +222,7 @@ docker run -itd --restart=always --name dev_mysql -p 3306:3306 -e MYSQL_ROOT_PAS
 docker update --restart=always <容器ID>
 ```
 
-## 多容器管理
+## .4. 多容器管理
 
 > Docker 倡导的理念是: "一个容器一个进程", 如果一个服务由多个进程组成, 就需要创建
 > 多个容器组成一个系统, 相互分工和配合来对外提供完整的服务.
@@ -236,11 +234,11 @@ docker run --name mdb --env MYSQL_ROOT_PASSWORD=qweqwe -d mariadb
 docker run --name my_wordpress --link mdb:mysql -p 8080:80 -d wordpress
 ```
 
-### Docker Compose
+### .4.1. Docker Compose
 
 > Docker 提供一个容器编排工具. Docker Compose. 它允许用户在一个模板(YAML格式)中定义一组相关联的应用容器, 这组容器会根据配置模板中的`--link`等参数, 对启动的优先级自动排序,简单执行一条`docker-compose up`, 就可以把同一个服务中的多个容器依次创建和启动.
 
-### docker-compose 安装
+### .4.2. docker-compose 安装
 
 > 通过修改`1.25.0`版本号,使用最新版本
 
@@ -279,7 +277,7 @@ mydb:
 4. `ports` 与宿主机映射端口.(8080是宿主机的, 80是docker里的.)
 5. `environment` 设置环境变量
 
-#### 启动/停止
+#### .4.2.1. 启动/停止
 
 > 必须在 docker-compose.yml 文件的当前目录下.
 
@@ -289,12 +287,12 @@ mydb:
 4. `docker-compose start` 启动
 5. `docker-compose -f a.yml up` 指定`a.yml`文件启动(默认为 docker-compose.yml)
 
-#### 操作指定文件(yml)的容器
+#### .4.2.2. 操作指定文件(yml)的容器
 
 1. 状态 `docker-compose -f ~/docker-wordpress/a.yml ps`
 2. 停止 `docker-compose -f ~/docker-wordpress/a.yml stop`
 3. 启动 `docker-compose -f ~/docker-wordpress/a.yml start`
 
-## 参考
+## .5. 参考
 
 1. <https://docs.docker.com/config/containers/start-containers-automatically/>
