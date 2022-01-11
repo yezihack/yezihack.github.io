@@ -73,7 +73,7 @@ music_auto: 1
 
 ```bash
 # 下载离线包：
-wget [https://github.com/goharbor/harbor/releases/download/v2.4.1/harbor-offline-installer-v2.4.1.tgz](https://github.com/goharbor/harbor/releases/download/v2.4.1/harbor-offline-installer-v2.4.1.tgz)
+wget https://github.com/goharbor/harbor/releases/download/v2.4.1/harbor-offline-installer-v2.4.1.tgz
 
 # 解压
 tar -zxvf harbor-offline-installer-v2.4.1.tgz
