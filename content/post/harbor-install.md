@@ -1,5 +1,5 @@
 ---
-title: "Harbor 安装（http&https）"
+title: "Harbor 安装（TLS）"
 date: 2022-01-01T23:00:33+08:00
 lastmod: 2022-01-01T23:00:33+08:00
 draft: false

@@ -13,13 +13,21 @@ reward: true
 # description: ""
 ---
 
+## Go 资源汇总
+
+> 收集的资源大而全，提供更多选择，更大视野。
+
+- Go 语言优秀资源整理，为项目落地加速 <https://github.com/shockerli/go-awesome>
+- Go资料包 <https://github.com/0voice/Introduction-to-Golang>
+
 ## 文件
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 | [fsnotify](https://github.com/fsnotify/fsnotify) | [用法](https://segmentfault.com/a/1190000021632889) | 监听文件修改进而自动重新加载|
 
-
 ## 微服务
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[ratelimit](https://github.com/uber-go/ratelimit)||漏桶率限制算法|
@@ -27,31 +35,35 @@ reward: true
 |[hystrix-go](https://github.com/afex/hystrix-go)||流量控制,熔断,容错,隔离功能|
 
 ## 缓存
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[cache2go](https://github.com/muesli/cache2go)||go 进程内缓存|
 |[golang-lru](https://github.com/hashicorp/golang-lru)||实现LRU缓存策略|
 
 ## 日志&调试
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[errors](https://github.com/pkg/errors)||错误处理|
 |[zerolog](https://github.com/rs/zerolog)||零拷贝日志|
 
-
 ## 池
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 | [grpool](https://github.com/ivpusic/grpool) |  | 轻量级协程池 |
 | [ants](https://github.com/panjf2000/ants) || 协程池|
 
-## 框架 
+## 框架
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[gin](https://github.com/gin-gonic/gin)||web 高效框架|
 |[goConvey](https://github.com/smartystreets/goconvey)||单元测试框架, 自带 Web 界面|
 
 ## 配置
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[ini](https://github.com/go-ini/ini)||ini 配置文件|
@@ -59,6 +71,7 @@ reward: true
 |[sjson](https://github.com/tidwall/sjson)|[用法](https://darjun.github.io/2020/03/24/godailylib/sjson/)|用于设置 JSON 串|
 
 ## 唯一ID
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[uuid](http://github.com/satori/go.uuid)||uuid 码|
@@ -66,6 +79,7 @@ reward: true
 |[xid](https://github.com/rs/xid)||全局唯一ID生成器 20个字符长度|
 
 ## 工具包
+
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 | [cron](https://github.com/robfig/cron) | [用法](https://godoc.org/github.com/robfig/cron) | 定时器 by linux crontab|
@@ -74,22 +88,3 @@ reward: true
 |[cast](https://github.com/spf13/cast)||全类型转换|
 |[gopass](https://github.com/howeyc/gopass)||交互模式输入密码|
 |[cobra](https://github.com/spf13/cobra)||命令行框架, spf13大神出品|
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

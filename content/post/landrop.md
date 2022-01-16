@@ -1,7 +1,7 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
-date: {{ .Date }}
-lastmod: {{ .Date }}
+title: "Landrop"
+date: 2022-01-14T13:45:41+08:00
+lastmod: 2022-01-14T13:45:41+08:00
 draft: false
 tags: ["", ""]
 categories: [""]
