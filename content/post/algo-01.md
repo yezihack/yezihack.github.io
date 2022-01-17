@@ -148,11 +148,11 @@ music_auto: 1
 
 空间复杂度是指算法耗费多少存储空间。
 
-## 参考
+## .5. 参考
 
 - [大话数据结构](https://book.douban.com/subject/6424904/)
 
-## .5. 关于作者
+## .6. 关于作者
 
 我的博客：<https://sgfoot.com>
 
