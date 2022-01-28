@@ -1,10 +1,10 @@
 ---
-title: "Gitignore"
+title: "Git Ignore 常用文件"
 date: 2022-01-14T10:05:18+08:00
 lastmod: 2022-01-14T10:05:18+08:00
 draft: false
-tags: ["", ""]
-categories: [""]
+tags: ["git", "技巧"]
+categories: ["git"]
 author: "百里"
 comment: false
 toc: true
@@ -111,6 +111,10 @@ node_modules/
 ```
 
 ## 删除已经加入版本库文件
+
+```sh
+git rm --cached <文件名或目录>
+```
 
 ## 参考
 
