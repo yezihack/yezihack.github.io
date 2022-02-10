@@ -2,7 +2,7 @@
 title: "大话算法笔记-什么是数据结构(一)"
 date: 2021-01-26T20:24:08+08:00
 lastmod: 2021-01-26T20:24:08+08:00
-draft: false
+draft: true
 tags: ["算法", "教程"]
 categories: ["算法"]
 author: "百里"
