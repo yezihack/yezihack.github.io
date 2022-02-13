@@ -322,9 +322,8 @@ Label的特点：
 
 标签定义完毕之后，还要考虑到标签的选择，这就要使用到Label Selector，即：
 
-    Label用于给某个资源对象定义标识
-    
-    Label Selector用于查询和筛选拥有某些标签的资源对象
+- Label用于给某个资源对象定义标识
+- Label Selector用于查询和筛选拥有某些标签的资源对象
 
 当前有两种Label Selector：
 
@@ -503,9 +502,9 @@ spec:
 
 然后就可以执行对应的创建和删除命令了：
 
-    创建：kubectl  create  -f  deploy-nginx.yaml
+- 创建：`kubectl  create  -f  deploy-nginx.yaml`
     
-    删除：kubectl  delete  -f  deploy-nginx.yaml
+- 删除：`kubectl  delete  -f  deploy-nginx.yaml`
 
 ##  Service
 

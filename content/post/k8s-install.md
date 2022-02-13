@@ -104,7 +104,7 @@ kind delete cluster
 > 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
 
 ## minikube 安装
-快通车：https://sgfoot.com/k8s-minikube.md
+快通车：[Minikube](https://sgfoot.com/k8s-minikube.html)
 
 ## 参考
 
