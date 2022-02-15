@@ -604,9 +604,9 @@ Warning  FailedScheduling  <unknown>  default-scheduler  0/2 nodes are available
 
 接下来做一个案例，模拟下面这个需求：
 
-    假设要以主容器来运行nginx，但是要求在运行nginx之前先要能够连接上mysql和redis所在服务器
+假设要以主容器来运行nginx，但是要求在运行nginx之前先要能够连接上mysql和redis所在服务器
     
-    为了简化测试，事先规定好mysql`(192.168.109.201)`和redis`(192.168.109.202)`服务器的地址
+为了简化测试，事先规定好mysql`(192.168.109.201)`和redis`(192.168.109.202)`服务器的地址
 
 创建pod-initcontainer.yaml，内容如下：
 

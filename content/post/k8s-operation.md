@@ -501,9 +501,7 @@ spec:
 ~~~
 
 然后就可以执行对应的创建和删除命令了：
-
 - 创建：`kubectl  create  -f  deploy-nginx.yaml`
-    
 - 删除：`kubectl  delete  -f  deploy-nginx.yaml`
 
 ##  Service
