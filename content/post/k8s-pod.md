@@ -943,9 +943,9 @@ pod-liveness-httpget   1/1     Running   5          3m17s
 # 当然接下来，可以修改成一个可以访问的路径path，比如/，再试，结果就正常了......
 ~~~
 
-    至此，已经使用liveness Probe演示了三种探测方式，但是查看livenessProbe的子属性，会发现除了这三种方式，还有一些其他的配置，在这里一并解释下：
+至此，已经使用liveness Probe演示了三种探测方式，但是查看livenessProbe的子属性，会发现除了这三种方式，还有一些其他的配置，在这里一并解释下：
 
-~~~powershell
+~~~sh
 [root@master ~]# kubectl explain pod.spec.containers.livenessProbe
 FIELDS:
    exec <Object>  
@@ -1268,7 +1268,7 @@ NAME                        READY   STATUS    RESTARTS   AGE   IP            NOD
 pod-nodeaffinity-required   1/1     Running   0          11s   10.244.1.89   node1 ......
 ~~~
 
-接下来再演示一下`requiredDuringSchedulingIgnoredDuringExecution` ,
+接下来再演示一下`preferredDuringSchedulingIgnoredDuringExecution`：
 
 创建pod-nodeaffinity-preferred.yaml
 
@@ -1293,7 +1293,7 @@ spec:
             values: ["xxx","yyy"]
 ~~~
 
-~~~powershell
+~~~sh
 # 创建pod
 [root@master ~]# kubectl create -f pod-nodeaffinity-preferred.yaml
 pod/pod-nodeaffinity-preferred created
@@ -1304,13 +1304,12 @@ NAME                         READY   STATUS    RESTARTS   AGE
 pod-nodeaffinity-preferred   1/1     Running   0          40s
 ~~~
 
-~~~markdown
+
 NodeAffinity规则设置的注意事项：
     1 如果同时定义了nodeSelector和nodeAffinity，那么必须两个条件都得到满足，Pod才能运行在指定的Node上
     2 如果nodeAffinity指定了多个nodeSelectorTerms，那么只需要其中一个能够匹配成功即可
     3 如果一个nodeSelectorTerms中有多个matchExpressions ，则一个节点必须满足所有的才能匹配成功
     4 如果一个pod所在的Node在Pod运行期间其标签发生了改变，不再符合该Pod的节点亲和性需求，则系统将忽略此变化
-~~~
 
 **PodAffinity**
 
@@ -1318,7 +1317,7 @@ PodAffinity主要实现以运行的Pod为参照，实现让新创建的Pod跟参
 
 首先来看一下`PodAffinity`的可配置项：
 
-~~~markdown
+~~~yaml
 pod.spec.affinity.podAffinity
   requiredDuringSchedulingIgnoredDuringExecution  硬限制
     namespaces       指定参照pod的namespace
