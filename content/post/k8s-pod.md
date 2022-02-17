@@ -1306,10 +1306,10 @@ pod-nodeaffinity-preferred   1/1     Running   0          40s
 
 
 NodeAffinity规则设置的注意事项：
-    1 如果同时定义了nodeSelector和nodeAffinity，那么必须两个条件都得到满足，Pod才能运行在指定的Node上
-    2 如果nodeAffinity指定了多个nodeSelectorTerms，那么只需要其中一个能够匹配成功即可
-    3 如果一个nodeSelectorTerms中有多个matchExpressions ，则一个节点必须满足所有的才能匹配成功
-    4 如果一个pod所在的Node在Pod运行期间其标签发生了改变，不再符合该Pod的节点亲和性需求，则系统将忽略此变化
+1 如果同时定义了nodeSelector和nodeAffinity，那么必须两个条件都得到满足，Pod才能运行在指定的Node上
+2 如果nodeAffinity指定了多个nodeSelectorTerms，那么只需要其中一个能够匹配成功即可
+3 如果一个nodeSelectorTerms中有多个matchExpressions ，则一个节点必须满足所有的才能匹配成功
+4 如果一个pod所在的Node在Pod运行期间其标签发生了改变，不再符合该Pod的节点亲和性需求，则系统将忽略此变化
 
 **PodAffinity**
 
@@ -1341,11 +1341,11 @@ pod.spec.affinity.podAffinity
     weight 倾向权重，在范围1-100
 ~~~
 
-~~~markdown
+
 topologyKey用于指定调度时作用域,例如:
-    如果指定为kubernetes.io/hostname，那就是以Node节点为区分范围
-	如果指定为beta.kubernetes.io/os,则以Node节点的操作系统类型来区分
-~~~
+- 如果指定为kubernetes.io/hostname，那就是以Node节点为区分范围
+- 如果指定为beta.kubernetes.io/os,则以Node节点的操作系统类型来区分
+
 
 接下来，演示下`requiredDuringSchedulingIgnoredDuringExecution`,
 
@@ -1494,9 +1494,9 @@ pod-podantiaffinity-required   1/1     Running   0          30s   10.244.1.96   
 
 **污点（Taints）**
 
-    前面的调度方式都是站在Pod的角度上，通过在Pod上添加属性，来确定Pod是否要调度到指定的Node上，其实我们也可以站在Node的角度上，通过在Node上添加**污点**属性，来决定是否允许Pod调度过来。
+前面的调度方式都是站在Pod的角度上，通过在Pod上添加属性，来确定Pod是否要调度到指定的Node上，其实我们也可以站在Node的角度上，通过在Node上添加**污点**属性，来决定是否允许Pod调度过来。
     
-    Node被设置上污点之后就和Pod之间存在了一种相斥的关系，进而拒绝Pod调度进来，甚至可以将已经存在的Pod驱逐出去。
+Node被设置上污点之后就和Pod之间存在了一种相斥的关系，进而拒绝Pod调度进来，甚至可以将已经存在的Pod驱逐出去。
 
 污点的格式为：`key=value:effect`, key和value是污点的标签，effect描述污点的作用，支持如下三个选项：
 
