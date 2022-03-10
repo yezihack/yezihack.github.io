@@ -36,6 +36,11 @@ cat /proc/cpuinfo | grep 'model name' | sort | uniq # 查看CPU型号
 cat /proc/cpuinfo | grep 'physical id' | sort | uniq | wc -l # 查看 CPU 颗数, 实际Server中插槽上的CPU个数, 物理cpu数量
 cat /proc/cpuinfo |grep "cores"|uniq|awk '{print $4}' # 查看 CPU 核数, 一颗CPU上面能处理数据的芯片组的数量。
 cat /proc/cpuinfo |grep "processor"|wc -l # 逻辑CPU核数，逻辑CPU数量=物理cpu数量 x cpu cores 这个规格值 x 2(如果支持并开启超线程)。
+
+lspci | grep -i nvidia # 查看nvidia显卡，如果没有lspci, yum -y install pciutils
+lspci | grep -i vga # 查看内置GPU
+nvidia-smi # 查看GPU
+watch -n 10 nvidia-smi # 动态查看GPU
 ```
 
 ## 3. 进程
