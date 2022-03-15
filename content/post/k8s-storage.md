@@ -426,7 +426,7 @@ metadata:
   namespace: dev
 spec:
   accessModes: # 访问模式
-  selector: # 采用标签对PV选择
+  volumeName: # 设置 PVC 的 volumeName 字段为 PV 卷的名称, 这一操作将把新的 PVC 对象绑定到现有的 PV 卷
   storageClassName: # 存储类别
   resources: # 请求空间
     requests:
@@ -467,6 +467,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  volumeName: pv1
       
 ---
 
@@ -481,7 +482,7 @@ spec:
   resources:
     requests:
       storage: 1Gi
-     
+  volumeName: pv2
 ---
 
 apiVersion: v1
@@ -495,7 +496,10 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  volumeName: pv3
 ~~~
+
+> 注： pvc.spec.volumeName 字段是对pv.metadata.name的选择。这样PV与PVC之间建立关系。
 
 ~~~powershell
 # 创建pvc
