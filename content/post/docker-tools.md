@@ -1,7 +1,7 @@
 ---
 title: "Docker busybox 镜像工具"
-date: 2022-1134-04T15:20:11+08:00
-lastmod: 2022-1134-04T15:20:11+08:00
+date: 2022-03-31T14:20:11+08:00
+lastmod: 2022-03-31T14:20:11+08:00
 draft: false
 tags: ["docker", "busybox"]
 categories: ["docker"]
