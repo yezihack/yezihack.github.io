@@ -93,7 +93,7 @@ apk add --no-cache bash
 apk add bash-doc
 
 # 安装 bash 自动化命令行
-apk add bash-completion
+apk add bash-completion zsh vim curl
 
 # 改变当前环境 Bash
 bash

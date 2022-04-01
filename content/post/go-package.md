@@ -1,9 +1,9 @@
 ---
 title: "Go Package优秀的包"
 date: 2020-05-13T14:40:23+08:00
-lastmod: 2020-09-09T14:40:23+08:00
+lastmod: 2022-04-02T05:58:23+08:00
 draft: false
-tags: ["golang", "分享", "golang库"]
+tags: ["golang", "分享", "golang库", "go"]
 categories: ["分享"]
 author: "百里"
 comment: false
@@ -13,12 +13,17 @@ reward: true
 # description: ""
 ---
 
+
 ## Go 资源汇总
 
 > 收集的资源大而全，提供更多选择，更大视野。
 
-- Go 语言优秀资源整理，为项目落地加速 <https://github.com/shockerli/go-awesome>
-- Go资料包 <https://github.com/0voice/Introduction-to-Golang>
+| Github  | 描述 |
+| -------| ------ |
+|[go-awesome](https://github.com/shockerli/go-awesome)|Go 语言优秀资源整理
+|[Golang](https://github.com/0voice/Introduction-to-Golang)|Go 资料包
+|[awesome-go-cn](https://github.com/jobbole/awesome-go-cn)| Go 资源列表
+
 
 ## 文件
 
@@ -55,11 +60,16 @@ reward: true
 | [grpool](https://github.com/ivpusic/grpool) |  | 轻量级协程池 |
 | [ants](https://github.com/panjf2000/ants) || 协程池|
 
-## 框架
+## WEB框架
 
 | pkg | 文档 | 描述 |
 | -------| ------ |------ |
 |[gin](https://github.com/gin-gonic/gin)||web 高效框架|
+
+## 测试框架
+
+| pkg | 文档 | 描述 |
+| -------| ------ |------ |
 |[goConvey](https://github.com/smartystreets/goconvey)||单元测试框架, 自带 Web 界面|
 
 ## 配置
@@ -78,6 +88,12 @@ reward: true
 |[sonyflake](https://github.com/sony/sonyflake)||sony 雪花算法|
 |[xid](https://github.com/rs/xid)||全局唯一ID生成器 20个字符长度|
 
+## 网络
+
+| pkg | 文档 | 描述 |
+| -------| ------ |------ |
+|[ping](github.com/go-ping/ping)|| go ping 包
+
 ## 工具包
 
 | pkg | 文档 | 描述 |
@@ -88,3 +104,4 @@ reward: true
 |[cast](https://github.com/spf13/cast)||全类型转换|
 |[gopass](https://github.com/howeyc/gopass)||交互模式输入密码|
 |[cobra](https://github.com/spf13/cobra)||命令行框架, spf13大神出品|
+|[go-humanize](https://github.com/dustin/go-humanize)||各种数字的人性化转换
