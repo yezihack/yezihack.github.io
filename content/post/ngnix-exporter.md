@@ -1,5 +1,5 @@
 ---
-title: "监控 Ngnix Prometheus 监控(五)"
+title: "Prometheus 监控：Grafana 监控 Ngnix "
 date: 2020-11-06T17:41:55+08:00
 lastmod: 2020-11-06T17:41:55+08:00
 draft: false
@@ -18,36 +18,48 @@ music_auto: 1
 # weight: 1
 # description: ""
 ---
-
-## 概述
+<!-- TOC -->
+- [.1. 概述](#1-概述)
+- [.2. 安装 nginx-module-vts 模块](#2-安装-nginx-module-vts-模块)
+   - [.2.1. 下载 `nginx-module-vts` 模块文件](#21-下载-nginx-module-vts-模块文件)
+   - [.2.2. 重新编译 nginx](#22-重新编译-nginx)
+   - [.2.3. 配置 server 信息](#23-配置-server-信息)
+- [.3. 安装 nginx-vts-exporter](#3-安装-nginx-vts-exporter)
+   - [.3.1. 下载软件](#31-下载软件)
+   - [.3.2. 解压&安装](#32-解压安装)
+   - [.3.3. 制作 systemctl](#33-制作-systemctl)
+   - [.3.4. 管理 nginx-exporter](#34-管理-nginx-exporter)
+   - [.3.5. 查看 metrics](#35-查看-metrics)
+- [.4. 添加到 prometheus 数据源](#4-添加到-prometheus-数据源)
+- [.5. MySQL Over 图表安装](#5-mysql-over-图表安装)
+<!-- /TOC -->
+## .1. 概述
 
 > Prometheus 监控 nginx 需要用到两个模块
 
 1. nginx-module-vts 主要用于收集 nginx 各项指标.能提供 json 数据
 2. nginx-vts-exporter 向 prometheus 提供可以识别的数据结构
 
-
-
-## 安装 nginx-module-vts 模块
+## .2. 安装 nginx-module-vts 模块
 
 > 需要对 nginx 进行重新编译, 对于正在运行的 nginx 需要热启动, 谨慎操作.
 
-### 下载 `nginx-module-vts` 模块文件
+### .2.1. 下载 `nginx-module-vts` 模块文件
 
 ```sh
 cd /usr/local/src
 git clone https://github.com/vozlt/nginx-module-vts 
 ```
 
-### 重新编译 nginx 
+### .2.2. 重新编译 nginx
 
-1. 查看之前编译的参数, 重新编译时必须复用之前的参数,否则会影响业务
+- 1. 查看之前编译的参数, 重新编译时必须复用之前的参数,否则会影响业务
 
 ```sh
 nginx -V 
 ```
 
-```tex
+```sh
 -> # nginx -V
 nginx version: nginx/1.19.1
 built by gcc 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC) 
@@ -58,102 +70,100 @@ configure arguments: --user=www --group=www --prefix=/usr/local/nginx --with-htt
 
 注意: 涉及到nginx引用其它包的插件,如`--with-openssl=/root/lnmp1.7/src/openssl-1.1.1g`, 必须保证`/root/lnmp1.7/src/openssl-1.1.1g` 目录存在, 否则自己需要重新下载一个.
 
-2. 找到 nginx 安装原始包
+- 2. 找到 nginx 安装原始包
 
-   > 如果找不到的话,需要重新下载一个.
+> 如果找不到的话,需要重新下载一个.
 
-   ```sh
-   cd /usr/local/src/nginx-1.19.1
+```sh
+cd /usr/local/src/nginx-1.19.1
+```
+
+![image-20201106174938671](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106174946.png?imageslim)
+
+复制`nginx -V` 打印的参数,需要添加一下 `--add-module=/usr/local/src/nginx-module-vts` 也就是第一步时下载的`nginx-module-vts` 目录
+
+```sh
+./configure --add-module=/usr/local/src/nginx-module-vts --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module --with-http_sub_module --with-stream --with-stream_ssl_module --with-openssl=/root/lnmp1.7/src/openssl-1.1.1g --with-openssl-opt=enable-weak-ssl-ciphers
    ```
 
-   ![image-20201106174938671](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106174946.png?imageslim)
+进行编译
 
-   复制`nginx -V` 打印的参数,需要添加一下 `--add-module=/usr/local/src/nginx-module-vts` 也就是第一步时下载的`nginx-module-vts` 目录
+```sh
+# 不使用 make install
+make 
+```
 
-   ```sh
-   ./configure --add-module=/usr/local/src/nginx-module-vts --user=www --group=www --prefix=/usr/local/nginx --with-http_stub_status_module --with-http_ssl_module --with-http_v2_module --with-http_gzip_static_module --with-http_sub_module --with-stream --with-stream_ssl_module --with-openssl=/root/lnmp1.7/src/openssl-1.1.1g --with-openssl-opt=enable-weak-ssl-ciphers
-   ```
+- 3. 复盖之前的`nginx` 命令
 
-   进行编译
+```sh
+# 先查找 nginx 位置
+whereis nginx 
+# 对 nginx 命令进行重命令, 否则无法 cp
+mv /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.bak
+# 然后将编译好的命令进行复制
+cd /usr/local/src/nginx-1.19.1
+cp objs/nginx /usr/local/nginx/sbin/
+```
 
-   ```sh
-   # 不使用 make install
-   make 
-   ```
+![image-20201106175445640](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106175446.png?imageslim)
 
-3. 复盖之前的`nginx` 命令
+- 4. 热启动
 
-   ```sh
-   # 先查找 nginx 位置
-   whereis nginx 
-   # 对 nginx 命令进行重命令, 否则无法 cp
-   mv /usr/local/nginx/sbin/nginx /usr/local/nginx/sbin/nginx.bak
-   # 然后将编译好的命令进行复制
-   cd /usr/local/src/nginx-1.19.1
-   cp objs/nginx /usr/local/nginx/sbin/
-   ```
+```sh
+# 找到 nginx 当前的进程ID号
+netstat -nplt |grep -v grep |grep nginx
+# 使用 -USR2 热启动
+kill -USR2 2520
+```
 
-   ![image-20201106175445640](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106175446.png?imageslim)
+![image-20201106175645475](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106175646.png?imageslim)
 
-4. 热启动
+- 5. 验证是否安装成功
 
-   ```sh
-   # 找到 nginx 当前的进程ID号
-   netstat -nplt |grep -v grep |grep nginx
-   # 使用 -USR2 热启动
-   kill -USR2 2520
-   ```
+```sh
+# 查看命令configure arguments字段 --add-module=/usr/local/src/nginx-module-vts 是否存在?
+nginx -V 
+```
 
-   ![image-20201106175645475](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106175646.png?imageslim)
+![image-20201106175808601](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106175809.png?imageslim)
 
-5. 验证是否安装成功
-
-   ```sh
-   # 查看命令configure arguments字段 --add-module=/usr/local/src/nginx-module-vts 是否存在?
-   nginx -V 
-   ```
-
-   ![image-20201106175808601](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106175809.png?imageslim)
-
-### 配置 server 信息
+### .2.3. 配置 server 信息
 
 1. 添加 vhost_traffic_status_zone; 标识
-    ```sh
-    vim /usr/local/nginx/conf/nginx.conf
-    http {
-        ...
-        vhost_traffic_status_zone;
-        ...
-    }
-    ```
 
-2. 添加 nginx-vts.conf
+```sh
+vim /usr/local/nginx/conf/nginx.conf
+http {
+   ...
+   vhost_traffic_status_zone;
+   vhost_traffic_status_filter_by_host on;
+   ...
 
-   ```sh
    server {        
-       listen 9013;   
-    location /status {
-           vhost_traffic_status_display;
-           vhost_traffic_status_display_format html;
-       }
+         listen 9013;   
+         location /status  {
+            vhost_traffic_status_display;
+            vhost_traffic_status_display_format html;
+         }
    }
-   ```
-   
-3. 重启 nginx
+}
+```
+
+- 1. 重启 nginx
 
     ```sh
     nginx -t && nginx -s reload
     ```
 
-4. 查看是否收集到数据.
+- 2. 查看是否收集到数据.
 
-    http://localhost:9088/status
+<http://localhost:9088/status>
 
-    访问: `curl -I http://localhost:9088/status`
+访问: `curl -I http://localhost:9088/status`
 
-## 安装 nginx-vts-exporter
+## .3. 安装 nginx-vts-exporter
 
-### 下载软件
+### .3.1. 下载软件
 
 ```sh
 cd /usr/local/src
@@ -161,14 +171,14 @@ cd /usr/local/src
 wget https://github.com/hnlq715/nginx-vts-exporter/releases/download/v0.10.3/nginx-vts-exporter-0.10.3.linux-amd64.tar.gz -C 
 ```
 
-### 解压&安装
+### .3.2. 解压&安装
 
 ```sh
 tar -zxvf nginx-vts-exporter-0.10.3.linux-amd64.tar.gz -C /usr/local/
 mv /usr/local/nginx-vts-exporter-0.10.3.linux-amd64 /usr/local/nginx-vts-exporter
 ```
 
-### 制作 systemctl 
+### .3.3. 制作 systemctl
 
 ```sh
 cat > /lib/systemd/system/nginx_exporter.service << EOF
@@ -190,7 +200,7 @@ WantedBy=multi-user.target
 EOF
 ```
 
-### 管理 nginx-exporter
+### .3.4. 管理 nginx-exporter
 
 ````sh
 # 刷新配置
@@ -205,11 +215,11 @@ systemctl stop nginx_exporter
 systemctl restart nginx_exporter
 ````
 
-### 查看 metrics
+### .3.5. 查看 metrics
 
-http://127.0.0.1:9913/metrics
+<http://127.0.0.1:9913/metrics>
 
-## 添加到 prometheus 数据源
+## .4. 添加到 prometheus 数据源
 
 > 添加到 scrape_configs 节点上 job_name: ‘nginx_vts_exporter’, 没有则添加
 
@@ -232,29 +242,29 @@ scrape_configs:
       - targets: ['localhost:9913']
 ```
 
-1. 使用 prometool 工具检查配置是否成功
+- 1. 使用 prometool 工具检查配置是否成功
 
-   ```shell
-   ./promtool check config prometheus.yml
-   ```
+```shell
+./promtool check config prometheus.yml
+```
 
-   ```shell
-   Checking prometheus.yml
-     SUCCESS: 0 rule files found
-   ```
-   
-2. 重启 prometheus 
+```shell
+Checking prometheus.yml
+   SUCCESS: 0 rule files found
+```
 
-   ```shell
-   systemctl daemon-reload
-   systemctl restart prometheus
-   ```
+- 2. 重启 prometheus
 
-3. 查看 prometheus 是否添加成功
+```shell
+systemctl daemon-reload
+systemctl restart prometheus
+```
 
-   http://127.0.0.1:9090/targets
+- 3. 查看 prometheus 是否添加成功
 
-## MySQL Over 图表安装
+<http://127.0.0.1:9090/targets>
+
+## .5. MySQL Over 图表安装
 
 > 选择 2949 [具体操作参数 mysqld_exporter](https://www.sgfoot.com/mysqld_exporter.html#mysql-over-%E5%9B%BE%E8%A1%A8%E5%AE%89%E8%A3%85)
 

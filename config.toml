@@ -170,7 +170,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   customJS = []             # if ['custom.js'], load '/static/js/custom.js' file
 
   # enable 'fork me on github', see https://blog.github.com/2008-12-19-github-ribbons/
-  # forkMeOnGithub = "https://github.com/yezihack"
+  forkMeOnGithub = "https://github.com/yezihack"
 
   # show word count and read time ?                       # 是否显示字数统计与阅读时间
   moreMeta = true
