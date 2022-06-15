@@ -44,6 +44,7 @@ reward: true
 # 下载
 cd /usr/local/src
 wget https://dl.grafana.com/oss/release/grafana-7.1.5.linux-amd64.tar.gz
+wget https://dl.grafana.com/oss/release/grafana-9.0.0.linux-amd64.tar.gz
 # 解压
 tar -zxvf /grafana-7.1.5.linux-amd64.tar.gz -C /usr/local
 # 重命名文件夹 grafana
@@ -55,8 +56,13 @@ mv /usr/local/grafana-7.1.5.linux-amd64 /usr/local/grafana
 ```sh
 wget https://dl.grafana.com/enterprise/release/grafana-enterprise-9.0.0-1.x86_64.rpm
 sudo yum install grafana-enterprise-9.0.0-1.x86_64.rpm
-```
 
+sudo systemctl daemon-reload
+sudo systemctl start grafana-server
+sudo systemctl status grafana-server
+
+sudo systemctl enable grafana-server
+```
 
 创建 systemd 服务
 
