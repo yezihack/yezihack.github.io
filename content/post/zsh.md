@@ -74,6 +74,7 @@ cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
 ```sh
 vim ~/.zshrc 找到ZSH_THEME 字段
 # 推荐使用: agnoster, candy
+ZSH_THEME="candy"
 ```
 
 ## .5. 一键安装 zsh + oh-my-zsh
