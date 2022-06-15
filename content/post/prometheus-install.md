@@ -1,7 +1,7 @@
 ---
 title: "监控 Prometheus 安装(二)"
 date: 2021-09-24T17:04:51+08:00
-lastmod: 2021-09-24T17:04:51+08:00
+lastmod: 2022-06-15T10:54:51+08:00
 draft: false
 tags: ["prometheus", "grafana", "监控", "教程"]
 categories: ["监控"]
@@ -19,26 +19,34 @@ music_auto: 1
 # description: ""
 ---
 
+<!-- TOC -->
 
+- [.1. 安装](#1-安装)
+  - [.1.1. 下载](#11-下载)
+  - [.1.2. 运行](#12-运行)
+  - [.1.3. 预览](#13-预览)
+  - [.1.4. nginx 反向代理](#14-nginx-反向代理)
+- [.2. Docker 安装](#2-docker-安装)
+- [.3. 关于作者](#3-关于作者)
 
-## 安装
+<!-- /TOC -->
 
-### 下载
+## .1. 安装
+
+### .1.1. 下载
 
 > prometheus提供二进制,直接解压即可用.由 go 编写
->
-> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
 
-[官网下载](https://prometheus.io/download/)
+- 官网下载: <https://prometheus.io/download/>
 
-Centos 64x 选择下载 `*linux-amd64.tar.gz`
+- Centos 64x 选择下载 `*linux-amd64.tar.gz`
 
 ```shell
 wget -c https://github.com/prometheus/prometheus/releases/download/v2.18.1/prometheus-2.18.1.darwin-amd64.tar.gz
 tar -xvf prometheus-2.18.1.darwin-amd64.tar.gz -C /usr/local/
 ```
 
-### 运行
+### .1.2. 运行
 
 创建 systemd 服务
 
@@ -62,43 +70,41 @@ EOF
 
 刷新 systemd && 运行 && 查看
 
-```
+```sh
 systemctl daemon-reload # 刷新 systemd 配置
 systemctl enable prometheus # 加入开机启动
 systemctl start prometheus # 启动服务 
 systemctl status prometheus # 查看详情
 ```
 
-### 预览
+### .1.3. 预览
 
-http://localhost:9090
+<http://localhost:9090>
 
 ![image-20200831170056207](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200831170057.png?imageslim)
 
-自带也会产生监控数据
+**自带也会产生监控数据:**
 
-http://192.168.61.66:9090/metrics 
+<http://192.168.61.66:9090/metrics>
 
-### nginx 反向代理
+### .1.4. nginx 反向代理
 
-> [htpasswd 参考](https://www.sgfoot.com/htpasswd.html)
+> htpasswd 参考: <https://www.sgfoot.com/htpasswd.html>
 
-```powershell
+```nginx
 server {
-	listen 80;
-	server_name prome.sgfoot.com;
-	auth_basic "Auth";
-	auth_basic_user_file /usr/local/nginx/conf/vhost/htpasswd.users;
-	location / {
-		proxy_pass http://127.0.0.1:9090;
-		index index.html index.htm;
-	}
+  listen 80;
+  server_name prome.sgfoot.com;
+  auth_basic "Auth";
+  auth_basic_user_file /usr/local/nginx/conf/vhost/htpasswd.users;
+  location / {
+      proxy_pass http://127.0.0.1:9090;
+      index index.html index.htm;
+  }
 }
 ```
 
-
-
-## Docker 安装
+## .2. Docker 安装
 
 创建配置文件，进行挂载
 
@@ -136,18 +142,12 @@ scrape_configs:
 EOF
 ```
 
-
-
 ```sh
 docker run -d -p 9090:9090 --name=prometheus  -v  ~/prometheus/conf/:/etc/prometheus/  quay.io/prometheus/prometheus
 ```
 
-
-
-
-
-## 关于我
-我的博客：https://www.sgfoot.com
+## .3. 关于作者
+我的博客：<https://www.sgfoot.com>
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)
