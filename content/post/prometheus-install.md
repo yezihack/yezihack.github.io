@@ -1,5 +1,5 @@
 ---
-title: "监控 Prometheus 安装(二)"
+title: "Prometheus: 安装"
 date: 2021-09-24T17:04:51+08:00
 lastmod: 2022-06-15T10:54:51+08:00
 draft: false

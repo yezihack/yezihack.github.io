@@ -1,5 +1,5 @@
 ---
-title: "监控 Grafana 入门(四)"
+title: "Prometheus: Grafana 入门"
 date: 2020-08-31T20:29:51+08:00
 lastmod: 2022-06-15T10:46:51+08:00
 draft: false

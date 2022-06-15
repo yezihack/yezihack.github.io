@@ -1,8 +1,8 @@
 ---
-title: "PromQL 基础学习(七)"
+title: "Prometheus: PromQL 学习"
 date: 2021-11-12T11:18:54+08:00
 lastmod: 2021-11-12T11:18:54+08:00
-draft: false
+draft: true
 tags: ["prometheus", "promQL", "监控", "教程"]
 categories: ["监控"]
 author: "百里"

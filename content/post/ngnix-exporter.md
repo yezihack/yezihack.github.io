@@ -1,5 +1,5 @@
 ---
-title: "Prometheus 监控：Grafana 监控 Ngnix "
+title: "Prometheus: Grafana 监控 Ngnix "
 date: 2020-11-06T17:41:55+08:00
 lastmod: 2020-11-06T17:41:55+08:00
 draft: false
@@ -19,19 +19,21 @@ music_auto: 1
 # description: ""
 ---
 <!-- TOC -->
-- [.1. 概述](#1-概述)
-- [.2. 安装 nginx-module-vts 模块](#2-安装-nginx-module-vts-模块)
-   - [.2.1. 下载 `nginx-module-vts` 模块文件](#21-下载-nginx-module-vts-模块文件)
-   - [.2.2. 重新编译 nginx](#22-重新编译-nginx)
-   - [.2.3. 配置 server 信息](#23-配置-server-信息)
-- [.3. 安装 nginx-vts-exporter](#3-安装-nginx-vts-exporter)
-   - [.3.1. 下载软件](#31-下载软件)
-   - [.3.2. 解压&安装](#32-解压安装)
-   - [.3.3. 制作 systemctl](#33-制作-systemctl)
-   - [.3.4. 管理 nginx-exporter](#34-管理-nginx-exporter)
-   - [.3.5. 查看 metrics](#35-查看-metrics)
-- [.4. 添加到 prometheus 数据源](#4-添加到-prometheus-数据源)
-- [.5. MySQL Over 图表安装](#5-mysql-over-图表安装)
+
+- [.1. 概述](#1-%E6%A6%82%E8%BF%B0)
+- [.2. 安装 nginx-module-vts 模块](#2-%E5%AE%89%E8%A3%85-nginx-module-vts-%E6%A8%A1%E5%9D%97)
+    - [.2.1. 下载 nginx-module-vts 模块文件](#21-%E4%B8%8B%E8%BD%BD-nginx-module-vts-%E6%A8%A1%E5%9D%97%E6%96%87%E4%BB%B6)
+    - [.2.2. 重新编译 nginx](#22-%E9%87%8D%E6%96%B0%E7%BC%96%E8%AF%91-nginx)
+    - [.2.3. 配置 server 信息](#23-%E9%85%8D%E7%BD%AE-server-%E4%BF%A1%E6%81%AF)
+- [.3. 安装 nginx-vts-exporter](#3-%E5%AE%89%E8%A3%85-nginx-vts-exporter)
+    - [.3.1. 下载软件](#31-%E4%B8%8B%E8%BD%BD%E8%BD%AF%E4%BB%B6)
+    - [.3.2. 解压&安装](#32-%E8%A7%A3%E5%8E%8B%E5%AE%89%E8%A3%85)
+    - [.3.3. 制作 systemctl](#33-%E5%88%B6%E4%BD%9C-systemctl)
+    - [.3.4. 管理 nginx-exporter](#34-%E7%AE%A1%E7%90%86-nginx-exporter)
+    - [.3.5. 查看 metrics](#35-%E6%9F%A5%E7%9C%8B-metrics)
+- [.4. 添加到 prometheus 数据源](#4-%E6%B7%BB%E5%8A%A0%E5%88%B0-prometheus-%E6%95%B0%E6%8D%AE%E6%BA%90)
+- [.5. MySQL Over 图表安装](#5-mysql-over-%E5%9B%BE%E8%A1%A8%E5%AE%89%E8%A3%85)
+
 <!-- /TOC -->
 ## .1. 概述
 

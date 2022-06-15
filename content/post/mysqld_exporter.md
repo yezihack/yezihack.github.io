@@ -1,5 +1,5 @@
 ---
-title: "监控 MySQL(三)"
+title: "Prometheus:  Grafana 监控 MySQL"
 date: 2020-09-02T11:02:44+08:00
 lastmod: 2020-09-02T11:02:44+08:00
 draft: false

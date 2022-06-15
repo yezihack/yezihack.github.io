@@ -1,5 +1,5 @@
 ---
-title: "监控 Node Exporter 监控主机(六)"
+title: "Prometheus: Grafana 监控 Node Exporter 主机"
 date: 2021-09-24T17:05:06+08:00
 lastmod: 2021-09-24T17:05:06+08:00
 draft: false
