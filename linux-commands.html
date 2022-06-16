@@ -1,0 +1,380 @@
+<!doctype html><html lang=zh-cn itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>Linux 命令集 - 空樹之空的博客</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta name=MobileOptimized content="width"><meta name=HandheldFriendly content="true"><meta name=applicable-device content="pc,mobile"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=mobile-web-app-capable content="yes"><meta name=author content="百里"><meta name=description content="文件类 查看文件大小 1 2 3 4 5 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP -r 递归处理，将指定目录下的所"><meta name=keywords content="Go语言,MySQL,Redis,设计模式,读书笔记,人生感悟"><meta name=generator content="Hugo 0.79.1"><link rel=canonical href=/linux-commands.html><link rel=icon href=/favicon.ico><link rel=stylesheet href=/sass/jane.min.021cece56b7a73d45503de6c44a7f04dc9247fa4d50d932d81c81d1f76ef1efe.css integrity="sha256-Ahzs5Wt6c9RVA95sRKfwTckkf6TVDZMtgcgdH3bvHv4=" media=screen crossorigin=anonymous><link rel=stylesheet href=/css/toc.css><meta property="og:title" content="Linux 命令集"><meta property="og:description" content="文件类 查看文件大小 1 2 3 4 5 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP -r 递归处理，将指定目录下的所"><meta property="og:type" content="article"><meta property="og:url" content="/linux-commands.html"><meta property="article:published_time" content="2020-07-06T18:07:38+08:00"><meta property="article:modified_time" content="2020-07-06T18:07:38+08:00"><meta itemprop=name content="Linux 命令集"><meta itemprop=description content="文件类 查看文件大小 1 2 3 4 5 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP -r 递归处理，将指定目录下的所"><meta itemprop=datePublished content="2020-07-06T18:07:38+08:00"><meta itemprop=dateModified content="2020-07-06T18:07:38+08:00"><meta itemprop=wordCount content="1889"><meta itemprop=keywords content="linux,命令,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Linux 命令集"><meta name=twitter:description content="文件类 查看文件大小 1 2 3 4 5 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP -r 递归处理，将指定目录下的所"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>空樹之空</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><li class=mobile-menu-item><a class=menu-item-link href=/>首页</a></li><li class=mobile-menu-item><a class=menu-item-link href=/post.html>归档</a></li><li class=mobile-menu-item><a class=menu-item-link href=/tags.html>标签云</a></li><li class=mobile-menu-item><a class=menu-item-link href=/categories.html>分类</a></li><li class=mobile-menu-item><div class=mobile-menu-parent><span class=mobile-submenu-open></span><a href>教程</a></div><ul class=mobile-submenu-list><li><a href=/categories/go%E6%95%99%E7%A8%8B.html>Go 实践教程</a></li><li><a href=/tags/docker%E6%95%99%E7%A8%8B.html>Docker笔记</a></li><li><a href=/tags/elk.html>ELK入门</a></li><li><a href=/tags/prometheus.html>Prometheus</a></li><li><a href=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html>设计模式</a></li><li><a href=/tags/kubernetes.html>Kubernetes 笔记整理</a></li></ul></li><li class=mobile-menu-item><div class=mobile-menu-parent><span class=mobile-submenu-open></span><a href>自我驱动</a></div><ul class=mobile-submenu-list><li><a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html>读书笔记</a></li><li><a href=/tags/%E5%B7%A5%E7%A8%8B%E5%B8%88.html>工程师</a></li><li><a href=/tags/%E5%88%86%E4%BA%AB.html>价值分享</a></li></ul></li><li class=mobile-menu-item><a class=menu-item-link href=/about.html>地图</a></li></ul></nav><link rel=stylesheet href=/lib/photoswipe/photoswipe.min.css><link rel=stylesheet href=/lib/photoswipe/default-skin/default-skin.min.css><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><style>.fork-me-on-github{position:absolute;top:0;left:0;border:0}@media(max-width:1080px){.fork-me-on-github{display:none}}</style><a href=https://github.com/yezihack><img class=fork-me-on-github src=https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png alt="Fork me on GitHub"></a><header id=header class="header container"><div class=logo-wrapper><a href=/ class=logo>空樹之空</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>首页</a></li><li class=menu-item><a class=menu-item-link href=/post.html>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags.html>标签云</a></li><li class=menu-item><a class=menu-item-link href=/categories.html>分类</a></li><li class=menu-item><a class="menu-item-link menu-parent" href>教程</a><ul class=submenu><li><a href=/categories/go%E6%95%99%E7%A8%8B.html>Go 实践教程</a></li><li><a href=/tags/docker%E6%95%99%E7%A8%8B.html>Docker笔记</a></li><li><a href=/tags/elk.html>ELK入门</a></li><li><a href=/tags/prometheus.html>Prometheus</a></li><li><a href=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html>设计模式</a></li><li><a href=/tags/kubernetes.html>Kubernetes 笔记整理</a></li></ul></li><li class=menu-item><a class="menu-item-link menu-parent" href>自我驱动</a><ul class=submenu><li><a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html>读书笔记</a></li><li><a href=/tags/%E5%B7%A5%E7%A8%8B%E5%B8%88.html>工程师</a></li><li><a href=/tags/%E5%88%86%E4%BA%AB.html>价值分享</a></li></ul></li><li class=menu-item><a class=menu-item-link href=/about.html>地图</a></li></ul></nav></header><div id=mobile-panel><main id=main class="main bg-llight"><div class=content-wrapper><div id=content class="content container"><article class="post bg-white"><header class=post-header><h1 class=post-title>Linux 命令集</h1><div class=post-meta><time datetime=2020-07-06 class=post-time>2020-07-06</time><div class=post-category><a href=/categories/linux.html>linux</a></div><span class=more-meta>约 1889 字</span>
+<span class=more-meta>预计阅读 4 分钟</span>
+<span id=busuanzi_container_page_pv>| 阅读 <span id=busuanzi_value_page_pv></span></span></div></header><div id=post-toc><aside><header><h3>Linux 命令集</h3></header><nav id=TableOfContents><ul><li><a href=#文件类>文件类</a><ul><li><a href=#查看文件大小>查看文件大小</a></li><li><a href=#压缩>压缩</a></li></ul></li><li><a href=#rpm>RPM</a><ul><li><a href=#安装>安装</a></li><li><a href=#搜索>搜索</a></li><li><a href=#卸载>卸载</a></li></ul></li><li><a href=#文本处理>文本处理</a><ul><li><a href=#grep>grep</a></li><li><a href=#awk>awk</a></li></ul></li><li><a href=#传输>传输</a><ul><li><a href=#scp>scp</a></li><li><a href=#rsync>rsync</a></li><li><a href=#curl>curl</a></li></ul></li><li><a href=#调试>调试</a><ul><li><a href=#gdb>gdb</a></li><li><a href=#pstack>pstack</a></li><li><a href=#strace>strace</a></li></ul></li><li><a href=#查看进程及端口>查看进程及端口</a><ul><li><a href=#netstat>netstat</a></li><li><a href=#lsof>lsof</a></li></ul></li><li><a href=#监控优化>监控&优化</a><ul><li><a href=#工具合集>工具合集</a></li><li><a href=#free>free</a></li><li><a href=#ldd>ldd</a></li></ul></li><li><a href=#权限管理>权限管理</a></li><li><a href=#脚本>脚本</a><ul><li><a href=#获取当前文件名>获取当前文件名</a></li><li><a href=#获取当前目录名>获取当前目录名</a></li><li><a href=#定时删除日志>定时删除日志</a></li></ul></li><li><a href=#其它>其它</a><ul><li><a href=#时间>时间</a></li></ul></li></ul></nav></aside><a href=# id=toc-toggle></a></div><div class=post-content><h2 id=文件类>文件类</h2><h3 id=查看文件大小>查看文件大小</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 加 h 查看可读性的文件大小</span>
+ll -h 
+<span class=c1># 查看文件夹大小</span>
+<span class=c1># --max-depth=1 表示查看文件夹的一层</span>
+du -h --max-depth<span class=o>=</span><span class=m>1</span> /usr
+</code></pre></td></tr></table></div></div><h3 id=压缩>压缩</h3><p><strong>ZIP</strong></p><ul><li><code>-r </code>递归处理，将指定目录下的所有文件和子目录一并处理。</li><li><code>-y</code> 直接保存符号连接，而非该连接所指向的文件，本参数仅在UNIX之类的系统下有效。</li><li><code>-v</code> 显示指令执行过程或显示版本信息。</li><li><code>-j</code> 只保存文件名称及其内容，而不存放任何目录名称。</li><li><code>-b</code> 添加注释</li><li><code>-u</code> 更新文件</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 压缩</span>
+<span class=c1># target.zip 是压缩后的文件名</span>
+<span class=c1># source-dir 要压缩的文件夹名</span>
+zip -r target.zip source-dir
+
+<span class=c1># 压缩保留软链, 只对类 unix 系统有效</span>
+<span class=c1># -y 保留软链</span>
+zip -ry target.zip source-dir
+
+<span class=c1># 压缩带注释</span>
+zip -ryb target.zip source-dir
+
+<span class=c1># 解压</span>
+unzip target.zip
+
+<span class=c1># 查看压缩文件, 不压缩</span>
+unzip -v target.zip
+unzip -l test.zip <span class=c1># 可以看到压缩包中的文件名，日期等信息</span>
+
+<span class=c1># 解压到指定文件夹 -d 指定文件夹</span>
+unzip target.zip -d target-dir/
+
+<span class=c1># 自定义压缩率(1~9) 越高越耗时</span>
+zip -r8 target.zip target-dir/
+
+<span class=c1># 向压缩包里更新文件</span>
+zip -u target.zip update/
+
+<span class=c1># 压缩, 不带多余的目录</span>
+zip -rj target.zip target/
+</code></pre></td></tr></table></div></div><p><strong>tar</strong></p><ul><li><code>-c</code> 创建压缩文档</li><li><code>-x</code> 解压压缩文档</li><li><code>-z</code> 是否需要用gzip压缩</li><li><code>-v</code> 压缩的过程中显示档案</li><li><code>-C</code> 解压到指定的目录</li><li><code>-f</code> 指定压缩文件</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 创建压缩文件</span>
+tar -zcvf target.tar.gz source/
+
+<span class=c1># 解压缩文件</span>
+tar -zxvf target.tar.gz 
+
+<span class=c1># 解压到指定文件夹</span>
+tar -zxvf target.tar.gz -C /usr/local/src/target
+
+<span class=c1># 万能压缩</span>
+tar -xvf target.tar.gz
+
+<span class=c1># 预览压缩(不解压)</span>
+tar -tvf target.tar.gz
+
+<span class=c1># 压缩,排除其它文件</span>
+<span class=c1># 打包test目录下所有文件，排除以.log结尾的文件</span>
+<span class=c1># --exclude选项，支持通配符和正则表达式，因此也非常强大。</span>
+tar -zcvf target.tar.gz test/ --exclude<span class=o>=</span>test/*.log
+
+<span class=c1># 忽略.git文件</span>
+tar -zcvf target.tar.gz  test/ --exclude<span class=o>=</span>*.git
+</code></pre></td></tr></table></div></div><h2 id=rpm>RPM</h2><h3 id=安装>安装</h3><p><code>rpm -ivh rpm软件包</code></p><h3 id=搜索>搜索</h3><p><code>rpm -qa 搜索的名称</code></p><h3 id=卸载>卸载</h3><p><code>rpm -e rpm包名(搜索后的结果名称)</code></p><h2 id=文本处理>文本处理</h2><h3 id=grep>grep</h3><h4 id=或的关系>或的关系</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>cat 1.txt |grep a |grep b
+</code></pre></td></tr></table></div></div><h4 id=并集的关系>并集的关系</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>cat 1.txt |grep -E &#34;a&#34; |grep -E &#34;b&#34;
+</code></pre></td></tr></table></div></div><h4 id=搜索多个文件内容>搜索多个文件内容</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 普通搜索</span>
+grep <span class=s2>&#34;搜索内容&#34;</span> *.conf
+
+<span class=c1># 显示行号</span>
+grep -n <span class=s2>&#34;搜索内容&#34;</span> *.conf
+
+<span class=c1># 显示上下文及行号</span>
+grep -n -C <span class=m>10</span> <span class=s2>&#34;搜索内容&#34;</span> *.conf
+</code></pre></td></tr></table></div></div><h3 id=awk>awk</h3><p>提出内存大小</p><ol><li>awk &lsquo;{print $1}&rsquo; 提出第1列的数据</li><li>sed -n &lsquo;2p&rsquo; 提出第二行的数据</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>free -m |awk &#39;{print $3}&#39; |sed -n &#39;2p&#39;
+</code></pre></td></tr></table></div></div><h2 id=传输>传输</h2><h3 id=scp>scp</h3><blockquote><p>scp [参数] [原路径] [目标路径]</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 1. 从本地复制到远程目录</span>
+scp /opt/soft/demo.tar root@10.6.159.147:/opt/soft/scptest
+<span class=c1># 2. 从本地递归复制整个目录到远程目录</span>
+scp -r /opt/soft/test root@10.6.159.147:/opt/soft/scptest
+
+<span class=c1># 3. 从远程复制文件到本地</span>
+scp root@10.6.159.147:/opt/soft/demo.tar /opt/soft/
+<span class=c1># 4. 从远程复制文件到本地 递归复制整个目录</span>
+scp -r root@10.6.159.147:/opt/soft/demo.tar /opt/soft/
+</code></pre></td></tr></table></div></div><h3 id=rsync>rsync</h3><h3 id=curl>curl</h3><p>POST JSON请求</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>curl -H &#34;Content-type:application/json&#34; -X POST -d &#39;{&#34;name&#34;:&#34;king&#34;}&#39; http://localhost/test
+</code></pre></td></tr></table></div></div><h2 id=调试>调试</h2><h3 id=gdb>gdb</h3><h3 id=pstack>pstack</h3><h3 id=strace>strace</h3><h2 id=查看进程及端口>查看进程及端口</h2><h3 id=netstat>netstat</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 查看 tcp 所有的进程</span>
+netstat -nplt 
+</code></pre></td></tr></table></div></div><h3 id=lsof>lsof</h3><ol><li>列出谁在使用某个端口</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -i :80 
+</code></pre></td></tr></table></div></div><ol start=2><li>查找某个文件相关进程</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof /bin/bash
+</code></pre></td></tr></table></div></div><ol start=3><li>列出某个用户打开的文件信息</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -u root
+</code></pre></td></tr></table></div></div><ol start=4><li><strong>列出某个程序进程所打开的文件信息</strong></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -c mysql
+</code></pre></td></tr></table></div></div><ol start=5><li>列出某个用户以及某个进程所打开的文件信息</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -u root -c mysql
+</code></pre></td></tr></table></div></div><ol start=6><li>通过某个进程显示该进程打开的文件</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -p <span class=m>11201</span>
+</code></pre></td></tr></table></div></div><ol start=7><li>列出所有网络连接</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -i 
+<span class=c1># 列出tcp </span>
+lsof -i tcp
+</code></pre></td></tr></table></div></div><ol start=8><li>通过端口获取当前进程ID</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>lsof -t -i:3306
+</code></pre></td></tr></table></div></div><ol start=9><li>杀死进程</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=nb>kill</span> -9 <span class=k>$(</span>lsof -t -i :3306<span class=k>)</span>
+</code></pre></td></tr></table></div></div><h2 id=监控优化>监控&优化</h2><h3 id=工具合集>工具合集</h3><ol><li>sysstat<ul><li>iostat</li><li>mpstat</li><li>pidstat</li><li>tapestat</li><li>cifsiostat</li><li>sadf</li></ul></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># Linux 性能监视工具合集</span>
+yum -y install sysstat  
+</code></pre></td></tr></table></div></div><h3 id=free>free</h3><p>查看内容情况</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh>free -m <span class=c1># 显示以 km 为单位</span>
+free -g <span class=c1># 显示以 kg 为单位</span>
+</code></pre></td></tr></table></div></div><p>释放缓冲内容</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=nb>echo</span> <span class=m>3</span> &gt; /proc/sys/vm/drop_caches
+</code></pre></td></tr></table></div></div><h3 id=ldd>ldd</h3><p>查看程序依赖库</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 查看 nginx 执行命令 依赖库</span>
+ldd /usr/sbin/nginx
+</code></pre></td></tr></table></div></div><h2 id=权限管理>权限管理</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=c1># 创建用户组</span>
+groupadd work
+<span class=c1># 创建用户并加入用户组</span>
+useradd work -g work <span class=c1># -g 加入用户组</span>
+<span class=c1># 创建不登陆的用户 </span>
+useradd -s /sbin/nologin bear
+<span class=c1># 修改用户组权限</span>
+usermod -s /bin/bash bear
+</code></pre></td></tr></table></div></div><h2 id=脚本>脚本</h2><h3 id=获取当前文件名>获取当前文件名</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=nv>CUR_DIR</span><span class=o>=</span><span class=s2>&#34;</span><span class=nv>$PWD</span><span class=s2>&#34;</span>
+<span class=nv>SCRIPTPATH</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>CUR_DIR</span><span class=si>}</span><span class=s2>/</span><span class=si>${</span><span class=nv>0</span><span class=p>#*/</span><span class=si>}</span><span class=s2>&#34;</span>
+<span class=c1># OR</span>
+<span class=nv>SCRIPTPATH</span><span class=o>=</span><span class=s2>&#34;</span><span class=si>${</span><span class=nv>PWD</span><span class=si>}</span><span class=s2>/</span><span class=si>${</span><span class=nv>0</span><span class=p>#*/</span><span class=si>}</span><span class=s2>&#34;</span>
+</code></pre></td></tr></table></div></div><h3 id=获取当前目录名>获取当前目录名</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=nv>SCRIPTPATH</span><span class=o>=</span><span class=k>$(</span><span class=nb>cd</span> <span class=sb>`</span>dirname -- <span class=nv>$0</span><span class=sb>`</span> <span class=o>&amp;&amp;</span> <span class=nb>pwd</span><span class=k>)</span>
+</code></pre></td></tr></table></div></div><h3 id=定时删除日志>定时删除日志</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=cp>#!/bin/sh
+</span><span class=cp></span><span class=nb>set</span> -x
+
+<span class=nv>day</span><span class=o>=</span><span class=m>7</span>
+
+find /data/logs/ -mtime +<span class=si>${</span><span class=nv>day</span><span class=si>}</span> -exec rm -rf <span class=o>{}</span> <span class=se>\;</span>
+</code></pre></td></tr></table></div></div><p>高级级，支持多个目录。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=cp>#!/bin/bash
+</span><span class=cp></span><span class=c1>###################</span>
+<span class=c1># 功能：定时删除日志文件</span>
+<span class=c1># 作者：百里</span>
+<span class=c1># 时间：2021/03/25</span>
+<span class=c1>###################</span>
+
+<span class=c1># 保留多少天</span>
+<span class=nv>day</span><span class=o>=</span><span class=nv>$1</span>
+
+<span class=nv>shell_name</span><span class=o>=</span><span class=k>$(</span>basename <span class=nv>$0</span><span class=k>)</span>
+
+<span class=k>if</span> <span class=o>[</span> -z <span class=nv>$day</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
+    <span class=nv>day</span><span class=o>=</span><span class=m>31</span>
+    <span class=nb>echo</span> <span class=s2>&#34;默认删除</span><span class=si>${</span><span class=nv>day</span><span class=si>}</span><span class=s2>天的日志,可以自定义过期天数.</span><span class=si>${</span><span class=nv>shell_name</span><span class=si>}</span><span class=s2> 7&#34;</span>
+<span class=k>fi</span>
+
+<span class=c1># 日志列表,支持多个目录</span>
+<span class=nv>logs_list</span><span class=o>=(</span>
+<span class=s2>&#34;/data/logs/&#34;</span>
+<span class=o>)</span>
+
+
+<span class=c1># 删除方法</span>
+<span class=k>function</span> rm_file<span class=o>()</span> <span class=o>{</span>
+   <span class=nv>dir_path</span><span class=o>=</span><span class=nv>$1</span>
+   <span class=nv>expired</span><span class=o>=</span><span class=nv>$2</span>
+   <span class=k>if</span> <span class=o>[</span> ! -d <span class=nv>$dir_path</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
+	<span class=nb>echo</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>dir_path</span><span class=si>}</span><span class=s2>,目录不存在&#34;</span>
+        <span class=k>return</span> <span class=m>10</span>
+   <span class=k>fi</span>
+   <span class=k>if</span> <span class=o>[</span> -z <span class=nv>$expired</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
+	<span class=nb>echo</span> <span class=s2>&#34;过期时间不能为空&#34;</span>
+	<span class=k>return</span> <span class=m>11</span>
+   <span class=k>fi</span> 
+   <span class=nv>logs</span><span class=o>=</span><span class=k>$(</span>find <span class=nv>$dir_path</span> -mtime +<span class=si>${</span><span class=nv>expired</span><span class=si>}</span> -name <span class=s2>&#34;*.log&#34;</span><span class=k>)</span>
+   <span class=k>for</span> log in <span class=si>${</span><span class=nv>logs</span><span class=p>[@]</span><span class=si>}</span><span class=p>;</span><span class=k>do</span>
+	<span class=nv>now</span><span class=o>=</span><span class=k>$(</span>date +%F_%T<span class=k>)</span>
+	<span class=k>if</span> <span class=nb>test</span> ! -f <span class=nv>$log</span><span class=p>;</span><span class=k>then</span>
+		<span class=nb>echo</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>log</span><span class=si>}</span><span class=s2> 文件不存在&#34;</span>
+		<span class=k>continue</span>
+	<span class=k>fi</span> 
+	<span class=nb>echo</span> <span class=s2>&#34;</span><span class=si>${</span><span class=nv>log</span><span class=si>}</span><span class=s2> 已删除 in </span><span class=si>${</span><span class=nv>now</span><span class=si>}</span><span class=s2>&#34;</span>
+	rm -f <span class=nv>$log</span>	
+   <span class=k>done</span>
+   <span class=k>return</span> <span class=m>0</span>
+<span class=o>}</span>
+
+
+<span class=c1># 执行</span>
+<span class=k>for</span> item in <span class=si>${</span><span class=nv>logs_list</span><span class=p>[@]</span><span class=si>}</span><span class=p>;</span><span class=k>do</span>
+	rm_file <span class=nv>$item</span> <span class=nv>$day</span>
+	<span class=k>if</span> <span class=o>[</span> <span class=nv>$?</span> -ne <span class=m>0</span> <span class=o>]</span><span class=p>;</span><span class=k>then</span>
+		<span class=nb>exit</span> <span class=m>0</span>
+	<span class=k>fi</span> 
+<span class=k>done</span>
+<span class=nb>echo</span> <span class=s2>&#34;successful!&#34;</span>
+<span class=nb>exit</span> <span class=m>0</span>
+</code></pre></td></tr></table></div></div><h2 id=其它>其它</h2><h3 id=时间>时间</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-sh data-lang=sh><span class=cp>#!/bin/bash
+</span><span class=cp></span><span class=nb>echo</span> <span class=k>$(</span>date +%F<span class=k>)</span>
+</code></pre></td></tr></table></div></div><p>时间格式列表：</p><table><thead><tr><th><code>date +%c</code></th><th>locale’s date time</th><th>Sat May 9 11:49:47 2020</th></tr></thead><tbody><tr><td><code>date +%x</code></td><td>locale’s date</td><td>05/09/20</td></tr><tr><td><code>date +%X</code></td><td>locale’s time</td><td>11:49:47</td></tr><tr><td><code>date +%A</code></td><td>locale’s full weekday name</td><td>Saturday</td></tr><tr><td><code>date +%B</code></td><td>locale’s full month name</td><td>May</td></tr><tr><td><code>date +%m-%d-%Y</code></td><td>MM-DD-YYYY date format</td><td>05-09-2020</td></tr><tr><td><code>date +%D</code></td><td>MM/DD/YY date format</td><td>05/09/20</td></tr><tr><td><code>date +%F</code></td><td>YYYY-MM-DD date format</td><td>2020-05-09</td></tr><tr><td><code>date +%T</code></td><td>HH:MM:SS time format</td><td>11:44:15</td></tr><tr><td><code>date +%u</code></td><td>Day of Week</td><td>6</td></tr><tr><td><code>date +%U</code></td><td>Week of Year with Sunday as first day of week</td><td>18</td></tr><tr><td><code>date +%V</code></td><td>ISO Week of Year with Monday as first day of week</td><td>19</td></tr><tr><td><code>date +%j</code></td><td>Day of Year</td><td>130</td></tr><tr><td><code>date +%Z</code></td><td>Timezone</td><td>PDT</td></tr><tr><td><code>date +%m</code></td><td>Month of year (MM)</td><td>05</td></tr><tr><td><code>date +%d</code></td><td>Day of Month (DD)</td><td>09</td></tr><tr><td><code>date +%Y</code></td><td>Year (YY)</td><td>2020</td></tr><tr><td><code>date +%H</code></td><td>Hour (HH)</td><td>11</td></tr><tr><td><code>date +%H</code></td><td>Hour (HH) in 24-hour clock format</td><td>11</td></tr><tr><td><code>date +%I</code></td><td>Hour in 12-hour clock format</td><td>11</td></tr><tr><td><code>date +%p</code></td><td>locale’s equivalent of AM or PM</td><td>AM</td></tr><tr><td><code>date +%P</code></td><td>same as %p but in lower case</td><td>am</td></tr></tbody></table></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
+<span class=item-content>百里</span></p><p class=copyright-item><span class=item-title>上次更新</span>
+<span class=item-content>2020-07-06</span></p><p class=copyright-item><span class=item-title>许可协议</span>
+<span class=item-content><a rel="license noopener" href=https://creativecommons.org/licenses/by-nc-nd/4.0/ target=_blank>CC BY-NC-ND 4.0</a></span></p></div><h1></h1><div class=post-reward><input type=checkbox name=reward id=reward hidden>
+<label class=reward-button for=reward>赞赏支持</label><div class=qr-code><label class=qr-code-image for=reward><img class=image src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417142450.jpg?imageslim>
+<span>微信打赏</span></label></div></div><footer class=post-footer><div class=post-tags><a href=/tags/linux.html>linux</a>
+<a href=/tags/%E5%91%BD%E4%BB%A4.html>命令</a></div><nav class=post-nav><a class=prev href=/ab.html><i class=iconfont><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417l277.93508-310.326815c11.338233-12.190647 11.035334-32.285311-.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"/></svg></i><span class="prev-text nav-default">Ab 压测</span>
+<span class="prev-text nav-mobile">上一篇</span></a>
+<a class=next href=/optimize-zerolog.html><span class="next-text nav-default">zerolog 占大量内存剖析</span>
+<span class="prev-text nav-mobile">下一篇</span>
+<i class=iconfont><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"/></svg></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=icon-links><a href=mailto:freeit@126.com rel="me noopener" class=iconfont title=email><svg class="icon" viewBox="0 0 1451 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36"><path d="M664.781909 681.472759.0 97.881301C0 3.997201 71.046997.0 71.046997.0H474.477909 961.649408 1361.641813S1432.688811 3.997201 1432.688811 97.881301L771.345323 681.472759S764.482731 685.154773 753.594283 688.65053V688.664858C741.602731 693.493018 729.424896 695.068979 718.077952 694.839748 706.731093 695.068979 694.553173 693.493018 682.561621 688.664858V688.65053C671.644501 685.140446 664.781909 681.472759 664.781909 681.472759zM718.063616 811.603883C693.779541 811.016482 658.879232 802.205449 619.10784 767.734955 542.989056 701.759633.0 212.052267.0 212.052267V942.809523L83.726336 1024H682.532949 753.579947 1348.948139L1432.688811 942.809523V212.052267S893.138176 701.759633 817.019477 767.734955C777.248 802.205449 742.347691 811.03081 718.063616 811.603883z"/></svg></a><a href=https://www.github.com/yezihack rel="me noopener" class=iconfont title=github target=_blank><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36"><path d="M512 12.672c-282.88.0-512 229.248-512 512 0 226.261333 146.688 418.133333 350.08 485.76 25.6 4.821333 34.986667-11.008 34.986667-24.618667.0-12.16-.426667-44.373333-.64-87.04-142.421333 30.890667-172.458667-68.693333-172.458667-68.693333C188.672 770.986667 155.008 755.2 155.008 755.2c-46.378667-31.744 3.584-31.104 3.584-31.104 51.413333 3.584 78.421333 52.736 78.421333 52.736 45.653333 78.293333 119.850667 55.68 149.12 42.581333 4.608-33.109333 17.792-55.68 32.426667-68.48-113.706667-12.8-233.216-56.832-233.216-253.013333.0-55.893333 19.84-101.546667 52.693333-137.386667-5.76-12.928-23.04-64.981333 4.48-135.509333.0.0 42.88-13.738667 140.8 52.48 40.96-11.392 84.48-17.024 128-17.28 43.52.256 87.04 5.888 128 17.28 97.28-66.218667 140.16-52.48 140.16-52.48 27.52 70.528 10.24 122.581333 5.12 135.509333 32.64 35.84 52.48 81.493333 52.48 137.386667.0 196.693333-119.68 240-233.6 252.586667 17.92 15.36 34.56 46.762667 34.56 94.72.0 68.522667-.64 123.562667-.64 140.202666.0 13.44 8.96 29.44 35.2 24.32C877.44 942.592 1024 750.592 1024 524.672c0-282.752-229.248-512-512-512"/></svg></a><a href=/index.xml rel="noopener alternate" type=application/rss+xml class=iconfont title=rss target=_blank><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30"><path d="M819.157333 1024C819.157333 574.592 449.408 204.8.0 204.8V0c561.706667.0 1024 462.293333 1024 1024H819.157333zM140.416 743.04a140.8 140.8.0 01140.501333 140.586667A140.928 140.928.0 01140.074667 1024C62.72 1024 0 961.109333.0 883.626667S62.933333 743.082667 140.416 743.04zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352.0 678.784 306.517333 678.784 678.826667z"/></svg></a></div><div class=copyright><span class=copyright-year>&copy;
+2020 -
+2022
+<span class=heart><i class=iconfont><svg class="icon" viewBox="0 0 1025 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14"><path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7.0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1.0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2.0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3.1-42.5-8-83.6-24-122.2z" fill="#8a8a8a"/></svg></i></span><span class=author><a href=https://www.sgfoot.com>空樹之空</a>
+</span><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme - <a class=theme-link href=https://github.com/xianmin/hugo-theme-jane>Jane</a></span></span>
+<span id=busuanzi_container>访客数/访问量：<span id=busuanzi_value_site_uv></span>/<span id=busuanzi_value_site_pv></span></span></div></footer><div class=back-to-top id=back-to-top><i class=iconfont><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35" height="35"><path d="M510.866688 227.694839 95.449397 629.218702h235.761562L329.15309 958.01517h362.40389L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777h894.052392v131.813095H63.840492V63.962777zm0 0"/></svg></i></div></div><script type=text/javascript src=/lib/jquery/jquery-3.2.1.min.js></script><script type=text/javascript src=/lib/slideout/slideout-1.0.1.min.js></script><script type=text/javascript src=/js/main.c123da21eb8e940c0619f739a9ba5a0058720dfae9a96bafc91016c54983880f.js integrity="sha256-wSPaIeuOlAwGGfc5qbpaAFhyDfrpqWuvyRAWxUmDiA8=" crossorigin=anonymous></script><script id=baidu_analytics>var _hmt=_hmt||[];(function(){if(window.location.hostname==='localhost')return;var hm=document.createElement("script");hm.async=true;hm.src="https://hm.baidu.com/hm.js?90b270e075265ec9aad9847f47bb1f42";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script><script id=baidu_push>(function(){if(window.location.hostname==='localhost')return;var bp=document.createElement('script');bp.async=true;var curProtocol=window.location.protocol.split(':')[0];if(curProtocol==='https'){bp.src='https://zz.bdstatic.com/linksubmit/push.js';}
+else{bp.src='http://push.zhanzhang.baidu.com/push.js';}
+var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(bp,s);})();</script><script type=text/javascript src=/js/load-photoswipe.js></script><script type=text/javascript src=/lib/photoswipe/photoswipe.min.js></script><script type=text/javascript src=/lib/photoswipe/photoswipe-ui-default.min.js></script><script async src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script></body></html>

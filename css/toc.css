@@ -1,0 +1,26 @@
+#post-toc {
+    position: fixed;
+    padding: 10px;
+    border-radius: 10px;
+    background-color:#fff;
+}
+#post-toc ul li{
+    line-height: 24px;
+    overflow: visible;
+    font: 16px Helvetica Neue,Helvetica,PingFang SC,Tahoma,Arial,sans-serif;
+}
+#post-toc header h3{
+    font-size: 1em;
+    line-height: 5px;
+    font-family: Athelas,STHeiti,Microsoft Yahei,serif;
+}
+@media screen and (max-width:1080px){
+    #post-toc {
+        display: none;
+    }
+}
+@media screen and (min-width:1080px){
+    #post-toc {
+        display: block;
+    }
+}

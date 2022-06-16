@@ -1,0 +1,1526 @@
+<!doctype html><html lang=zh-cn itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge"><title>Elasticsearch 入门(四) 查询 - 空樹之空的博客</title><meta name=renderer content="webkit"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><meta name=MobileOptimized content="width"><meta name=HandheldFriendly content="true"><meta name=applicable-device content="pc,mobile"><meta name=theme-color content="#f8f5ec"><meta name=msapplication-navbutton-color content="#f8f5ec"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="#f8f5ec"><meta name=mobile-web-app-capable content="yes"><meta name=author content="百里"><meta name=description content="概要 Elasticsearch对外提供的API遵循REST原则 GET POST PUT DELETE 简介 _index 索引, 文档在哪儿存放 _type 类型, 7.x以后都使用 _doc类型 _id 文档唯"><meta name=keywords content="Go语言,MySQL,Redis,设计模式,读书笔记,人生感悟"><meta name=generator content="Hugo 0.79.1"><link rel=canonical href=/es-search.html><link rel=icon href=/favicon.ico><link rel=stylesheet href=/sass/jane.min.021cece56b7a73d45503de6c44a7f04dc9247fa4d50d932d81c81d1f76ef1efe.css integrity="sha256-Ahzs5Wt6c9RVA95sRKfwTckkf6TVDZMtgcgdH3bvHv4=" media=screen crossorigin=anonymous><link rel=stylesheet href=/css/toc.css><meta property="og:title" content="Elasticsearch 入门(四) 查询"><meta property="og:description" content="概要 Elasticsearch对外提供的API遵循REST原则 GET POST PUT DELETE 简介 _index 索引, 文档在哪儿存放 _type 类型, 7.x以后都使用 _doc类型 _id 文档唯"><meta property="og:type" content="article"><meta property="og:url" content="/es-search.html"><meta property="article:published_time" content="2020-07-15T19:52:52+08:00"><meta property="article:modified_time" content="2020-07-15T19:52:52+08:00"><meta itemprop=name content="Elasticsearch 入门(四) 查询"><meta itemprop=description content="概要 Elasticsearch对外提供的API遵循REST原则 GET POST PUT DELETE 简介 _index 索引, 文档在哪儿存放 _type 类型, 7.x以后都使用 _doc类型 _id 文档唯"><meta itemprop=datePublished content="2020-07-15T19:52:52+08:00"><meta itemprop=dateModified content="2020-07-15T19:52:52+08:00"><meta itemprop=wordCount content="4420"><meta itemprop=keywords content="elasticsearch,elk,"><meta name=twitter:card content="summary"><meta name=twitter:title content="Elasticsearch 入门(四) 查询"><meta name=twitter:description content="概要 Elasticsearch对外提供的API遵循REST原则 GET POST PUT DELETE 简介 _index 索引, 文档在哪儿存放 _type 类型, 7.x以后都使用 _doc类型 _id 文档唯"><!--[if lte IE 9]><script src=https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js></script><![endif]--><!--[if lt IE 9]><script src=https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js></script><script src=https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js></script><![endif]--></head><body><div id=mobile-navbar class=mobile-navbar><div class=mobile-header-logo><a href=/ class=logo>空樹之空</a></div><div class=mobile-navbar-icon><span></span><span></span><span></span></div></div><nav id=mobile-menu class="mobile-menu slideout-menu"><ul class=mobile-menu-list><li class=mobile-menu-item><a class=menu-item-link href=/>首页</a></li><li class=mobile-menu-item><a class=menu-item-link href=/post.html>归档</a></li><li class=mobile-menu-item><a class=menu-item-link href=/tags.html>标签云</a></li><li class=mobile-menu-item><a class=menu-item-link href=/categories.html>分类</a></li><li class=mobile-menu-item><div class=mobile-menu-parent><span class=mobile-submenu-open></span><a href>教程</a></div><ul class=mobile-submenu-list><li><a href=/categories/go%E6%95%99%E7%A8%8B.html>Go 实践教程</a></li><li><a href=/tags/docker%E6%95%99%E7%A8%8B.html>Docker笔记</a></li><li><a href=/tags/elk.html>ELK入门</a></li><li><a href=/tags/prometheus.html>Prometheus</a></li><li><a href=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html>设计模式</a></li><li><a href=/tags/kubernetes.html>Kubernetes 笔记整理</a></li></ul></li><li class=mobile-menu-item><div class=mobile-menu-parent><span class=mobile-submenu-open></span><a href>自我驱动</a></div><ul class=mobile-submenu-list><li><a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html>读书笔记</a></li><li><a href=/tags/%E5%B7%A5%E7%A8%8B%E5%B8%88.html>工程师</a></li><li><a href=/tags/%E5%88%86%E4%BA%AB.html>价值分享</a></li></ul></li><li class=mobile-menu-item><a class=menu-item-link href=/about.html>地图</a></li></ul></nav><link rel=stylesheet href=/lib/photoswipe/photoswipe.min.css><link rel=stylesheet href=/lib/photoswipe/default-skin/default-skin.min.css><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><style>.fork-me-on-github{position:absolute;top:0;left:0;border:0}@media(max-width:1080px){.fork-me-on-github{display:none}}</style><a href=https://github.com/yezihack><img class=fork-me-on-github src=https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png alt="Fork me on GitHub"></a><header id=header class="header container"><div class=logo-wrapper><a href=/ class=logo>空樹之空</a></div><nav class=site-navbar><ul id=menu class=menu><li class=menu-item><a class=menu-item-link href=/>首页</a></li><li class=menu-item><a class=menu-item-link href=/post.html>归档</a></li><li class=menu-item><a class=menu-item-link href=/tags.html>标签云</a></li><li class=menu-item><a class=menu-item-link href=/categories.html>分类</a></li><li class=menu-item><a class="menu-item-link menu-parent" href>教程</a><ul class=submenu><li><a href=/categories/go%E6%95%99%E7%A8%8B.html>Go 实践教程</a></li><li><a href=/tags/docker%E6%95%99%E7%A8%8B.html>Docker笔记</a></li><li><a href=/tags/elk.html>ELK入门</a></li><li><a href=/tags/prometheus.html>Prometheus</a></li><li><a href=/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.html>设计模式</a></li><li><a href=/tags/kubernetes.html>Kubernetes 笔记整理</a></li></ul></li><li class=menu-item><a class="menu-item-link menu-parent" href>自我驱动</a><ul class=submenu><li><a href=/tags/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0.html>读书笔记</a></li><li><a href=/tags/%E5%B7%A5%E7%A8%8B%E5%B8%88.html>工程师</a></li><li><a href=/tags/%E5%88%86%E4%BA%AB.html>价值分享</a></li></ul></li><li class=menu-item><a class=menu-item-link href=/about.html>地图</a></li></ul></nav></header><div id=mobile-panel><main id=main class="main bg-llight"><div class=content-wrapper><div id=content class="content container"><article class="post bg-white"><header class=post-header><h1 class=post-title>Elasticsearch 入门(四) 查询</h1><div class=post-meta><time datetime=2020-07-15 class=post-time>2020-07-15</time><div class=post-category><a href=/categories/elasticsearch.html>elasticsearch</a></div><span class=more-meta>约 4420 字</span>
+<span class=more-meta>预计阅读 9 分钟</span>
+<span id=busuanzi_container_page_pv>| 阅读 <span id=busuanzi_value_page_pv></span></span></div></header><div id=post-toc><aside><header><h3>Elasticsearch 入门(四) 查询</h3></header><nav id=TableOfContents><ul><li><a href=#概要>概要</a></li><li><a href=#简介>简介</a></li><li><a href=#基本restful操作>基本RESTful操作</a><ul><li><a href=#新增记录-create>新增记录 create</a></li><li><a href=#获取文档-get>获取文档 get</a></li><li><a href=#更新文档-update>更新文档 update</a></li><li><a href=#删除文档-delete>删除文档 delete</a></li></ul></li><li><a href=#bulk-批量操作>bulk 批量操作</a></li><li><a href=#mget-批量获取>mget 批量获取</a></li><li><a href=#msearch-批量搜索>msearch 批量搜索</a></li><li><a href=#查询>查询</a><ul><li><a href=#分词使用>分词使用</a></li><li><a href=#uri-方式查询>URI 方式查询</a></li><li><a href=#request-body-查询>Request Body 查询</a></li></ul></li><li><a href=#高级查询>高级查询</a><ul><li><a href=#指定返回字段>指定返回字段</a></li><li><a href=#聚合查询>聚合查询</a></li><li><a href=#嵌套查询聚合>嵌套查询聚合</a></li><li><a href=#term-查询>term 查询</a></li><li><a href=#复合查询>复合查询</a></li><li><a href=#范围查询>范围查询</a></li><li><a href=#字段存在否>字段存在否</a></li></ul></li><li><a href=#bool-查询>BOOL 查询</a><ul><li></li></ul></li><li><a href=#自定义分词器>自定义分词器</a></li><li><a href=#设置-mappings--settings>设置 mappings & settings</a></li><li><a href=#常见错误>常见错误</a></li><li><a href=#推荐阅读>推荐阅读</a></li><li><a href=#参考>参考</a></li></ul></nav></aside><a href=# id=toc-toggle></a></div><div class=post-content><h2 id=概要>概要</h2><p>Elasticsearch对外提供的API遵循REST原则</p><ol><li>GET</li><li>POST</li><li>PUT</li><li>DELETE</li></ol><h2 id=简介>简介</h2><ol><li><code>_index</code> 索引, 文档在哪儿存放</li><li><code>_type</code> 类型, 7.x以后都使用 <code>_doc</code>类型</li><li><code>_id</code> 文档唯一标识, 不指定则自动生成.</li></ol><p>一个文档的 <code>_index</code> 、<code> _type</code> 和 <code>_id</code> 唯一标识一个文档</p><h2 id=基本restful操作>基本RESTful操作</h2><h3 id=新增记录-create>新增记录 create</h3><p>二种操作. <code>PUT</code>, <code>POST</code></p><p>PUT方法, <code>/{_index}/_create/{id}</code> 如果文档存在,操作失败</p><p>还可以使用 <code>/{_index}/_doc/{id}?op_type=create</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 创建一个文档, 如果文档存在,操作失败
+# 使用_create
+PUT /student/_create/1
+{
+  &#34;name&#34;: &#34;张三&#34;,
+  &#34;age&#34;:19,
+  &#34;sex&#34;:1
+}
+# 使用 _doc指定操作类型
+PUT /student/_doc/3?op_type=create
+{
+  &#34;name&#34;: &#34;张三丰&#34;,
+  &#34;age&#34;:600,
+  &#34;sex&#34;:1
+}
+
+# 自动生成ID
+PUT /student/_doc/
+{
+  &#34;name&#34;: &#34;张三元&#34;,
+  &#34;age&#34;:600,
+  &#34;sex&#34;:1
+}
+</code></pre></td></tr></table></div></div><p>POST方法 <code>{index}/_doc/{id}</code> 如果文档不存在则创建新文档, 文档存在则旧文档删除, 新的文档被索引, 版本信息+1</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>
+POST /student/_doc/2
+{
+  &#34;name&#34;: &#34;阳明&#34;,
+  &#34;age&#34;:290,
+  &#34;sex&#34;:1
+}
+</code></pre></td></tr></table></div></div><p>返回JSON</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>{
+  &#34;_index&#34; : &#34;student&#34;, # 索引名称
+  &#34;_type&#34; : &#34;_doc&#34;, # 类型, 默认为 _doc
+  &#34;_id&#34; : &#34;2&#34;, # 标识ID
+  &#34;_version&#34; : 5, # 更新版本次数. 5代表此文档更新过5次.
+  &#34;result&#34; : &#34;updated&#34;, # 此操作类型为更新操作完成
+  &#34;_shards&#34; : { #
+    &#34;total&#34; : 2,
+    &#34;successful&#34; : 1,
+    &#34;failed&#34; : 0
+  },
+  &#34;_seq_no&#34; : 5,
+  &#34;_primary_term&#34; : 1
+}
+
+</code></pre></td></tr></table></div></div><h3 id=获取文档-get>获取文档 get</h3><p>GET <code>{_index}/{_type}/{id}</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_doc/2
+
+{
+  &#34;_index&#34; : &#34;student&#34;, # 索引名称
+  &#34;_type&#34; : &#34;_doc&#34;, # 类型名称
+  &#34;_id&#34; : &#34;2&#34;, # 标识ID
+  &#34;_version&#34; : 5, # 版本次数
+  &#34;_seq_no&#34; : 5,
+  &#34;_primary_term&#34; : 1,
+  &#34;found&#34; : true, # true 代表找到信息
+  &#34;_source&#34; : { # 文档的原则信息
+    &#34;name&#34; : &#34;阳明&#34;,
+    &#34;age&#34; : 290,
+    &#34;sex&#34; : 1
+  }
+}
+
+</code></pre></td></tr></table></div></div><h3 id=更新文档-update>更新文档 update</h3><blockquote><p>每次更新,注意查看 _version 版本号的变化</p></blockquote><p>Update 方法, 与上面的<code>/{_index}/_doc/{id}</code> 更新不一样, 它是删除后再创建. 而update是真实的更新字段</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>
+
+POST /student/_update/2
+{
+  &#34;doc&#34;:{
+    &#34;age&#34;:300,
+    &#34;sex&#34;:1
+  }
+}
+</code></pre></td></tr></table></div></div><p>查看下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_doc/2
+{
+  &#34;_index&#34; : &#34;student&#34;,
+  &#34;_type&#34; : &#34;_doc&#34;,
+  &#34;_id&#34; : &#34;2&#34;,
+  &#34;_version&#34; : 2,
+  &#34;_seq_no&#34; : 12,
+  &#34;_primary_term&#34; : 1,
+  &#34;found&#34; : true,
+  &#34;_source&#34; : {
+    &#34;name&#34; : &#34;阳明&#34;,
+    &#34;sex&#34; : 1, # 新增的两个字段
+    &#34;age&#34; : 300
+  }
+}
+
+</code></pre></td></tr></table></div></div><h3 id=删除文档-delete>删除文档 delete</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 删除文档
+DELETE /student/_doc/2
+</code></pre></td></tr></table></div></div><h2 id=bulk-批量操作>bulk 批量操作</h2><blockquote><p>支持创建, 更新,删除操作</p></blockquote><ol><li>index 表示创建或更新文档, 后跟要{}要创建的文档信息</li><li>delete 删除文档</li><li>create 创建文档, 后跟{}要创建的文档信息</li><li>update 更新文档, 后跟{}要更新的文档信息</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>POST /_bulk?pretty
+{ &#34;index&#34; : { &#34;_index&#34; : &#34;test&#34;, &#34;_id&#34; : &#34;1&#34; } } 
+{ &#34;field1&#34; : &#34;value1&#34; }
+{ &#34;delete&#34; : { &#34;_index&#34; : &#34;test&#34;, &#34;_id&#34; : &#34;2&#34; } }
+{ &#34;create&#34; : { &#34;_index&#34; : &#34;test&#34;, &#34;_id&#34; : &#34;3&#34; } }
+{ &#34;field1&#34; : &#34;value3&#34; }
+{ &#34;update&#34; : {&#34;_id&#34; : &#34;1&#34;, &#34;_index&#34; : &#34;test&#34;} }
+{ &#34;doc&#34; : {&#34;field2&#34; : &#34;value2&#34;} }
+</code></pre></td></tr></table></div></div><p>每一个操作都会返回对应的结果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>{
+  &#34;took&#34; : 7,
+  &#34;errors&#34; : false,
+  &#34;items&#34; : [
+    {
+      &#34;index&#34; : {
+        &#34;_index&#34; : &#34;test&#34;,
+        &#34;_type&#34; : &#34;_doc&#34;,
+        &#34;_id&#34; : &#34;1&#34;,
+        &#34;_version&#34; : 6,
+        &#34;result&#34; : &#34;created&#34;,
+        &#34;_shards&#34; : {
+          &#34;total&#34; : 2,
+          &#34;successful&#34; : 1,
+          &#34;failed&#34; : 0
+        },
+        &#34;_seq_no&#34; : 10,
+        &#34;_primary_term&#34; : 1,
+        &#34;status&#34; : 201
+      }
+    },
+    {
+      &#34;delete&#34; : {
+        &#34;_index&#34; : &#34;test&#34;,
+        &#34;_type&#34; : &#34;_doc&#34;,
+        &#34;_id&#34; : &#34;2&#34;,
+        &#34;_version&#34; : 3,
+        &#34;result&#34; : &#34;not_found&#34;,
+        &#34;_shards&#34; : {
+          &#34;total&#34; : 2,
+          &#34;successful&#34; : 1,
+          &#34;failed&#34; : 0
+        },
+        &#34;_seq_no&#34; : 11,
+        &#34;_primary_term&#34; : 1,
+        &#34;status&#34; : 404
+      }
+    },
+    {
+      &#34;create&#34; : {
+        &#34;_index&#34; : &#34;test&#34;,
+        &#34;_type&#34; : &#34;_doc&#34;,
+        &#34;_id&#34; : &#34;3&#34;,
+        &#34;_version&#34; : 3,
+        &#34;result&#34; : &#34;created&#34;,
+        &#34;_shards&#34; : {
+          &#34;total&#34; : 2,
+          &#34;successful&#34; : 1,
+          &#34;failed&#34; : 0
+        },
+        &#34;_seq_no&#34; : 12,
+        &#34;_primary_term&#34; : 1,
+        &#34;status&#34; : 201
+      }
+    },
+    {
+      &#34;update&#34; : {
+        &#34;_index&#34; : &#34;test&#34;,
+        &#34;_type&#34; : &#34;_doc&#34;,
+        &#34;_id&#34; : &#34;1&#34;,
+        &#34;_version&#34; : 7,
+        &#34;result&#34; : &#34;updated&#34;,
+        &#34;_shards&#34; : {
+          &#34;total&#34; : 2,
+          &#34;successful&#34; : 1,
+          &#34;failed&#34; : 0
+        },
+        &#34;_seq_no&#34; : 13,
+        &#34;_primary_term&#34; : 1,
+        &#34;status&#34; : 200
+      }
+    }
+  ]
+}
+</code></pre></td></tr></table></div></div><h2 id=mget-批量获取>mget 批量获取</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 批量获取 mget
+GET /_mget 
+{
+  &#34;docs&#34;:[
+    {
+      &#34;_index&#34;:&#34;test&#34;,
+      &#34;_id&#34;:&#34;1&#34;
+    },
+    {
+      &#34;_index&#34;:&#34;test&#34;,
+      &#34;_id&#34;:&#34;3&#34;
+    }
+  ]
+}
+简单写法
+GET /student/_mget
+{
+  &#34;ids&#34;:[1,2,3]
+}
+</code></pre></td></tr></table></div></div><p>对应的返回每一条结果</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>{
+  &#34;docs&#34; : [
+    {
+      &#34;_index&#34; : &#34;test&#34;,
+      &#34;_type&#34; : &#34;_doc&#34;,
+      &#34;_id&#34; : &#34;1&#34;,
+      &#34;_version&#34; : 7,
+      &#34;_seq_no&#34; : 13,
+      &#34;_primary_term&#34; : 1,
+      &#34;found&#34; : true,
+      &#34;_source&#34; : {
+        &#34;field1&#34; : &#34;value1&#34;,
+        &#34;field2&#34; : &#34;value2&#34;
+      }
+    },
+    {
+      &#34;_index&#34; : &#34;test&#34;,
+      &#34;_type&#34; : &#34;_doc&#34;,
+      &#34;_id&#34; : &#34;3&#34;,
+      &#34;_version&#34; : 3,
+      &#34;_seq_no&#34; : 12,
+      &#34;_primary_term&#34; : 1,
+      &#34;found&#34; : true,
+      &#34;_source&#34; : {
+        &#34;field1&#34; : &#34;value3&#34;
+      }
+    }
+  ]
+}
+
+</code></pre></td></tr></table></div></div><h2 id=msearch-批量搜索>msearch 批量搜索</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>POST /student/_msearch
+{}
+{&#34;query&#34;:{&#34;match_all&#34;:{}}, &#34;size&#34;:1}
+
+</code></pre></td></tr></table></div></div><h2 id=查询>查询</h2><h3 id=分词使用>分词使用</h3><p>官方提供标准的分词器, 对于亚洲语言, 可以安装</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>bin/elasticsearch-plugin list # 查看安装过的插件
+bin/elasticsearch-plugin install analysis-icu # 安装icu, 支持亚洲语言的插件
+# 更好的支持中文, 使用 ik
+https://github.com/medcl/elasticsearch-analysis-ik/releases 
+选择 zip包 , 解压安装
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET _analyze
+{
+   &#34;analyzer&#34;: &#34;standard&#34;, # 使用指定的分词器. 或者 icu_analyzer
+   &#34;text&#34;:&#34;10.A date math index name takes the following form:分词器哦&#34;
+}
+</code></pre></td></tr></table></div></div><h3 id=uri-方式查询>URI 方式查询</h3><blockquote><p>profile:&ldquo;true"查看查询详情过程</p></blockquote><ol><li>df=name 指定某个字段</li><li>sort=name 指定字段排序<ol><li>sort=name:desc</li></ol></li><li>from=0 从什么位置开始</li><li>size=10 返回多少条</li><li>timeout=1s 设置查询超时</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 对所有的字段进行查询
+GET /student/_search?q=诗
+# 指定某个字段进行查询
+GET /student/_search?q=诗&amp;df=name
+
+# profile:&#34;true&#34;查看查询详情过程 
+GET /student/_search?q=诗
+{
+	&#34;profile&#34;:&#34;true&#34;
+}
+
+# 可以使用q=字段:值 简单的写法
+GET /student/_search?q=name:诗
+{
+  &#34;profile&#34;: &#34;true&#34;
+}
+</code></pre></td></tr></table></div></div><p>搜索字段加引号与不加引号的区别</p><ol><li>name:诗人．　会出现以下三种情况搜索, 相当于: &ldquo;诗&rdquo; or &ldquo;人&rdquo;<ol><li>name:诗 name:人</li><li>name:诗</li><li>name:人</li><li>搜索类型: BooleanQuery, TermQuery</li></ol></li><li>name:诗 人 #中间有个空格<ol><li>不再是指定字段查询啦, 而是泛查询, 对所有字段查询</li><li>搜索类型: BooleanQuery, TermQuery, DisjunctionMaxQuery</li></ol></li><li>name:&ldquo;诗人&rdquo;<ol><li>只有一种情况: name:&ldquo;诗人&rdquo;, 一个整体查询, 前后保持一致</li><li>搜索类型: PhraseQuery</li></ol></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_search?q=name:诗人
+{
+  &#34;profile&#34;: &#34;true&#34;
+}
+
+GET /student/_search?q=name:诗 人
+{
+  &#34;profile&#34;: &#34;true&#34;
+}
+
+GET /student/_search?q=name:&#34;诗人&#34;
+{
+  &#34;profile&#34;: &#34;true&#34;
+}
+</code></pre></td></tr></table></div></div><h4 id=布尔操作>布尔操作</h4><p>​ AND/OR/NOT &&/ || / !</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 采用 BooleanQuery 操作. 
+# &#34;description&#34; : &#34;name:诗 name:and name:人&#34;,
+GET /student/_search?q=name:(诗 and 人)
+{
+  &#34;profile&#34;: &#34;true&#34;
+}
+</code></pre></td></tr></table></div></div><h4 id=分组>分组</h4><pre><code>    1. `+` 表示 must
+    2. `-` 表示 must_not
+</code></pre><h3 id=request-body-查询>Request Body 查询</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_search
+{
+  &#34;_source&#34;: [&#34;name&#34;], # 指定返回的字段.
+  &#34;from&#34;:0, # 开始的位置
+  &#34;size&#34;: 2, # 返回的尺寸大小
+  &#34;query&#34;: { # 查询
+    &#34;match_all&#34;: {} # 查询所有
+  }
+}
+
+</code></pre></td></tr></table></div></div><p>脚本字段</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>
+</code></pre></td></tr></table></div></div><h4 id=指定某字段查询>指定某字段查询</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 不加操作类型, 默认为 or 
+GET /student/_search
+{
+  &#34;query&#34;: {
+    &#34;match&#34;: {
+      &#34;name&#34;: &#34;李白 诗人&#34;
+    }
+  }
+}
+# 指定操作类型, operator:and
+GET /student/_search
+{
+  &#34;query&#34;: {
+    &#34;match&#34;: {
+      &#34;name&#34;: {
+        &#34;query&#34;: &#34;诗人&#34;
+        , &#34;operator&#34;: &#34;and&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h4 id=进行整体查询>进行整体查询</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>
+# 整体查询, 前后一致
+GET /student/_search
+{
+  &#34;query&#34;: {
+    &#34;match_phrase&#34;: {
+      &#34;name&#34;: {
+        &#34;query&#34;: &#34;诗人&#34;
+      }
+    }
+  }
+}
+# 如果加上slop 中间可以插入别的字也匹配
+GET /student/_search
+{
+  &#34;query&#34;: {
+    &#34;match_phrase&#34;: {
+      &#34;name&#34;: {
+        &#34;query&#34;: &#34;诗人&#34;,
+        &#34;slop&#34;: 1
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h4 id=query_string-查询方法>query_string 查询方法</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 使用 query_string 查询
+
+POST /student/_search
+{
+  &#34;query&#34;: {
+    &#34;query_string&#34;: {
+      &#34;default_field&#34;: &#34;name&#34;,
+      &#34;query&#34;: &#34;诗 AND 人&#34;
+    }
+  }
+}
+
+POST /student/_search
+{
+  &#34;query&#34;: {
+    &#34;query_string&#34;: {
+      &#34;default_field&#34;: &#34;name&#34;,
+      &#34;query&#34;: &#34;诗 OR 人&#34;
+    }
+  }
+}
+# 过滤一些错误的语法
+POST /student/_search
+{
+  &#34;query&#34;: {
+    &#34;simple_query_string&#34;: {
+      &#34;query&#34;: &#34;诗 AND 人 OR 190&#34;,
+      &#34;fields&#34;: [&#34;name&#34;]
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h2 id=高级查询>高级查询</h2><h3 id=指定返回字段>指定返回字段</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_search
+{
+   &#34;_source&#34;: [&#34;name&#34;, &#34;age&#34;],
+   &#34;from&#34;: 0
+}
+</code></pre></td></tr></table></div></div><h3 id=聚合查询>聚合查询</h3><p>max, min, avg 最大, 最小, 平均值.</p><p>age_avg, age_max, age_min 是自定义的字段名称.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_search
+{
+  &#34;size&#34;:0,
+  &#34;aggs&#34;: {
+    &#34;age_avg&#34;: {
+      &#34;avg&#34;: { 
+        &#34;field&#34;: &#34;age&#34;
+      }
+    },
+    &#34;age_max&#34;:{
+      &#34;max&#34;: {
+        &#34;field&#34;: &#34;age&#34;
+      }
+    },
+    &#34;age_min&#34;:{
+      &#34;min&#34;: {
+        &#34;field&#34;: &#34;age&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h3 id=嵌套查询聚合>嵌套查询聚合</h3><p>aggs , terms 按bucker统计, 再在当前bucker里再求avg和stat</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>GET /student/_search
+{
+  &#34;size&#34;:0,
+  &#34;aggs&#34;: {
+    &#34;age_aggs&#34;: {
+      &#34;terms&#34;: {
+        &#34;field&#34;: &#34;age&#34;,
+        &#34;size&#34;: 10
+      },
+      &#34;aggs&#34;: {
+        &#34;age_avg&#34;: {
+          &#34;avg&#34;: {
+            &#34;field&#34;: &#34;age&#34;
+          }
+        },
+        &#34;stats_age&#34;:{
+          &#34;stats&#34;: {
+            &#34;field&#34;: &#34;age&#34;
+          }
+        }
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h3 id=term-查询>term 查询</h3><p>term 查询对输入不做分词, 会将输入作为一个整体.</p><p>插入新数据</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>POST /products/_bulk
+{&#34;index&#34;:{&#34;_id&#34;:1}}
+{&#34;productID&#34;:&#34;a2020-kk-#001&#34;, &#34;desc&#34;:&#34;iPhone&#34;}
+{&#34;index&#34;:{&#34;_id&#34;:2}}
+{&#34;productID&#34;:&#34;a2020-kk-#002&#34;, &#34;desc&#34;:&#34;iPad&#34;}
+{&#34;index&#34;:{&#34;_id&#34;:3}}
+{&#34;productID&#34;:&#34;a2020-kk-#003&#34;, &#34;desc&#34;:&#34;MP3&#34;}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 直接搜索无法找到, 因为es在做 index 时会做一个分词处理. 
+POST /products/_search
+{
+  &#34;profile&#34;: &#34;true&#34;, 
+  &#34;query&#34;: {
+    &#34;term&#34;: {
+      &#34;desc&#34;: {
+        &#34;value&#34;: &#34;iPhone&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 使用小写进行查询, 能查询到.
+POST /products/_search
+{
+  &#34;profile&#34;: &#34;true&#34;, 
+  &#34;query&#34;: {
+    &#34;term&#34;: {
+      &#34;desc&#34;: {
+        &#34;value&#34;: &#34;iphone&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 或者 使用 keyword
+POST /products/_search
+{
+  &#34;profile&#34;: &#34;true&#34;, 
+  &#34;query&#34;: {
+    &#34;term&#34;: {
+      &#34;desc.keyword&#34;: {
+        &#34;value&#34;: &#34;iPhone&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 以下查询并不会查询到任何结果, 因为index时对 prodoctID 进行了分词操作.
+POST /products/_search
+{
+  &#34;query&#34;: {
+    &#34;term&#34;: {
+      &#34;productID&#34;: {
+        &#34;value&#34;: &#34;a2020-kk-#003&#34;
+      }
+    }
+  }
+}
+# 上面查询不到,等价于以下标准分词
+
+GET _analyze
+{
+  &#34;analyzer&#34;: &#34;standard&#34;,
+  &#34;text&#34;: [&#34;a2020-kk-#003&#34;]
+}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 以上可以使用 keyword 解决
+
+POST /products/_search
+{
+  &#34;query&#34;: {
+    &#34;term&#34;: {
+      &#34;productID.keyword&#34;: {
+        &#34;value&#34;: &#34;a2020-kk-#003&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h3 id=复合查询>复合查询</h3><p>复合查询, Constant Score 转为 Filter</p><p>避免相关性的算分开销, 利用 Filter 缓存提高查询效率</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>POST /products/_search
+{
+  &#34;explain&#34;: true,
+  &#34;query&#34;: {
+    &#34;constant_score&#34;: {
+      &#34;filter&#34;: {
+        &#34;term&#34;: {
+          &#34;productID.keyword&#34;: &#34;a2020-kk-#003&#34;
+        }
+      },
+      &#34;boost&#34;: 1
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 全文本查询
+
+# 以下查询是一种全文查询, 会采用 or 
+# 将&#34;kk 003&#34; 切分成&#34;kk&#34; or &#34;003&#34; 
+# 也就是说只要包括 kk 或 003的都返回.
+POST /products/_search
+{
+  &#34;profile&#34;: &#34;true&#34;
+  , &#34;query&#34;: {
+    &#34;match&#34;: {
+      &#34;productID&#34;: &#34;kk 003&#34;
+    }
+  }
+}
+
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>
+# 以下是添加额外条件查询. 采用 and. 必须全都出现.
+POST /products/_search
+{
+  &#34;profile&#34;: &#34;true&#34;
+  , &#34;query&#34;: {
+    &#34;match&#34;: {
+      &#34;productID&#34;: {
+        &#34;query&#34;: &#34;kk 003&#34;
+        , &#34;operator&#34;: &#34;and&#34;
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><p>minimum_should_match 的使用</p><p>意思是最小匹配一个</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 设定最小匹配数量
+POST /products/_search
+{
+  &#34;profile&#34;: &#34;true&#34;, 
+  &#34;query&#34;: {
+    &#34;match&#34;: {
+      &#34;productID&#34;: {
+        &#34;query&#34;: &#34;a2020 003&#34;,
+        &#34;minimum_should_match&#34;: 1
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h3 id=范围查询>范围查询</h3><h4 id=数字-range-查询>数字 range 查询</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 数字 range 查询
+POST products/_search
+{
+  &#34;query&#34;: {
+    &#34;constant_score&#34;: {
+      &#34;filter&#34;: {
+        &#34;range&#34;: {
+          &#34;price&#34;: {
+            &#34;gte&#34;: 20,
+            &#34;lte&#34;: 30
+          }
+        }
+      }
+      ,&#34;boost&#34;: 1.2
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h4 id=日期-range>日期 range</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 日期 range
+# now-ly 当前时间减去1年, 相当于去年的数据. gte 就是大于2019年的数据, 全返回
+# y 年, M 月, w 周, d 天, H/h 小时, m 分钟, s秒
+POST products/_search
+{
+  &#34;query&#34;: {
+    &#34;constant_score&#34;: {
+      &#34;filter&#34;: {
+        &#34;range&#34;: {
+          &#34;date&#34;: {
+            &#34;gte&#34;: &#34;now-1y&#34;
+          }
+        }
+      },
+      &#34;boost&#34;: 1.2
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h3 id=字段存在否>字段存在否</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># exists 查找只包含这个字段的数据.
+POST products/_search
+{
+  &#34;query&#34;: {
+    &#34;constant_score&#34;: {
+      &#34;filter&#34;: {
+        &#34;exists&#34;: {
+          &#34;field&#34;: &#34;date&#34;
+        }
+      },
+      &#34;boost&#34;: 1.2
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h2 id=bool-查询>BOOL 查询</h2><ol><li>must 算分</li><li>must_not 算分</li><li>filter 不算分</li><li>shoud 算分</li></ol><p>新增一下数据</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>POST /news/_bulk
+{&#34;index&#34;:{&#34;_id&#34;:1}}
+{&#34;content&#34;:&#34;Apple Mac&#34;}
+{&#34;index&#34;:{&#34;_id&#34;:2}}
+{&#34;content&#34;:&#34;Apple Ipad&#34;}
+{&#34;index&#34;:{&#34;_id&#34;:3}}
+{&#34;content&#34;:&#34;Apple employee like Apple Pie and Apple Juice&#34;}
+
+</code></pre></td></tr></table></div></div><h4 id=单个must>单个must</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 普通搜索, 只要含有apple的文本就返回
+POST news/_search
+{
+  &#34;query&#34;: {
+    &#34;bool&#34;: {
+      &#34;must&#34;: [
+        {
+          &#34;match&#34;: {
+            &#34;content&#34;: &#34;apple&#34;
+          }
+        }
+      ]
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h4 id=must-must_not组合>must, must_not组合</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 要求只返回与苹果公司相关产品的信息, 过滤吃苹果汁的信息
+POST news/_search
+{
+  &#34;query&#34;: {
+    &#34;bool&#34;: {
+      &#34;must&#34;: [
+        {
+          &#34;match&#34;: {
+            &#34;content&#34;: &#34;apple&#34;
+          }
+        }
+      ],
+      &#34;must_not&#34;: [
+        {
+          &#34;match&#34;: {
+            &#34;content&#34;: &#34;pie&#34;
+          }
+        }
+      ]
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h4 id=对顺序调整-分值>对顺序调整, 分值</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>
+# 我们要求把苹果公司的信息显示最上面, 吃苹果的信息也显示, 显示在最下面.
+# 就可以使用算分来控制
+# positive 正面的, 加分
+# negative 负面的, 减分
+POST news/_search
+{
+  &#34;query&#34;: {
+    &#34;boosting&#34;: {
+      &#34;positive&#34;: {
+        &#34;match&#34;: {
+          &#34;content&#34;: &#34;apple&#34;
+        }
+      },
+      &#34;negative&#34;: {
+        &#34;match&#34;: {
+          &#34;content&#34;: &#34;pie&#34;
+        }
+      },
+      &#34;negative_boost&#34;: 0.2
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># must 算分, must_not 算分, filter不算分,shoud算分
+
+POST move/_search
+{
+  &#34;query&#34;: {
+    &#34;bool&#34;: {
+      &#34;must&#34;: [
+        {
+          &#34;term&#34;: {
+            &#34;genere.keyword&#34;: {
+              &#34;value&#34;: &#34;jack&#34;
+            }
+          }
+        },
+        {
+          &#34;term&#34;: {
+            &#34;genere_count&#34;: {
+              &#34;value&#34;: 2
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><h2 id=自定义分词器>自定义分词器</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback># 自定义分词器
+DELETE my_index
+PUT my_index
+{
+  &#34;settings&#34;: {
+    &#34;analysis&#34;: {
+      &#34;analyzer&#34;: {
+        &#34;my_custom_analyzer&#34;:{
+          &#34;type&#34;:&#34;custom&#34;,
+          &#34;char_filter&#34;:[&#34;emoticons&#34;],
+          &#34;tokenizer&#34;:&#34;punctuation&#34;,
+          &#34;filter&#34;:[&#34;lowercase&#34;, &#34;english_stop&#34;]
+        }
+      },
+      &#34;tokenizer&#34;: {
+        &#34;punctuation&#34;:{
+          &#34;type&#34;:&#34;pattern&#34;,
+          &#34;pattern&#34;:&#34;[ .,!?]&#34;
+        }
+      },
+      &#34;char_filter&#34;: {
+        &#34;emoticons&#34;:{
+          &#34;type&#34;:&#34;mapping&#34;,
+          &#34;mappings&#34;:[
+            &#34;:) =&gt; _happy_&#34;
+            ]
+        }
+      },
+      &#34;filter&#34;: {
+        &#34;english_stop&#34;:{
+          &#34;type&#34;:&#34;stop&#34;,
+          &#34;stopwords&#34;:&#34;_english_&#34;
+        }
+      }
+    }
+  }
+}
+</code></pre></td></tr></table></div></div><p>使用自定义分词器</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>POST my_index/_analyze
+{
+  &#34;analyzer&#34;: &#34;my_custom_analyzer&#34;,
+  &#34;text&#34;: [&#34;:) person man, HELLO&#34;]
+}
+
+</code></pre></td></tr></table></div></div><h2 id=设置-mappings--settings>设置 mappings & settings</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre class=chroma><code class=language-fallback data-lang=fallback>PUT index
+{
+  &#34;settings&#34;: {
+    &#34;number_of_shards&#34;: 3,
+    &#34;number_of_replicas&#34;: 1,
+    &#34;analysis&#34;: {
+      &#34;analyzer&#34;: {
+        &#34;ik&#34;: {
+          &#34;tokenizer&#34;: &#34;ik_max_word&#34;
+        }
+      }
+    }
+  },
+  &#34;mappings&#34;: {
+    &#34;test1&#34;:{
+      &#34;properties&#34;: {
+        &#34;content&#34;: {
+          &#34;type&#34;: &#34;text&#34;,
+          &#34;analyzer&#34;: &#34;ik&#34;,
+          &#34;search_analyzer&#34;: &#34;ik_max_word&#34;
+        }
+      }
+    }
+  }
+}
+————————————————
+版权声明：本文为CSDN博主「gxx_csdn」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/gxx_csdn/article/details/79110384
+</code></pre></td></tr></table></div></div><h2 id=常见错误>常见错误</h2><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200723154626.png?imageslim alt></p><h2 id=推荐阅读>推荐阅读</h2><ol><li><a href=https://www.sgfoot.com/es-info.html>Elasticsearch 入门(一) 介绍</a></li><li><a href=https://www.sgfoot.com/es-install.html>Elasticsearch 入门(二) 安装</a></li><li><a href=https://www.sgfoot.com/es-head.html>Elasticsearch 入门(三) Head 助手安装</a></li><li><a href=https://www.sgfoot.com/es-search.html>Elasticsearch 入门(四) 查询</a></li></ol><h2 id=参考>参考</h2><p>1.<a href=http://www.ruanyifeng.com/blog/2017/08/elasticsearch.html>全文搜索引擎 Elasticsearch 入门教程</a></p></div><div class=post-copyright><p class=copyright-item><span class=item-title>文章作者</span>
+<span class=item-content>百里</span></p><p class=copyright-item><span class=item-title>上次更新</span>
+<span class=item-content>2020-07-15</span></p><p class=copyright-item><span class=item-title>许可协议</span>
+<span class=item-content><a rel="license noopener" href=https://creativecommons.org/licenses/by-nc-nd/4.0/ target=_blank>CC BY-NC-ND 4.0</a></span></p></div><h1></h1><div class=post-reward><input type=checkbox name=reward id=reward hidden>
+<label class=reward-button for=reward>赞赏支持</label><div class=qr-code><label class=qr-code-image for=reward><img class=image src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200417142450.jpg?imageslim>
+<span>微信打赏</span></label></div></div><footer class=post-footer><div class=post-tags><a href=/tags/elasticsearch.html>elasticsearch</a>
+<a href=/tags/elk.html>elk</a></div><nav class=post-nav><a class=prev href=/es-info.html><i class=iconfont><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417l277.93508-310.326815c11.338233-12.190647 11.035334-32.285311-.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"/></svg></i><span class="prev-text nav-default">Elasticsearch 入门(一) 介绍</span>
+<span class="prev-text nav-mobile">上一篇</span></a>
+<a class=next href=/redis-config.html><span class="next-text nav-default">Redis 配置</span>
+<span class="prev-text nav-mobile">下一篇</span>
+<i class=iconfont><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18"><path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"/></svg></i></a></nav></footer></article></div></div></main><footer id=footer class=footer><div class=icon-links><a href=mailto:freeit@126.com rel="me noopener" class=iconfont title=email><svg class="icon" viewBox="0 0 1451 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36"><path d="M664.781909 681.472759.0 97.881301C0 3.997201 71.046997.0 71.046997.0H474.477909 961.649408 1361.641813S1432.688811 3.997201 1432.688811 97.881301L771.345323 681.472759S764.482731 685.154773 753.594283 688.65053V688.664858C741.602731 693.493018 729.424896 695.068979 718.077952 694.839748 706.731093 695.068979 694.553173 693.493018 682.561621 688.664858V688.65053C671.644501 685.140446 664.781909 681.472759 664.781909 681.472759zM718.063616 811.603883C693.779541 811.016482 658.879232 802.205449 619.10784 767.734955 542.989056 701.759633.0 212.052267.0 212.052267V942.809523L83.726336 1024H682.532949 753.579947 1348.948139L1432.688811 942.809523V212.052267S893.138176 701.759633 817.019477 767.734955C777.248 802.205449 742.347691 811.03081 718.063616 811.603883z"/></svg></a><a href=https://www.github.com/yezihack rel="me noopener" class=iconfont title=github target=_blank><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="36" height="36"><path d="M512 12.672c-282.88.0-512 229.248-512 512 0 226.261333 146.688 418.133333 350.08 485.76 25.6 4.821333 34.986667-11.008 34.986667-24.618667.0-12.16-.426667-44.373333-.64-87.04-142.421333 30.890667-172.458667-68.693333-172.458667-68.693333C188.672 770.986667 155.008 755.2 155.008 755.2c-46.378667-31.744 3.584-31.104 3.584-31.104 51.413333 3.584 78.421333 52.736 78.421333 52.736 45.653333 78.293333 119.850667 55.68 149.12 42.581333 4.608-33.109333 17.792-55.68 32.426667-68.48-113.706667-12.8-233.216-56.832-233.216-253.013333.0-55.893333 19.84-101.546667 52.693333-137.386667-5.76-12.928-23.04-64.981333 4.48-135.509333.0.0 42.88-13.738667 140.8 52.48 40.96-11.392 84.48-17.024 128-17.28 43.52.256 87.04 5.888 128 17.28 97.28-66.218667 140.16-52.48 140.16-52.48 27.52 70.528 10.24 122.581333 5.12 135.509333 32.64 35.84 52.48 81.493333 52.48 137.386667.0 196.693333-119.68 240-233.6 252.586667 17.92 15.36 34.56 46.762667 34.56 94.72.0 68.522667-.64 123.562667-.64 140.202666.0 13.44 8.96 29.44 35.2 24.32C877.44 942.592 1024 750.592 1024 524.672c0-282.752-229.248-512-512-512"/></svg></a><a href=/index.xml rel="noopener alternate" type=application/rss+xml class=iconfont title=rss target=_blank><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30"><path d="M819.157333 1024C819.157333 574.592 449.408 204.8.0 204.8V0c561.706667.0 1024 462.293333 1024 1024H819.157333zM140.416 743.04a140.8 140.8.0 01140.501333 140.586667A140.928 140.928.0 01140.074667 1024C62.72 1024 0 961.109333.0 883.626667S62.933333 743.082667 140.416 743.04zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352.0 678.784 306.517333 678.784 678.826667z"/></svg></a></div><div class=copyright><span class=copyright-year>&copy;
+2020 -
+2022
+<span class=heart><i class=iconfont><svg class="icon" viewBox="0 0 1025 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14"><path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7.0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1.0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2.0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3.1-42.5-8-83.6-24-122.2z" fill="#8a8a8a"/></svg></i></span><span class=author><a href=https://www.sgfoot.com>空樹之空</a>
+</span><span class=power-by>Powered by <a class=hexo-link href=https://gohugo.io>Hugo</a></span>
+<span class=division>|</span>
+<span class=theme-info>Theme - <a class=theme-link href=https://github.com/xianmin/hugo-theme-jane>Jane</a></span></span>
+<span id=busuanzi_container>访客数/访问量：<span id=busuanzi_value_site_uv></span>/<span id=busuanzi_value_site_pv></span></span></div></footer><div class=back-to-top id=back-to-top><i class=iconfont><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="35" height="35"><path d="M510.866688 227.694839 95.449397 629.218702h235.761562L329.15309 958.01517h362.40389L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777h894.052392v131.813095H63.840492V63.962777zm0 0"/></svg></i></div></div><script type=text/javascript src=/lib/jquery/jquery-3.2.1.min.js></script><script type=text/javascript src=/lib/slideout/slideout-1.0.1.min.js></script><script type=text/javascript src=/js/main.c123da21eb8e940c0619f739a9ba5a0058720dfae9a96bafc91016c54983880f.js integrity="sha256-wSPaIeuOlAwGGfc5qbpaAFhyDfrpqWuvyRAWxUmDiA8=" crossorigin=anonymous></script><script id=baidu_analytics>var _hmt=_hmt||[];(function(){if(window.location.hostname==='localhost')return;var hm=document.createElement("script");hm.async=true;hm.src="https://hm.baidu.com/hm.js?90b270e075265ec9aad9847f47bb1f42";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();</script><script id=baidu_push>(function(){if(window.location.hostname==='localhost')return;var bp=document.createElement('script');bp.async=true;var curProtocol=window.location.protocol.split(':')[0];if(curProtocol==='https'){bp.src='https://zz.bdstatic.com/linksubmit/push.js';}
+else{bp.src='http://push.zhanzhang.baidu.com/push.js';}
+var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(bp,s);})();</script><script type=text/javascript src=/js/load-photoswipe.js></script><script type=text/javascript src=/lib/photoswipe/photoswipe.min.js></script><script type=text/javascript src=/lib/photoswipe/photoswipe-ui-default.min.js></script><script async src=//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js></script></body></html>
