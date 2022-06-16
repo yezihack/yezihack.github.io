@@ -12,22 +12,6 @@ reward: true
 # weight: 1
 # description = ""
 ---
-<!-- TOC -->
-
-- [.1. 简介](#1-简介)
-- [.2. 源码安装](#2-源码安装)
-- [.3. RPM 方式安装](#3-rpm-方式安装)
-- [.4. 启动服务](#4-启动服务)
-- [.5. docker 安装](#5-docker-安装)
-- [.6. 界面显示](#6-界面显示)
-- [.7. 配置数据源](#7-配置数据源)
-  - [7.1. 第一步：Data Sources](#71-第一步data-sources)
-  - [7.2. 添加数据源](#72-添加数据源)
-  - [7.3. 选择 Prometheus 小火炬](#73-选择-prometheus-小火炬)
-  - [7.4. 设置基本参数](#74-设置基本参数)
-- [.8. 安装 Dashboards](#8-安装-dashboards)
-
-<!-- /TOC -->
 
 ## .1. 简介
 
@@ -108,9 +92,30 @@ docker run -d \
 
 ## .6. 界面显示
 
-> 默认帐号和密码：admin/admin
+> 默认帐号和密码：admin/admin, 不管生产还是测试一定要修改默认密码，推荐密码生成：<https://suijimimashengcheng.bmcx.com/>
 
 <http://127.0.0.1:3000/>
+
+### 修改默认密码
+
+```sh
+
+vim /etc/grafana/grafana.ini
+# 设置只绑定本机
+http_addr = 127.0.0.1 
+
+# default admin user, created on startup
+admin_user = admin
+# default admin password, can be changed before first start of grafana,  or in profile settings
+admin_password = a7JeLNyPVC7sV*yV2zKCxbEtpM9u!VzHG
+
+```
+
+### 重置密码
+
+```sh
+grafana-cli admin reset-admin-password dmPWqnD$3tqEK9FEx6ca^G7y7qQbvpFQ
+```
 
 ![image-20200901110252897](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200901110253.png?imageslim)
 
