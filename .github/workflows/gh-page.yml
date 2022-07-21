@@ -4,7 +4,7 @@ name: Github-Pages
 on: # 触发条件
   push: # push 
     branches:  # 分支名称
-      - hugo-theme-meme
+      - main
 
 jobs:
   blog_jobs:
@@ -27,7 +27,7 @@ jobs:
           extended: true
 
       - name: Build # 编译站点
-        run: hugo --gc --minify --cleanDestinationDir  # 自己寫執行的步驟
+        run: hugo --minify # 自己寫執行的步驟
 
       - name: copy file # 复制CNAME文件，用于绑定域名
         run: |
