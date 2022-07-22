@@ -43,7 +43,7 @@ paginate = 10
 # URL 相关
 disablePathToLower = false
 relativeURLs = false
-uglyURLs = true # 是否开启html
+uglyURLs = false # 是否开启html
 
 # URL 结构
 # post: /:year/:month/:title/
@@ -62,7 +62,7 @@ uglyURLs = true # 是否开启html
     categories = "/categories/:slug/"
     tags = "/tags/:slug/"
     # posts = '/:year/:month/:title/'
-    posts = '/:filename'
+    # posts = '/:filename'
     # post = "/:filename/"
 
 # 类别
