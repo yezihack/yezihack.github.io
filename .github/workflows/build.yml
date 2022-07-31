@@ -1,10 +1,10 @@
 # This is a basic workflow to help you get started with Actions
-name: Github-Pages
+name: Github-Pages-Hugo-Jane
 
 on: # 触发条件
   push: # push 
     branches:  # 分支名称
-      - src
+      - hugo-theme-jane
 
 jobs:
   blog_jobs:
@@ -36,5 +36,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: master
+          publish_branch: gh-pages
           force_orphan: true
