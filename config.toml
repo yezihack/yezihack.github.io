@@ -104,6 +104,12 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   identifier = "k8s"
   url = "/tags/kubernetes.html"
 [[menu.main]]
+  parent = "教程"
+  name = "运维笔记(GITOPS)"
+  weight = 16
+  identifier = "devops"
+  url = "/tags/运维笔记.html"
+[[menu.main]]
   name = "自我驱动"
   weight = 36
 [[menu.main]]

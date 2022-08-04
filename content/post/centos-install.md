@@ -1,5 +1,5 @@
 ---
-title: "Centos 安装"
+title: "CentOS7 安装"
 date: 2022-08-03T16:54:31+08:00
 lastmod: 2022-08-03T16:54:31+08:00
 draft: false
@@ -27,9 +27,11 @@ music_auto: 1
 - [.5. 更改 CentOS7 Yum源](#5-更改-centos7-yum源)
 - [.6. 安装常用的软件](#6-安装常用的软件)
 - [.7. 安装 Oh-my-zsh](#7-安装-oh-my-zsh)
-- [.8. 关于作者](#8-关于作者)
+- [.8. 克隆系统](#8-克隆系统)
+- [.9. 关于作者](#9-关于作者)
 
 <!-- /TOC -->
+
 ## .1. 准备 CentOS7 镜像
 
 使用清华大学开源镜像站下载 CentOS7: <https://mirrors.tuna.tsinghua.edu.cn/centos/7/isos/x86_64/>
@@ -162,9 +164,15 @@ curl -sSL https://gitee.com/sgfoot/library/raw/master/oh-my-zsh/install.sh |bash
 chsh -s /bin/zsh
 ```
 
+## .8. 克隆系统
 
+后续安装 Kubernetes，需要多台虚拟机，所以我们可以克隆系统，达到一劳永逸的效果。
 
-## .8. 关于作者
+- 右击虚拟机 -> 管理 -> 克隆
+
+![centos-install-20220804103004](https://cdn.jsdelivr.net/gh/yezihack/assets/b/centos-install-20220804103004)
+
+## .9. 关于作者
 
 我的博客：<https://sgfoot.com>
 
