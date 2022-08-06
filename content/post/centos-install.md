@@ -1,5 +1,5 @@
 ---
-title: "CentOS7 安装"
+title: "CentOS7 安装(1)"
 date: 2022-08-03T16:54:31+08:00
 lastmod: 2022-08-03T16:54:31+08:00
 draft: false
@@ -149,7 +149,7 @@ yum -y update
 ## .6. 安装常用的软件
 
 ```sh
-yum install net-tools git vim telnet screen tree nmap dos2unix lrzsz nc lsof wget tcpdump htop iftop iotop sysstat nethogs ipvsadm -y
+yum -y install net-tools git vim telnet screen tree nmap dos2unix lrzsz nc lsof wget tcpdump htop iftop iotop sysstat nethogs ipvsadm chrony  ipvsadm bridge-utils
 ```
 
 ## .7. 安装 Oh-my-zsh
