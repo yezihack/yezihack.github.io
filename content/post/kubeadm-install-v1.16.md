@@ -865,16 +865,29 @@ Metrics Server 是 Kubernetes 集群核心监控数据的聚合器，Metrics Ser
 
 #### .8.1.1. 安装
 
-安装前需要查看对应的版本，如当前 k8s 1.16 选择为：0.5.2
+安装前需要查看对应的版本，如当前 k8s 1.16 选择为：v0.3.6
 
 ![kubeadm-install-20220815151235](https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220815151235)
 
 ```sh
 # 下载YAML
-wget -O /opt/deploy/metrics-server.yaml https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.5.2/components.yaml
+wget -O /opt/deploy/metrics-server.yaml https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
 ```
 
 修改几个关键代码：
+
+```sh
+containers:
+      - name: metrics-server
+        image: registry.cn-hangzhou.aliyuncs.com/google_containers/metrics-server-amd64:v0.3.6 # 在境内请修改为国内
+        imagePullPolicy: IfNotPresent
+        args:
+          - --cert-dir=/tmp
+          - --secure-port=4443
+          - --kubelet-insecure-tls # 新增
+          - --kubelet-preferred-address-types=InternalIP # 新增
+          # - --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP
+```
 
 ```sh
 kubectl apply -f /opt/deploy/metrics-server.yaml
