@@ -3,7 +3,6 @@
 ## 访问站点
 
 1. <https://yezihack.github.io>
-1. <https://sgfoot.com>
 
 ## 涉猎技术
 
