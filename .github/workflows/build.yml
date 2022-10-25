@@ -26,9 +26,8 @@ jobs:
       - name: Build # 编译站点
         run: hugo --gc --minify --cleanDestinationDir  # 自己寫執行的步驟
 
-      - name: copy file # 复制CNAME文件，用于绑定域名
-        run: |
-          cp -f CNAME ./public
+      - name: copy file # 复制CNAME文件，用于绑定域名 # cp -f CNAME ./public
+        run: |          
           cp README.md ./public
         
       - name: Deploy
