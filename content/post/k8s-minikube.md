@@ -34,7 +34,7 @@ music_auto: 1
 
 使用国内镜像源，推荐阿里云的。
 
-参考：[https://sgfoot.com/docker-install.html#docker-加速](https://sgfoot.com/docker-install.html#docker-%E5%8A%A0%E9%80%9F)
+参考：[https://yezihack.github.io/docker-install.html#docker-加速](https://yezihack.github.io/docker-install.html#docker-%E5%8A%A0%E9%80%9F)
 
 ## 1.2 Kubectl 安装
 
@@ -226,7 +226,7 @@ minikube dashboard --port=52000 --url=true
 - kubernetes 官方 minikube 介绍： [https://kubernetes.io/zh/docs/tutorials/hello-minikube/](https://kubernetes.io/zh/docs/tutorials/hello-minikube/)
 - kubectl 概述：[https://kubernetes.io/zh/docs/reference/kubectl/](https://kubernetes.io/zh/docs/reference/kubectl/)
 - k8s 辨析 port, NodePort, targetPort, containerPort: [https://www.cnblogs.com/veeupup/p/13545361.html](https://www.cnblogs.com/veeupup/p/13545361.html)
-- k8s 总纲及脑图： [https://sgfoot.com/k8s-mindmap.html](https://sgfoot.com/k8s-mindmap.html)
+- k8s 总纲及脑图： [https://yezihack.github.io/k8s-mindmap.html](https://yezihack.github.io/k8s-mindmap.html)
 
 
 
@@ -234,7 +234,7 @@ minikube dashboard --port=52000 --url=true
 
 
 ## 关于作者
-我的博客：https://www.sgfoot.com
+我的博客：https://yezihack.github.io
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

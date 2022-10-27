@@ -206,7 +206,7 @@ Robert Martin:
 
 *tip: 控制反转是指对程序执行流程的控制权交给框架完成。*
 
-[Go代码实现控制反转实例代码](https://www.sgfoot.com/gof-ioc-code.html)
+[Go代码实现控制反转实例代码](https://yezihack.github.io/gof-ioc-code.html)
 
 ### 依赖注入(DI)
 
@@ -216,7 +216,7 @@ Robert Martin:
 
 *tip: 基于接口而非实现编程*
 
-[Go代码实现依赖注入实例代码](https://www.sgfoot.com/gof-di-code.html)
+[Go代码实现依赖注入实例代码](https://yezihack.github.io/gof-di-code.html)
 
 ### 依赖反转原则(DIP)
 

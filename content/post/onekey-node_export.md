@@ -37,7 +37,7 @@ netstat -nplt |grep node_exporter
 
 > 如果涉及到外网访问则需要配置密码访问
 >
-> 参考：[nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
+> 参考：[nginx 添加权限验证](https://yezihack.github.io/htpasswd.html)
 
 ```shell
 htpasswd -bc /etc/nginx/htpasswd.users sgfoot sgfoot.pass
@@ -86,7 +86,7 @@ server {
 
 ## 参考
 
-[prometheus监听node_exporter](https://www.sgfoot.com/prometheus.html#node_exporter-%E5%AE%89%E8%A3%85)
+[prometheus监听node_exporter](https://yezihack.github.io/prometheus.html#node_exporter-%E5%AE%89%E8%A3%85)
 
-[nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
+[nginx 添加权限验证](https://yezihack.github.io/htpasswd.html)
 

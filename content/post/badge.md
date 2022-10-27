@@ -19,7 +19,7 @@ music_auto: 1
 # description: ""
 ---
 
-> 很早前写过一篇关于[Golang持续集成服务之Travis教程](https://www.sgfoot.com/golang-travis.html), 今天再写写关于 github 上常见的徽章是如何制作的. 让你的开源项目更高大上, 让你的代码也更健壮. 
+> 很早前写过一篇关于[Golang持续集成服务之Travis教程](https://yezihack.github.io/golang-travis.html), 今天再写写关于 github 上常见的徽章是如何制作的. 让你的开源项目更高大上, 让你的代码也更健壮. 
 
 
 
@@ -39,7 +39,7 @@ music_auto: 1
 
 ## CI&CD 徽章
 
-> github 于2018. 10月推荐 GitHub Actions 持续集成服务, 在此之前大家都是使用 https://travis-ci.org/ 持续集成服务, 之前我也写过相关文章. [Golang持续集成服务之Travis教程](https://www.sgfoot.com/golang-travis.html).
+> github 于2018. 10月推荐 GitHub Actions 持续集成服务, 在此之前大家都是使用 https://travis-ci.org/ 持续集成服务, 之前我也写过相关文章. [Golang持续集成服务之Travis教程](https://yezihack.github.io/golang-travis.html).
 
 持续集成和持续部署目前 github 官方自带支持, 官方称之为 GitHub Actions. 
 

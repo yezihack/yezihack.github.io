@@ -89,7 +89,7 @@ phpmyadmin/phpmyadmin
 
 ## docker-compose 套件
 
-> [安装docker-compose](https://www.sgfoot.com/docker-install.html#docker-compose-%E5%AE%89%E8%A3%85)
+> [安装docker-compose](https://yezihack.github.io/docker-install.html#docker-compose-%E5%AE%89%E8%A3%85)
 
 vim mysql-phpmyadmin.yml
 

@@ -36,7 +36,7 @@ fmt.Println(string(data))
 return
 ```
 ## 分析 
-可以使用并发工具请求你的代码, 如使用[Jmeter](https://www.sgfoot.com/jmeter/), 然后使用`lsof -p 18001 |wc -l` , `18001`就你程序的进程ID, 可以查看当前程序打开文件数.
+可以使用并发工具请求你的代码, 如使用[Jmeter](https://yezihack.github.io/jmeter/), 然后使用`lsof -p 18001 |wc -l` , `18001`就你程序的进程ID, 可以查看当前程序打开文件数.
 
 **所有一定不要忘记关闭句柄**: `defer resp.Body.Close()`
 

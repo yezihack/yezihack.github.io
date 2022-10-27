@@ -17,7 +17,7 @@ reward: true
 
 ## 基础语法 
 
-之前我们在[Go 实践教程-工具及运行(三)](https://www.sgfoot.com/tutorial-golang-runing.html)写过一个“hello world”程序，讲解了三个概念：package,import,main
+之前我们在[Go 实践教程-工具及运行(三)](https://yezihack.github.io/tutorial-golang-runing.html)写过一个“hello world”程序，讲解了三个概念：package,import,main
 
 ### 注释
 

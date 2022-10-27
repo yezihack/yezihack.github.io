@@ -108,7 +108,7 @@ git clone git@mygit.sgfoot.com/helloworld.git mygit.sgfoot.com/common
 
 8. git tag 扩展学习
 
-   https://www.sgfoot.com/git-tag.html
+   https://yezihack.github.io/git-tag.html
 
 ### 创建一个工程项目
 

@@ -112,10 +112,10 @@ Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全�
 
 ## 推荐阅读
 
-1. [Elasticsearch 入门(一) 介绍](https://www.sgfoot.com/es-info.html)
-2. [Elasticsearch 入门(二) 安装](https://www.sgfoot.com/es-install.html)
-3. [Elasticsearch 入门(三) Head 助手安装](https://www.sgfoot.com/es-head.html)
-4. [Elasticsearch 入门(四) 查询](https://www.sgfoot.com/es-search.html)
+1. [Elasticsearch 入门(一) 介绍](https://yezihack.github.io/es-info.html)
+2. [Elasticsearch 入门(二) 安装](https://yezihack.github.io/es-install.html)
+3. [Elasticsearch 入门(三) Head 助手安装](https://yezihack.github.io/es-head.html)
+4. [Elasticsearch 入门(四) 查询](https://yezihack.github.io/es-search.html)
 
 
 ## 参考

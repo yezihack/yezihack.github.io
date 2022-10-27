@@ -1,8 +1,8 @@
 ---
-title: "如何搭建博客"
-date: 2021-10-21T11:02:22+08:00
-lastmod: 2021-10-21T11:02:22+08:00
-draft: false
+title: "K8s Pvc"
+date: 2022-10-27T10:57:00+08:00
+lastmod: 2022-10-27T10:57:00+08:00
+draft: true
 tags: ["", ""]
 categories: [""]
 author: "百里"
@@ -38,7 +38,8 @@ music_auto: 1
 
 
 ## 关于作者
-我的博客：https://yezihack.github.io
+
+我的博客：<https://yezihack.github.io>
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

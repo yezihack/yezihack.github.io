@@ -22,7 +22,7 @@ music_auto: 1
 
 >  本章节将介绍如何在kubernetes集群中部署一个nginx服务，并且能够对其进行访问。
 >
->  找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+>  找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
 
 ## Namespace
 
@@ -603,7 +603,7 @@ spec:
 
 
 
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
 
 ## 参考
 
@@ -613,7 +613,7 @@ spec:
    
 
 ## 关于作者
-我的博客：https://www.sgfoot.com
+我的博客：https://yezihack.github.io
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

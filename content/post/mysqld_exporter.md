@@ -17,7 +17,7 @@ reward: true
 
 ## mysqld_exporter 安装
 
-> 下载慢，请查看[软件下载列表](https://www.sgfoot.com/soft.html)
+> 下载慢，请查看[软件下载列表](https://yezihack.github.io/soft.html)
 
 https://prometheus.io/download/
 
@@ -150,4 +150,4 @@ scrape_configs:
 
 ## 分享
 
-1.  https://www.sgfoot.com/soft.html 提供软件快速下载
+1.  https://yezihack.github.io/soft.html 提供软件快速下载

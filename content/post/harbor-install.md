@@ -56,7 +56,7 @@ music_auto: 1
 
 ## .2. 安装 Docker 和 Docker-Compose
 
-参考：[https://sgfoot.com/docker-install.html](https://sgfoot.com/docker-install.html#docker-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85)
+参考：[https://yezihack.github.io/docker-install.html](https://yezihack.github.io/docker-install.html#docker-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85)
 
 ## .3. 离线安装之非安全模式
 
@@ -416,7 +416,7 @@ docker login harbor.me
 
 ## .7. 关于作者
 
-我的博客：<https://sgfoot.com>
+我的博客：<https://yezihack.github.io>
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

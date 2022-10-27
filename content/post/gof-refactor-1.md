@@ -102,7 +102,7 @@ music_auto: 1
 
 
 ## 关于我
-我的博客：https://www.sgfoot.com
+我的博客：https://yezihack.github.io
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

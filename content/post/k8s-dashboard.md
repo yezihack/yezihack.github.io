@@ -21,7 +21,7 @@ music_auto: 1
 
 > 本章节主要介绍 kubernetes 的 Dashboard。
 >
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
 
 1) 下载yaml，并运行Dashboard
 
@@ -135,7 +135,7 @@ ca.crt:     1025 bytes
 
 > Dashboard提供了kubectl的绝大部分功能，这里不再一一演示
 >
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
 
 
 ## 参考
@@ -150,7 +150,7 @@ ca.crt:     1025 bytes
 
 
 ## 关于作者
-我的博客：https://www.sgfoot.com
+我的博客：https://yezihack.github.io
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

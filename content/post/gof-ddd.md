@@ -23,7 +23,7 @@ music_auto: 1
 
 ## 贫血模式
 
->  在之前我们写一篇关于[贫血模式](https://www.sgfoot.com/gof-mvc.html)的文章, 点击查看.
+>  在之前我们写一篇关于[贫血模式](https://yezihack.github.io/gof-mvc.html)的文章, 点击查看.
 
 贫血模式是目前主流的一种开发模式, 基于MVC结构的开发模式.
 

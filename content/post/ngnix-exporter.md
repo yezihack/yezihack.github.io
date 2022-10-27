@@ -268,6 +268,6 @@ systemctl restart prometheus
 
 ## .5. MySQL Over 图表安装
 
-> 选择 2949 [具体操作参数 mysqld_exporter](https://www.sgfoot.com/mysqld_exporter.html#mysql-over-%E5%9B%BE%E8%A1%A8%E5%AE%89%E8%A3%85)
+> 选择 2949 [具体操作参数 mysqld_exporter](https://yezihack.github.io/mysqld_exporter.html#mysql-over-%E5%9B%BE%E8%A1%A8%E5%AE%89%E8%A3%85)
 
 ![image-20201106181928076](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20201106181929.png?imageslim)

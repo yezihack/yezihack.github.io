@@ -17,7 +17,7 @@ reward: true
 
 > 如果你的应用是一直运行的，比如 web 应用，那么可以使用 `net/http/pprof` 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
 
-可以先看下[pprof入门](https://www.sgfoot.com/pprof/)
+可以先看下[pprof入门](https://yezihack.github.io/pprof/)
 
 go1.10自带 go tool pprof工具
 

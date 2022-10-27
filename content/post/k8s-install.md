@@ -28,7 +28,7 @@ music_auto: 1
 > kubernetes 安装比较复杂，用于学习可以搭建单机集群安装。
 > 推荐使用 linux 系统安装实验。
 >
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
 
 kubernetes有多种部署方式，目前主流的方式有kind、kubeadm、minikube、二进制包
 
@@ -101,10 +101,10 @@ kubectl cluster-info --context kind-kind
 kind delete cluster
 ```
 
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://sgfoot.com/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
 
 ## minikube 安装
-快通车：[Minikube](https://sgfoot.com/k8s-minikube.html)
+快通车：[Minikube](https://yezihack.github.io/k8s-minikube.html)
 
 ## 参考
 
@@ -115,7 +115,7 @@ kind delete cluster
 
 
 ## 关于作者
-我的博客：https://www.sgfoot.com
+我的博客：https://yezihack.github.io
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

@@ -69,7 +69,7 @@ wget https://mirrors.huaweicloud.com/filebeat/7.8.0/filebeat-7.8.0-linux-x86_64.
 tar -zxvf filebeat-7.8.0-linux-x86_64.tar.gz -C /usr/local
 ```
 
-如何继续玩,推荐下一篇 [Filebeat 学习(二) 配置](https://www.sgfoot.com/filebeat-config.html)
+如何继续玩,推荐下一篇 [Filebeat 学习(二) 配置](https://yezihack.github.io/filebeat-config.html)
 
 ## 参考
 

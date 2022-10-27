@@ -89,7 +89,7 @@ systemctl status prometheus # 查看详情
 
 ### .1.4. nginx 反向代理
 
-> htpasswd 参考: <https://www.sgfoot.com/htpasswd.html>
+> htpasswd 参考: <https://yezihack.github.io/htpasswd.html>
 
 ```nginx
 server {
@@ -147,7 +147,7 @@ docker run -d -p 9090:9090 --name=prometheus  -v  ~/prometheus/conf/:/etc/promet
 ```
 
 ## .3. 关于作者
-我的博客：<https://www.sgfoot.com>
+我的博客：<https://yezihack.github.io>
 
 欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
 ![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)

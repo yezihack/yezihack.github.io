@@ -47,7 +47,7 @@ curl http://localhost:9104/metrics
 
 > 如果涉及到外网访问则需要配置密码访问
 >
-> 参考：[nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
+> 参考：[nginx 添加权限验证](https://yezihack.github.io/htpasswd.html)
 
 ```shell
 htpasswd -bc /etc/nginx/htpasswd.users sgfoot sgfoot.pass
@@ -101,7 +101,7 @@ server {
 
 ## 参考
 
-[promethues监听MySQL](https://www.sgfoot.com/mysqld_exporter.html)
+[promethues监听MySQL](https://yezihack.github.io/mysqld_exporter.html)
 
-[nginx 添加权限验证](https://www.sgfoot.com/htpasswd.html)
+[nginx 添加权限验证](https://yezihack.github.io/htpasswd.html)
 

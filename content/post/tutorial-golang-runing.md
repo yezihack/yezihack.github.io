@@ -13,7 +13,7 @@ reward: true
 # description: ""
 ---
 
-> 经过前面二篇 [Go 简介](https://www.sgfoot.com/tutorial-golang-info.html),[Go 环境配置](https://www.sgfoot.com/tutorial-golang-install.html) 学习，大家对 Golang 有个大概的了解了， 环境也配置好了，就差上手写代码啦，今天主要介绍 Golang 的开发工具与工具链，如何写出第一个 "Hello World"
+> 经过前面二篇 [Go 简介](https://yezihack.github.io/tutorial-golang-info.html),[Go 环境配置](https://yezihack.github.io/tutorial-golang-install.html) 学习，大家对 Golang 有个大概的了解了， 环境也配置好了，就差上手写代码啦，今天主要介绍 Golang 的开发工具与工具链，如何写出第一个 "Hello World"
 
 
 
