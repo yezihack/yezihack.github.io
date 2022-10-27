@@ -18,17 +18,36 @@ music_auto: 1
 # weight: 1
 # description: ""
 ---
+<!-- TOC -->
 
+- [.1. 参数说明](#1-参数说明)
+  - [.1.1. daemon.json 文件位置](#11-daemonjson-文件位置)
+  - [.1.2. graph 数据存储](#12-graph-数据存储)
+  - [.1.3. storage-driver 存储驱动](#13-storage-driver-存储驱动)
+  - [.1.4. registry-mirrors 镜像注册](#14-registry-mirrors-镜像注册)
+  - [.1.5. insecure-registries 无权限注册](#15-insecure-registries-无权限注册)
+  - [.1.6. exec-opts](#16-exec-opts)
+  - [.1.7. live-restore 实时还原](#17-live-restore-实时还原)
+  - [.1.8. log-driver 日志驱动](#18-log-driver-日志驱动)
+  - [.1.9. log-opts 日志参数](#19-log-opts-日志参数)
+  - [.1.10. default-runtime 运行时](#110-default-runtime-运行时)
+  - [.1.11. runtimes 运行时参数设置](#111-runtimes-运行时参数设置)
+- [.2. daemon.json 配置参考](#2-daemonjson-配置参考)
+  - [.2.1. CPU 机器使用 daemon.json](#21-cpu-机器使用-daemonjson)
+  - [.2.2. GPU 机器使用 daemon.json](#22-gpu-机器使用-daemonjson)
+- [.3. 关于作者](#3-关于作者)
+
+<!-- /TOC -->
 云原生中 docker 有着重要的地位，我们有必要学习下 Docker 几个重要的启动参数，也适合生产。
 
-## 参数说明
+## .1. 参数说明
 
-### daemon.json 文件位置
+### .1.1. daemon.json 文件位置
 
 1. JSON 文件形式默认存储位置: `/etc/docker/daemon.json`。
 2. dockerd 通过 `--config-file`  参数指定配置文件位置。
 
-### graph 数据存储
+### .1.2. graph 数据存储
 
 > 19.x 版本后官方建议使用：`data-root` 替代
 
@@ -36,38 +55,38 @@ music_auto: 1
 2. `docker info |grep -i dir` 命令查看存储位置。
 3. 也可以在 dockerd 中使用 `--data-root` 设置。
 
-### storage-driver 存储驱动
+### .1.3. storage-driver 存储驱动
 
 > 存储驱动支持多种类型。如：OverlayFS, AUFS, ZFS, VFS等。
 
 1. 对于当前支持的所有Linux发行版，overlay2是首选的存储驱动程序，并且不需要额外的配置。
 
-### registry-mirrors 镜像注册
+### .1.4. registry-mirrors 镜像注册
 
 > 主要用于镜像加速注册的地址。
 
 1. 推荐 <https://mirror.baidubce.com> <https://sziho4ql.mirror.aliyuncs.com>
 
-### insecure-registries 无权限注册
+### .1.5. insecure-registries 无权限注册
 
 1. Docker 默认不允许非 https 的镜像地址。一般私有仓库可以填写，跳过权限验证。
 
-### exec-opts
+### .1.6. exec-opts
 
 1. 默认的 cgroups 驱动采用 cgroup
 2. kubernetes 推荐使用 systemd,参考：[cgroup-drivers](https://kubernetes.io/docs/setup/production-environment/container-runtimes/#cgroup-drivers)
 
-### live-restore 实时还原
+### .1.7. live-restore 实时还原
 
 1. 在 dockerd 停止时保证已启动的 Running 容器持续运行，并在 daemon 进程启动后重新接管。
 
-### log-driver 日志驱动
+### .1.8. log-driver 日志驱动
 
 > 支持多种驱动类型，如 none, local, json-file, syslog, journald
 
 1. 日志存储形式，默认：json-file
 
-### log-opts 日志参数
+### .1.9. log-opts 日志参数
 
 1. max-size 切割之前日志的最大大小。可取值为(k,m,g)， 默认为20m。
    1. dockerd 参数设置： `--log-opt max-size=10m`
@@ -76,18 +95,18 @@ music_auto: 1
 3. compress 对应切割日志文件是否启用压缩。默认情况下启用。
    1. dockerd 参数设置：`--log-opt compress=false`
 
-### default-runtime 运行时
+### .1.10. default-runtime 运行时
 
 1. 默认容器的运行时为:runc
 2. 需要支持 GPU,则需要修改为：`nvidia`
  
-### runtimes 运行时参数设置
+### .1.11. runtimes 运行时参数设置
 
 1. 支持GPU需要设置，参考：[daemon-configuration-file](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/user-guide.html#daemon-configuration-file)
 
-## daemon.json 配置参考
+## .2. daemon.json 配置参考
 
-### CPU 机器使用 daemon.json
+### .2.1. CPU 机器使用 daemon.json
 
 ```json
 {
@@ -105,7 +124,7 @@ music_auto: 1
 }
 ```
 
-### GPU 机器使用 daemon.json
+### .2.2. GPU 机器使用 daemon.json
 
 ```json
 {
@@ -131,7 +150,7 @@ music_auto: 1
 }
 ```
 
-## 关于作者
+## .3. 关于作者
 
 我的博客：<https://sgfoot.com>
 
