@@ -330,7 +330,7 @@ spec:
         - dash.k8s.io
       secretName: kubernetes-dashboard-certs
   rules:
-    - host: dash.k8s.io # kibana & es 配置
+    - host: dash.k8s.io # 域名配置
       http:
         paths:
           - path: /
