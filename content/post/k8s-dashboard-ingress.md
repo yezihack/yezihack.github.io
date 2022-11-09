@@ -297,14 +297,14 @@ subjects:
   namespace: general # 权限限制的操作的命名空间
 roleRef:
   kind: Role
-  name: role-aipoc  # 绑定的角色
+  name: role-general  # 绑定的角色
   apiGroup: rbac.authorization.k8s.io
 ````
 
 查看 token:
 
 ```sh
-kubectl -n general describe secret $(kubectl -n general get secret | grep aipoc-user | awk '{print $1}')
+kubectl -n general describe secret $(kubectl -n general get secret | grep general-user | awk '{print $1}')
 ```
 
 ## .8. 配置 ingress-nginx
