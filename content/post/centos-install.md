@@ -3,8 +3,8 @@ title: "CentOS7 安装(1)"
 date: 2022-08-03T16:54:31+08:00
 lastmod: 2022-08-03T16:54:31+08:00
 draft: false
-tags: ["linux", "教程", "运维笔记"]
-categories: ["运维笔记"]
+tags: ["linux", "教程", "云运维笔记"]
+categories: ["云运维笔记"]
 author: "百里"
 comment: false
 toc: true

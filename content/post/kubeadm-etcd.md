@@ -3,8 +3,8 @@ title: "使用 etcdadm 安装 etcd 集群"
 date: 2022-08-04T17:16:06+08:00
 lastmod: 2022-08-04T17:16:06+08:00
 draft: true
-tags: ["linux", "教程", "运维笔记", "kubeadm", "etcd"]
-categories: ["运维笔记"]
+tags: ["linux", "教程", "云运维笔记", "kubeadm", "etcd"]
+categories: ["云运维笔记"]
 author: "百里"
 comment: false
 toc: true

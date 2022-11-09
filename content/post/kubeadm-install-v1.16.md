@@ -3,8 +3,8 @@ title: "Kubeadm etcd 堆叠式安装(2) k8s 1.16"
 date: 2022-08-04T10:40:28+08:00
 lastmod: 2022-08-04T10:40:28+08:00
 draft: false
-tags: ["linux", "教程", "运维笔记", "kubeadm"]
-categories: ["运维笔记"]
+tags: ["linux", "教程", "云运维笔记", "kubeadm"]
+categories: ["云运维笔记"]
 author: "百里"
 comment: false
 toc: true
