@@ -1,5 +1,5 @@
 ---
-title: "CentOS7 安装(1)"
+title: "云运维笔记(1) CentOS7 安装"
 date: 2022-08-03T16:54:31+08:00
 lastmod: 2022-08-03T16:54:31+08:00
 draft: false
