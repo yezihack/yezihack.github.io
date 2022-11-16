@@ -108,7 +108,7 @@ defaultContentLanguage = "zh-cn"  # 默认使用的语言
   name = "云运维笔记"
   weight = 16
   identifier = "devops"
-  url = "/tags/运维笔记.html"
+  url = "/categories/云运维笔记.html"
 [[menu.main]]
   name = "自我驱动"
   weight = 36
