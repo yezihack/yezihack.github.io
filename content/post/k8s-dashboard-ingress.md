@@ -1,5 +1,5 @@
 ---
-title: "云运维笔记(4) k8s 安装 dashboard 配置 ingress"
+title: "云运维笔记(3) k8s 安装 dashboard 配置 ingress"
 date: 2022-11-08T16:47:30+08:00
 lastmod: 2022-11-08T16:47:30+08:00
 draft: false

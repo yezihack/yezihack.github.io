@@ -1,5 +1,5 @@
 ---
-title: "云运维笔记(3) Kubeadm etcd 堆叠式安装 k8s 1.20"
+title: "云运维笔记(4) Kubeadm etcd 堆叠式安装 k8s 1.20"
 date: 2022-11-14T18:27:51+08:00
 lastmod: 2022-11-14T18:27:51+08:00
 draft: false
