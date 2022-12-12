@@ -1,5 +1,5 @@
 ---
-title: "云运维笔记(6) k1s 工具使用教程"
+title: "云运维笔记(7) k1s 工具使用教程"
 date: 2022-12-06T16:46:57+08:00
 lastmod: 2022-12-06T16:46:57+08:00
 draft: false
@@ -68,6 +68,8 @@ music_auto: 1
 ## .2. 什么是 k1s
 
 k1s 主要是用于 kubernetes 管理的命令行工具。对 kubectl 命令实现快捷操作。
+
+ github 源码：<https://github.com/yezihack/k1s> 欢迎点星星。
 
 ## .3. k1s 特色
 
