@@ -50,6 +50,12 @@ tar -xvf prometheus-2.18.1.darwin-amd64.tar.gz -C /usr/local/
 
 创建 systemd 服务
 
+- `--config.file` 配置文件
+- `--storage.tsdb.retention` 数据保留多少天
+- `--query.max-concurrency` 最大并发数
+- `--storage.tsdb.path` 数据存储位置
+- `--web.max-connections` 最大连接数
+
 ```shell
 cat > /usr/lib/systemd/system/prometheus.service << EOF
 [Unit]
@@ -59,9 +65,17 @@ After=network.target
  
 [Service]
 Type=simple
-ExecStart=/usr/local/prometheus/prometheus --config.file=/usr/local/prometheus/prometheus.yml --storage.tsdb.path=/usr/local/prometheus/data
-Restart=on-failure
-RestartSec=42s
+ExecStart=/usr/local/prometheus/prometheus \
+    --config.file=/usr/local/prometheus/prometheus.yml \
+    --web.read-timeout=5m  \
+    --web.max-connections=10 \
+    --storage.tsdb.retention=15d \
+    --storage.tsdb.path=/data/prometheus \
+    --query.max-concurrency=20 \
+    --query.timeout=2m
+
+Restart=always
+RestartSec=3s
  
 [Install]
 WantedBy=multi-user.target
@@ -85,7 +99,7 @@ systemctl status prometheus # 查看详情
 
 **自带也会产生监控数据:**
 
-<http://192.168.61.66:9090/metrics>
+<http://localhost:9090/metrics>
 
 ### .1.4. nginx 反向代理
 
