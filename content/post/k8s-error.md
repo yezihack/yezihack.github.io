@@ -1,5 +1,5 @@
 ---
-title: "云运维笔记(8) kubernetes 错误大全"
+title: "云运维笔记(7) kubernetes 错误收集"
 date: 2022-12-07T11:31:00+08:00
 lastmod: 2022-12-07T11:31:00+08:00
 draft: false
