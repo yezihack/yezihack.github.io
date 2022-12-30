@@ -65,13 +65,13 @@ After=network.target
  
 [Service]
 Type=simple
-ExecStart=/usr/local/prometheus/prometheus \
-    --config.file=/usr/local/prometheus/prometheus.yml \
-    --web.read-timeout=5m  \
-    --web.max-connections=10 \
-    --storage.tsdb.retention=15d \
-    --storage.tsdb.path=/data/prometheus \
-    --query.max-concurrency=20 \
+ExecStart=/usr/local/prometheus/prometheus \\
+    --config.file=/usr/local/prometheus/prometheus.yml \\
+    --web.read-timeout=5m  \\
+    --web.max-connections=10 \\
+    --storage.tsdb.retention=15d \\
+    --storage.tsdb.path=/data/prometheus \\
+    --query.max-concurrency=20 \\
     --query.timeout=2m
 
 Restart=always
