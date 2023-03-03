@@ -19,21 +19,21 @@ music_auto: 1
 # description: ""
 ---
 
-## 为什么
+## .1. 为什么
 
 Kubernetes 众多组件汇集于一身，插件也是多如牛毛，在运维中或日常安装中难免会遇到各种各样的错误，有些错误并不好排查，让人火急火燎搜索一翻，半天已经过去。在此收集日常使用 kubernetes 遇到的问题。
 
-## Ingress-nginx
+## .2. Ingress-nginx
 
-### Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io"
+### .2.1. Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io"
 
-#### 详细错误信息
+#### .2.1.1. 详细错误信息
 
 ```sh
 Error from server (InternalError): error when creating "ingress.yaml": Internal error occurred: failed calling webhook "validate.nginx.ingress.kubernetes.io": Post "https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1beta1/ingresses?timeout=10s": context deadline exceeded
 ```
 
-#### 解决方法
+#### .2.1.2. 解决方法
 
 删除验证
 
@@ -57,7 +57,7 @@ kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 
 
 
-## 关于作者
+## .3. 关于作者
 
 我的博客：<https://yezihack.github.io>
 
