@@ -240,6 +240,38 @@ drwxr-xr-x  2 root root    6 Nov 21 10:52 video
 drwxr-xr-x  2 root root    6 Nov  9  2018 weak-updates
 ```
 
+查看系统所有的内核：
+
+```sh
+-> #  sudo awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg
+0 : CentOS Linux (3.10.0-957.el7.x86_64) 7 (Core)
+1 : CentOS Linux (0-rescue-xxxx) 7 (Core)
+```
+
+设置默认内核版本:
+
+方法一：`grub2-set-default 0`
+
+方法二：
+
+编辑 /etc/default/grub 文件
+
+设置 GRUB_DEFAULT=0，通过上面查询显示的编号为 0 的内核作为默认内核：
+
+生成 grub 配置文件并重启：
+
+```sh
+-> # grub2-mkconfig -o /boot/grub2/grub.cfg
+Generating grub configuration file ...
+Found linux image: /boot/vmlinuz-3.10.0-957.el7.x86_64
+Found initrd image: /boot/initramfs-3.10.0-957.el7.x86_64.img
+Found linux image: /boot/vmlinuz-0-rescue-542ec60730c042d18738ae243747e2e0
+Found initrd image: /boot/initramfs-0-rescue-542ec60730c042d18738ae243747e2e0.img
+done
+
+reboot
+```
+
 ### .1.7. 再次安装 GPU 驱动包
 
 #### .1.7.1. 安装 .run 文件
