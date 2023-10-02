@@ -12,12 +12,20 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.110.0'
+
+      - name: Build
+        run: hugo --minify --config config.toml
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public # default: public
-          publish_branch: gh-pages ## default: gh-pages
+          publish_branch: pages-poison ## default: gh-pages
           # destination_dir: / # 目标目录
           force_orphan: true # 允许您仅使用最新提交创建发布分支
           # cname: github.com
