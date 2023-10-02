@@ -2,7 +2,8 @@
 
 push: add
 	git commit -m "push"
-	git push origin "$(git_current_branch)"
+	current_branch=$(git_current_branch)
+	git push origin "$current_branch"
 
 add:
 	git add . --all
