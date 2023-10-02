@@ -1,4 +1,29 @@
-name: Copy Pages Directory
+# name: Copy Pages Directory
+
+# on:
+#   push:
+#     branches:
+#       - blog-poison  # 当 main 分支有推送时触发
+
+# jobs:
+#   copy-pages:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout Repository
+#         uses: actions/checkout@v2
+        
+#       - name: Copy Public Directory to Branch
+#         run: |
+#           git branch www-poison  # 创建 pages-poison 分支
+#           git checkout www-poison  # 切换到 pages-poison 分支
+#           # git rm -r '*'  # 删除 pages-poison 分支上的所有文件
+#           cp -r public/* .  # 将 public 目录下的文件复制到 pages-poison 分支的根目录
+#           git add .  # 添加文件到 pages-poison 分支
+#           git commit -m "Copy public directory to pages-poison branch"  # 提交更改
+#           git push origin www-poison  # 推送到 pages-poison 分支
+# ---
+name: Copy Commit
 
 on:
   push:
@@ -6,19 +31,19 @@ on:
       - blog-poison  # 当 main 分支有推送时触发
 
 jobs:
-  copy-pages:
+  copy-commit:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        
-      - name: Copy Public Directory to Branch
-        run: |
-          git branch www-poison  # 创建 pages-poison 分支
-          git checkout www-poison  # 切换到 pages-poison 分支
-          # git rm -r '*'  # 删除 pages-poison 分支上的所有文件
-          cp -r public/* .  # 将 public 目录下的文件复制到 pages-poison 分支的根目录
-          git add .  # 添加文件到 pages-poison 分支
-          git commit -m "Copy public directory to pages-poison branch"  # 提交更改
-          git push origin www-poison  # 推送到 pages-poison 分支
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Copy Commit
+        uses: jeffreyc/copy-commit-to-another-repo@v1.0.0
+        env:
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          include: 'hello,world?'
+          exclude: '"world,"'
+          destination: 'yezihack/yezihack.github.io'
+          branch: 'pages-poison'
