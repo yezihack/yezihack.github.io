@@ -1,0 +1,24 @@
+name: Copy Pages Directory
+
+on:
+  push:
+    branches:
+      - blog-poison  # 当 main 分支有推送时触发
+
+jobs:
+  copy-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      - name: Copy Public Directory to Branch
+        run: |
+          # git branch pages-poison  # 创建 pages-poison 分支
+          git checkout pages-poison  # 切换到 pages-poison 分支
+          git rm -r '*'  # 删除 pages-poison 分支上的所有文件
+          cp -r public/* .  # 将 public 目录下的文件复制到 pages-poison 分支的根目录
+          git add .  # 添加文件到 pages-poison 分支
+          git commit -m "Copy public directory to pages-poison branch"  # 提交更改
+          git push origin pages-poison  # 推送到 pages-poison 分支
