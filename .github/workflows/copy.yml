@@ -17,7 +17,7 @@ jobs:
         run: |
           git branch www-poison  # 创建 pages-poison 分支
           git checkout www-poison  # 切换到 pages-poison 分支
-          git rm -r '*'  # 删除 pages-poison 分支上的所有文件
+          # git rm -r '*'  # 删除 pages-poison 分支上的所有文件
           cp -r public/* .  # 将 public 目录下的文件复制到 pages-poison 分支的根目录
           git add .  # 添加文件到 pages-poison 分支
           git commit -m "Copy public directory to pages-poison branch"  # 提交更改
