@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具 on</title><link>https://yezihack.github.io/tags/%E5%B7%A5%E5%85%B7/</link><description>Recent content in 工具 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Dec 2022 16:46:57 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E5%B7%A5%E5%85%B7/index.xml" rel="self" type="application/rss+xml"/><item><title>云运维笔记(6) k1s 工具使用教程</title><link>https://yezihack.github.io/posts/k1s/</link><pubDate>Tue, 06 Dec 2022 16:46:57 +0800</pubDate><guid>https://yezihack.github.io/posts/k1s/</guid><description>.1. k1s 是 kubectl 辅助工具 .2. 什么是 k1s .3. k1s 特色 .4. 安装 .5. 快速上手 .6. 功能 .6.1. Resources 列表( kubectl 系统对应) .6.2. Resources 列表(扩展功能) .6.3. Action 列表 .6.4. Extend 扩展功能 .6.5. 环境变量 .7. 使用说明 .7.1. 设置环境变量 .7.2. 日志查看 .7.3. 进入容器 .7.4. 资源操作 .7.4.1. nodes 资源 .7.4.2. pods 资源 .7.4.3. deployments 资源 .7.4.4. daemonsets 资源 .7.4.5. services 资源 .7.4.6. 清理垃圾 .8. 关于作者 .1. k1s 是 kubectl 辅助工具 so easy, so fast.</description></item><item><title>Asciinema 搭配 asciicast2gif 终端录屏专家</title><link>https://yezihack.github.io/posts/asciinema/</link><pubDate>Tue, 29 Nov 2022 17:40:13 +0800</pubDate><guid>https://yezihack.github.io/posts/asciinema/</guid><description>.1. 一点点 喜欢写博客的你，曾几何时开启录屏软件进行你的命令行录制，然后再转成 gif 动画图片。
+此刻你看着几兆大小的gif或几十兆大小的gif，是不是有种别无办法的选择了。
+现在告诉你有一种不行帧录制，而是文本录制，大小在 10 kb左右。神器就是：https://asciinema.org/
+如同它的名称，ascii + nema，存储文件里是字符，自然轻盈。
+.2. 介绍 asciinema 录制成文本文件,需要跳转到官方才能播放。 asciicast2gif 将录制的文本文件转成 gif .3. 安装 asciinema 由 python 编写
+CentOS：
+sudo yum install asciinema Ubuntu：
+sudo apt-get install asciinema MacOS：
+brew install asciinema .4. Asciinema 使用 .4.1. 登陆 登陆逻辑：
+asciinema 的登陆有别于传统的帐号密码，只需要一个邮箱即可实现个人登陆。
+使用：asciinema auth 生成一个URL，后面是一串 UUID，做为唯一码。 复制 URL 浏览器上，输入您的邮件地址，系统会发一封认证 URL。 打开邮件点击 URL，采用 Token JWT 实现的。 命令行上传文件时会携带 UUID 到服务器上验证，从而实现登陆功能。 -&amp;gt; # asciinema auth Open the following URL in a browser to register your API token and assign any recorded asciicasts to your profile: https://asciinema.</description></item><item><title>查看 Linux 系统资源</title><link>https://yezihack.github.io/posts/linux-system-info/</link><pubDate>Thu, 17 Feb 2022 15:36:03 +0800</pubDate><guid>https://yezihack.github.io/posts/linux-system-info/</guid><description>1. 系统 uname -a # 查看系统版本全部信息 uname -r # 查看内核版本 hostname # 查看主机名称 cat /etc/redhat-release # 打印系统类型，只对红帽系统有用, 如 CentOS env # 显示环境变量 lspci # 主板信息 2. 资源 free -mh # 查看内存使用量和交换区使用量 df -h # 查看各分区使用情况 du -sh &amp;lt;目录名&amp;gt; # 查看指定目录的大小 uptime # 查看系统运行时间、用户数、负载 cat /proc/loadavg # 查看系统负载 lsblk # 树形显示硬盘结构 nvidia-smi # 显卡信息 cat /proc/cpuinfo | grep &amp;#39;model name&amp;#39; | sort | uniq # 查看CPU型号 cat /proc/cpuinfo | grep &amp;#39;physical id&amp;#39; | sort | uniq | wc -l # 查看 CPU 颗数, 实际Server中插槽上的CPU个数, 物理cpu数量 cat /proc/cpuinfo |grep &amp;#34;cores&amp;#34;|uniq|awk &amp;#39;{print $4}&amp;#39; # 查看 CPU 核数, 一颗CPU上面能处理数据的芯片组的数量。 cat /proc/cpuinfo |grep &amp;#34;processor&amp;#34;|wc -l # 逻辑CPU核数，逻辑CPU数量=物理cpu数量 x cpu cores 这个规格值 x 2(如果支持并开启超线程)。 lspci | grep -i nvidia # 查看nvidia显卡，如果没有lspci, yum -y install pciutils lspci | grep -i vga # 查看内置GPU nvidia-smi # 查看GPU watch -n 10 nvidia-smi # 动态查看GPU 3.</description></item><item><title>Proxy</title><link>https://yezihack.github.io/posts/proxy/</link><pubDate>Tue, 09 Feb 2021 10:51:23 +0800</pubDate><guid>https://yezihack.github.io/posts/proxy/</guid><description>设置GIT代理 // 查看当前代理设置 git config --global http.proxy git config --global https.proxy // 设置当前代理为 http://127.0.0.1:1080 或 socket5://127.0.0.1:1080 git config --global http.proxy &amp;#39;http://127.0.0.1:1080&amp;#39; git config --global https.proxy &amp;#39;http://127.0.0.1:1080&amp;#39; git config --global http.proxy &amp;#39;socks5://127.0.0.1:1080&amp;#39; git config --global https.proxy &amp;#39;socks5://127.0.0.1:1080&amp;#39; // 删除 proxy git config --global --unset http.proxy git config --global --unset https.proxy</description></item><item><title>Jenkins 构建及回滚任务</title><link>https://yezihack.github.io/posts/jenkins-build-rollback/</link><pubDate>Wed, 03 Feb 2021 14:47:04 +0800</pubDate><guid>https://yezihack.github.io/posts/jenkins-build-rollback/</guid><description>以 golang 构建项目为例。
+新建任务 输入一个任务名称 选择：构建一个自由风格的软件项目 可选：也可以复制已创建的任务 确定提交 配置 再次编辑刚创建的任务
+描述 对你的项目进行描述，可以写如下信息。
+项目名称 部署的IP地址 部署远程的目录 日志路径 配置目录及文件名称 启动服务 停止服务 重启服务 等等 Job Notifications 参数化构建过程
+构选： 参数化构建过程
+GIT参数 选项参数 配置“构建” 和 “回滚” 参数。供构建时选择 字符参数 设置填写构建ID号。 源码管理 一般使用GIT，在 branches to build 指定分支使用变量 ${GIT_COMMIT},即参数化构建过程那一步使用的GIT参数名称
+填写有效的 GIT 地址。并使用授权的用户帐号，保证可以访问仓库代码。
+构建 会用到以下二个选项：
+执行Shell Send files or execute commands over SSH 构建项目的SHELL 定义变量 删除或创建目录 判断用户是“构建”还是“回滚”进行区别操作 源码：
+set -x # 定义名称 program_name=go_test # 项目压缩名称 program_filename=${program_name}.tar.gz # 项目路径 target_path=&amp;#34;${WORKSPACE}/target/&amp;#34; # 备份路径 back_path=&amp;#34;${WORKSPACE}/bak/&amp;#34; if [ -f &amp;#34;${back_path}${program_filename}&amp;#34; ];then rm -f ${back_path}${program_filename} fi ls -l $back_path # 当前构建ID的路径 back_path_num=&amp;#34;${back_path}${BUILD_NUMBER}&amp;#34; # 删除前必须判断是否存在 if [ -f &amp;#34;${target_path}${program_filename}&amp;#34; ]; then rm -rf &amp;#34;${target_path}${program_filename}&amp;#34; echo &amp;#34;${target_path}${program_filename} 删除成功&amp;#34; fi # 备份路径不存在则创建 if [ !</description></item><item><title>GitHub 徽章制作</title><link>https://yezihack.github.io/posts/badge/</link><pubDate>Fri, 22 Jan 2021 14:23:07 +0800</pubDate><guid>https://yezihack.github.io/posts/badge/</guid><description>很早前写过一篇关于Golang持续集成服务之Travis教程, 今天再写写关于 github 上常见的徽章是如何制作的. 让你的开源项目更高大上, 让你的代码也更健壮.
+徽章的含意 当你浏览一个开源项目时,看到各种徽章, 有些徽章是直接反应这个开源库的质量和完整性等等.
+如上图所示
+第一个徽章即 Github 自带的 workflow 提供的持续集成(CI)和持续部署(CD), 官方称之为 Actions, 图示显示为 CI, CD 是否通过 第二个徽章即 Codecov 是一个测试结果分析工具, 图标显示测试覆盖率. 第三个徽章即 shields.io 一个可以自定义徽章的网站 第四个徽章即 goreportcard 是一个项目综合评分网站 第五个徽章即 gitter 自定义讨论组的网站 CI&amp;amp;CD 徽章 github 于2018. 10月推荐 GitHub Actions 持续集成服务, 在此之前大家都是使用 https://travis-ci.org/ 持续集成服务, 之前我也写过相关文章. Golang持续集成服务之Travis教程.
+持续集成和持续部署目前 github 官方自带支持, 官方称之为 GitHub Actions.
+只要你在 github 上创建一个开源项目仓库就自带 Actions 功能, 支持各种语言. 还可以自动发布 GitHub Pages 等功能, 十分强大.
+如何使用可以参考阮一峰写的GitHub Actions 入门教程
+关于GO的持续集成服务模板参考:
+使用 GitHub Actions 后会在你的项目里自带生成一个.</description></item><item><title>鲁班工具之 Markdown 生成目录(一)</title><link>https://yezihack.github.io/posts/toc/</link><pubDate>Thu, 24 Dec 2020 17:06:46 +0800</pubDate><guid>https://yezihack.github.io/posts/toc/</guid><description> 命令行对 markdown 生成目录结构, 主要解决 markdown 不自动生成目录的困扰. 即[TOC]不支持.
+工具源码 https://github.com/ekalinin/github-markdown-toc.go
+下载安装 $ wget https://github.com/ekalinin/github-markdown-toc.go/releases/download/1.1.0/gh-md-toc.linux.amd64.tgz $ tar xzvf gh-md-toc.linux.amd64.tgz gh-md-toc $ ./gh-md-toc --version 1.1.0 mac
+brew install github-markdown-toc 使用方式 gh-md-toc README.md * [音乐开关，true/false](#音乐开关truefalse) * [只支持163的音乐，在生成外链播放器获取ID](#只支持163的音乐在生成外链播放器获取id) * [是否自动播放 1是，0否](#是否自动播放-1是0否) * [weight: 1](#weight-1) * [description: &amp;#34;&amp;#34;](#description-) * [镜像介绍](#镜像介绍) * [获取镜像](#获取镜像) * [查看镜像](#查看镜像) * [查找镜像](#查找镜像) * [删除镜像](#删除镜像) * [清理镜像](#清理镜像) * [创建镜像](#创建镜像) * [基本已有镜像](#基本已有镜像) * [基于Dockefile创建](#基于dockefile创建) * [导入与导出镜像](#导入与导出镜像) * [导出镜像](#导出镜像) * [导入镜像](#导入镜像) * [上传镜像](#上传镜像)</description></item><item><title>Forgetting Curve</title><link>https://yezihack.github.io/posts/forgetting-curve/</link><pubDate>Fri, 20 Nov 2020 19:26:36 +0800</pubDate><guid>https://yezihack.github.io/posts/forgetting-curve/</guid><description>48天计划表 365天计划表(只显示部分) 下载 https://pan.baidu.com/s/1SNhx_N3mkELewuJdPiOj7w 密码:fdd7</description></item><item><title>linux 制作绿色安装包</title><link>https://yezihack.github.io/posts/make-linux-green-soft/</link><pubDate>Mon, 16 Nov 2020 17:51:10 +0800</pubDate><guid>https://yezihack.github.io/posts/make-linux-green-soft/</guid><description>绿色安装包的概念来自于 win 的概念, 也就是说无需安装即可使用软件. 即为绿色安装包. 在 linux 为了方便, 我们也需要制作绿色安装包, 方便相同系统之间的 copy. 即高效又好用. 何乐不为.
+你将了解到 LD_LIBRARY_PATH 的概念 ldd 是什么东西 如何制作绿色安装包 安装 mediainfo 在 CentOS7 192.168.1. 100 机器上操作.
+yum -y install mediainfo 制作ldd打包脚本 本脚本用于将 mediainfo 所依赖的动态库或依赖文件都复制出来
+文件名:pack.sh
+#!/bin/bash set +x # 需要打包的命令全路径 file_path=$1 # 需要复制的目录 target_dir=$2 # check file path if [ ! -f $file_path ];then echo &amp;#34;$file_path is not file&amp;#34; exit 0 fi # 判断目录是否为空 if [ -z $target_dir ]; then echo &amp;#34;target_dir is null&amp;#34; exit 0 fi # 目录不存在,自动创建 if [ !</description></item><item><title>Nginx 搭建静态服务器</title><link>https://yezihack.github.io/posts/nginx-static/</link><pubDate>Wed, 11 Nov 2020 17:34:48 +0800</pubDate><guid>https://yezihack.github.io/posts/nginx-static/</guid><description>快捷安装 nginx CentOS 安装
+yum -y install nginx 源码安装
+# 下载, 解包 wget http://nginx.org/download/nginx-1.19.4.tar.gz &amp;amp;&amp;amp; tar -zxvf nginx-1.19.4.tar.gz &amp;amp;&amp;amp; cd nginx-1.19.4 # 编译安装 ./configure --prefix=/usr/local/nginx --without-http_rewrite_module make &amp;amp;&amp;amp; make install # 建立软链 ln -s /usr/local/nginx/sbin/nginx /usr/sbin/ 配置静态服务器 yum 安装的配置文件目录在 /etc/nginx
+手动安装目录在: /usr/local/nginx
+关键参数配置
+root /data/wwwroot/;# 指向你的文件目录 autoindex on;# 显示目录 autoindex_exact_size on;# 显示文件大小 autoindex_localtime on;# 显示文件时间 yum 安装方式配置
+vim /etc/nginx/nginx.conf 手动安装方式配置
+vim /usr/local/nginx/conf/nginx.conf 可以找到默认的 server {}
+server { listen 80 default_server; listen [::]:80 default_server; server_name _; #root /usr/share/nginx/html; root /data/wwwroot/; autoindex on;# 显示目录 autoindex_exact_size on;# 显示文件大小 autoindex_localtime on;# 显示文件时间 # Load configuration files for the default server block.</description></item><item><title>万能工具箱</title><link>https://yezihack.github.io/posts/tools/</link><pubDate>Thu, 29 Oct 2020 17:11:51 +0800</pubDate><guid>https://yezihack.github.io/posts/tools/</guid><description>脚本工具 名称 安装/下载 备注 检查 shell 工具 yum -y install ShellCheck 下载 能检查sh语法</description></item><item><title>Ab和curl使用</title><link>https://yezihack.github.io/posts/ab_curl/</link><pubDate>Thu, 30 Jul 2020 15:06:52 +0800</pubDate><guid>https://yezihack.github.io/posts/ab_curl/</guid><description>curl post json 如果多个头信息, 多次使用-H即可.
+curl -H &amp;#34;Content-Type: application/json&amp;#34; -X POST --data &amp;#39;{&amp;#34;username:&amp;#34;:&amp;#34;abc&amp;#34;, &amp;#34;password&amp;#34;:&amp;#34;abc&amp;#34;}&amp;#39; http://www.github.com/login -H 请求头信息 -X 请求方式, GET, POST --data 数据 ab post json ab -r -k -c 50 -n 100 -T &amp;#39;application/json&amp;#39; -p json.txt http://www.github.com/login json.txt
+{ &amp;#34;username&amp;#34;:&amp;#34;abc&amp;#34;, &amp;#34;password&amp;#34;:&amp;#34;1234&amp;#34; } -T就Content-Type -H 自定义头信息 Token:111 -c 请求并发数 -n 请求数. -r 不要退出套接字接收错误 -k 保持 KeepAlive</description></item><item><title>国内各类镜像(LST)</title><link>https://yezihack.github.io/posts/mirror/</link><pubDate>Fri, 17 Jul 2020 19:39:54 +0800</pubDate><guid>https://yezihack.github.io/posts/mirror/</guid><description> 为什么使用镜像,因为你在一个特色的国度, 所以你需要镜像为你加速,为你的开发加油.
+github 镜像 GitClone README github镜像 直接搜索你要的库,请勿注册 码云github加速 软件镜像库 下载国外的软件,如 elasticsearch, docker, k8s 很慢, 就可以直接在这下载, 时时更新的.
+华为开源镜像站</description></item><item><title>Ab 压测</title><link>https://yezihack.github.io/posts/ab/</link><pubDate>Tue, 07 Jul 2020 15:36:03 +0800</pubDate><guid>https://yezihack.github.io/posts/ab/</guid><description>ab 简单使用 并发100, 请求数为1000次.
+ab -c 100 -n 1000 http://localhost/test.html ab post json使用 -p 数据 -T 请求内容格式, 如json: application/json ab -c 100 -n 1000 -p data.json -T application/json http://localhost/1.html data.json
+{&amp;#34;username&amp;#34;:&amp;#34;sgfoot.com&amp;#34;} 解读报告 ab压力测试报错 Benchmarking 192.168.1.10 (be patient)
+apr_socket_recv: Connection reset by peer (104) 以上错误, 说明192.168.1.10机器重设连接. 因为apr_socket_recv是操作系统内核的一个参数, 如果系统感应到大量的请求时,会降慢速度,对连接进行重置. 这是一种面对SYN flood攻击保护. 但是我们压测时需要关闭这个保护.
+关闭保护
+# vim /etc/sysctl.conf net.ipv4.tcp_syncookies = 0
+# sysctl -p</description></item><item><title>MySQL 性能分析</title><link>https://yezihack.github.io/posts/mysql-analysis/</link><pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-analysis/</guid><description>MySQL 运行的状态 重点关注以下参数
+show status like &amp;#39;Queries&amp;#39;;
+show status like &amp;#39;Threads_connected&amp;#39;;
+show status like &amp;#39;Threads_running&amp;#39;;
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
+slow_query_log 开启慢查询
+mysql&amp;gt; show variables like &amp;#39;%slow_query_log%&amp;#39;; +---------------------+--------------------------------------+ | Variable_name | Value | +---------------------+--------------------------------------+ | slow_query_log | ON | | slow_query_log_file | /var/lib/mysql/7709d56792f9-slow.log | +---------------------+--------------------------------------+ 2 rows in set (0.00 sec) set global slow_query_log=1; slow_query_log_file 慢日志存放位置
+set global slow_query_log_file=&amp;#39;/data/logs/slow-mysql.log&amp;#39;; long_query_time 表示1秒的SQL就记录
+mysql&amp;gt; show variables like &amp;#39;long_query_time&amp;#39;; +-----------------+-----------+ | Variable_name | Value | +-----------------+-----------+ | long_query_time | 10.</description></item><item><title>Supervisor进程守护工具</title><link>https://yezihack.github.io/posts/supervisor/</link><pubDate>Wed, 27 May 2020 14:46:37 +0800</pubDate><guid>https://yezihack.github.io/posts/supervisor/</guid><description>介绍 supervisor是python写的一个进程守护工具,非常实用,时时监听你的进程是否正常, 发现异常自动启动, 生产环境必备软件.
+安装 CentOS Yum安装 #!/bin/bash
+yum install -y epel-release # 依赖
+yum install -y supervisor # 安装
+systemctl enable supervisord # 开机自启动
+systemctl start supervisord # 启动supervisord服务
+systemctl status supervisord # 查看supervisord服务状态
+ps -ef|grep supervisord # 查看是否存在supervisord进程 离线安装 参考: https://segmentfault.com/a/1190000011696023 基础 supervisord 启动工具 echo_supervisord_conf 生成配置工具 supervisorctl 管理进程工具 /etc/supervisor.conf 默认配置工具路径 /etc/supervisord.d/ 配置工具目录 supervisorctl 命令使用 status 查看状态 reload 重启所有服务 update 更新 stop [进程名] start [进程名] restart [进程名] supervisor.conf配置 vim /etc/supervisor.</description></item><item><title>Golang持续集成服务之Travis教程</title><link>https://yezihack.github.io/posts/golang-travis/</link><pubDate>Fri, 24 Apr 2020 20:19:39 +0800</pubDate><guid>https://yezihack.github.io/posts/golang-travis/</guid><description>为什么使用集成服务呢 我们向github提交代码时, 我们得保证我们的代码是能运行的, 我们会写测试用例, 保证我们的代码功能能正常使用.常见大神们的开源项目都一个绿色图标&amp;quot;build|passing 表示构建OK
+如何使用Travis服务呢 打开这个网站 https://travis-ci.org/ 点击登陆, 使用github登陆.目前似也只支持github
+1. 添加仓库 2. 开启集成 3. 项目根目录添加.travis.yml文件 cd ~/github_webhook
+touch .travis.yml 4. 编写.travis.yml文件 language: go 表示当前仓库是go语言 go - 1.14 表示使用golang版本 sudo:required 表示需要root权限 os 表示使用运行环境, linux, osx是苹果系统 install 安装需要集成的必要软件 script 代表运行的脚本 以下是个测试空命令文件, 可以拿测试.看看能不能运行
+language: go
+go:
+- 1.14
+sudo: required
+os:
+- linux
+- osx
+install:
+- echo &amp;#34;install&amp;#34;
+script:
+- echo &amp;#34;script&amp;#34; 以下是一个正式的集成测试文件
+language: go
+go:
+- 1.14
+sudo: required
+os:
+- linux
+- osx
+install:
+- echo &amp;#34;install&amp;#34;
+- go get -u github.</description></item><item><title>github-webhook工具实现github自动构建</title><link>https://yezihack.github.io/posts/github-webhook/</link><pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate><guid>https://yezihack.github.io/posts/github-webhook/</guid><description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建 github-webhook 文档 更多详情文档 https://github.com/yezihack/github-webhook 使用github-webhook 源码: https://github.com/yezihack/github-webhook 别忘记点个小星星哦.
+1. 下载github-webhook工具 https://github.com/yezihack/github-webhook/releases
+github release下载太慢, 试试这个
+wget https://cdn.jsdelivr.net/gh/yezihack/assets/github-webhook1.4.1.linux-amd64.tar.gz 2. 运行github-webhook 安装
+tar -zxvf github-webhook1.4.1.linux-amd64.tar.gz
+cp github-webhook /usr/bin/
+chmod u+x /usr/bin/github-webhook 运行
+默认端口: 2020 有效访问地址: http://ip:2020/web-hook -b 是shell脚本路径参数 -s 是github webhook设置的密码 # 非后台运行
+github-webhook -b [shell脚本路径] -s [github webhook设置的密码]
+# 后台运行
+nohup github-webhook -b [shell脚本路径] -s [github webhook设置的密码] &amp;amp; # 定向日志输出
+nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe &amp;gt;&amp;gt; ~/logs/webhook.</description></item><item><title>Window Subsystem Ubuntu</title><link>https://yezihack.github.io/posts/window-subsystem-ubuntu/</link><pubDate>Sat, 14 Mar 2020 22:36:14 +0800</pubDate><guid>https://yezihack.github.io/posts/window-subsystem-ubuntu/</guid><description>做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令 而window虽然有powershell,还是不够尽兴,如果有一台linux系统又运行在window上,而又不是 那种笨重的虚拟机,那该多好.而win10就满足了你的需求.win10内置linux子系统,让你操作如飞的感觉.
+win10安装linux子系统 第一步: 启用或关闭Windows功能 开始-&amp;gt;设置-&amp;gt;应用-&amp;gt;找到&amp;quot;程序和功能&amp;quot;(一般在右边位置&amp;quot;)-&amp;gt;找到&amp;quot;启用或关闭Windows功能&amp;quot;
+点击弹出窗口后, 向下拉找到&amp;quot;适用于Linux的Windows子系统&amp;quot;选项. 勾选后,确定. 重新电脑.
+第二步: 安装Ubuntu子系统 在Microsoft Store搜索ubuntu,点击免费安装.
+下载完, 在开始程序中找到.点击进行初使化, 数分钟后安装完毕.
+第三步: 设置新帐号 系统会 提示你设置一个用户名,然后再设置密码即可.正常使用ubuntu. 此时你还不是root帐号.安装东西需要使用root帐号 第四步: 初使root密码 sudo passwd root #回车
+输入新密码
+确认密码
+# 切换root
+su root 更换ubuntu软件源 切换root帐号
+su root #回车
+备份一下之前的源
+cp /etc/apt/sources.list /etc/apt/sources.list.backup
+编辑sources.list
+vim /etc/apt/source.list #按ecs,一直按d按键清空源,然后再i键
+复制下面的aliyun源
+aliyun源
+# 1.阿里云源
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.</description></item><item><title>Yapi入门笔记</title><link>https://yezihack.github.io/posts/yapi-note/</link><pubDate>Fri, 13 Mar 2020 13:08:13 +0800</pubDate><guid>https://yezihack.github.io/posts/yapi-note/</guid><description>什么是YAPI 写接口文档的软件, 支持RESTful, Mock假数据, 团队管理协作,非常方便好用.良心之作
+内网安装 参考网上的教程吧. mac: https://www.cnblogs.com/yehuisir/p/12190446.html linux; https://www.jianshu.com/p/6c269d00bb38
+安装cross-request插件 可以在Yapi运行假数据.
+蓝凑云：https://freemt.lanzous.com/i0pDFfo582j
+使用mock假数据 {
+&amp;#34;status&amp;#34;: 200,//状态码
+&amp;#34;msg&amp;#34;: &amp;#34;success&amp;#34;,//提示信息
+&amp;#34;data&amp;#34;: {
+&amp;#34;page&amp;#34;: 1, //当前页
+&amp;#34;page_count&amp;#34;: 10, //一共多少页
+&amp;#34;total_ount&amp;#34;: 100, //数据数量
+&amp;#34;list|5-18&amp;#34;:[ //生成5到18个子序列
+{
+&amp;#34;id&amp;#34;:&amp;#34;@increment&amp;#34;, //生成递增主键ID
+&amp;#34;name&amp;#34;:&amp;#34;@ctitle(4,6)&amp;#34;,//生成中文字符4到6个之间
+&amp;#34;uuid&amp;#34;:&amp;#34;@uuid&amp;#34;,//生成uuid &amp;#34;created_at&amp;#34;:&amp;#34;@date(&amp;#39;yyyy-MM-dd&amp;#39;)&amp;#34;,//生成时期格式
+&amp;#34;status&amp;#34;:&amp;#34;@pick([&amp;#39;未认证&amp;#39;,&amp;#39;已认证&amp;#39;,&amp;#39;已拒绝&amp;#39;,&amp;#39;已冻结&amp;#39;])&amp;#34;//从数组里随机选择一项.
+}
+]
+}
+} mock常用规则 字符串 @cname() 生成名字 @url 生成url @domain() 生成域名 @email() 生成邮箱 @region() 生成地区， 如华中，华北 @province() 生成省份，如北京，山东，湖南省 @city() 生成城市， 如玉林市，拉萨， @city(true) @county() 生成区域 ， 龙亭区 @county(true) 生成完整的区域， 如山西省 忻州市 神池县 @pick([&amp;ldquo;a&amp;rdquo;, &amp;ldquo;e&amp;rdquo;, &amp;ldquo;i&amp;rdquo;, &amp;ldquo;o&amp;rdquo;, &amp;ldquo;u&amp;rdquo;]) 选择一个元素 @title() 生成标头 @word(），@word(3），@word(3, 5)生成字母，可以指定大小，也可以是范围。 @sentence() @sentence(3) @sentence(3， 5) 生成单词数量 同上 @cparagraph()，@cparagraph(2)， @cparagraph(2，5) 生成句子 同上 @csentence 中文句子 日期 @date(&amp;ldquo;yyyy-MM-dd&amp;rdquo;) 生成日期， &amp;ldquo;2013-05-07&amp;rdquo; @date(&amp;ldquo;yyyy-MM-dd HH:mm:ss&amp;rdquo;) &amp;ldquo;2020-01-02 17:15:04&amp;rdquo; 数字 @guid() 生成uuid @id() 生成ID @id(10) 生成10位的ID @increment() 递增1，2，3 @increment(100) 递增步长100 @natural(1,100000) 生成自然数 @zip() 生成区号 @integer(1, 10) 生成数字， @integer ， @integer(5） 其它 @boolean() 生成true, false @rgba() 生成RBG颜色值 如&amp;quot;rgb(129, 121, 242)&amp;quot; @color() 生成颜色值， 如&amp;quot;#f2798f&amp;quot; 参考 github https://github.</description></item></channel></rss>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>github-webhook on</title><link>https://yezihack.github.io/tags/github-webhook/</link><description>Recent content in github-webhook on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 24 Apr 2020 15:04:27 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/github-webhook/index.xml" rel="self" type="application/rss+xml"/><item><title>github-webhook工具实现github自动构建</title><link>https://yezihack.github.io/posts/github-webhook/</link><pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate><guid>https://yezihack.github.io/posts/github-webhook/</guid><description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建 github-webhook 文档 更多详情文档 https://github.com/yezihack/github-webhook 使用github-webhook 源码: https://github.com/yezihack/github-webhook 别忘记点个小星星哦.
+1. 下载github-webhook工具 https://github.com/yezihack/github-webhook/releases
+github release下载太慢, 试试这个
+wget https://cdn.jsdelivr.net/gh/yezihack/assets/github-webhook1.4.1.linux-amd64.tar.gz 2. 运行github-webhook 安装
+tar -zxvf github-webhook1.4.1.linux-amd64.tar.gz
+cp github-webhook /usr/bin/
+chmod u+x /usr/bin/github-webhook 运行
+默认端口: 2020 有效访问地址: http://ip:2020/web-hook -b 是shell脚本路径参数 -s 是github webhook设置的密码 # 非后台运行
+github-webhook -b [shell脚本路径] -s [github webhook设置的密码]
+# 后台运行
+nohup github-webhook -b [shell脚本路径] -s [github webhook设置的密码] &amp;amp; # 定向日志输出
+nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe &amp;gt;&amp;gt; ~/logs/webhook.</description></item></channel></rss>

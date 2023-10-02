@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>性能分析 on</title><link>https://yezihack.github.io/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/</link><description>Recent content in 性能分析 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 01 Jul 2020 19:06:01 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/index.xml" rel="self" type="application/rss+xml"/><item><title>zerolog 占大量内存剖析</title><link>https://yezihack.github.io/posts/optimize-zerolog/</link><pubDate>Wed, 01 Jul 2020 19:06:01 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-zerolog/</guid><description>分析过程 使用 pprof top分析 可见 json.Marshal占第一内存. 为什么呢? 我们进一步分析
+使用 tree 分析 查看到 zerolog AppendInterface 方法占用 73.32%的内存量. 而 zerolog 是一个很优秀的日志库, 比 zap 还优秀. 为什么呢?我们需要查看源码
+822.70MB 73.32% | github.com/rs/zerolog/internal/json.Encoder.AppendInterface 分析源码 找到 github.com/rs/zerolog/internal/json.Encoder.AppendInterface` 366 行
+// AppendInterface marshals the input interface to a string and
+// appends the encoded string to the input byte slice.
+func (e Encoder) AppendInterface(dst []byte, i interface{}) []byte {
+marshaled, err := json.Marshal(i)
+if err != nil {
+return e.</description></item><item><title>Redis 性能分析</title><link>https://yezihack.github.io/posts/optimize-redis/</link><pubDate>Tue, 30 Jun 2020 16:17:44 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-redis/</guid><description>查看 Clients 属性 127.0.0.1:6379&amp;gt;info clients # Clients
+connected_clients:1 # 已连接客户端的数量（不包括通过从属服务器连接的客户端）
+client_recent_max_input_buffer:2 # 当前连接的客户端当中，最长的输出列表
+client_recent_max_output_buffer:0 # 当前连接的客户端当中，最大输入缓存
+blocked_clients:0 # 正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量 查看 Memeory 属性 127.0.0.1:6379&amp;gt;info memory used_memory_human:1.92G # 用户数据所占用的内存，就是你缓存的数据的大小。
+used_memory_rss_human:30.73M # 常驻内存, 与top占用内存一致
+used_memory_peak_human:1.93G # 内存使用峰值
+total_system_memory_human:1.78G # 整个系统的内存
+mem_fragmentation_ratio:0.02 # 内存碎片比率. used_memory_rss/used_memory求的值. 如果小于1时,需要优化内存碎片. mem_fragmentation_ratio 查看内存碎片比率,
+小于&amp;lt;1时,Redis实例可能会把部分数据交换到硬盘上，内存交换会严重影响Redis的性能，所以应该增加可用物理内存 大于&amp;gt;1时, 说明碎片占用 更多的内存, 需要整理, 在1~1.5 之间比较健康. 重启Redis服务；也能达到碎片整理目的
+查看是否开启自动碎片整理: config get activedefrag
+设置自动碎片整理: config set activedefrag yes
+直接手动整理碎片: memory purge
+redis.conf配置设置自动整理碎片
+redis 4.0
+# Enabled active defragmentation
+# 碎片整理总开关
+# activedefrag yes
+# Minimum amount of fragmentation waste to start active defrag
+# 当碎片达到 100mb 时，开启内存碎片整理
+active-defrag-ignore-bytes 100mb
+# Minimum percentage of fragmentation to start active defrag
+# 当碎片超过 10% 时，开启内存碎片整理
+active-defrag-threshold-lower 10
+# Maximum percentage of fragmentation at which we use maximum effort
+# #内存碎片超过 100%，则尽最大努力整理
+active-defrag-threshold-upper 100
+# Minimal effort for defrag in CPU percentage
+# 内存自动整理占用资源最小百分比
+active-defrag-cycle-min 25
+# Maximal effort for defrag in CPU percentage
+# 内存自动整理占用资源最大百分比
+active-defrag-cycle-max 75 查看 Stats 属性 只列出部分属性.</description></item><item><title>Top</title><link>https://yezihack.github.io/posts/top/</link><pubDate>Mon, 22 Jun 2020 10:21:47 +0800</pubDate><guid>https://yezihack.github.io/posts/top/</guid><description>top 是 linux 最常用的命令, 包括很多少直观的信息, 有利于我们对系统运行状态的把握.
+top 使用 top 系统自带命令,可以直接使用.
+top top 详情 a. 如图编号(1)
+top - 10:34:07 up 16 min, 1 user, load average: 0.00, 0.01, 0.05 10:34:07 当前时间 up 16 min 系统运行时间, 如 16 分钟 1 user 当前登陆用户数 load average: 0.00, 0.01, 0.05 系统负载. 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。 b. 如图编号(2)
+Tasks: 206 total, 1 running, 205 sleeping, 0 stopped, 0 zombie Tasks: 206 total 进程总数 1 running 正在运行的进程数 205 sleeping 睡眠进程数 0 stopped 停止进程数 0 zombie 僵尸进程数 c.</description></item><item><title>MySQL 性能优化</title><link>https://yezihack.github.io/posts/mysql-optimize/</link><pubDate>Fri, 19 Jun 2020 20:23:17 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-optimize/</guid><description>MySQL 并发参数调整 max_connections 参数 该参数设置mysql连接最大数量. max_connections 默认151个连接.
+show variables like &amp;#39;max_connections&amp;#39; 服务器性能优时可以调节这个参数, 范围: 500~1000
+注 当连接过大时, 查看 Connection_errors_max_connections 参数是否大于0 , 表示连接过多, 错误连接
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; back_log 参数 积压栈的大小.
+也就是说当 mysql 连接超过 max_connections 连接数时, 如果back_log大小为0时, mysql将授予连接资源. 如果back_log大于零时,则接受多余的请求, 以等待某一连接释放.而等待的连接数大于back_log数时则也将不授予连接资源.
+back_log默认大小: 50 + (max_connections/5), 最大可设置为900
+show variables like &amp;#39;back_log&amp;#39; table_open_cache 该参数用来控制所有SQL语句执行线程可打开表缓存的数量.
+最大数量设定: max_connections * N
+show variables like &amp;#39;table_open_cache&amp;#39; thread_cache_size 该参数可控制 mysql缓存客户服务线程的数量, 相当于mysql的线程池, 也备重用.
+show variables like &amp;#39;thread_cache_size&amp;#39; innodb_lock_wait_timeout 该参数是用来设置innoDB事务等待行锁的时间, 默认值:50ms. 如果并发要求高时: 可以设置小一点, 以避占用时间过长.</description></item><item><title>MySQL 性能分析</title><link>https://yezihack.github.io/posts/mysql-analysis/</link><pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-analysis/</guid><description>MySQL 运行的状态 重点关注以下参数
+show status like &amp;#39;Queries&amp;#39;;
+show status like &amp;#39;Threads_connected&amp;#39;;
+show status like &amp;#39;Threads_running&amp;#39;;
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
+slow_query_log 开启慢查询
+mysql&amp;gt; show variables like &amp;#39;%slow_query_log%&amp;#39;; +---------------------+--------------------------------------+ | Variable_name | Value | +---------------------+--------------------------------------+ | slow_query_log | ON | | slow_query_log_file | /var/lib/mysql/7709d56792f9-slow.log | +---------------------+--------------------------------------+ 2 rows in set (0.00 sec) set global slow_query_log=1; slow_query_log_file 慢日志存放位置
+set global slow_query_log_file=&amp;#39;/data/logs/slow-mysql.log&amp;#39;; long_query_time 表示1秒的SQL就记录
+mysql&amp;gt; show variables like &amp;#39;long_query_time&amp;#39;; +-----------------+-----------+ | Variable_name | Value | +-----------------+-----------+ | long_query_time | 10.</description></item><item><title>pprof火焰图性能分析利器之入门</title><link>https://yezihack.github.io/posts/pprof/</link><pubDate>Fri, 05 Jun 2020 19:16:31 +0800</pubDate><guid>https://yezihack.github.io/posts/pprof/</guid><description>前言 如果你的应用是一直运行的，比如 web 应用，那么可以使用 net/http/pprof 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
+可以先看下pprof入门
+go1.10自带 go tool pprof工具
+go version 查看golang版本
+安装 引用包_ &amp;quot;net/http/pprof&amp;quot;
+内置包的路径: net\http\pprof\pprof.go
+const (
+PProfPort = 6060 // 端口
+)
+func PprofServer() {
+runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪
+runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪
+go func() {
+err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil)
+if err != nil {
+zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;)
+}
+}()
+}
+func main() {
+PprofServer()
+select{}
+} 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description></item></channel></rss>

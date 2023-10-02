@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>pprof on</title><link>https://yezihack.github.io/tags/pprof/</link><description>Recent content in pprof on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 01 Jul 2020 19:06:01 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/pprof/index.xml" rel="self" type="application/rss+xml"/><item><title>zerolog 占大量内存剖析</title><link>https://yezihack.github.io/posts/optimize-zerolog/</link><pubDate>Wed, 01 Jul 2020 19:06:01 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-zerolog/</guid><description>分析过程 使用 pprof top分析 可见 json.Marshal占第一内存. 为什么呢? 我们进一步分析
+使用 tree 分析 查看到 zerolog AppendInterface 方法占用 73.32%的内存量. 而 zerolog 是一个很优秀的日志库, 比 zap 还优秀. 为什么呢?我们需要查看源码
+822.70MB 73.32% | github.com/rs/zerolog/internal/json.Encoder.AppendInterface 分析源码 找到 github.com/rs/zerolog/internal/json.Encoder.AppendInterface` 366 行
+// AppendInterface marshals the input interface to a string and
+// appends the encoded string to the input byte slice.
+func (e Encoder) AppendInterface(dst []byte, i interface{}) []byte {
+marshaled, err := json.Marshal(i)
+if err != nil {
+return e.</description></item><item><title>pprof火焰图分析利器之压测</title><link>https://yezihack.github.io/posts/benchmark/</link><pubDate>Tue, 09 Jun 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/benchmark/</guid><description>Benchmark 新建测试文件 util.go文件
+func GetMd5V(s string) string {
+h := md5.New()
+h.Write([]byte(s))
+return hex.EncodeToString(h.Sum(nil))
+}
+func SumMd5(s string) string {
+data := []byte(s)
+return fmt.Sprintf(&amp;#34;%x&amp;#34;, md5.Sum(data))
+} 以_test结尾的文件, 如util_test.go
+func BenchmarkSumMd5(b *testing.B) {
+for i := 0; i &amp;lt; b.N; i++ {
+SumMd5(&amp;#34;1&amp;#34;)
+}
+}
+func BenchmarkGetMd5V(b *testing.B) {
+for i := 0; i &amp;lt; b.N; i++ {
+GetMd5V(&amp;#34;1&amp;#34;)
+}
+} 运行Benchmark函数 go test -bench=&amp;#34;.&amp;#34; -benchmem 输出结果 BenchmarkSumMd5-8 1719777 847 ns/op 64 B/op 3 allocs/op
+BenchmarkGetMd5V-8 1861362 644 ns/op 184 B/op 5 allocs/op
+PASS
+ok openapi/app/util 4.</description></item><item><title>pprof火焰图性能分析利器之入门</title><link>https://yezihack.github.io/posts/pprof/</link><pubDate>Fri, 05 Jun 2020 19:16:31 +0800</pubDate><guid>https://yezihack.github.io/posts/pprof/</guid><description>前言 如果你的应用是一直运行的，比如 web 应用，那么可以使用 net/http/pprof 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
+可以先看下pprof入门
+go1.10自带 go tool pprof工具
+go version 查看golang版本
+安装 引用包_ &amp;quot;net/http/pprof&amp;quot;
+内置包的路径: net\http\pprof\pprof.go
+const (
+PProfPort = 6060 // 端口
+)
+func PprofServer() {
+runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪
+runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪
+go func() {
+err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil)
+if err != nil {
+zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;)
+}
+}()
+}
+func main() {
+PprofServer()
+select{}
+} 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description></item></channel></rss>

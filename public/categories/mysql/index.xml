@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>mysql on</title><link>https://yezihack.github.io/categories/mysql/</link><description>Recent content in mysql on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 19 Jun 2020 20:23:17 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/categories/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>MySQL 性能优化</title><link>https://yezihack.github.io/posts/mysql-optimize/</link><pubDate>Fri, 19 Jun 2020 20:23:17 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-optimize/</guid><description>MySQL 并发参数调整 max_connections 参数 该参数设置mysql连接最大数量. max_connections 默认151个连接.
+show variables like &amp;#39;max_connections&amp;#39; 服务器性能优时可以调节这个参数, 范围: 500~1000
+注 当连接过大时, 查看 Connection_errors_max_connections 参数是否大于0 , 表示连接过多, 错误连接
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; back_log 参数 积压栈的大小.
+也就是说当 mysql 连接超过 max_connections 连接数时, 如果back_log大小为0时, mysql将授予连接资源. 如果back_log大于零时,则接受多余的请求, 以等待某一连接释放.而等待的连接数大于back_log数时则也将不授予连接资源.
+back_log默认大小: 50 + (max_connections/5), 最大可设置为900
+show variables like &amp;#39;back_log&amp;#39; table_open_cache 该参数用来控制所有SQL语句执行线程可打开表缓存的数量.
+最大数量设定: max_connections * N
+show variables like &amp;#39;table_open_cache&amp;#39; thread_cache_size 该参数可控制 mysql缓存客户服务线程的数量, 相当于mysql的线程池, 也备重用.
+show variables like &amp;#39;thread_cache_size&amp;#39; innodb_lock_wait_timeout 该参数是用来设置innoDB事务等待行锁的时间, 默认值:50ms. 如果并发要求高时: 可以设置小一点, 以避占用时间过长.</description></item><item><title>MySQL 性能分析</title><link>https://yezihack.github.io/posts/mysql-analysis/</link><pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-analysis/</guid><description>MySQL 运行的状态 重点关注以下参数
+show status like &amp;#39;Queries&amp;#39;;
+show status like &amp;#39;Threads_connected&amp;#39;;
+show status like &amp;#39;Threads_running&amp;#39;;
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
+slow_query_log 开启慢查询
+mysql&amp;gt; show variables like &amp;#39;%slow_query_log%&amp;#39;; +---------------------+--------------------------------------+ | Variable_name | Value | +---------------------+--------------------------------------+ | slow_query_log | ON | | slow_query_log_file | /var/lib/mysql/7709d56792f9-slow.log | +---------------------+--------------------------------------+ 2 rows in set (0.00 sec) set global slow_query_log=1; slow_query_log_file 慢日志存放位置
+set global slow_query_log_file=&amp;#39;/data/logs/slow-mysql.log&amp;#39;; long_query_time 表示1秒的SQL就记录
+mysql&amp;gt; show variables like &amp;#39;long_query_time&amp;#39;; +-----------------+-----------+ | Variable_name | Value | +-----------------+-----------+ | long_query_time | 10.</description></item></channel></rss>

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>设计模式 on</title><link>https://yezihack.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</link><description>Recent content in 设计模式 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 06 May 2021 16:40:10 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>再述 SOLID 原则</title><link>https://yezihack.github.io/posts/again-solid/</link><pubDate>Thu, 06 May 2021 16:40:10 +0800</pubDate><guid>https://yezihack.github.io/posts/again-solid/</guid><description>再述 SOLID 原则，因为这些原则是设计模式的基石，所有的模式都是基于这些原则展开的。
+单一职责原则 经典定义：应该有且仅有一个原因引起”类“的变更。(不仅仅适应于类，还适应于方法，接口，函数等)
+好处：
+类的复杂性降低，实现什么职责都有清晰的定义。 可读性提高，复杂性降低，那当然可读性提高了。 可维护性提高，可读性提高，那当然更容易维护了。 变更引 起的风险降低，变更是必不可少的，如果接口的单一职责做得好，一个接口修改只对相应的实现类有影响，对其他的接口无影响，这对系统的扩展性、维护性都有非常大的帮助。 一句话：单一职责原则，最重要做到单一职责，类的设计尽量做到只有一个原因引起变化。
+里氏替换原则 经典定义：父类能出现的地方子类就可以出现，而且替换为子类也不会产生任何错误或异常。使用者可能根本就不需要知道是父类还是子类。但是，反过来就不行，有子类出现的地方，父类未必能适应。
+继承即有优点与有缺点，为了平衡引入里氏替换原则。
+继承的优点：
+代码共享，减少创建类的工作量。 提高代码的重用性。 子类可以形似父类，但又异于父类。 提高代码的可扩展性。 提高产品或项目的开放性。 继承的缺点：
+继承是侵入性的。 降低代码的灵活性。 增强了耦合性。 一句话：父类出现的地方子类就可以出现且无异常。反之不行。
+依赖倒置原则 经典定义：高层模块不应该依赖低层模块，两者都应该依赖其抽象。抽象不应该依赖细节。细节应该依赖抽象。
+每一个逻辑的实现都是由原子逻辑组成的，不可以分割的原子逻辑就是低层模块，原子逻辑的再组装就是高层模块。
+抽象是指接口或抽象类，两者都是不能直接被实例化的。
+细节就是实现类，实现接口或继承抽象而产生的类就是细节。
+优点：
+减少类间的耦合性。 易于扩展 依赖的三种写法：
+构造函数传递依赖对象。 Setter 方法传递依赖对象。 接口声明依赖对象即依赖注入。 一句话：面向接口编程。
+接口隔离原则 经典定义：客户端不应该依赖它不需要的接口。或类间依赖关系应该建立在最小的接口上。
+接口要尽量小。 接口要高内聚。 定制服务 。 接口设计是有限度的。 接口的设计粒度越小，系统越灵活 一句话：接口尽量细化，同时接口中的方法尽量少。
+迪米特法则 经典定义：一个对象应该对其他对象有最少的了解。
+只与直接的朋友通信。 朋友间也是有距离的。 尽量不要对外公布太多的 public 方法和非静态的 public 变量。 多使用 private 权限。 是自己的就是自己的。 如果一个方法放在本类中，即不增加类间的关系，也对本类不产生负面影响，那就放置在本类中。 谨慎使用 Serializable 一句话：一个对象应该对自己需要耦合或调用的类知道得最少。
+开闭原则 开闭原则是最基础的一个原则。也是前五个原则的精神领袖。
+经典定义：对修改关闭，对扩展开放。</description></item><item><title>设计模式-设计原则与思想总结(二十)</title><link>https://yezihack.github.io/posts/gof-think-summary/</link><pubDate>Fri, 26 Feb 2021 21:12:54 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-think-summary/</guid><description>编写高质量代码 代码质量评判标准 面向对象 设计原则 规范与重构 以上脑图来自极客时间
+关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>设计模式-重构-15条编程规范(十九)</title><link>https://yezihack.github.io/posts/gof-refactor-4/</link><pubDate>Mon, 22 Feb 2021 19:48:31 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-refactor-4/</guid><description>为什么要编程规范 构建一个大型项目，往往是很多人一起参与，堆砌的代码行数都是成千上万行。如何保证代码的健壮性？编程规范必不可少。
+命名 命名能力体现了一个程序员的基本编程素养。
+让你的名字承载更多的信息，把信息装到名字里。
+命名的关键是能准确达意，对于不同作用域的命名，我们可以适当地选择不同的长度。 利用上下文简化命名。 命名要可读，可搜索。如 get, select, set等等。 用具体的名字代替抽象的名字。 检测服务是否可以监听某个给定的TCP/IP端口。 ServerCanStart() 换成 CanListenOnPort() tip: 可以到 github 上找一些相关的项目，看看别人是如何命名的。
+注释 命名很重要，注释跟命名同等重要。注释就是对代码的有力解释。
+注释的内容主要包括三个方面：做什么(what)，为什么(why)，怎么做(how)。
+为什么要写注释呢？
+注释比代码承载的信息更多。 注释起到总结性作用，文档的作用。通过注释大概了解代码的实现思路，阅读起来更加容易。 一些总结性注释能让代码结构更清晰。 对于类和函数一定要写注释，尽量写全面，详细。对于函数内部，可以少写一些。
+代码行数 函数的行数最好不要超过一屏幕。大约在50~80行。
+写长函数时，需要拆分主干逻辑和次要逻辑。抽取公共且独立的处理逻辑。
+一行代码 一行代码最好不要超过IDE显示的宽度。大约在80~100个字符。
+如果超出行数导致换行会影响代码的整洁，不利用阅读。
+空行分割单元块 对于那些影响逻辑的长函数，无法拆分的长函数，为了让逻辑更加清晰，可以使用空行来分割各个代码块。
+代码缩进 Go 语言，使用 gofmt 或 goimports 自动缩进。
+目前有使用两格缩进和四格缩进。主要看你使用的语言业内，主流如何使用。
+如 php 用四格缩进，JAVA 用两格缩进。
+大括号是否另起一行 Go 语言强制使用与函数名同一行。
+目前有使用与函数名同一行或单独占一行。
+主要看你使用的语言业内，主流如何使用。
+如 php 喜欢使用单独占一行。JAVA 喜欢使用与函数名同一行。
+排列顺序 Go 语言，使用 gofmt 或 goimports 自动排序。
+依赖类，按照字母序从小到大排列。 在类中，成员变量排在函数前面。 在函数中，成员排在最上面。 作用域从大到小排列。public &amp;gt; protected &amp;gt; private。 把代码分割成更小的单元块 为什么要分割更小的单元块：</description></item><item><title>设计模式-重构-解耦(十八)</title><link>https://yezihack.github.io/posts/gof-refactor-3/</link><pubDate>Sat, 20 Feb 2021 21:22:55 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-refactor-3/</guid><description>解耦为何如此重要 解耦是保证代码的松耦合，高内聚。防止代码质量腐化到不可救药地步的有效手段。
+代码”高内聚，松耦合“也就意味着，代码结构清晰，分层和模块化合理，依赖关系简单，模块或类之间的耦合小，代码质量自然就高。
+代码是否需要解耦 判断代码是否符合”高内聚，松耦合”，可以从如下方法判断。
+看修改代码会不会牵一发而动全身。 把模块与模块之间，类与类之间的依赖关系画出来。根据依赖关系图的复杂性判断是否需要解耦重构。 如何给代码解耦 1.封装与抽象 封装和抽象可以有效地隐藏实现的复杂性，隔离实现的易变性，给依赖的模块提供稳定且易用的抽象接口。
+2.中间层 引入中间层能简化模块或类之间的依赖关系。
+我们在进行重构的时候，引入中间层可以起到过渡的作用，能够让开发和重构同步进行，不互相干扰。
+分四个阶段完成接口的修改：
+引入一个中间层，包裹老的接口，提供新的接口定义。 新开发的代码依赖中间层提供的新接口。 将依赖老接口的代码改为调用新接口。 确保所有代码都调用新接口之后，删除掉老的接口。 3.模块化 模块化是构建复杂系统常用的手段。
+将大而复杂的系统拆分成各个独立的模块，让不同人负责不同的模块。
+每个模块之间耦合很小，每个小团队聚集于一个独立的高内聚模块来开发。
+最终像搭积木一样将各个模块组装起来，构建成一个超级复杂的系统。
+4.设计思想和原则 单一职责原则 基于接口而非实现编程 依赖注入 多用组合少用继承 迪米特法则 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>设计模式-重构-单元测试(十七)</title><link>https://yezihack.github.io/posts/gof-refactor-2/</link><pubDate>Fri, 19 Feb 2021 21:06:22 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-refactor-2/</guid><description>什么是单元测试 单元测试是代码层面的测试，由研发自己来编写，用于测试“自己”编写的代码逻辑的正确性。
+单元测试主要测试范围：
+类 函数 单元测试有别于集成测试。
+集成测试主要测试范围：
+模块 系统 功能块 tip: 单元测试是粒度小的测试。考验程序员思维的缜密程度。
+为什么要写单元测试 单元测试能有效地帮你发现代码中的BUG 写代码的最高境界就是 bug free 的状态。 避免低级 bug 的出现。 保证每一行代码运行良好，逻辑正确。 写单元测试能帮你发现代码设计上的问题 如果我很难为其编写单元测试，或者单元测试写起来很吃力，那往往就意味着代码设计得不够合理。 如没有使用依赖注入，大量使用静态函数，全局变量，代码调试耦合等情况。 单元测试是对集成测试的有力补充 集成测试无法覆盖得很全面，复杂系统往往很多模块。需要单元测试加持。 如果我们能保证每个类，每个函数能按照我们的预期来执行，底层bug少了。组装起来的整个系统，bug也相应减少。 写单元测试的过程本身就是代码重构的过程 单元测试实际上就是落地执行持续重构的一个有效途径。 编写单元测试就相当于对代码的一次自我Code Review。 阅读单元测试能帮助你快速熟悉代码 单元测试用例就是用户用例，反映了代码的功能和如何使用。 单元测试是TDD可落地执行的改进方案 单元测试正好是对TDD测试驱动开发的一种改进方案。 如何编写单元测试 每个语言都有不同的写法。如 Golang 只需要以下划线加 test 命名，函数以 Test 开头就是单元测试。
+func TestFunc(t *testing.T) { // todo } 还可以使用第三方提供的单元测试框架。如 GoConvey 。
+写单元测试真的是件很耗时的事情。单元测试代码量一般是被测代码本身的1~2倍 单元测试不会在生产上运行，而且每个类的测试代码比较独立，基本不互相依赖。 单元测试覆盖率做到 60 ~ 70% 之间算合格。GoConvey 也有提供覆盖率的报告。 单元测试不依赖被测试函数的具体实现逻辑，它只关心被测函数实现了什么功能。 tip: 对于函数写不写单元测试，工程师要有足够的主人翁意识(ownership)。 也是拉开与其它人差距的“杀手锏“。
+测试不友好的代码 代码中包含未决行为逻辑 滥用可变全局变量 滥用静态方法 使用复杂的继承关系 高度耦合的代码 关于我 我的博客：https://yezihack.</description></item><item><title>设计模式-重构(十六)</title><link>https://yezihack.github.io/posts/gof-refactor-1/</link><pubDate>Thu, 18 Feb 2021 19:48:20 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-refactor-1/</guid><description>纲要 3W1H
+why 为什么重构 what 重构什么 when 什么时候重构 how 如何重构 重构的定义 软件设计大师 Martin Fowler 这样定义重构：
+“重构是一种对软件内部结构的改善，目的是在不改变软件的可见行为的情况下，使其更易理解，修改成本更低。”
+重构的目的：为什么要重构 (why) 首先，重构是时刻保证代码质量的一个极其有效的手段，不至于让代码腐化到无可救药的地步。
+其次，优秀的代码或架构不是一开始就能完全设计好的。是一个迭代，不断演进的过程。
+最后，重构是避免过度设计的有效手段。
+tip: 初级工程师在维护代码，高级工程师在设计代码，资深工程师在重构代码。
+重构的对象：到底重构什么(what) 根据重构的规模，我们可以笼统地分为大规模高层次重构(大重构)和小规模低层次重构(小重构)。
+大重构：
+重构的范围 系统 模块 代码结构 类与类之间的关系 重构手段 分层 模块化 解耦 抽象可复用组件 重构工具 设计思想 设计原则 设计模式 小重构：
+重构范围 类 函数 变量 重构手段 规范命名 规范注释 消除超大类或函数 提取重复代码 tip:我们重构的对象是软件重个生命周期。
+重构的时机：什么时候重构(when) 重构可以是一刀切，也可以分阶段。我们提倡的策略是持续重构。
+把重构作为我们开发的一部分，见到不符合编码规范，不好的设计，超长函数都可以随时重构一下。成为一种开发习惯，对项目对自己都会很有好处。
+tip: 持续重构意识很重要
+重构的方法：又该如何重构(how) 对于大重构难度比较大，需要有组织，有计划地进行，分阶段地小步快跑，时刻让代码处于一个可运行的状态。
+对于小重构难度相对小，因为影响范围小，改动耗时短，所以只要你愿意并且有时间，随时随地都可以重构。
+tip: 不管大还是小重构，都要保证代码可运行，逻辑正确的状态。
+关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>设计模式-通用系统开发(十五)</title><link>https://yezihack.github.io/posts/gof-common-dev/</link><pubDate>Wed, 10 Feb 2021 17:37:59 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-common-dev/</guid><description> 针对非业务通用框架开发，需要做到尽量通用，适合百变的场景，做到良好的扩展。
+需求分析 功能性需求分析 满足使用者的需求，尽量通用。 借助设计产品线框图工具来罗列需求点。 把最终的数据显示样式画出来，一目了然。 非功能性需求分析 一个通用系统，需要做好良好的兼容性。
+易用性
+框架是否易集成，易插拔，跟业务代码是否松耦合，提供的接口是否够灵活。 性能
+当集成到业务系统的框架里，不会影响业务性能。 做到低延时，内存消耗低。 扩展性
+做到不修改框架源码进行扩展。 做到给框架开发插件一样扩展。 容错性
+非常重要，不能因为框架本身异常导致接口请求错误。
+对外暴露的接口抛出的所有运行时，非运行时异常都要进行捕获处理。
+通用性
+能够灵活应用到各种场景中。 多思考一下，除了当前需求场景，还适合其它哪些场景中。 框架设计 借鉴TDD（测试驱动开发）和 Prototype (最小原型)的思想
+先聚集一个简单的应用场景。 设计实现一个简单的原型。 尽管功能不完善，但它能够看得见，摸得着，比较具体，不抽象，能够很有效地帮助自己缕清更复杂的设计思路，是迭代设计的基础。 在原型系统的代码实现中，我们可以把所有代码都塞到一个类中，暂时不用考虑任何代码质量，线程安全，性能，扩展性等等问题，怎么简单怎么来就行。 最小原型的代码实现虽然简陋，但它帮我们将思路理顺很多。 我们现在就基于它做最终的框架设计。 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>设计模式-业务系统开发(十四)</title><link>https://yezihack.github.io/posts/gof-business-dev/</link><pubDate>Wed, 10 Feb 2021 15:13:23 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-business-dev/</guid><description>纲要 完整的系统流程包括：
+前期的需求沟通分析 中期的代码设计实现 后期的系统上线维护 需求分析 做为技术人员不仅仅是等着产品设计文档，线框图，照着实现就可以。应该参与到产品设计中。具有产品思维，前期应该去市场上调研，参考，借鉴已成熟的产品。充分了解自己公司的产品后，然后再将其糅合到自己的产品中，并做适当的微创新。
+调研产品 充分了解自家产品 微创新 tip: 技术人也要有一些产品思维
+系统设计 合理地将功能划分到不同模块 合理地划分代码可以实现代码的高内聚，低耦合，类与类之间的交互简单清晰，代码整体结构一目了然。
+设计模块与模块之间的交互关系
+同步接口调用 适合上下层之间的关系 异步接口调用 适合同级间的关系 设计模块的接口，数据库，业务模型
+代码实现 前提 数据库和接口设计非常重要，一旦设计好并投入使用之后，这两部门都不能轻易改动。
+改动数据库表结构，需要涉及数据的迁移和适配。 改动接口，需要推动接口的使用都作相应的代码修改。 一定要多花点心思和时间，切不可过于随意。
+业务逻辑代码侧重内部实现，不涉及外部依赖的接口，也不包括持久化的数据，所以对改动的容忍性更大。
+MVC Controller 层负责接口暴露 Repository 层负责数据读写 Service 层负责核心业务逻辑 两种开发模式
+充血 DDD 开发模式 贫血 OOP 开发模式 为什么使用MVC开发 分层能起到代码复用的作用 同一个 Repository 可能会被多个 Service 来调用。 同一个 Service 可能会被多个 Controller 调用。 分层能起到隔离变化的作用 Repository 层封装了对数据库访问的操作，提供了抽象的数据访问接口。 基于接口而非实现编程的设计思想，Service 层使用 Repository 层提供的接口，并不关心底层依赖是哪种具体的数据库。 如果需要替换不同的数据库，只需要修改 Repository 层，Service 层的代码完全不需要修改。 三层的稳定程序也不同。越底层越应该稳定。 分层能起到隔离关注点的作用 Repository 层只关注数据的读写。 Service 层只关注业务逻辑，不关注数据的来源。 Controller 层只关注与外界打交道，数据校验，封装，格式转换，并不关心业务逻辑。 三层之间的关注点不同，分层之后，职责分明，更加符合单一职责原则，代码的内聚性更好。 分层能提高代码可测试性 使用依赖注入方式，采用 mock 数据替代真实数据。 分层能应对系统的复杂性 水平方向基于业务来做拆分，就是模块化。 垂直方向基于流程来做拆分，就是分层。 tip: 对于工作不满意，应该我花点时间在技术上;对于当前工作很满意则多花时间在业务上。</description></item><item><title>设计模式-KISS,YAGNI,DRY,LOD 原则(十三)</title><link>https://yezihack.github.io/posts/gof-principle-other/</link><pubDate>Mon, 08 Feb 2021 12:21:28 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-principle-other/</guid><description>纲要 KISS原则 Keep It Simple and Stupid
+尽量保持简单
+代码行数越少就越“简单”吗？
+答案是否定的，实现逻辑需要简单，易维护，不过度优化
+代码逻辑复杂就违背 Kiss 原则吗？
+​ 答案也是否定的，需要考虑逻辑复杂度，实现难度，可代码的可读性。
+总结
+不要使用很另类的技术实现代码 不要重复造轮子，善于使用已有的工具类库 不要过度优化 一句话：KISS原则讲”如何做“的问题（尽量保持简单）
+tip: 在开发中不要过度设计，越是能用简单的方法解决复杂的问题，越能体现一个人的能力。
+YAGNI原则 You Ain&amp;rsquo;t Gonna Need It
+你不会需要它
+核心思想：不要做过度设计。
+一句话：YAGNI原则讲”要不要做“的问题（当前不需要的就不要做）
+DRY原则 Don&amp;rsquo;t Repeat Yourself
+不要重复自己，即不要写重复的代码。
+三种典型的代码重复情况：
+实现逻辑重复 实现逻辑重复，但功能语义不重复的代码，并不违反DRY原则。 功能语义重复 实现逻辑不重复，但功能语义重复的代码，也算是违反DRY原则。 代码执行重复 重复执行相同的代码也是违反DRY原则。 代码复用性 三个不同的概念：
+代码复用性(Code Reusability) 表示一段代码可被复用的特性或能力 代码复用(Code Resue) 尽量复用已经存在的代码 DRY原则(Don&amp;rsquo;t Repeat Yourself) 不要写重复的代码 复用和可复用性关注角度不同
+“可复用性”是从代码开发者的角度出发的。
+“复用”是从代码使用者的角度出发的。
+实际上目的是一样的，都是为了减少代码量，提高代码可读性，可维护性。
+提高复用性方法 减少代码耦合 高度耦合的代码，往往是牵一发而动全身。 尽量减少代码耦合，提高代码的复用性。 满足单一职责原则 模块，类，函数尽量职责单一。 越细粒度的代码，代码的通用性会越好，越容易被复用。 模块化 类， 函数要尽量将独立的功能封装成模块。 独立的模块像一块一块积木，更加容易复用，可以直接拿来搭建更加复杂的系统。 业务与非业务逻辑分离 越是跟业务无关的代码越是容易复用。 越是针对特定业务的代码越难复用。 为了复用跟业务无关的代码，将业务与非业务逻辑代码分离，抽取成一些通用的框架，类库，组件等 通用代码下沉 从分层的角度来看，越底层的代码越通用，会被越多模块调用，越应该设计得足够可复用。 避免交叉调用导致关系混乱 只允许上层代码调用下层代码及同层代码之间调用。 杜绝下层代码调用上层代码。 通用的代码尽量下沉到更下层。 继承，多态，抽象，封装 利用继承：可以将公共的代码抽取到父类，子类复用父类的属性和方法。 利用多态：动态地替换一段代码的部分逻辑，让这段代码可复用。 利用抽象：越抽象，越不依赖具体实现，越容易复用。 利用封装：代码封装模块，隐藏可变的细节，暴露不变的接口，就越容易复用。 应用模板等设计模式 使用设计模式，提高代码复用性。 其它 泛型编程，也是提高代码复用性。 复用意识非常重要，时常要多去思考一下，这部分代码是否可以抽取出来，作为一个独立的模块，类或函数供多处使用。 设计每个模块，类，函数的时候，要像设计一个外部API一样，去思考它的复用性。 LOD原则 Low of Demeter</description></item><item><title>设计模式-控制反转IOC.Go实例(十二)</title><link>https://yezihack.github.io/posts/gof-ioc-code/</link><pubDate>Mon, 08 Feb 2021 11:23:01 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-ioc-code/</guid><description>控制反转(IOC) Inversion Of Control
+“控制”是指对程序执行流程的控制
+”反转“ 指没有使用框架之前，程序员自己控制整个程序的执行。在使用框架之后，整个程序的执行流程可以通过框架来控制。流程的控制权从程序员”反转“到了框架。
+tip: 控制反转是指对程序执行流程的控制权交给框架完成。
+Go代码实现 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;time&amp;#34; ) // 控制反转 ioc // 定义一个发送接口 type Sender interface { Send() // 发送函数 } // 定义一个发送 app 结构体，实现控制反转操作 type SendIoc struct { list chan Sender // 使用 chan 的发送接口 } var ( // 定义一个全局的 Ioc 对象，保证全局唯一 __sendApp *SendIoc __sendAppOnce sync.Once ) func NewSendIoc() *SendIoc { __sendAppOnce.Do(func() { __sendApp = &amp;amp;SendIoc{ list: make(chan Sender, 10), } go __sendApp.</description></item><item><title>设计模式-依赖注入DI.Go实例(十一)</title><link>https://yezihack.github.io/posts/gof-di-code/</link><pubDate>Mon, 08 Feb 2021 11:22:56 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-di-code/</guid><description>依赖注入(DI) Dependency Injection
+不通过 new() 的方式在类内部创建依赖类对象，而是将依赖的类对象在外部创建好之后，通过构造函数，函数参数等方式传递（或注入）给类使用。
+tip: 基于接口而非实现编程
+Go代码实现 package main import &amp;#34;fmt&amp;#34; // DI 依赖注入:Dependency Injection // 定义一个发送接口类 type ManagerSender interface { // 发送类 Send(phone, message string) } // 定义短信发送结构体，实现 ManagerSender 接口 type SmsSender struct { } func (s *SmsSender) Send(phone, message string) { fmt.Printf(&amp;#34;正在使用短信发送消息，手机号:%s,消息内容:%s\n&amp;#34;, phone, message) } // 定义站内发送结构体，实现 ManagerSender 接口 type InboxSender struct { } func (s *InboxSender) Send(phone, message string) { fmt.Printf(&amp;#34;正在使用站内发送消息，手机号:%s,消息内容:%s\n&amp;#34;, phone, message) } // ----------------- 实现注入的代码 -------------------- // 定义一个发消息结构体 type Notification struct { ms ManagerSender } // 将接口赋值给 Notification func NewNotification(m ManagerSender) *Notification { return &amp;amp;Notification{ms: m} } // 实现发消息，使用接口的对象 Send func (n *Notification) SendMessage(phone, message string) { n.</description></item><item><title>设计模式-SOLID五大原则(十)</title><link>https://yezihack.github.io/posts/gof-solid/</link><pubDate>Mon, 25 Jan 2021 21:03:38 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-solid/</guid><description>[TOC]
+SOLID原则包括单一职责，开闭原则，里氏替换原则，接口隔离原则，依赖倒置原则。
+单一职责原则(SRP) SRP: Single Responsibility Principle
+A class or module should have a single reponsilibility.一个类或者模块只负责完成一个职责(或者功能)
+一个类只负责完成一个职责或功能, 也就是说, 不要设计大而全的类, 要设计粒度小, 功能单一的类.
+换个角度来讲就是. 一个类包含了两个或两个以上业务不相干的功能, 我们就说它的职责不够单一, 应该将它拆分成多个功能更加单一, 粒度更细的类.
+如何判断类是否单一 类中的代码行数,函数或者属性过多. 类依赖的其它类过多, 或者依赖类的其它类过多, 不符合高内聚, 低耦合的设计思想. 私有方法过多 比较难给类起一个合适的名字 类中大量的方法都是集中操作类中的某几个属性. 如何设计单一类 技巧: 持续重构. 没有一尘不变的设计
+单一职责原则通过避免设计大而全的类, 避免将不相关的功能耦合在一起, 来提高类的内聚性. 同时类职责单一, 类依赖和被依赖的其它类也会变少, 减少了代码的耦合性, 以此来实现代码的高内聚, 低耦合.
+但是, 如果拆分得过细, 实际上会适得其反, 反倒会降低内聚性, 也会影响代码的可维护性.
+开闭原则(OCP) OCP: Open Closed Priciple
+Software entities (modules, classes, functions, etc.) should be open for extension, but closed for modification.</description></item><item><title>设计模式-充血模式(九)</title><link>https://yezihack.github.io/posts/gof-ddd/</link><pubDate>Thu, 14 Jan 2021 14:37:12 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-ddd/</guid><description> 充血模式即领域驱动设计(Domain Driven Design, 简称 DDD)
+贫血模式 在之前我们写一篇关于贫血模式的文章, 点击查看.
+贫血模式是目前主流的一种开发模式, 基于MVC结构的开发模式.
+MVC三层架构中
+M 表示 Model 即数据层 V 表示 View 即展示层 C 表示 Controller 即逻辑层 做为后端开发MVC有所调整
+1. Model 层 负责数据访问
+2. Service层 负责业务逻辑
+3. Controller层 负责暴露接口</description></item><item><title>设计模式-接口组合(八)</title><link>https://yezihack.github.io/posts/gof-interface-combination/</link><pubDate>Mon, 11 Jan 2021 20:23:10 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-interface-combination/</guid><description> 有一种非常经典的设计原则: 组合优于继承, 多用组合少用继承
+为什么少用继承 继承是面向对象的四大特性之一, 表示类之间的 is-a 关系. 支持多态特性, 可以解决代码复用问题.
+如果继承层次过深, 过复杂, 会影响到代码的可维护性, 可读性.
+如上面, 继承带来的后果就是代码变得复杂, 因为层次过深, 继承关系过于复杂, 影响到代码的可读性与可维护性.
+组合的优势 可以利用组合(composition), 接口(interface), 委托(delegation) 三个技术手段解决继承的问题.(如上面的问题)
+利用接口实现多态特性
+利用组合和委托实现代码复用问题
+通过组合, 接口, 委托三个技术手段完全可以替换掉继承.
+Tip: 在项目中不用或少用继承关系, 特别是一些复杂的继承关系 .
+什么时候使用继承还是组合 一个技术的出现, 一定是有他的用武之地, 并非一无是处.
+当类之间的继承结构稳定, 继承层次比较浅(最多有两层继承关系), 我们可以大胆使用继承.
+当类之间的继承结构不稳定, 复杂, 继承层次又深,我们尽量考虑使用组合来替代继承
+哪些设计模式使用了继承?
+装饰者模式(decorator pattern) 策略模式(strategy pattern) 组合模式(composite pattern) 哪些设计模式使用了组合?
+模板模式(template pattern)</description></item><item><title>设计模式-接口编程(七)</title><link>https://yezihack.github.io/posts/gof-program-to-interface/</link><pubDate>Mon, 11 Jan 2021 11:38:43 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-program-to-interface/</guid><description>何为&amp;quot;接口&amp;quot;编程 基于接口而非实现编程.
+英文: Program to an interface, not an implementation
+这条原则是一条比较抽象,泛化的设计思想.
+接口的本质: 接口就是一组协议或者约定, 是功能提供者给使用者的一个&amp;quot;功能列表&amp;quot;
+接口编程 这条原则能非常有效地提高代码质量.
+接口编程是将接口与实现相分离, 封装不稳定的实现, 暴露稳定的接口.
+上游系统面向接口而非实现编程, 不依赖不稳定的实现细节. 当实现发生变化的时候, 上游系统基于上不需要做改动, 以些来降低耦合性,提高扩展性.
+在软件开发中, 最大的挑战之一就是需求的不断变化, 这也是考验代码设计的好坏的一个标准.
+越抽象, 越顶层,越脱离具体某一实现的设计, 越能提高代码的灵活性, 越能应对未来的需求变化.
+好的代码设计, 不仅能应对当下的需求, 而且在将来需求发生变化的时候,仍然能够在不破坏原有代码设计性况下奶灵活应对.
+而抽象就是提高代码扩展性, 灵活性, 可维护性最有效的手段之一
+接口编程要点 函数的命名不能暴露任何实现细节 封装具体的实现细节 为实现类定义抽象接口. Tip: 做开发的时候, 一定要有抽象意识, 封装意识, 接口意识. 在定义接口的时候, 不要暴露任何实现细节.
+接口的定义只表明做什么, 而不是怎么做.
+什么时候使用接口 任何事物都有两面, 一味使用接口编程会导致不必要的开发负担.具体要搞清楚我们为了解决什么问题.
+如果业务场景中, 某个功能只有一种实现方式, 未来也不可能被其它实现方式替换,则我们没必要设计接口.也没必须基于接口编程.直接使用类即可.
+如果业务场景中, 某个功能可能被两种以上, 不</description></item><item><title>设计模式-贫血模式(六)</title><link>https://yezihack.github.io/posts/gof-mvc/</link><pubDate>Fri, 08 Jan 2021 14:02:31 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-mvc/</guid><description>贫血开发模式 传统的MVC结构分为: Model 层, Controller 层, View层.
+而做为前后端分离的MVC变为后端被分为: Controller, Service, Model 层.
+Controller 层负责暴露接口给前端调用. Service 层负责核心业务逻辑 Model 层负责数据读写 以上为典型的面向过程的编程风格.也称为分血模式的开发模式
+这也是我们现在非常常用的一个 Web项目的开发模式.
+Tip: 与之相对是充血开发模式即DDD, 也称领域驱动设计
+面向过程VS面向对象 面向过程编程风格是一种符合我们人脑思维方式. 如同在生活中, 你去完成一个任务:
+先做什么 后做什么 最后完成整个任务 面向对象编程风格是一种自底向上的思维方式, 它不是先去按照执行流程来分解任务:
+先将任务翻译成一个一个小的模块(也就是类) 然后设计类之间的交互 最后按照流程将类组装起来 完成整个任务 面向过程与面向对象是互相协作完成整个项目的
+面向过程编程是面向对象编程的基础 面向对象编程离不开基础的面向过程编程. 如一个方法的实现逻辑即是一个面向过程的逻辑. Tip: 我们编程最终的目的是写出易维护, 易读, 易复用, 易扩展的高质量代码.
+面向对象编程常见的坑 面向对象的封装特性的本质就是通过设置访问权限隐藏代码
+随意设置 Public 权限
+解决方法: 慎重使用 Public , 使用之前询问自己 为什么要开放 开放会带来哪些后果. 滥用全局变量和全局方法
+从分配内存空间: 全局变量, 静态局部变量, 静态全局变量都在静态存储区分配空间, 而局部变量在栈分配空间. 从作用域来看: 破坏边界, 不利后续调试等. 常用的面向过程场景 编写Shell 脚本. 数据处理 算法为主, 数据为辅.</description></item><item><title>设计模式-封装,抽象,继承,多态的作用(五)</title><link>https://yezihack.github.io/posts/gof-oop/</link><pubDate>Thu, 07 Jan 2021 19:40:53 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-oop/</guid><description>封装, 抽象, 继承, 多态 是面向对象编程语言的四大特性. 而它们又分别承担什么职责呢. 实际编程中起什么作用呢.
+封装 (Encapsulation) 封装也称信息隐藏或者数据访问保护. 通过对变量, 函数或类进行设置访问权限.控制它们的对外访问限制.从而保护它们不被随便修改.
+作用 封装如同一把智能锁
+隐藏信息 保护数据 提高易用性 防止恶意修改 抽象 (Abstraction) 抽象是指如何隐藏方法的具体实现, 让调用者只关心方法提供了哪些功能, 并不需要知道这些功能是如何实现的.
+抽象并不需要非得依靠接口类或抽象类这些特殊语法机制来支持. 如类的方法是通过编程语言中的&amp;quot;函数&amp;quot;这一语法机制来实现的, 通过函数包裹具体的实现逻辑, 这本身就是一种抽象. 调用者在使用函数时,只需要了解函数命名, 注释或者文档, 不需要研究函数内部具体实现. 直接就可以使用.
+作用 抽象无处不在
+简化复杂逻辑 隐藏具体实现 Tip: 抽象是一个非常通用的设计思想, 并不单单用在面向对象编程中, 也可以用来指导架构设计等
+继承 (Inheritance) 继承是用来表示类之间的is-a关系.
+继承分两种模式:
+单继承 一个子类只继承一个父类 多继承 一个子类可以继承多个父类 作用 继承并非一剂良药, 请勿过度使用. 更加推荐&amp;quot;多用组全少用继承&amp;quot;的思想.
+代码复用 多态 (Polymorphism) 多态是指子类可以替换父类.
+实现多态特性
+继承+方法重写 接口类语法 duck-typing 只有一些动态语言才支持, 如python, javascript 作用 多态会72变
+提高扩展性 提高复用性 Tip: 多态也是很多设计模式,设计原则,编程技巧的代码实现基础, 如策略模式, 基于接口而非实现编程, 依赖倒置原则, 里式替换原则, 利用多态去掉冗长的if-else语句等等.</description></item><item><title>设计模式-学习地图(四)</title><link>https://yezihack.github.io/posts/gof-map/</link><pubDate>Mon, 04 Jan 2021 19:35:56 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-map/</guid><description>学习之前先罗列一下学习框架地图. 方便今后的学习.
+三种编程范式 面向过程
+面向对象(最主流)
+函数式编程(如go语言)
+面向对象7大知识点 面向对象的四大特性: 封装, 抽象, 继承, 多态 面向对象编程与面向过程编程的区别和联系 面向对象分析, 面向对象设计, 面向对象编程 接口与抽象的区别以及各自的应用场景 基于接口而非实现编程的设计思想 多用组合少用继承的设计思想 面向过程的贫血模型和面向对象的充血模型. 设计原则 SRP 单一职责原则 OCP 开闭原则 LSP 里式替换原则 ISP 接口隔离原则 DIP 依赖倒置原则 其它原则 DRY 原则 Don&amp;rsquo;t repeat yourself 不要重复自己 出现两次或多次的重复代码就需要提取出来 KISS 原则 Keep It Simple, Stupid 保持简单, 愚蠢 KISS原则使代码简单、清晰、易于理解 编程语言是为人类所理解的 保证你的方法尽量很小； 每个方法都不应该超过40-50行代码 每个方法应该只解决一个小问题，而不是实现很复杂的功能 YAGNI 原则 You aren&amp;rsquo;t gonna need it 你不会需要它 这是&amp;ldquo;极限编程&amp;rdquo;提倡的原则，指的是你自以为有用的功能，实际上都是用不到的。 LOD 原则 迪米特法则（Law of Demeter）又叫作最少知识原则 不和陌生人说话 迪米特法则的初衷在于降低类之间的耦合 门面模式（Facade）和中介模式（Mediator），都是迪米特法则应用的例子 设计模式 经典设计模式有23种.</description></item><item><title>设计模式-如何评价代码质量好坏?(三)</title><link>https://yezihack.github.io/posts/gof-check-code/</link><pubDate>Tue, 29 Dec 2020 20:56:04 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-check-code/</guid><description>评价常用词汇 描述代码质量所有常用词汇
+最常用的评价标准 评价属于主观, 主观的准确度与工程师自身经验有极大的关系. 接下来我们从以下几个维度评价代码, 也是更为常见的维度.
+其中可维护性, 可读性, 可扩展性最重要的三个评价标准
+1. 可维护性 (maintainability) 易维护的代码是指在不破坏原有的代码设计, 不引入新的Bug的情况下, 能够快速地修改或者添加代码.
+不易维护的代码是指修改或者添加代码需要冒着极大的引入新Bug的风险,并且需要花费大量很长的时间才能完成
+2. 可读性 (readability) 软件设计大师 Martin Fowler 金句: &amp;ldquo;Any fool can write code that a computer can understand. Good programmers write code that humans can understand.&amp;rdquo;
+任何傻瓜都会编写计算机能理解的代码, 好的程序员能够编写人能够理的代码
+代码的可读性是评价代码质量最重要的指标之一
+我们编写代码的时候, 时刻要考虑到代码是否易读, 易理解.
+除此之外, 代码的可读性在非常大程度上影响代码的可维护性.
+以下为评介一段代码的可读性的几个维护
+编码是否规范 命名是否达意 注释是否详尽 函数是否长短合适 模块划分是否清晰 是否符合高内聚合低耦合 Tip: Code review 是一个很好的测验代码的可读性手段.
+3. 可扩展性 (extensibility) 可扩展性也是一个评价代码质量非常重要的标准
+它表示我们的代码应对未来需求变化的能力.
+易扩展是指在不修改或少量修改原有的代码情况下, 通过扩展方式添加新的功能代码.
+不易扩展是指添加一个功能而大动干戈, 改动大量的原始代码.</description></item><item><title>设计模式-七大原则(二)</title><link>https://yezihack.github.io/posts/gof-seven-principle/</link><pubDate>Wed, 19 Aug 2020 13:00:55 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-seven-principle/</guid><description>用最少的语言记住更多的东西
+本文提纲 设计模式的目的 高内聚，低耦合
+可重用性 可扩展性 可阅读性 可靠性 1. 单一职责原则(SRP) 单一职责原则提出了一个编写程序的标准，用”职责“或”变化原因“来衡量接口或类设计得是否优良。
+Single Responsibility Principle
+一个类(方法)只描述一件事, 应该有且仅有一个原因引起的变更。
+There should never be more than one reason for a class to change（一个类的变化不应该有一个以上的原因引起）
+单一职责原则好处
+类的复杂性降低，实现什么职责都有清晰明确的定义 可读性提高，复杂性降低，那当然可读性提高了。 可维护性提高，可读性提高，那当然更容易维护了。 变更引起的风险降低。变更是必不可少的，如果接口单一职责做得好，一个接口修改只对相应的实现类有影响，对其它接口无影响，这对系统的扩展性，维护性都有非常大的帮助。 2. 开闭原则(OCP) Open Closed Principle
+3W原则： What 是什么，Why为什么，How怎么做。
+对修改关闭，对扩展开放
+3. 接口隔离原则(ISP) Interface Segregation Principle
+定义单一接口，不要建立臃肿庞大的接口。
+客户端不应该依赖它不需要的接口 类间的依赖关系应该建立在最小接口上 接口隔离原则拆分接口时，首先必须满足单一职责原则
+接口要高内聚 少使用public方法，接口对外承诺越少，对系统开发越有利，变更的风险也就越少，同时也有利于降低成本。 定制服务 就是单独为一个个体提供优良的服务。 只提供访问者需要的方法。 接口设计 是有限度的 接口的设计粒度越小，系统越灵活 一个接口只服务于一个子模块或业务逻辑。 接口隔离原则与单一职责原则的区别
+接口隔离原则要求接口中的方法尽量少，专门的接口。
+单一职责原则注重的是职责，是业务逻辑上的划分。
+4. 里氏替换原则(LSP) Liskov Substitution Principle</description></item><item><title>设计模式-简介(一)</title><link>https://yezihack.github.io/posts/gof/</link><pubDate>Wed, 19 Aug 2020 11:39:20 +0800</pubDate><guid>https://yezihack.github.io/posts/gof/</guid><description>什么是设计模式 设计模式 (Design pattern) 代表了最佳实践 通常被有经验的面向对象的软件开发人员所采用。设计模式是软件开发人员在软件开发过程中面临的一般问题的解决方案。这些解决方案是众多软件开发人员经过相当长的一段时间的试验和错误总结出来的。 使用设计模式是为了重用代码，让代码更容易被他人理解，保证代码可靠性。 设计模式是软件工程的基石，如同大厦的一块块砖石一样。 项目中合理使用设计模式可以完美解决很多问题，每种设计模式都描述了我们周围不断重复发生的问题，以及该问题核心解决方案。 什么是GOF 在 1994 年，由 Erich Gamma、Richard Helm、Ralph Johnson 和 John Vlissides 四人合著出版了一本名为 Design Patterns - Elements of Reusable Object-Oriented Software（中文译名：设计模式 - 可复用的面向对象软件元素） 的书 四位作者合称 GOF（四人帮，全拼 Gang of Four） 他们所提出的设计模式主要是基于以下的面向对象设计原则。 对接口编程而不是对实现编程 优先使用对象组合而不是继承 设计模式的类型 根据设计模式的参考书 Design Patterns - Elements of Reusable Object-Oriented Software（中文译名：设计模式 - 可复用的面向对象软件元素） 中所提到的，总共有 23 种设计模式。这些模式可以分为三大类：创建型模式（Creational Patterns）、结构型模式（Structural Patterns）、行为型模式（Behavioral Patterns）</description></item></channel></rss>

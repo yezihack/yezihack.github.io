@@ -1,0 +1,782 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.a43a549406127e0715f68083c987d71d0c71054cd57edea77aa709ed9958af6e.js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/favicon.png><title itemprop=name>空树之空 - 第六章 Kubernetes Pod 控制器</title><meta property="og:title" content="空树之空 - 第六章 Kubernetes Pod 控制器"><meta name=twitter:title content="空树之空 - 第六章 Kubernetes Pod 控制器"><meta itemprop=name content="空树之空 - 第六章 Kubernetes Pod 控制器"><meta name=application-name content="空树之空 - 第六章 Kubernetes Pod 控制器"><meta property="og:site_name" content><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/posts/k8s-pod-controller/><link rel=canonical href=https://yezihack.github.io/posts/k8s-pod-controller/ itemprop=url><meta name=url content="https://yezihack.github.io/posts/k8s-pod-controller/"><meta name=twitter:url content="https://yezihack.github.io/posts/k8s-pod-controller/"><meta property="og:url" content="https://yezihack.github.io/posts/k8s-pod-controller/"><meta property="og:updated_time" content="28010-28-05T1045:21:21+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content="https://twitter.com"><meta name=twitter:creator content="https://twitter.com"><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content="https://facebook.com"><meta property="og:article:published_time" content="28010-28-05T1045:21:21+0800"><meta property="article:published_time" content="28010-28-05T1045:21:21+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"第六章 Kubernetes Pod 控制器","author":{"@type":"Person","name":"https:\/\/github.com"},"datePublished":"2021-10-28","description":"","wordCount":"3005","mainEntityOfPage":"True","dateModified":"2021-10-28","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"","logo":{"@type":"imageObject","url":""}}}</script><meta name=generator content="Hugo 0.119.0"><link type=text/css rel=stylesheet href=/css/bundle.min.aa949ea27ee9836d60d6ea4c073fd0885f51948c7eea0247da6b1aff4bc25c44.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#FAF9F6;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#268bd2;--date-color:#515151;--table-border-color:#E5E5E5;--table-stripe-color:#F9F9F9;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#eee;--bkg-color:#121212;--post-title-color:#DBE2E9;--list-color:#9d9d9d;--link-color:#268bd2;--date-color:#9a9a9a;--table-border-color:#515151;--table-stripe-color:#202020;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><h1>空树之空</h1></a></h1><p class=lead>《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes（K8s）、DevOps、GitOps、运维和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><ul class=sidebar-nav><li class=heading><a href=/posts/>Home</a></li><li class=sub-heading>Recent</li><li class=bullet><a href=https://yezihack.github.io/posts/haproxy-keepalived/>Haproxy + Keepalived 实现 k8s 集群高可用</a></li><li class=bullet><a href=https://yezihack.github.io/posts/istio-ratelimit/>Istio 限流实现</a></li><li class=bullet><a href=https://yezihack.github.io/posts/istio-install/>Istio 安装</a></li><li class=bullet><a href=https://yezihack.github.io/posts/etcd-v3.2/>云运维笔记(10) Etcd V3.2 集群二进制搭建</a></li><li class=bullet><a href=https://yezihack.github.io/posts/etcd-v3.4/>云运维笔记(11) Etcd V3.4 集群二进制搭建</a></li><li class=heading><a href=/tags/>Tags</a></li><li class=heading><a href=/about/>About</a></li></ul></nav><a target=_blank class=social title=GitHub href=https://github.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=Gitlab href=https://gitlab.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2.5 24 24"><path fill="currentcolor" d="M10.006 18.443 6.326 7.118h7.36l-3.68 11.325zm0 0L1.168 7.118h5.158l3.68 11.325zM1.168 7.118l8.838 11.325-9.68-7.032a.762.762.0 01-.276-.852l1.118-3.441zm0 0L3.385.296a.38.38.0 01.724.0l2.217 6.822H1.168zm8.838 11.325 3.68-11.325h5.157l-8.837 11.325zm8.837-11.325 1.119 3.441a.762.762.0 01-.277.852l-9.68 7.032 8.838-11.325zm0 0h-5.157L15.902.296a.38.38.0 01.725.0l2.216 6.822z"/></svg></a><a target=_blank class=social title=LinkedIn href=https://linkedin.com><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512"><path fill="currentcolor" d="M416 32H31.9C14.3 32 0 46.5.0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6.0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3.0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2.0 38.5 17.3 38.5 38.5.0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6.0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2.0 79.7 44.3 79.7 101.9V416z"/></svg></a><a target=_blank class=social title=Twitter href=https://twitter.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 16 16"><path fill="currentcolor" d="M5.032 14.286c6.037.0 9.34-4.837 9.34-9.032.0-.137.0-.274-.01-.41A6.56 6.56.0 0016 3.2c-.6.256-1.235.425-1.885.5a3.207 3.207.0 001.443-1.757c-.645.37-1.35.63-2.085.77a3.322 3.322.0 00-1.862-.958 3.384 3.384.0 00-2.082.334 3.223 3.223.0 00-1.442 1.49 3.08 3.08.0 00-.208 2.03 9.57 9.57.0 01-3.747-.963A9.269 9.269.0 011.114 2.292a3.086 3.086.0 00-.36 2.314c.189.787.68 1.475 1.376 1.924A3.344 3.344.0 01.64 6.132v.04c0 .734.263 1.444.743 2.01a3.3 3.3.0 001.89 1.102c-.483.128-.99.146-1.482.055a3.19 3.19.0 001.168 1.577 3.36 3.36.0 001.9.627A6.732 6.732.0 010 12.86a9.527 9.527.0 005.032 1.423"/></svg></a><a target=_blank class=social rel=me title=Mastodon href=https://mastodon.social><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M20.94 14c-.28 1.41-2.44 2.96-4.97 3.26-1.31.15-2.6.3-3.97.24-2.25-.11-4-.54-4-.54v.62c.32 2.22 2.22 2.35 4.03 2.42 1.82.05 3.44-.46 3.44-.46l.08 1.65s-1.28.68-3.55.81c-1.25.07-2.81-.03-4.62-.5-3.92-1.05-4.6-5.24-4.7-9.5l-.01-3.43c0-4.34 2.83-5.61 2.83-5.61C6.95 2.3 9.41 2 11.97 2h.06c2.56.0 5.02.3 6.47.96.0.0 2.83 1.27 2.83 5.61.0.0.04 3.21-.39 5.43M18 8.91c0-1.08-.3-1.91-.85-2.56-.56-.63-1.3-.96-2.23-.96-1.06.0-1.87.41-2.42 1.23l-.5.88-.5-.88c-.56-.82-1.36-1.23-2.43-1.23-.92.0-1.66.33-2.23.96C6.29 7 6 7.83 6 8.91v5.26h2.1V9.06c0-1.06.45-1.62 1.36-1.62 1 0 1.5.65 1.5 1.93v2.79h2.07V9.37c0-1.28.5-1.93 1.51-1.93.9.0 1.35.56 1.35 1.62v5.11H18V8.91z"/></svg></a><a target=_blank class=social title=TryHackMe href=https://tryhackme.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="#fff" d="M10.705.0C7.54.0 4.902 2.285 4.349 5.291a4.525 4.525.0 00-4.107 4.5 4.525 4.525.0 004.52 4.52h6.761a.625.625.0 100-1.25H4.761a3.273 3.273.0 01-3.27-3.27A3.273 3.273.0 016.59 7.08a.625.625.0 00.7-1.035 4.488 4.488.0 00-1.68-.69 5.223 5.223.0 015.096-4.104 5.221 5.221.0 015.174 4.57 4.489 4.489.0 00-.488.305.625.625.0 10.731 1.013 3.245 3.245.0 011.912-.616 3.278 3.278.0 013.203 2.61.625.625.0 001.225-.251 4.533 4.533.0 00-4.428-3.61 4.54 4.54.0 00-.958.105C16.556 2.328 13.9.0 10.705.0zm5.192 10.64a.925.925.0 00-.462.108.913.913.0 00-.313.29 1.27 1.27.0 00-.175.427 2.39 2.39.0 00-.054.514c0 .181.018.353.054.517s.095.307.175.43a.899.899.0 00.313.297c.127.073.281.11.462.11.18.0.334-.037.46-.11a.897.897.0 00.309-.296c.08-.124.137-.267.173-.431.036-.164.054-.336.054-.517.0-.18-.018-.352-.054-.514a1.271 1.271.0 00-.173-.426.901.901.0 00-.309-.291.917.917.0 00-.46-.108zm6.486.0a.925.925.0 00-.462.108.913.913.0 00-.313.29 1.27 1.27.0 00-.175.427 2.39 2.39.0 00-.053.514c0 .181.017.353.053.517s.095.307.175.43a.899.899.0 00.313.297c.127.073.281.11.462.11.18.0.334-.037.46-.11a.897.897.0 00.31-.296c.078-.124.136-.267.172-.431s.054-.336.054-.517c0-.18-.018-.352-.054-.514a1.271 1.271.0 00-.173-.426.901.901.0 00-.308-.291.916.916.0 00-.461-.108zm-8.537.068-.84.618.313.43.476-.368v1.877h.603v-2.557zm6.486.0-.841.618.314.43.477-.368v1.877h.603v-2.557zm-4.435.445c.08.0.143.028.193.084.05.057.087.127.114.21.026.083.044.173.054.269a2.541 2.541.0 010 .533c-.01.097-.028.187-.054.27a.584.584.0 01-.114.21.243.243.0 01-.193.085.248.248.0 01-.195-.086.584.584.0 01-.118-.209 1.245 1.245.0 01-.056-.27 2.645 2.645.0 010-.533c.01-.096.029-.186.056-.27a.583.583.0 01.118-.209.25.25.0 01.195-.084zm6.486.0c.08.0.144.028.193.084.05.057.087.127.114.21s.044.173.054.269a2.541 2.541.0 010 .533c-.01.097-.027.187-.054.27a.584.584.0 01-.114.21.243.243.0 01-.193.085.249.249.0 01-.195-.086.581.581.0 01-.117-.209 1.245 1.245.0 01-.056-.27 2.642 2.642.0 010-.533c.01-.096.028-.186.056-.27a.58.58.0 01.117-.209.25.25.0 01.195-.084zm-2.191 3.51a.93.93.0 00-.463.109.908.908.0 00-.312.291c-.08.122-.139.263-.175.426a2.383 2.383.0 00-.054.514c0 .18.018.353.054.516.036.164.094.308.175.432a.91.91.0 00.312.296.92.92.0 00.463.11c.18.0.333-.037.46-.11a.892.892.0 00.308-.296 1.32 1.32.0 00.174-.432c.036-.163.054-.335.054-.516.0-.18-.018-.352-.054-.514a1.274 1.274.0 00-.174-.426.89.89.0 00-.309-.291.918.918.0 00-.46-.108zm-6.402.07-.841.617.314.43.476-.369v1.878h.604v-2.557zm2.125.0-.841.617.314.43.477-.369v1.878h.603v-2.557zm2.116.0-.84.617.313.43.477-.369v1.878h.603v-2.557zm2.16.443c.08.0.144.028.194.085a.605.605.0 01.114.21c.026.083.044.172.053.269a2.639 2.639.0 010 .532 1.28 1.28.0 01-.053.27.585.585.0 01-.114.21.244.244.0 01-.193.085.25.25.0 01-.196-.085.589.589.0 01-.117-.21 1.245 1.245.0 01-.056-.27 2.597 2.597.0 010-.532c.01-.097.028-.186.056-.27a.589.589.0 01.117-.209.249.249.0 01.196-.085zm-6.729 3.073a.676.676.0 00-.335.078.661.661.0 00-.227.211.91.91.0 00-.127.31c-.027.118-.04.242-.04.373s.013.256.04.375a.93.93.0 00.127.313.65.65.0 00.227.215c.092.053.204.08.335.08a.655.655.0 00.334-.08.65.65.0 00.225-.215c.057-.09.1-.194.125-.313a1.75 1.75.0 00.04-.375c0-.13-.014-.255-.04-.373a.931.931.0 00-.125-.31.658.658.0 00-.225-.21.667.667.0 00-.334-.08zm3.086.0a.675.675.0 00-.336.078.661.661.0 00-.226.211.907.907.0 00-.127.31 1.69 1.69.0 00-.04.373c0 .131.013.256.04.375a.928.928.0 00.127.313c.058.09.134.162.226.215.093.053.205.08.336.08a.655.655.0 00.334-.08.65.65.0 00.224-.215c.058-.09.1-.194.126-.313a1.752 1.752.0 000-.748.94.94.0 00-.126-.31.657.657.0 00-.224-.21.667.667.0 00-.334-.08zm5.108.0a.675.675.0 00-.336.078.661.661.0 00-.226.211.91.91.0 00-.127.31c-.027.118-.04.242-.04.373s.013.256.04.375a.931.931.0 00.127.313c.058.09.134.162.226.215.093.053.205.08.336.08.13.0.243-.027.334-.08a.65.65.0 00.224-.215c.058-.09.1-.194.126-.313a1.75 1.75.0 00.04-.375c0-.13-.014-.255-.04-.373a.943.943.0 00-.126-.31.657.657.0 00-.224-.21.668.668.0 00-.334-.08zm-6.658.05-.61.448.227.311.346-.266v1.362h.438v-1.856zm3.068.0-.61.448.227.311.346-.266v1.362h.438v-1.856zm5.108.0-.611.448.228.311.346-.266v1.362h.438v-1.856zm-9.712.322c.058.0.105.02.14.062a.421.421.0 01.083.151.96.96.0 01.04.196 1.932 1.932.0 010 .386.954.954.0 01-.04.197.421.421.0 01-.083.152.176.176.0 01-.14.061.18.18.0 01-.141-.06.427.427.0 01-.085-.153.887.887.0 01-.041-.197 1.96 1.96.0 010-.386.893.893.0 01.04-.196.42.42.0 01.086-.151.181.181.0 01.141-.062zm3.086.0c.058.0.104.02.14.062a.421.421.0 01.082.151.94.94.0 01.04.196 1.906 1.906.0 010 .386.93.93.0 01-.04.197.421.421.0 01-.082.152.176.176.0 01-.14.061.18.18.0 01-.141-.06.42.42.0 01-.086-.153.846.846.0 01-.04-.197 1.965 1.965.0 01-.011-.195c0-.057.004-.121.01-.191a.849.849.0 01.041-.196.42.42.0 01.086-.151.182.182.0 01.141-.062zm5.108.0c.058.0.104.02.14.062a.421.421.0 01.082.151.92.92.0 01.04.196 1.963 1.963.0 010 .386.943.943.0 01-.04.197.421.421.0 01-.082.152.177.177.0 01-.14.061.18.18.0 01-.142-.06.437.437.0 01-.085-.153.95.95.0 01-.04-.197 1.965 1.965.0 01-.011-.195c0-.057.004-.121.01-.191a.959.959.0 01.04-.196.47.47.0 01.086-.151.181.181.0 01.142-.062zm-1.684 1.814a.675.675.0 00-.336.079.66.66.0 00-.227.21.91.91.0 00-.127.31 1.731 1.731.0 000 .748.939.939.0 00.127.314c.059.09.134.162.227.215s.205.08.336.08a.66.66.0 00.334-.08.648.648.0 00.224-.215c.058-.09.1-.195.126-.314a1.737 1.737.0 00-.001-.747.928.928.0 00-.125-.31.65.65.0 00-.224-.211.668.668.0 00-.334-.079zm3.063.0a.676.676.0 00-.336.079.664.664.0 00-.227.21.906.906.0 00-.127.31 1.74 1.74.0 000 .748.936.936.0 00.127.314.66.66.0 00.227.215c.092.053.204.08.336.08a.654.654.0 00.334-.08.648.648.0 00.223-.215c.058-.09.1-.195.126-.314a1.74 1.74.0 000-.747.928.928.0 00-.126-.31.65.65.0 00-.223-.211.666.666.0 00-.334-.079zm-1.545.05-.611.448.228.312.346-.267v1.363h.438v-1.856zm-1.518.323c.057.0.104.02.14.061a.42.42.0 01.082.152.91.91.0 01.04.195 1.966 1.966.0 010 .387.951.951.0 01-.04.197.421.421.0 01-.082.152.177.177.0 01-.14.06.18.18.0 01-.142-.06.428.428.0 01-.085-.152.914.914.0 01-.04-.197 1.96 1.96.0 01-.011-.195c0-.058.003-.122.01-.192a.923.923.0 01.041-.195c.02-.06.048-.11.085-.152a.181.181.0 01.142-.061zm3.063.0c.057.0.104.02.14.061a.42.42.0 01.082.152.94.94.0 01.04.195 1.91 1.91.0 010 .387.93.93.0 01-.04.197.422.422.0 01-.083.152.175.175.0 01-.14.06.18.18.0 01-.141-.06.423.423.0 01-.085-.152.907.907.0 01-.04-.197 1.95 1.95.0 010-.387.915.915.0 01.04-.195c.02-.06.048-.11.085-.152a.182.182.0 01.142-.061zm-9.713.185a.465.465.0 00-.232.055.456.456.0 00-.157.146.627.627.0 00-.089.215 1.168 1.168.0 00-.027.259c0 .09.009.177.027.26a.648.648.0 00.089.216c.04.063.093.112.157.149a.459.459.0 00.232.056c.09.0.168-.02.231-.056a.45.45.0 00.156-.149.67.67.0 00.087-.217 1.218 1.218.0 000-.518.647.647.0 00-.087-.215.448.448.0 00-.156-.146.458.458.0 00-.23-.055zm1.052.035-.423.31.158.217.24-.185v.944h.303v-1.286zm-1.052.224c.04.0.073.014.097.042a.284.284.0 01.057.105.69.69.0 01.028.136c.004.049.007.092.007.133.0.04-.003.086-.007.135a.684.684.0 01-.028.136.285.285.0 01-.057.105.123.123.0 01-.097.043.125.125.0 01-.098-.043.298.298.0 01-.059-.105.612.612.0 01-.028-.136 1.39 1.39.0 010-.268.62.62.0 01.028-.136.297.297.0 01.06-.105.125.125.0 01.097-.042zm3.775 1.394a.463.463.0 00-.232.054.452.452.0 00-.157.146.621.621.0 00-.088.214 1.19 1.19.0 000 .519.641.641.0 00.088.217.46.46.0 00.157.15.458.458.0 00.232.054.454.454.0 00.232-.055.45.45.0 00.155-.149.664.664.0 00.087-.217 1.189 1.189.0 000-.519.642.642.0 00-.087-.214.446.446.0 00-.155-.146.459.459.0 00-.232-.054zm1.052.034-.423.31.158.216.24-.185v.945h.303V22.68zm-1.052.223c.04.0.073.014.098.043a.3.3.0 01.057.105.643.643.0 01.027.135 1.31 1.31.0 010 .268.654.654.0 01-.027.137.307.307.0 01-.057.105.124.124.0 01-.098.042.125.125.0 01-.098-.042.293.293.0 01-.059-.105.618.618.0 01-.028-.137 1.364 1.364.0 010-.268.612.612.0 01.028-.135.287.287.0 01.06-.105.123.123.0 01.097-.043z"/></svg></a><a target=_blank class=social title=Discord href=https://discord.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09.0 00-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09.0 00-4.8.0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01.0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95.0.02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06.0.07-.02.4-.55.76-1.13 1.07-1.74.02-.04.0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55.0.02-.01.05-.01.07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.04.01-.05.06-.04.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03.0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06.0 1.9.96 1.89 2.12.0 1.17-.84 2.12-1.89 2.12zm6.97.0c-1.03.0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06.0 1.9.96 1.89 2.12.0 1.17-.83 2.12-1.89 2.12z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title=Instagram href=https://instagram.com><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512"><path fill="currentcolor" d="M224.1 141c-63.6.0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1.0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9.0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9.0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9.0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9.0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8.0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a><a target=_blank class=social title=Facebook href=https://facebook.com><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 448 512"><path fill="currentcolor" d="M4e2 32H48A48 48 0 000 80v352a48 48 0 0048 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14.0 55.52 4.84 55.52 4.84v61h-31.27c-30.81.0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H4e2a48 48 0 0048-48V80a48 48 0 00-48-48z"/></svg></a><a target=_blank class=social title=Flickr href=https://flickr.com><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 54 54"><path fill="currentcolor" d="M40 4.8c2.2.0 4.1.8 5.7 2.4s2.4 3.5 2.4 5.7v26.8c0 2.2-.8 4.1-2.4 5.7s-3.5 2.4-5.7 2.4H13.3c-2.2.0-4.1-.8-5.7-2.4s-2.4-3.5-2.4-5.7V12.9c0-2.2.8-4.1 2.4-5.7 1.6-1.6 3.5-2.4 5.7-2.4H40zM23 30.4c1.2-1.2 1.7-2.5 1.7-4.2s-.6-3-1.7-4.2c-1.2-1.2-2.5-1.7-4.2-1.7s-3 .6-4.2 1.7c-1.2 1.2-1.7 2.5-1.7 4.2s.6 3 1.7 4.2 2.5 1.7 4.2 1.7 3-.5 4.2-1.7zm15.7.0c1.2-1.2 1.7-2.5 1.7-4.2s-.6-3-1.7-4.2c-1.2-1.2-2.5-1.7-4.2-1.7-1.6.0-3 .6-4.2 1.7-1.2 1.2-1.7 2.5-1.7 4.2s.6 3 1.7 4.2c1.2 1.2 2.5 1.7 4.2 1.7C36.1 32.2 37.5 31.6 38.7 30.4z"/></a><a target=_blank class=social title=Telegram href=https://telegram.org><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2.0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08.0.27.02.39.12.1.08.13.19.14.27-.01.06.01.24.0.38z"/></svg></a><a target=_blank class=social title=Matrix href=https://matrix.org><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 27.9 32"><path fill="currentcolor" d="m27.1 31.2v-30.5h-2.19v-.732h3.04v32h-3.04v-.732z"/><path fill="currentcolor" d="m8.23 10.4v1.54h.044c.385-.564.893-1.03 1.49-1.37.58-.323 1.25-.485 1.99-.485.72.0 1.38.14 1.97.42.595.279 1.05.771 1.36 1.48.338-.5.796-.941 1.38-1.32.58-.383 1.27-.574 2.06-.574.602.0 1.16.074 1.67.22.514.148.954.383 1.32.707.366.323.653.746.859 1.27.205.522.308 1.15.308 1.89v7.63h-3.13v-6.46c0-.383-.015-.743-.044-1.08-.0209-.307-.103-.607-.242-.882-.133-.251-.336-.458-.584-.596-.257-.146-.606-.22-1.05-.22-.44.0-.796.085-1.07.253-.272.17-.485.39-.639.662-.159.287-.264.602-.308.927-.052.347-.078.697-.078 1.05v6.35h-3.13v-6.4c0-.338-.007-.673-.021-1-.0114-.314-.0749-.623-.188-.916-.108-.277-.3-.512-.55-.673-.258-.168-.636-.253-1.14-.253-.198.0083-.394.042-.584.1-.258.0745-.498.202-.705.374-.228.184-.422.449-.584.794-.161.346-.242.798-.242 1.36v6.62h-3.13v-11.4z"/><path fill="currentcolor" d="m.936.732v30.5h2.19v.732h-3.04v-32h3.03v.732z"/></svg></a><a target=_blank class=social title=XMPP href=https://xmpp.org><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 1750 1273"><path fill="currentcolor" d="m445.5368 1260.3774.2798-12.6227 12.5-3.3998c86.3329-23.4818 169.6413-62.291 250.3046-116.6045 21.6348-14.5674 54.9023-39.6297 54.4411-41.0135-.219-.6568-4.8638-3.8543-10.3219-7.1055C643.2778 1014.4283 545.02 941.13549 450.3396 854.06369 429.6559 835.04199 380.3414 785.90449 358.9481 762.99999 180.5946 572.04763 62.054497 360.05908 18.4066 153.99998 8.7628 108.47213 2.3059 58.553447.6664 16.850277L0-.10203342 6.4083 2.3337566c3.5246 1.33968 58.833297 22.7793104 122.9083 47.6436104 166.6481 64.667773 168.944 65.464203 304.4367 105.604623 62.1152 18.40194 113.1902 33.71169 113.5 34.02166.3099.30997.4154 15.03845.2346 32.72995-.7292 71.3433 7.8053 140.72171 26.8373 218.16638 39.0143 158.75637 118.1187 319.92841 223.5627 455.50001 28.91491 37.1765 73.62151 88 77.40871 88 2.7547.0 26.96638-26.2437 52.834-57.2683C1060.6744 767.76429 1155.5512 568.642 1189.7797 377.59673c10.0437-56.05859 13.7745-98.67828 13.4235-153.34671-.121-18.83748-.032-34.43372.1968-34.6583.2292-.22459 50.1417-15.11502 110.9167-33.08986 134.5925-39.80714 140.484-41.85315 312-108.352043l123.5-47.88249042.3207 7.61633002c.3596 8.5370104-1.1628 33.2485804-3.3954 55.1163204-3.8106 37.324233-12.1421 84.466813-21.8263 123.500003-60.4804 243.77385-227.0666 496.24088-463.599 702.59971-78.2752 68.2899-161.6555 129.12491-251.25 183.31441-12.5125 7.5679-22.75 14.1335-22.75 14.5903.0 1.0394 22.9632 18.4731 41.5 31.5068 84.3957 59.3407 173.6883 101.5869 269 127.2694l7 1.8862.2799 12.6666.2799 12.6666-3.2799-6e-4c-5.2353-.001-37.4406-3.7921-60.2799-7.0959-85.6385-12.3881-177.8337-38.246-257.5-72.2208-39.76812-16.9597-71.45999-30.8513-87.00005-38.1349-9.075-4.2535-17.85004-8.1823-19.50004-8.7307-2.6877-.8934-5.0814-.039-23 8.2132-20.2043 9.3045-59.60201 26.5462-89.00001 38.9493-95.6207 40.3427-198.208 66.8187-300.3568 77.5168-7.8962.827-15.6722 1.5036-17.2799 1.5036h-2.923l.2799-12.6226z"/></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io//posts/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><a target=_blank class=social title=Email href=mailto://niko2022@yeah.net><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 485.211 485.211"><path fill="currentcolor" d="M301.393 241.631 464.866 424.56H20.332l163.474-182.928 58.801 51.443 58.786-51.444zM462.174 60.651H23.027l219.579 192.142L462.174 60.651zM324.225 221.67l160.986 180.151V80.792L324.225 221.67zM0 80.792v321.029L160.972 221.64.0 80.792z"/></svg></a><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/lukeorth/poison>poison</a><br>&copy; 2023 . All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/posts/k8s-pod-controller/>第六章 Kubernetes Pod 控制器</a></h1><time datetime=2021-10-28T17:45:21+0800 class=post-date>October 28, 2021</time><ul class=tags><li class=tag-k8s><a href=https://yezihack.github.io/tags/k8s>k8s</a></li><li class=tag-云原生><a href=https://yezihack.github.io/tags/%E4%BA%91%E5%8E%9F%E7%94%9F>云原生</a></li><li class=tag-kubernetes><a href=https://yezihack.github.io/tags/kubernetes>kubernetes</a></li></ul></div><blockquote><p>本章节主要介绍各种Pod控制器的详细使用。</p></blockquote><h2 id=pod控制器介绍>Pod控制器介绍</h2><p>Pod是kubernetes的最小管理单元，在kubernetes中，按照pod的创建方式可以将其分为两类：</p><ul><li><p>自主式pod：kubernetes直接创建出来的Pod，这种pod删除后就没有了，也不会重建</p></li><li><p>控制器创建的pod：kubernetes通过控制器创建的pod，这种pod删除了之后还会自动重建</p></li></ul><blockquote><p><strong><code>什么是Pod控制器</code></strong></p><p>Pod控制器是管理pod的中间层，使用Pod控制器之后，只需要告诉Pod控制器，想要多少个什么样的Pod就可以了，它会创建出满足条件的Pod并确保每一个Pod资源处于用户期望的目标状态。如果Pod资源在运行中出现故障，它会基于指定策略重新编排Pod。</p></blockquote><p>在kubernetes中，有很多类型的pod控制器，每种都有自己的适合的场景，常见的有下面这些：</p><ul><li><p>ReplicationController：比较原始的pod控制器，已经被废弃，由ReplicaSet替代</p></li><li><p>ReplicaSet：保证副本数量一直维持在期望值，并支持pod数量扩缩容，镜像版本升级</p></li><li><p>Deployment：通过控制ReplicaSet来控制Pod，并支持滚动升级、回退版本</p></li><li><p>Horizontal Pod Autoscaler：可以根据集群负载自动水平调整Pod的数量，实现削峰填谷</p></li><li><p>DaemonSet：在集群中的指定Node上运行且仅运行一个副本，一般用于守护进程类的任务</p></li><li><p>Job：它创建出来的pod只要完成任务就立即退出，不需要重启或重建，用于执行一次性任务</p></li><li><p>Cronjob：它创建的Pod负责周期性任务控制，不需要持续后台运行</p></li><li><p>StatefulSet：管理有状态应用</p></li></ul><h2 id=replicasetrs>ReplicaSet(RS)</h2><p>ReplicaSet的主要作用是<strong>保证一定数量的pod正常运行</strong>，它会持续监听这些Pod的运行状态，一旦Pod发生故障，就会重启或重建。同时它还支持对pod数量的扩缩容和镜像版本的升降级。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200612005334159.png?imageslim alt></p><p>ReplicaSet的资源清单文件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span> <span style=color:#75715e># 版本号</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ReplicaSet</span> <span style=color:#75715e># 类型       </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>: <span style=color:#75715e># 元数据</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#75715e># rs名称 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#75715e># 所属命名空间 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>: <span style=color:#75715e>#标签</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>controller</span>: <span style=color:#ae81ff>rs</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: <span style=color:#75715e># 详情描述</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span> <span style=color:#75715e># 副本数量</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>: <span style=color:#75715e># 选择器，通过它指定该控制器管理哪些pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:      <span style=color:#75715e># Labels匹配规则</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchExpressions</span>: <span style=color:#75715e># Expressions匹配规则</span>
+</span></span><span style=display:flex><span>      - {<span style=color:#f92672>key: app, operator: In, values</span>: [<span style=color:#ae81ff>nginx-pod]}</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>: <span style=color:#75715e># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.17.1</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
+</span></span></code></pre></div><p>在这里面，需要新了解的配置项就是<code>spec</code>下面几个选项：</p><ul><li>replicas：指定副本数量，其实就是当前rs创建出来的pod的数量，默认为1</li><li>selector：选择器，它的作用是建立pod控制器和pod之间的关联关系，采用的Label Selector机制<ul><li>在pod模板上定义label，在控制器上定义选择器，就可以表明当前控制器能管理哪些pod了</li></ul></li><li>template：模板，就是当前控制器创建pod所使用的模板板，里面其实就是前一章学过的pod的定义</li></ul><p><strong>创建ReplicaSet</strong></p><p>创建pc-replicaset.yaml文件，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ReplicaSet   </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pc-replicaset</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>dev</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>: 
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.17.1</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建rs</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl create -f pc-replicaset.yaml</span>
+</span></span><span style=display:flex><span>replicaset.apps/pc-replicaset created
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看rs</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># DESIRED:期望副本数量  </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># CURRENT:当前副本数量  </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># READY:已经准备好提供服务的副本数量</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs pc-replicaset -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME          DESIRED   CURRENT READY AGE   CONTAINERS   IMAGES             SELECTOR
+</span></span><span style=display:flex><span>pc-replicaset <span style=color:#ae81ff>3</span>         <span style=color:#ae81ff>3</span>       <span style=color:#ae81ff>3</span>     22s   nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.1       app=nginx-pod
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看当前控制器创建出来的pod</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 这里发现控制器创建出来的pod的名称是在控制器名称后面拼接了-xxxxx随机码</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pod -n dev</span>
+</span></span><span style=display:flex><span>NAME                          READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-replicaset-6vmvt   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          54s
+</span></span><span style=display:flex><span>pc-replicaset-fmb8f   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          54s
+</span></span><span style=display:flex><span>pc-replicaset-snrk2   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          54s
+</span></span></code></pre></div><p><strong>扩缩容</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 编辑rs的副本数量，修改spec:replicas: 6即可</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl edit rs pc-replicaset -n dev</span>
+</span></span><span style=display:flex><span>replicaset.apps/pc-replicaset edited
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                          READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-replicaset-6vmvt   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>114m</span>
+</span></span><span style=display:flex><span>pc-replicaset-cftnp   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          10s
+</span></span><span style=display:flex><span>pc-replicaset-fjlm6   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          10s
+</span></span><span style=display:flex><span>pc-replicaset-fmb8f   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>114m</span>
+</span></span><span style=display:flex><span>pc-replicaset-s2whj   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          10s
+</span></span><span style=display:flex><span>pc-replicaset-snrk2   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>114m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 当然也可以直接使用命令实现</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用scale命令实现扩缩容， 后面--replicas=n直接指定目标数量即可</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl scale rs pc-replicaset --replicas=2 -n dev</span>
+</span></span><span style=display:flex><span>replicaset.apps/pc-replicaset scaled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 命令运行完毕，立即查看，发现已经有4个开始准备退出了</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                       READY   STATUS        RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-replicaset-6vmvt   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>118m</span>
+</span></span><span style=display:flex><span>pc-replicaset-cftnp   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          4m17s
+</span></span><span style=display:flex><span>pc-replicaset-fjlm6   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          4m17s
+</span></span><span style=display:flex><span>pc-replicaset-fmb8f   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running       <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>118m</span>
+</span></span><span style=display:flex><span>pc-replicaset-s2whj   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          4m17s
+</span></span><span style=display:flex><span>pc-replicaset-snrk2   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running       <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>118m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#稍等片刻，就只剩下2个了</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                       READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-replicaset-fmb8f   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>119m</span>
+</span></span><span style=display:flex><span>pc-replicaset-snrk2   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>119m</span>
+</span></span></code></pre></div><p><strong>镜像升级</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 编辑rs的容器镜像 - image: nginx:1.17.2</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl edit rs pc-replicaset -n dev</span>
+</span></span><span style=display:flex><span>replicaset.apps/pc-replicaset edited
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 再次查看，发现镜像版本已经变更了</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME                DESIRED  CURRENT   READY   AGE    CONTAINERS   IMAGES        ...
+</span></span><span style=display:flex><span>pc-replicaset       <span style=color:#ae81ff>2</span>        <span style=color:#ae81ff>2</span>         <span style=color:#ae81ff>2</span>       <span style=color:#ae81ff>140m</span>   nginx         nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.2  ...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 同样的道理，也可以使用命令完成这个工作</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># kubectl set image rs rs名称 容器=镜像版本 -n namespace</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl set image rs pc-replicaset nginx=nginx:1.17.1  -n dev</span>
+</span></span><span style=display:flex><span>replicaset.apps/pc-replicaset image updated
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 再次查看，发现镜像版本已经变更了</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME                 DESIRED  CURRENT   READY   AGE    CONTAINERS   IMAGES            ...
+</span></span><span style=display:flex><span>pc-replicaset        <span style=color:#ae81ff>2</span>        <span style=color:#ae81ff>2</span>         <span style=color:#ae81ff>2</span>       <span style=color:#ae81ff>145m</span>   nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.1 ... 
+</span></span></code></pre></div><p><strong>删除ReplicaSet</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 使用kubectl delete命令会删除此RS以及它管理的Pod</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在kubernetes删除RS前，会将RS的replicasclear调整为0，等待所有的Pod被删除后，在执行RS对象的删除</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl delete rs pc-replicaset -n dev</span>
+</span></span><span style=display:flex><span>replicaset.apps <span style=color:#e6db74>&#34;pc-replicaset&#34;</span> deleted
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pod -n dev -o wide</span>
+</span></span><span style=display:flex><span>No resources found <span style=color:#66d9ef>in</span> dev namespace.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 如果希望仅仅删除RS对象（保留Pod），可以使用kubectl delete命令时添加--cascade=false选项（不推荐）。</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl delete rs pc-replicaset -n dev --cascade=false</span>
+</span></span><span style=display:flex><span>replicaset.apps <span style=color:#e6db74>&#34;pc-replicaset&#34;</span> deleted
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                  READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-replicaset-cl82j   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          75s
+</span></span><span style=display:flex><span>pc-replicaset-dslhb   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          75s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 也可以使用yaml直接删除(推荐)</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl delete -f pc-replicaset.yaml</span>
+</span></span><span style=display:flex><span>replicaset.apps <span style=color:#e6db74>&#34;pc-replicaset&#34;</span> deleted
+</span></span></code></pre></div><h2 id=deploymentdeploy>Deployment(Deploy)</h2><p>为了更好的解决服务编排的问题，kubernetes在V1.2版本开始，引入了Deployment控制器。值得一提的是，这种控制器并不直接管理pod，而是通过管理ReplicaSet来简介管理Pod，即：Deployment管理ReplicaSet，ReplicaSet管理Pod。所以Deployment比ReplicaSet功能更加强大。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200612005524778.png?imageslim alt></p><p>Deployment主要功能有下面几个：</p><ul><li>支持ReplicaSet的所有功能</li><li>支持发布的停止、继续</li><li>支持滚动升级和回滚版本</li></ul><p>Deployment的资源清单文件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span> <span style=color:#75715e># 版本号</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span> <span style=color:#75715e># 类型       </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>: <span style=color:#75715e># 元数据</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#75715e># rs名称 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#75715e># 所属命名空间 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>: <span style=color:#75715e>#标签</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>controller</span>: <span style=color:#ae81ff>deploy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: <span style=color:#75715e># 详情描述</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span> <span style=color:#75715e># 副本数量</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>revisionHistoryLimit</span>: <span style=color:#ae81ff>3</span> <span style=color:#75715e># 保留历史版本</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>paused</span>: <span style=color:#66d9ef>false</span> <span style=color:#75715e># 暂停部署，默认是false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>progressDeadlineSeconds</span>: <span style=color:#ae81ff>600</span> <span style=color:#75715e># 部署超时时间（s），默认是600</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>strategy</span>: <span style=color:#75715e># 策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>RollingUpdate</span> <span style=color:#75715e># 滚动更新策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>rollingUpdate</span>: <span style=color:#75715e># 滚动更新</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>maxSurge</span>: <span style=color:#ae81ff>30</span><span style=color:#ae81ff>%</span> <span style=color:#75715e># 最大额外可以存在的副本数，可以为百分比，也可以为整数</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>maxUnavailable</span>: <span style=color:#ae81ff>30</span><span style=color:#ae81ff>%</span> <span style=color:#75715e># 最大不可用状态的 Pod 的最大值，可以为百分比，也可以为整数</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>: <span style=color:#75715e># 选择器，通过它指定该控制器管理哪些pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:      <span style=color:#75715e># Labels匹配规则</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchExpressions</span>: <span style=color:#75715e># Expressions匹配规则</span>
+</span></span><span style=display:flex><span>      - {<span style=color:#f92672>key: app, operator: In, values</span>: [<span style=color:#ae81ff>nginx-pod]}</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>: <span style=color:#75715e># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.17.1</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
+</span></span></code></pre></div><p><strong>创建deployment</strong></p><p>创建pc-deployment.yaml，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment      </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pc-deployment</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>dev</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: 
+</span></span><span style=display:flex><span>  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.17.1</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建deployment</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl create -f pc-deployment.yaml --record=true</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment created
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看deployment</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># UP-TO-DATE 最新版本的pod的数量</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># AVAILABLE  当前可用的pod的数量</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get deploy pc-deployment -n dev</span>
+</span></span><span style=display:flex><span>NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+</span></span><span style=display:flex><span>pc-deployment   <span style=color:#ae81ff>3</span>/<span style=color:#ae81ff>3</span>     <span style=color:#ae81ff>3</span>            <span style=color:#ae81ff>3</span>           15s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看rs</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 发现rs的名称是在原来deployment的名字后面添加了一个10位数的随机串</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev</span>
+</span></span><span style=display:flex><span>NAME                       DESIRED   CURRENT   READY   AGE
+</span></span><span style=display:flex><span>pc-deployment-6696798b78   <span style=color:#ae81ff>3</span>         <span style=color:#ae81ff>3</span>         <span style=color:#ae81ff>3</span>       23s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                             READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-d2c8n   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          107s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-smpvp   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          107s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-wvjd8   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          107s
+</span></span></code></pre></div><p><strong>扩缩容</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 变更副本数量为5个</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl scale deploy pc-deployment --replicas=5  -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment scaled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看deployment</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get deploy pc-deployment -n dev</span>
+</span></span><span style=display:flex><span>NAME            READY   UP-TO-DATE   AVAILABLE   AGE
+</span></span><span style=display:flex><span>pc-deployment   <span style=color:#ae81ff>5</span>/<span style=color:#ae81ff>5</span>     <span style=color:#ae81ff>5</span>            <span style=color:#ae81ff>5</span>           <span style=color:#ae81ff>2m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e>#  kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                             READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-d2c8n   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          4m19s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-jxmdq   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          94s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-mktqv   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          93s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-smpvp   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          4m19s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-wvjd8   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          4m19s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 编辑deployment的副本数量，修改spec:replicas: 4即可</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl edit deploy pc-deployment -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment edited
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                             READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-d2c8n   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5m23s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-jxmdq   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          2m38s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-smpvp   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5m23s
+</span></span><span style=display:flex><span>pc-deployment-6696798b78-wvjd8   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5m23s
+</span></span></code></pre></div><p><strong>镜像更新</strong></p><p>deployment支持两种更新策略:<code>重建更新</code>和<code>滚动更新</code>,可以通过<code>strategy</code>指定策略类型,支持两个属性:</p><p>strategy：指定新的Pod替换旧的Pod的策略， 支持两个属性：
+type：指定策略类型，支持两种策略
+Recreate：在创建出新的Pod之前会先杀掉所有已存在的Pod
+RollingUpdate：滚动更新，就是杀死一部分，就启动一部分，在更新过程中，存在两个版本Pod
+rollingUpdate：当type为RollingUpdate时生效，用于为RollingUpdate设置参数，支持两个属性：
+maxUnavailable：用来指定在升级过程中不可用Pod的最大数量，默认为25%。
+maxSurge： 用来指定在升级过程中可以超过期望的Pod的最大数量，默认为25%。</p><p>重建更新</p><ol><li>编辑pc-deployment.yaml,在spec节点下添加更新策略</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>strategy</span>: <span style=color:#75715e># 策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>Recreate</span> <span style=color:#75715e># 重建更新</span>
+</span></span></code></pre></div><ol start=2><li>创建deploy进行验证</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 变更镜像</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl set image deployment pc-deployment nginx=nginx:1.17.2 -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment image updated
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 观察升级过程</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e>#  kubectl get pods -n dev -w</span>
+</span></span><span style=display:flex><span>NAME                             READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-65qcw   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          31s
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-w5nzv   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          31s
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-xpt7w   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          31s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-xpt7w   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          41s
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-65qcw   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          41s
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-w5nzv   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating   <span style=color:#ae81ff>0</span>          41s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-grn8z   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending       <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-hbl4v   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending       <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-67nz2   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending       <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-grn8z   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-hbl4v   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-67nz2   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-grn8z   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          1s
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-67nz2   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          1s
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b-hbl4v   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          2s
+</span></span></code></pre></div><p>滚动更新</p><ol><li>编辑pc-deployment.yaml,在spec节点下添加更新策略</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>strategy</span>: <span style=color:#75715e># 策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>RollingUpdate</span> <span style=color:#75715e># 滚动更新策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>rollingUpdate</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>maxSurge</span>: <span style=color:#ae81ff>25</span><span style=color:#ae81ff>% </span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>maxUnavailable</span>: <span style=color:#ae81ff>25</span><span style=color:#ae81ff>%</span>
+</span></span></code></pre></div><ol start=2><li>创建deploy进行验证</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 变更镜像</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl set image deployment pc-deployment nginx=nginx:1.17.3 -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment image updated
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 观察升级过程</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev -w</span>
+</span></span><span style=display:flex><span>NAME                           READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-c848d767-8rbzt   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>31m</span>
+</span></span><span style=display:flex><span>pc-deployment-c848d767-h4p68   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>31m</span>
+</span></span><span style=display:flex><span>pc-deployment-c848d767-hlmz4   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>31m</span>
+</span></span><span style=display:flex><span>pc-deployment-c848d767-rrqcn   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>31m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-226rx   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-226rx   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-226rx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          1s
+</span></span><span style=display:flex><span>pc-deployment-c848d767-h4p68    <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>34m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-cnd44   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-cnd44   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-cnd44   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          2s
+</span></span><span style=display:flex><span>pc-deployment-c848d767-hlmz4    <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>34m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-px48p   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-px48p   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-px48p   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-c848d767-8rbzt    <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>34m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-dkmqp   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-dkmqp   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44-dkmqp   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          2s
+</span></span><span style=display:flex><span>pc-deployment-c848d767-rrqcn    <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>34m</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 至此，新版本的pod创建完毕，就版本的pod销毁完毕</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 中间过程是滚动进行的，也就是边销毁边创建</span>
+</span></span></code></pre></div><p>滚动更新的过程：</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200416140251491.png?imageslim alt></p><p>镜像更新中rs的变化:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 查看rs,发现原来的rs的依旧存在，只是pod数量变为了0，而后又新产生了一个rs，pod数量为4</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 其实这就是deployment能够进行版本回退的奥妙所在，后面会详细解释</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev</span>
+</span></span><span style=display:flex><span>NAME                       DESIRED   CURRENT   READY   AGE
+</span></span><span style=display:flex><span>pc-deployment-6696798b78   <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       7m37s
+</span></span><span style=display:flex><span>pc-deployment-6696798b11   <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       5m37s
+</span></span><span style=display:flex><span>pc-deployment-c848d76789   <span style=color:#ae81ff>4</span>         <span style=color:#ae81ff>4</span>         <span style=color:#ae81ff>4</span>       72s
+</span></span></code></pre></div><p><strong>版本回退</strong></p><p>deployment支持版本升级过程中的暂停、继续功能以及版本回退等诸多功能，下面具体来看.</p><p>kubectl rollout： 版本升级相关功能，支持下面的选项：</p><ul><li><p>status 显示当前升级状态</p></li><li><p>history 显示 升级历史记录</p></li><li><p>pause 暂停版本升级过程</p></li><li><p>resume 继续已经暂停的版本升级过程</p></li><li><p>restart 重启版本升级过程</p></li><li><p>undo 回滚到上一级版本（可以使用&ndash;to-revision回滚到指定版本）</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 查看当前升级版本的状态</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl rollout status deploy pc-deployment -n dev</span>
+</span></span><span style=display:flex><span>deployment <span style=color:#e6db74>&#34;pc-deployment&#34;</span> successfully rolled out
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看升级历史记录</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl rollout history deploy pc-deployment -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment
+</span></span><span style=display:flex><span>REVISION  CHANGE-CAUSE
+</span></span><span style=display:flex><span><span style=color:#ae81ff>1</span>         kubectl create --filename=pc-deployment.yaml --record=true
+</span></span><span style=display:flex><span><span style=color:#ae81ff>2</span>         kubectl create --filename=pc-deployment.yaml --record=true
+</span></span><span style=display:flex><span><span style=color:#ae81ff>3</span>         kubectl create --filename=pc-deployment.yaml --record=true
+</span></span><span style=display:flex><span><span style=color:#75715e># 可以发现有三次版本记录，说明完成过两次升级</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 版本回滚</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 这里直接使用--to-revision=1回滚到了1版本， 如果省略这个选项，就是回退到上个版本，就是2版本</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl rollout undo deployment pc-deployment --to-revision=1 -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment rolled back
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看发现，通过nginx镜像版本可以发现到了第一版</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get deploy -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME            READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         
+</span></span><span style=display:flex><span>pc-deployment   <span style=color:#ae81ff>4</span>/<span style=color:#ae81ff>4</span>     <span style=color:#ae81ff>4</span>            <span style=color:#ae81ff>4</span>           <span style=color:#ae81ff>74m</span>   nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.1   
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看rs，发现第一个rs中有4个pod运行，后面两个版本的rs中pod为运行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 其实deployment之所以可是实现版本的回滚，就是通过记录下历史rs来实现的，</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 一旦想回滚到哪个版本，只需要将当前版本pod数量降为0，然后将回滚版本的pod提升为目标数量就可以了</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev</span>
+</span></span><span style=display:flex><span>NAME                       DESIRED   CURRENT   READY   AGE
+</span></span><span style=display:flex><span>pc-deployment-6696798b78   <span style=color:#ae81ff>4</span>         <span style=color:#ae81ff>4</span>         <span style=color:#ae81ff>4</span>       <span style=color:#ae81ff>78m</span>
+</span></span><span style=display:flex><span>pc-deployment-966bf7f44    <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       <span style=color:#ae81ff>37m</span>
+</span></span><span style=display:flex><span>pc-deployment-c848d767     <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       <span style=color:#ae81ff>71m</span>
+</span></span></code></pre></div><p><strong>金丝雀发布</strong></p><p>Deployment控制器支持控制更新过程中的控制，如“暂停(pause)”或“继续(resume)”更新操作。</p><p>比如有一批新的Pod资源创建完成后立即暂停更新过程，此时，仅存在一部分新版本的应用，主体部分还是旧的版本。然后，再筛选一小部分的用户请求路由到新版本的Pod应用，继续观察能否稳定地按期望的方式运行。确定没问题之后再继续完成余下的Pod资源滚动更新，否则立即回滚更新操作。这就是所谓的金丝雀发布。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 更新deployment的版本，并配置暂停deployment</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e>#  kubectl set image deploy pc-deployment nginx=nginx:1.17.4 -n dev &amp;&amp; kubectl rollout pause deployment pc-deployment  -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment image updated
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment paused
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#观察更新状态</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl rollout status deploy pc-deployment -n dev　</span>
+</span></span><span style=display:flex><span>Waiting <span style=color:#66d9ef>for</span> deployment <span style=color:#e6db74>&#34;pc-deployment&#34;</span> rollout to finish<span style=color:#960050;background-color:#1e0010>:</span> <span style=color:#ae81ff>2</span> out of <span style=color:#ae81ff>4</span> new replicas have been updated...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 监控更新的过程，可以看到已经新增了一个资源，但是并未按照预期的状态去删除一个旧的资源，就是因为使用了pause暂停命令</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME                       DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES         
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9   <span style=color:#ae81ff>3</span>         <span style=color:#ae81ff>3</span>         <span style=color:#ae81ff>3</span>       <span style=color:#ae81ff>19m</span>     nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.1   
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b   <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       <span style=color:#ae81ff>14m</span>     nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.2   
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb   <span style=color:#ae81ff>2</span>         <span style=color:#ae81ff>2</span>         <span style=color:#ae81ff>2</span>       3m16s   nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.4   
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                             READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-rj8sq   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          7m33s
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-ttwgg   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          7m35s
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9-v4wvc   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          7m34s
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb-996rt   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          3m31s
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb-j2gtj   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          3m31s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 确保更新的pod没问题了，继续更新</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl rollout resume deploy pc-deployment -n dev</span>
+</span></span><span style=display:flex><span>deployment.apps/pc-deployment resumed
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看最后的更新情况</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get rs -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME                       DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES         
+</span></span><span style=display:flex><span>pc-deployment-5d89bdfbf9   <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       <span style=color:#ae81ff>21m</span>     nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.1   
+</span></span><span style=display:flex><span>pc-deployment-675d469f8b   <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>         <span style=color:#ae81ff>0</span>       <span style=color:#ae81ff>16m</span>     nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.2   
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb   <span style=color:#ae81ff>4</span>         <span style=color:#ae81ff>4</span>         <span style=color:#ae81ff>4</span>       5m11s   nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.4   
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>NAME                             READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb-7bfwh   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          37s
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb-996rt   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5m27s
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb-j2gtj   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5m27s
+</span></span><span style=display:flex><span>pc-deployment-6c9f56fcfb-rf84v   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          37s
+</span></span></code></pre></div><p><strong>删除Deployment</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 删除deployment，其下的rs和pod也将被删除</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl delete -f pc-deployment.yaml</span>
+</span></span><span style=display:flex><span>deployment.apps <span style=color:#e6db74>&#34;pc-deployment&#34;</span> deleted
+</span></span></code></pre></div><h2 id=horizontal-pod-autoscalerhpa>Horizontal Pod Autoscaler(HPA)</h2><p>在前面的课程中，我们已经可以实现通过手工执行<code>kubectl scale</code>命令实现Pod扩容或缩容，但是这显然不符合Kubernetes的定位目标&ndash;自动化、智能化。 Kubernetes期望可以实现通过监测Pod的使用情况，实现pod数量的自动调整，于是就产生了Horizontal Pod Autoscaler（HPA）这种控制器。</p><p>HPA可以获取每个Pod利用率，然后和HPA中定义的指标进行对比，同时计算出需要伸缩的具体值，最后实现Pod的数量的调整。其实HPA与之前的Deployment一样，也属于一种Kubernetes资源对象，它通过追踪分析RC控制的所有目标Pod的负载变化情况，来确定是否需要针对性地调整目标Pod的副本数，这是HPA的实现原理。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200608155858271.png?imageslim alt></p><p>接下来，我们来做一个实验</p><p><strong>1 安装metrics-server</strong></p><p>metrics-server可以用来收集集群中的资源使用情况</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 安装git</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># yum install git -y</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 获取metrics-server, 注意使用的版本</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># git clone -b v0.3.6 https://github.com/kubernetes-incubator/metrics-server</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 修改deployment, 注意修改的是镜像和初始化参数</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># cd /root/metrics-server/deploy/1.8+/</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># vim metrics-server-deployment.yaml</span>
+</span></span><span style=display:flex><span>按图中添加下面选项
+</span></span><span style=display:flex><span>hostNetwork<span style=color:#960050;background-color:#1e0010>:</span> true
+</span></span><span style=display:flex><span>image<span style=color:#960050;background-color:#1e0010>:</span> registry.cn-hangzhou.aliyuncs.com/google_containers/metrics-server-amd64:v0.3.6
+</span></span><span style=display:flex><span>args<span style=color:#960050;background-color:#1e0010>:</span>
+</span></span><span style=display:flex><span>- --kubelet-insecure-tls
+</span></span><span style=display:flex><span>- --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP
+</span></span></code></pre></div><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200608163326496.png?imageslim alt=image-20200608163326496></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 安装metrics-server</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl apply -f ./</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod运行情况</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl get pod -n kube-system</span>
+</span></span><span style=display:flex><span>metrics-server-6b976979db-2xwbj   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          90s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用kubectl top node 查看资源使用情况</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl top node</span>
+</span></span><span style=display:flex><span>NAME     CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+</span></span><span style=display:flex><span>master   <span style=color:#ae81ff>98m</span>          <span style=color:#ae81ff>4</span>%     1067Mi          <span style=color:#ae81ff>62</span>%
+</span></span><span style=display:flex><span>node1    <span style=color:#ae81ff>27m</span>          <span style=color:#ae81ff>1</span>%     727Mi           <span style=color:#ae81ff>42</span>%
+</span></span><span style=display:flex><span>node2    <span style=color:#ae81ff>34m</span>          <span style=color:#ae81ff>1</span>%     800Mi           <span style=color:#ae81ff>46</span>%
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl top pod -n kube-system</span>
+</span></span><span style=display:flex><span>NAME                              CPU(cores)   MEMORY(bytes)
+</span></span><span style=display:flex><span>coredns-6955765f44-7ptsb          <span style=color:#ae81ff>3m</span>           9Mi
+</span></span><span style=display:flex><span>coredns-6955765f44-vcwr5          <span style=color:#ae81ff>3m</span>           8Mi
+</span></span><span style=display:flex><span>etcd-master                       <span style=color:#ae81ff>14m</span>          145Mi
+</span></span><span style=display:flex><span>...
+</span></span><span style=display:flex><span><span style=color:#75715e># 至此,metrics-server安装完成</span>
+</span></span></code></pre></div><p><strong>2 准备deployment和servie</strong></p><p>为了操作简单,直接使用命令</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建deployment </span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl run nginx --image=nginx:latest --requests=cpu=100m -n dev</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建service</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl expose deployment nginx --type=NodePort --port=80 -n dev</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl get deployment,pod,svc -n dev</span>
+</span></span><span style=display:flex><span>NAME                    READY   UP-TO-DATE   AVAILABLE   AGE
+</span></span><span style=display:flex><span>deployment.apps/nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           47s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>NAME                         READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pod/nginx-7df9756ccc-bh8dr   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          47s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+</span></span><span style=display:flex><span>service/nginx   NodePort   <span style=color:#ae81ff>10.109</span>.57.248   &lt;none&gt;        <span style=color:#ae81ff>80</span><span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>31136</span>/TCP   35s
+</span></span></code></pre></div><p><strong>3 部署HPA</strong></p><p>创建pc-hpa.yaml</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>autoscaling/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>HorizontalPodAutoscaler</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pc-hpa</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>dev</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>minReplicas</span>: <span style=color:#ae81ff>1</span>  <span style=color:#75715e>#最小pod数量</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>maxReplicas</span>: <span style=color:#ae81ff>10</span> <span style=color:#75715e>#最大pod数量</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>targetCPUUtilizationPercentage</span>: <span style=color:#ae81ff>3</span> <span style=color:#75715e># CPU使用率指标</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>scaleTargetRef</span>:   <span style=color:#75715e># 指定要控制的nginx信息</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment  </span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx  </span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建hpa</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl create -f pc-hpa.yaml</span>
+</span></span><span style=display:flex><span>horizontalpodautoscaler.autoscaling/pc-hpa created
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看hpa</span>
+</span></span><span style=display:flex><span>[root@master <span style=color:#ae81ff>1.8</span>+]<span style=color:#75715e># kubectl get hpa -n dev</span>
+</span></span><span style=display:flex><span>NAME     REFERENCE          TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>0</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>1</span>          62s
+</span></span></code></pre></div><p><strong>4 测试</strong></p><p>使用压测工具对service地址<code>192.168.109.100:31136</code>进行压测，然后通过控制台查看hpa和pod的变化</p><p><code>hpa变化</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get hpa -n dev -w</span>
+</span></span><span style=display:flex><span>NAME     REFERENCE          TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>0</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>1</span>          4m11s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>0</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>1</span>          5m19s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>22</span>%/<span style=color:#ae81ff>3</span>%    <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>1</span>          6m50s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>22</span>%/<span style=color:#ae81ff>3</span>%    <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>4</span>          7m5s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>22</span>%/<span style=color:#ae81ff>3</span>%    <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>8</span>          7m21s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>6</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>8</span>          7m51s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>0</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>8</span>          9m6s
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>0</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>8</span>          <span style=color:#ae81ff>13m</span>
+</span></span><span style=display:flex><span>pc-hpa   Deployment/nginx   <span style=color:#ae81ff>0</span>%/<span style=color:#ae81ff>3</span>%     <span style=color:#ae81ff>1</span>         <span style=color:#ae81ff>10</span>        <span style=color:#ae81ff>1</span>          <span style=color:#ae81ff>14m</span>
+</span></span></code></pre></div><p><code>deployment变化</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get deployment -n dev -w</span>
+</span></span><span style=display:flex><span>NAME    READY   UP-TO-DATE   AVAILABLE   AGE
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>11m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>4</span>     <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>13m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>4</span>     <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>13m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>4</span>     <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>13m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>4</span>     <span style=color:#ae81ff>4</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>13m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>4</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>4</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>4</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>2</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>2</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>3</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>3</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>4</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>4</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>5</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>5</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>6</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>6</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>7</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>7</span>           <span style=color:#ae81ff>14m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>8</span>/<span style=color:#ae81ff>8</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>8</span>           <span style=color:#ae81ff>15m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>8</span>/<span style=color:#ae81ff>1</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>8</span>           <span style=color:#ae81ff>20m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>8</span>/<span style=color:#ae81ff>1</span>     <span style=color:#ae81ff>8</span>            <span style=color:#ae81ff>8</span>           <span style=color:#ae81ff>20m</span>
+</span></span><span style=display:flex><span>nginx   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     <span style=color:#ae81ff>1</span>            <span style=color:#ae81ff>1</span>           <span style=color:#ae81ff>20m</span>
+</span></span></code></pre></div><p><code>pod变化</code></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev -w</span>
+</span></span><span style=display:flex><span>NAME                     READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>nginx-7df9756ccc-bh8dr   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          <span style=color:#ae81ff>11m</span>
+</span></span><span style=display:flex><span>nginx-7df9756ccc-cpgrv   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-8zhwk   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-rr9bn   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-cpgrv   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-8zhwk   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-rr9bn   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-m9gsj   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-g56qb   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-sl9c6   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-fgst7   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-g56qb   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-m9gsj   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-sl9c6   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-fgst7   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-8zhwk   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          19s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-rr9bn   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          30s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-m9gsj   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          21s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-cpgrv   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          47s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-sl9c6   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          33s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-g56qb   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          48s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-fgst7   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          66s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-fgst7   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          6m50s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-8zhwk   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          7m5s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-cpgrv   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          7m5s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-g56qb   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          6m50s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-rr9bn   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          7m5s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-m9gsj   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          6m50s
+</span></span><span style=display:flex><span>nginx-7df9756ccc-sl9c6   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Terminating         <span style=color:#ae81ff>0</span>          6m50s
+</span></span></code></pre></div><h2 id=daemonsetds>DaemonSet(DS)</h2><p>DaemonSet类型的控制器可以保证在集群中的每一台（或指定）节点上都运行一个副本。一般适用于日志收集、节点监控等场景。也就是说，如果一个Pod提供的功能是节点级别的（每个节点都需要且只需要一个），那么这类Pod就适合使用DaemonSet类型的控制器创建。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200612010223537.png?imageslim alt></p><p>DaemonSet控制器的特点：</p><ul><li>每当向集群中添加一个节点时，指定的 Pod 副本也将添加到该节点上</li><li>当节点从集群中移除时，Pod 也就被垃圾回收了</li></ul><p>下面先来看下DaemonSet的资源清单文件</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span> <span style=color:#75715e># 版本号</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>DaemonSet</span> <span style=color:#75715e># 类型       </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>: <span style=color:#75715e># 元数据</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#75715e># rs名称 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#75715e># 所属命名空间 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>: <span style=color:#75715e>#标签</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>controller</span>: <span style=color:#ae81ff>daemonset</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: <span style=color:#75715e># 详情描述</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>revisionHistoryLimit</span>: <span style=color:#ae81ff>3</span> <span style=color:#75715e># 保留历史版本</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>updateStrategy</span>: <span style=color:#75715e># 更新策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>type</span>: <span style=color:#ae81ff>RollingUpdate</span> <span style=color:#75715e># 滚动更新策略</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>rollingUpdate</span>: <span style=color:#75715e># 滚动更新</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>maxUnavailable</span>: <span style=color:#ae81ff>1</span> <span style=color:#75715e># 最大不可用状态的 Pod 的最大值，可以为百分比，也可以为整数</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>: <span style=color:#75715e># 选择器，通过它指定该控制器管理哪些pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:      <span style=color:#75715e># Labels匹配规则</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchExpressions</span>: <span style=color:#75715e># Expressions匹配规则</span>
+</span></span><span style=display:flex><span>      - {<span style=color:#f92672>key: app, operator: In, values</span>: [<span style=color:#ae81ff>nginx-pod]}</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>: <span style=color:#75715e># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.17.1</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>containerPort</span>: <span style=color:#ae81ff>80</span>
+</span></span></code></pre></div><p>创建pc-daemonset.yaml，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>apps/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>DaemonSet      </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pc-daemonset</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>dev</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: 
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>nginx-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:1.17.1</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建daemonset</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl create -f  pc-daemonset.yaml</span>
+</span></span><span style=display:flex><span>daemonset.apps/pc-daemonset created
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看daemonset</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e>#  kubectl get ds -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME        DESIRED  CURRENT  READY  UP-TO-DATE  AVAILABLE   AGE   CONTAINERS   IMAGES         
+</span></span><span style=display:flex><span>pc-daemonset   <span style=color:#ae81ff>2</span>        <span style=color:#ae81ff>2</span>        <span style=color:#ae81ff>2</span>      <span style=color:#ae81ff>2</span>           <span style=color:#ae81ff>2</span>        24s   nginx        nginx<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.17</span>.1   
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod,发现在每个Node上都运行一个pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e>#  kubectl get pods -n dev -o wide</span>
+</span></span><span style=display:flex><span>NAME                 READY   STATUS    RESTARTS   AGE   IP            NODE    
+</span></span><span style=display:flex><span>pc-daemonset-9bck8   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          37s   <span style=color:#ae81ff>10.244</span>.1.43   node1     
+</span></span><span style=display:flex><span>pc-daemonset-k224w   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          37s   <span style=color:#ae81ff>10.244</span>.2.74   node2      
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除daemonset</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl delete -f pc-daemonset.yaml</span>
+</span></span><span style=display:flex><span>daemonset.apps <span style=color:#e6db74>&#34;pc-daemonset&#34;</span> deleted
+</span></span></code></pre></div><h2 id=job>Job</h2><p>Job，主要用于负责**批量处理(一次要处理指定数量任务)<strong>短暂的</strong>一次性(每个任务仅运行一次就结束)**任务。Job特点如下：</p><ul><li>当Job创建的pod执行成功结束时，Job将记录成功结束的pod数量</li><li>当成功结束的pod达到指定的数量时，Job将完成执行</li></ul><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200618213054113.png?imageslim alt></p><p>Job的资源清单文件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>batch/v1</span> <span style=color:#75715e># 版本号</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Job</span> <span style=color:#75715e># 类型       </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>: <span style=color:#75715e># 元数据</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#75715e># rs名称 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#75715e># 所属命名空间 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>: <span style=color:#75715e>#标签</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>controller</span>: <span style=color:#ae81ff>job</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: <span style=color:#75715e># 详情描述</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>completions: 1 # 指定job需要成功运行Pods的次数。默认值</span>: <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>parallelism: 1 # 指定job在任一时刻应该并发运行Pods的数量。默认值</span>: <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>activeDeadlineSeconds</span>: <span style=color:#ae81ff>30</span> <span style=color:#75715e># 指定job可运行的时间期限，超过时间还未结束，系统将会尝试进行终止。</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>backoffLimit</span>: <span style=color:#ae81ff>6</span> <span style=color:#75715e># 指定job失败后进行重试的次数。默认是6</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>manualSelector</span>: <span style=color:#66d9ef>true</span> <span style=color:#75715e># 是否可以使用selector选择器选择pod，默认是false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>: <span style=color:#75715e># 选择器，通过它指定该控制器管理哪些pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:      <span style=color:#75715e># Labels匹配规则</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>counter-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchExpressions</span>: <span style=color:#75715e># Expressions匹配规则</span>
+</span></span><span style=display:flex><span>      - {<span style=color:#f92672>key: app, operator: In, values</span>: [<span style=color:#ae81ff>counter-pod]}</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>: <span style=color:#75715e># 模板，当副本数量不足时，会根据下面的模板创建pod副本</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>counter-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>restartPolicy</span>: <span style=color:#ae81ff>Never</span> <span style=color:#75715e># 重启策略只能设置为Never或者OnFailure</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>counter</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>busybox:1.30</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;bin/sh&#34;</span>,<span style=color:#e6db74>&#34;-c&#34;</span>,<span style=color:#e6db74>&#34;for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 2;done&#34;</span>]
+</span></span></code></pre></div><p>关于重启策略设置的说明：
+如果指定为OnFailure，则job会在pod出现故障时重启容器，而不是创建pod，failed次数不变
+如果指定为Never，则job会在pod出现故障时创建新的pod，并且故障pod不会消失，也不会重启，failed次数加1
+如果指定为Always的话，就意味着一直重启，意味着job任务会重复去执行了，当然不对，所以不能设置为Always</p><p>创建pc-job.yaml，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>batch/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Job      </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pc-job</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>dev</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>manualSelector</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>counter-pod</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app</span>: <span style=color:#ae81ff>counter-pod</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>restartPolicy</span>: <span style=color:#ae81ff>Never</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>counter</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>busybox:1.30</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;bin/sh&#34;</span>,<span style=color:#e6db74>&#34;-c&#34;</span>,<span style=color:#e6db74>&#34;for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 3;done&#34;</span>]
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建job</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl create -f pc-job.yaml</span>
+</span></span><span style=display:flex><span>job.batch/pc-job created
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看job</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get job -n dev -o wide  -w</span>
+</span></span><span style=display:flex><span>NAME     COMPLETIONS   DURATION   AGE   CONTAINERS   IMAGES         SELECTOR
+</span></span><span style=display:flex><span>pc-job   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>           21s        21s   counter      busybox<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.30</span>   app=counter-pod
+</span></span><span style=display:flex><span>pc-job   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>           31s        79s   counter      busybox<span style=color:#960050;background-color:#1e0010>:</span><span style=color:#ae81ff>1.30</span>   app=counter-pod
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 通过观察pod状态可以看到，pod在运行完毕任务后，就会变成Completed状态</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev -w</span>
+</span></span><span style=display:flex><span>NAME           READY   STATUS     RESTARTS      AGE
+</span></span><span style=display:flex><span>pc-job-rxg96   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running     <span style=color:#ae81ff>0</span>            29s
+</span></span><span style=display:flex><span>pc-job-rxg96   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed   <span style=color:#ae81ff>0</span>            33s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 接下来，调整下pod运行的总数量和并行数量 即：在spec下设置下面两个选项</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#  completions: 6 # 指定job需要成功运行Pods的次数为6</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#  parallelism: 3 # 指定job并发运行Pods的数量为3</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#  然后重新运行job，观察效果，此时会发现，job会每次运行3个pod，总共执行了6个pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev -w</span>
+</span></span><span style=display:flex><span>NAME           READY   STATUS    RESTARTS   AGE
+</span></span><span style=display:flex><span>pc-job-684ft   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5s
+</span></span><span style=display:flex><span>pc-job-jhj49   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5s
+</span></span><span style=display:flex><span>pc-job-pfcvh   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running   <span style=color:#ae81ff>0</span>          5s
+</span></span><span style=display:flex><span>pc-job-684ft   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed   <span style=color:#ae81ff>0</span>          11s
+</span></span><span style=display:flex><span>pc-job-v7rhr   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending     <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-v7rhr   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending     <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-v7rhr   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-jhj49   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed           <span style=color:#ae81ff>0</span>          11s
+</span></span><span style=display:flex><span>pc-job-fhwf7   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-fhwf7   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-pfcvh   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed           <span style=color:#ae81ff>0</span>          11s
+</span></span><span style=display:flex><span>pc-job-5vg2j   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-fhwf7   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-5vg2j   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Pending             <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-5vg2j   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     ContainerCreating   <span style=color:#ae81ff>0</span>          0s
+</span></span><span style=display:flex><span>pc-job-fhwf7   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          2s
+</span></span><span style=display:flex><span>pc-job-v7rhr   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          2s
+</span></span><span style=display:flex><span>pc-job-5vg2j   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running             <span style=color:#ae81ff>0</span>          3s
+</span></span><span style=display:flex><span>pc-job-fhwf7   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed           <span style=color:#ae81ff>0</span>          12s
+</span></span><span style=display:flex><span>pc-job-v7rhr   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed           <span style=color:#ae81ff>0</span>          12s
+</span></span><span style=display:flex><span>pc-job-5vg2j   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed           <span style=color:#ae81ff>0</span>          12s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除job</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl delete -f pc-job.yaml</span>
+</span></span><span style=display:flex><span>job.batch <span style=color:#e6db74>&#34;pc-job&#34;</span> deleted
+</span></span></code></pre></div><h2 id=cronjobcj>CronJob(CJ)</h2><p>CronJob控制器以Job控制器资源为其管控对象，并借助它管理pod资源对象，Job控制器定义的作业任务在其控制器资源创建之后便会立即执行，但CronJob可以以类似于Linux操作系统的周期性任务作业计划的方式控制其运行<strong>时间点</strong>及<strong>重复运行</strong>的方式。也就是说，<strong>CronJob可以在特定的时间点(反复的)去运行job任务</strong>。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/image-20200618213149531.png?imageslim alt></p><p>CronJob的资源清单文件：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>batch/v1beta1</span> <span style=color:#75715e># 版本号</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>CronJob</span> <span style=color:#75715e># 类型       </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>: <span style=color:#75715e># 元数据</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#75715e># rs名称 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#75715e># 所属命名空间 </span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>: <span style=color:#75715e>#标签</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>controller</span>: <span style=color:#ae81ff>cronjob</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>: <span style=color:#75715e># 详情描述</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>schedule</span>: <span style=color:#75715e># cron格式的作业调度运行时间点,用于控制任务在什么时间执行</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>concurrencyPolicy</span>: <span style=color:#75715e># 并发执行策略，用于定义前一次作业运行尚未完成时是否以及如何运行后一次的作业</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>failedJobHistoryLimit</span>: <span style=color:#75715e># 为失败的任务执行保留的历史记录数，默认为1</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>successfulJobHistoryLimit</span>: <span style=color:#75715e># 为成功的任务执行保留的历史记录数，默认为3</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>startingDeadlineSeconds</span>: <span style=color:#75715e># 启动作业错误的超时时长</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>jobTemplate</span>: <span style=color:#75715e># job控制器模板，用于为cronjob控制器生成job对象;下面其实就是job的定义</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>completions</span>: <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>parallelism</span>: <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>activeDeadlineSeconds</span>: <span style=color:#ae81ff>30</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>backoffLimit</span>: <span style=color:#ae81ff>6</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>manualSelector</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>app</span>: <span style=color:#ae81ff>counter-pod</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>matchExpressions</span>: <span style=color:#ae81ff>规则</span>
+</span></span><span style=display:flex><span>          - {<span style=color:#f92672>key: app, operator: In, values</span>: [<span style=color:#ae81ff>counter-pod]}</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>app</span>: <span style=color:#ae81ff>counter-pod</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>restartPolicy</span>: <span style=color:#ae81ff>Never </span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>counter</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>image</span>: <span style=color:#ae81ff>busybox:1.30</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;bin/sh&#34;</span>,<span style=color:#e6db74>&#34;-c&#34;</span>,<span style=color:#e6db74>&#34;for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 20;done&#34;</span>]
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=display:flex><span>需要重点解释的几个选项：
+</span></span><span style=display:flex><span>schedule: cron表达式，用于指定任务的执行时间
+</span></span><span style=display:flex><span>	<span style=font-style:italic>*/1    *</span>      <span style=font-style:italic>*    *</span>     *
+</span></span><span style=display:flex><span>	&lt;<span style=color:#f92672>分钟</span>&gt; &lt;<span style=color:#f92672>小时</span>&gt; &lt;<span style=color:#f92672>日</span>&gt; &lt;<span style=color:#f92672>月份</span>&gt; &lt;<span style=color:#f92672>星期</span>&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    分钟 值从 0 到 59.
+</span></span><span style=display:flex><span>    小时 值从 0 到 23.
+</span></span><span style=display:flex><span>    日 值从 1 到 31.
+</span></span><span style=display:flex><span>    月 值从 1 到 12.
+</span></span><span style=display:flex><span>    星期 值从 0 到 6, 0 代表星期日
+</span></span><span style=display:flex><span>    多个时间可以用逗号隔开； 范围可以用连字符给出；*可以作为通配符； /表示每...
+</span></span><span style=display:flex><span>concurrencyPolicy:
+</span></span><span style=display:flex><span>	Allow:   允许Jobs并发运行(默认)
+</span></span><span style=display:flex><span>	Forbid:  禁止并发运行，如果上一次运行尚未完成，则跳过下一次运行
+</span></span><span style=display:flex><span>	Replace: 替换，取消当前正在运行的作业并用新作业替换它
+</span></span></code></pre></div><p>创建pc-cronjob.yaml，内容如下：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>batch/v1beta1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>CronJob</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>pc-cronjob</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>dev</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>controller</span>: <span style=color:#ae81ff>cronjob</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>schedule</span>: <span style=color:#e6db74>&#34;*/1 * * * *&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>jobTemplate</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>restartPolicy</span>: <span style=color:#ae81ff>Never</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>counter</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>image</span>: <span style=color:#ae81ff>busybox:1.30</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;bin/sh&#34;</span>,<span style=color:#e6db74>&#34;-c&#34;</span>,<span style=color:#e6db74>&#34;for i in 9 8 7 6 5 4 3 2 1; do echo $i;sleep 3;done&#34;</span>]
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建cronjob</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl create -f pc-cronjob.yaml</span>
+</span></span><span style=display:flex><span>cronjob.batch/pc-cronjob created
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看cronjob</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get cronjobs -n dev</span>
+</span></span><span style=display:flex><span>NAME         SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+</span></span><span style=display:flex><span>pc-cronjob   */<span style=color:#ae81ff>1</span> * * * *   False     <span style=color:#ae81ff>0</span>        &lt;none&gt;          6s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看job</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get jobs -n dev</span>
+</span></span><span style=display:flex><span>NAME                    COMPLETIONS   DURATION   AGE
+</span></span><span style=display:flex><span>pc-cronjob-<span style=color:#ae81ff>1592587800</span>   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>           28s        3m26s
+</span></span><span style=display:flex><span>pc-cronjob-<span style=color:#ae81ff>1592587860</span>   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>           28s        2m26s
+</span></span><span style=display:flex><span>pc-cronjob-<span style=color:#ae81ff>1592587920</span>   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>           28s        86s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看pod</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl get pods -n dev</span>
+</span></span><span style=display:flex><span>pc-cronjob-<span style=color:#ae81ff>1592587800</span>-x4tsm   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed   <span style=color:#ae81ff>0</span>          2m24s
+</span></span><span style=display:flex><span>pc-cronjob-<span style=color:#ae81ff>1592587860</span>-r5gv4   <span style=color:#ae81ff>0</span>/<span style=color:#ae81ff>1</span>     Completed   <span style=color:#ae81ff>0</span>          84s
+</span></span><span style=display:flex><span>pc-cronjob-<span style=color:#ae81ff>1592587920</span>-9dxxq   <span style=color:#ae81ff>1</span>/<span style=color:#ae81ff>1</span>     Running     <span style=color:#ae81ff>0</span>          24s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除cronjob</span>
+</span></span><span style=display:flex><span>[root@master ~]<span style=color:#75715e># kubectl  delete -f pc-cronjob.yaml</span>
+</span></span><span style=display:flex><span>cronjob.batch <span style=color:#e6db74>&#34;pc-cronjob&#34;</span> deleted
+</span></span></code></pre></div><h2 id=参考>参考</h2><ol><li>以上笔记来自于黑马视频课程整理.</li><li>视频入口：<a href=https://www.bilibili.com/video/BV1cK4y1L7Am target=_blank>https://www.bilibili.com/video/BV1cK4y1L7Am</a></li></ol><h2 id=关于作者>关于作者</h2><p>我的博客：https://yezihack.github.io</p><p>欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
+<img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim alt=空树之空></p><hr><div class=footer><a class=previous-post href="https://yezihack.github.io/posts/k8s-pod/?ref=footer"><span style=font-weight:700>« Previous</span><br>第五章 Kubernetes Pod 介绍</a><div class=next-post><a href="https://yezihack.github.io/posts/k8s-service/?ref=footer"><span style=font-weight:700>Next »</span><br>第七章 Kubernetes Service 介绍</a></div></div><div class=comments><div id=remark42></div><script>themeFromLS=localStorage.getItem("theme"),themeFromHugo=document.body.classList.contains("dark-theme")?"dark":"light",currentTheme=themeFromLS||themeFromHugo;var remark_config={host:"https://yourhost.com",site_id:"your_site_id",theme:currentTheme,max_shown_comments:100}</script><script>!function(e,t){for(s=0;s<e.length;s++){var s,n=t.createElement("script"),o=".js",i=t.head||t.body;"noModule"in n?(n.type="module",o=".mjs"):n.async=!0,n.defer=!0,n.src=remark_config.host+"/web/"+e[s]+o,i.appendChild(n)}}(remark_config.components||["embed"],document)</script></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#pod控制器介绍>Pod控制器介绍</a></li><li><a href=#replicasetrs>ReplicaSet(RS)</a></li><li><a href=#deploymentdeploy>Deployment(Deploy)</a></li><li><a href=#horizontal-pod-autoscalerhpa>Horizontal Pod Autoscaler(HPA)</a></li><li><a href=#daemonsetds>DaemonSet(DS)</a></li><li><a href=#job>Job</a></li><li><a href=#cronjobcj>CronJob(CJ)</a></li><li><a href=#参考>参考</a></li><li><a href=#关于作者>关于作者</a></li></ul></nav></div></div></div></body></html>

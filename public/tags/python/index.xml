@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>python on</title><link>https://yezihack.github.io/tags/python/</link><description>Recent content in python on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Jul 2020 11:14:29 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>Python Window10 安装</title><link>https://yezihack.github.io/posts/python-window-install/</link><pubDate>Mon, 27 Jul 2020 11:14:29 +0800</pubDate><guid>https://yezihack.github.io/posts/python-window-install/</guid><description>window 10环境下安装 python3.8 版本. 采用国内镜像, 国内官方下载实在太慢, 无法忍受.
+下载安装 推荐华为镜像下载.
+https://mirrors.huaweicloud.com/python/3.8.0/
+选择 window 64 位
+下载后,双击文件
+python 安装的目录
+勾选加入环境变量. 如果忘记勾选需要配置环境变量.
+右击我的电脑-&amp;gt;高级系统设置-&amp;gt;环境变量-&amp;gt;系统变量(最下面的框)-&amp;gt;找到path变量名称-&amp;gt;点击编辑-&amp;gt;点击新建-&amp;gt;把 python的目录加入即可.(即安装时的目录) 配置 pip pip 是安装 python 模块的工具.
+还是那样, 默认下载源非常慢, 配置国内源.
+window 10 找到 C:\Users\&amp;lt;yourname&amp;gt;\AppData\Roaming\pip 也许你找不到这个目录, &amp;lt;yourname&amp;gt;是你的计算机名称, AppData 是一个隐藏目录, 点击输入栏输入AppData进入, 然后找到Roaming, 如果没有找到pip目录,请新建一个pip目录, 然后在pip目录下新建一个pip.ini文件, 填下以下内容即可.
+[global] index-url = https://mirrors.huaweicloud.com/repository/pypi/simple trusted-host = mirrors.huaweicloud.com timeout = 120 更新 pip 打开你的cmd工具, 输入 python -m pip install --upgrade pip即可更新
+划线部分显示采用了刚才配置的源信息.说明没有走官网的源.这样非常快的更新完了. 如果你的界面没有动, 回车一下即可.(window常见的毛病)
+如果镜像不好用,可以临时指定镜像, 如安装 requests 库</description></item></channel></rss>

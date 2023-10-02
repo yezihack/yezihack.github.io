@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>优化 on</title><link>https://yezihack.github.io/tags/%E4%BC%98%E5%8C%96/</link><description>Recent content in 优化 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 16 Oct 2020 10:38:58 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E4%BC%98%E5%8C%96/index.xml" rel="self" type="application/rss+xml"/><item><title>rsyslog 占用内存过高</title><link>https://yezihack.github.io/posts/fix-rsyslog/</link><pubDate>Fri, 16 Oct 2020 10:38:58 +0800</pubDate><guid>https://yezihack.github.io/posts/fix-rsyslog/</guid><description>排查问题 使用top 再按大写M， 对内存采用降序显示，一目了然看到谁占用内存最高。
+定位到rsyslogd进程占用内存25.7%，非常可怕，需要急需解决掉它。
+什么是rsyslog: 系统提供的多线性日志系统，参考: https://www.rsyslog.com/
+解决问题 rsyslogd是它的守护进程，可以通过systemctl status rsyslog 查看运行状态
+红色显示错误信息。
+使用journalctl --verify 检查系统日志卷文件损坏情况
+如果检查出来有红色的文件，则直接删除即可。
+删除/var/lib/rsyslog/imjournal.state 文件
+重启rsyslogd进程， systemctl restart rsyslog
+然后使用 top 查看，内存占用率是否没有啦。
+避免再次发生 修改/etc/rsyslog.conf 文件
+最后行添加2行代码
+$imjournalRatelimitInterval 0 $imjournalRatelimitBurst 0 重启服务:systemctl restart rsyslog
+关闭 journal 压缩配置
+vim /etc/systemd/journald.conf # 找到 #Compress=yes 修改成 no Compress=no # 重启服务 systemctl restart systemd-journald</description></item><item><title>Top</title><link>https://yezihack.github.io/posts/top/</link><pubDate>Mon, 22 Jun 2020 10:21:47 +0800</pubDate><guid>https://yezihack.github.io/posts/top/</guid><description>top 是 linux 最常用的命令, 包括很多少直观的信息, 有利于我们对系统运行状态的把握.
+top 使用 top 系统自带命令,可以直接使用.
+top top 详情 a. 如图编号(1)
+top - 10:34:07 up 16 min, 1 user, load average: 0.00, 0.01, 0.05 10:34:07 当前时间 up 16 min 系统运行时间, 如 16 分钟 1 user 当前登陆用户数 load average: 0.00, 0.01, 0.05 系统负载. 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。 b. 如图编号(2)
+Tasks: 206 total, 1 running, 205 sleeping, 0 stopped, 0 zombie Tasks: 206 total 进程总数 1 running 正在运行的进程数 205 sleeping 睡眠进程数 0 stopped 停止进程数 0 zombie 僵尸进程数 c.</description></item><item><title>MySQL 性能优化</title><link>https://yezihack.github.io/posts/mysql-optimize/</link><pubDate>Fri, 19 Jun 2020 20:23:17 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-optimize/</guid><description>MySQL 并发参数调整 max_connections 参数 该参数设置mysql连接最大数量. max_connections 默认151个连接.
+show variables like &amp;#39;max_connections&amp;#39; 服务器性能优时可以调节这个参数, 范围: 500~1000
+注 当连接过大时, 查看 Connection_errors_max_connections 参数是否大于0 , 表示连接过多, 错误连接
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; back_log 参数 积压栈的大小.
+也就是说当 mysql 连接超过 max_connections 连接数时, 如果back_log大小为0时, mysql将授予连接资源. 如果back_log大于零时,则接受多余的请求, 以等待某一连接释放.而等待的连接数大于back_log数时则也将不授予连接资源.
+back_log默认大小: 50 + (max_connections/5), 最大可设置为900
+show variables like &amp;#39;back_log&amp;#39; table_open_cache 该参数用来控制所有SQL语句执行线程可打开表缓存的数量.
+最大数量设定: max_connections * N
+show variables like &amp;#39;table_open_cache&amp;#39; thread_cache_size 该参数可控制 mysql缓存客户服务线程的数量, 相当于mysql的线程池, 也备重用.
+show variables like &amp;#39;thread_cache_size&amp;#39; innodb_lock_wait_timeout 该参数是用来设置innoDB事务等待行锁的时间, 默认值:50ms. 如果并发要求高时: 可以设置小一点, 以避占用时间过长.</description></item></channel></rss>

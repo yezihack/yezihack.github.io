@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>bench on</title><link>https://yezihack.github.io/tags/bench/</link><description>Recent content in bench on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 09 Jun 2020 11:21:11 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/bench/index.xml" rel="self" type="application/rss+xml"/><item><title>pprof火焰图分析利器之压测</title><link>https://yezihack.github.io/posts/benchmark/</link><pubDate>Tue, 09 Jun 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/benchmark/</guid><description>Benchmark 新建测试文件 util.go文件
+func GetMd5V(s string) string {
+h := md5.New()
+h.Write([]byte(s))
+return hex.EncodeToString(h.Sum(nil))
+}
+func SumMd5(s string) string {
+data := []byte(s)
+return fmt.Sprintf(&amp;#34;%x&amp;#34;, md5.Sum(data))
+} 以_test结尾的文件, 如util_test.go
+func BenchmarkSumMd5(b *testing.B) {
+for i := 0; i &amp;lt; b.N; i++ {
+SumMd5(&amp;#34;1&amp;#34;)
+}
+}
+func BenchmarkGetMd5V(b *testing.B) {
+for i := 0; i &amp;lt; b.N; i++ {
+GetMd5V(&amp;#34;1&amp;#34;)
+}
+} 运行Benchmark函数 go test -bench=&amp;#34;.&amp;#34; -benchmem 输出结果 BenchmarkSumMd5-8 1719777 847 ns/op 64 B/op 3 allocs/op
+BenchmarkGetMd5V-8 1861362 644 ns/op 184 B/op 5 allocs/op
+PASS
+ok openapi/app/util 4.</description></item></channel></rss>

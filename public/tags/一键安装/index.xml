@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>一键安装 on</title><link>https://yezihack.github.io/tags/%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85/</link><description>Recent content in 一键安装 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 22 Oct 2020 14:32:37 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85/index.xml" rel="self" type="application/rss+xml"/><item><title>mysqld_export 一键安装</title><link>https://yezihack.github.io/posts/onekey-mysqld-exporter/</link><pubDate>Thu, 22 Oct 2020 14:32:37 +0800</pubDate><guid>https://yezihack.github.io/posts/onekey-mysqld-exporter/</guid><description>仅适用 CentOS 7
+mysqld_export 安装 prometheus 监听 mysql 服务
+一键安装
+curl -sSL http://s1.sgfoot.com/sh/mysql_exporter.sh | sudo bash 验证 # 验证进程是否启动 netstat -nplt |grep mysqld_exporter # 验证是否可以获取 metrics curl http://localhost:9104/metrics 配置nginx安全访问 如果涉及到外网访问则需要配置密码访问
+参考：nginx 添加权限验证
+htpasswd -bc /etc/nginx/htpasswd.users sgfoot sgfoot.pass # sgfoot 是帐号名 # sgfoot.pass 是密码 nginx 的vhost配置 mysqld_exporter.conf
+server { listen 80; server_name mysqld_exporter.io; location / { auth_basic &amp;#34;Prometheus&amp;#34;; auth_basic_user_file /etc/nginx/htpasswd.users;# 验证文件 proxy_pass http://127.0.0.1:9104; } } 添加 prometheus 节点 配置 host</description></item><item><title>node_export 一键安装</title><link>https://yezihack.github.io/posts/onekey-node_export/</link><pubDate>Thu, 15 Oct 2020 16:49:55 +0800</pubDate><guid>https://yezihack.github.io/posts/onekey-node_export/</guid><description>仅适合用 CentOS 7
+node_export 安装 linux 服务器信息等资源收集安装包
+一键安装
+curl -sSL http://s1.sgfoot.com/sh/node_exporter.sh |sh 验证 netstat -nplt |grep node_exporter 配置nginx安全访问 如果涉及到外网访问则需要配置密码访问
+参考：nginx 添加权限验证
+htpasswd -bc /etc/nginx/htpasswd.users sgfoot sgfoot.pass # sgfoot 是帐号名 # sgfoot.pass 是密码 nginx 的vhost配置 node_exporter.conf
+server { listen 80; server_name node_exporter.io; location / { auth_basic &amp;#34;Prometheus&amp;#34;; auth_basic_user_file /etc/nginx/htpasswd.users;# 验证文件 proxy_pass http://127.0.0.1:9100; } } 添加 prometheus 节点 配置 host
+vim /etc/hosts 127.0.0.1 mysqld_exporter.io vim /data/local/prometheus/prometheus.yml 在 node_exporter.targets 添加 host:port
+scrape_configs: - job_name: &amp;#39;node_exporter&amp;#39; static_configs: - targets: [&amp;#39;sgfoot.</description></item></channel></rss>
