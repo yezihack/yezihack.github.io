@@ -38,12 +38,32 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-      - name: Copy Commit
-        uses: jeffreyc/copy-commit-to-another-repo@v1.0.0
+      - name: Configure Git
+        run: |
+          git config --global user.email "freeit@126.com"
+          git config --global user.name "NullTree"
+
+      # - name: Copy Commit
+      #   uses: jeffreyc/copy-commit-to-another-repo@v1.0.0
+      #   env:
+      #     PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      #   with:
+      #     destination: 'yezihack/yezihack.github.io'
+      #     branch: 'pages-poison'
+
+      - name: Create Commit for Include Test
+        run: |
+          echo "include-1" > ${GITHUB_SHA}-include-1
+          echo "include-2" > ${GITHUB_SHA}-include-2
+          echo "include-3" > ${GITHUB_SHA}-include-3
+          git add ${GITHUB_SHA}-include-1 ${GITHUB_SHA}-include-2 ${GITHUB_SHA}-include-3
+          git commit -m "test include"
+
+      - name: Test Copy Commit with Include
+        uses: ./
         env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          include: 'hello,world?'
-          exclude: '"world,"'
+          PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        with:          
           destination: 'yezihack/yezihack.github.io'
           branch: 'pages-poison'
+          include: "${{ github.sha }}-include-1,${{ github.sha }}-include-2"
