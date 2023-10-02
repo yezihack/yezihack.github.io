@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PATH on 空树之空</title>
+    <link>https://yezihack.github.io/tags/path/</link>
+    <description>Recent content in PATH on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 16 Nov 2020 17:51:10 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/path/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>linux 制作绿色安装包</title>
+      <link>https://yezihack.github.io/posts/make-linux-green-soft/</link>
+      <pubDate>Mon, 16 Nov 2020 17:51:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/make-linux-green-soft/</guid>
+      <description>绿色安装包的概念来自于 win 的概念, 也就是说无需安装即可使用软件. 即为绿色安装包. 在 linux 为了方便, 我们也需要制作绿色安装包, 方便相同系统之间的 copy. 即高效又好用. 何乐不为.
+你将了解到 LD_LIBRARY_PATH 的概念 ldd 是什么东西 如何制作绿色安装包 安装 mediainfo 在 CentOS7 192.168.1. 100 机器上操作.
+yum -y install mediainfo 制作ldd打包脚本 本脚本用于将 mediainfo 所依赖的动态库或依赖文件都复制出来
+文件名:pack.sh
+#!/bin/bash set +x # 需要打包的命令全路径 file_path=$1 # 需要复制的目录 target_dir=$2 # check file path if [ ! -f $file_path ];then echo &amp;#34;$file_path is not file&amp;#34; exit 0 fi # 判断目录是否为空 if [ -z $target_dir ]; then echo &amp;#34;target_dir is null&amp;#34; exit 0 fi # 目录不存在,自动创建 if [ !</description>
+    </item>
+    
+  </channel>
+</rss>

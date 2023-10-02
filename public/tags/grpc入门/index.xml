@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>grpc入门 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/grpc%E5%85%A5%E9%97%A8/</link>
+    <description>Recent content in grpc入门 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 21 Oct 2020 14:20:48 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/grpc%E5%85%A5%E9%97%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go 实践教程-gRPC-流实例(八)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-stream-simple/</link>
+      <pubDate>Wed, 21 Oct 2020 14:20:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-stream-simple/</guid>
+      <description>你将会学到
+一个完整的gRPC流实例，包括单向流与双向流的操作 如何实现gRPC流服务端代码 如何实现gRPC流客户端代码 准备 新建一个文件夹 go-grpc-simple-stream 在go-grpc-simple文件夹下建立三个目录: client, proto,server 使用 go mod 管理代码 在 go-grpc-simple-stream 目录下执行 go mod init go-grpc-simple-stream 编写 proto 文件 在 go-grpc-simple-stream/proto 目录下新建 hello.proto 文件
+syntax = &amp;#34;proto3&amp;#34;; package hello; service HelloService { // 定义一个服务端推送客户的单向流 rpc ServerToClient(StreamRequest) returns (stream StreamResponse){}; //　定义一个客户端推送服务端的单向流 rpc ClientToServer(stream StreamRequest) returns (StreamResponse){}; // 定义一个服务端与客户端的双向流 rpc AllStream(stream StreamRequest) returns (stream StreamResponse){}; } // stream 请求结构 message StreamRequest { string data = 1; } // stream 响应结构 message StreamResponse { string data = 1; } 生成 pb go 代码 在 go-grpc-simple-stream/proto 目录下新建 gen.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-简单实例(七)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-simple/</link>
+      <pubDate>Wed, 21 Oct 2020 14:20:39 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-simple/</guid>
+      <description>你将会学到
+一个完整的gRPC实例 如何实现gRPC服务端代码 如何实现gRPC客户端代码 准备 新建一个文件夹 go-grpc-simple 在go-grpc-simple文件夹下建立三个目录: client, proto,server 使用 go mod 管理代码 在 go-grpc-simple 目录下执行 go mod init grpc-simple 编写 proto 文件 在 go-grpc-simple/proto 目录下新建 hello.proto 文件
+// 选择 proto3 语法 syntax = &amp;#34;proto3&amp;#34;; // 定义一个包名 package hello; // 定义一个 service 服务，相当于 GO 接口定义 service HelloService { // 以 rpc 开头，定义未实现的方法名称。 必须要有一个请求 message 和响应 message // rpc, returns 都是关键字 rpc Hello(StringRequest) returns (StringResponse){}; } // message 相当于一个结构体，里面定义字段属性， 先类型后变量名，然后序列号。 // protoful 编码是通过成员的唯一编号来绑定对应的数据。 // 定义一个请求结构体 message StringRequest { string value = 1; } // 定义一个响应结构体 message StringResponse { string result = 1; } 生成 pb go 代码 在 go-grpc-simple/proto 目录下新建 gen.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-Protobuf(六)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-protobuf/</link>
+      <pubDate>Wed, 21 Oct 2020 14:20:32 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-protobuf/</guid>
+      <description>Protobuf 是 Protobuf Buffers 的简称，它是 Google 公司开发的一种数据描述语言，并于2008年开源。
+可用作为设计安全的跨语言 RPC 接口的基础工具。
+目前 Protobuf 已经发展到第3版本，即 syntax = &amp;quot;proto3&amp;quot;; 你将会学到
+如何编写 protobuf 文件 如何通过protoc工具生成 go 代码 编写 protobuf 文件 先定义语法版本 再定义package 定义一个 service 定义一组 request，response 的 message 创建 hello.proto 文件
+第一行结尾需要写上分号; service 相当于定义接口， rpc 定义未实现的接口方法 message 相当于定义一个结构体，里面定义字段属性， 先类型后变量名，然后序列号。 每一行数据类型后需要写一个编号，从1开始，因为编码是通过成员的唯一编号来绑定对应的数据。 推荐使用请求message后加上Request关键字, 如StringRequest 推荐使用响应message后加上Response关键字，如StringResponse // 选择 proto3 语法 syntax = &amp;#34;proto3&amp;#34;; // 定义一个包名为 hello package hello; // 定义一个 service 服务名为 HelloService，相当于 GO 接口定义 service HelloService { // 以 rpc 开头，定义未实现的方法名称。 必须要有一个请求 message 和响应 message // rpc, returns 都是关键字 rpc Hello(StringRequest) returns (StringResponse){}; } // message 相当于一个结构体，里面定义字段属性， 先类型后变量名，然后序列号。 // protoful 编码是通过成员的唯一编号来绑定对应的数据。 // 定义一个请求结构体 message StringRequest { string value = 1; } // 定义一个响应结构体 message StringResponse { string result = 1; } 标量类型 以下只列出常用的类型对应关系。更多参考最下面的链接</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-简介(五)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-base/</link>
+      <pubDate>Wed, 21 Oct 2020 14:18:34 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-base/</guid>
+      <description>什么是gRPC RPC 是远程过程调用 (Remote Procedure Call)的缩写。在 RPC 中，客户端应用程序可以直接调用不同机器上的服务器应用程序上的方法，就像它是本地对象一样，使您可以更轻松地创建分布式应用程序和服务。
+gRPC 是 Google 开源的基于 Protobuf 和 Http2.0 协议的通信框架，底层由netty提供。
+是一款语言中立、平台中立、开源的远程过程调用(RPC)系统。
+特点 基于HTTP/2协议实现，实现多路复用，双向流等特点。 基于 Protobuf 协议，支持多种语言。 参考 gRPC 官方文档中文版
+推荐学习 gRPC入门 简介 gRPC入门 Protobuf gRPC入门 搭建完整gRPC gRPC入门 实现双向流 </description>
+    </item>
+    
+  </channel>
+</rss>

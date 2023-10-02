@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>高可用 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link>
+    <description>Recent content in 高可用 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Jul 2023 11:41:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Haproxy &#43; Keepalived 实现 k8s 集群高可用</title>
+      <link>https://yezihack.github.io/posts/haproxy-keepalived/</link>
+      <pubDate>Wed, 05 Jul 2023 11:41:00 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/haproxy-keepalived/</guid>
+      <description>1. 什么是 Kubernetes 的高可用 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
+多节点部署：使用多个节点来部署Kubernetes集群，确保即使某个节点发生故障，其他节点仍然可以继续提供服务。
+负载均衡：通过在集群前端引入负载均衡器，将流量分发到多个节点上，实现负载均衡和故障转移。这样即使某个节点发生故障，负载均衡器可以将流量重新路由到其他健康的节点上。
+自动伸缩：利用Kubernetes的自动伸缩功能，根据实际负载情况自动调整集群的节点数量，以满足应用程序的需求。这样可以在高负载时增加节点数量，保证性能，而在低负载时减少节点数量，节省资源。
+容器健康检查：通过定义容器的健康检查机制，Kubernetes可以监控容器的运行状态，并在容器出现故障或异常时自动重启或替换容器，确保应用程序的持续可用性。
+数据备份和恢复：定期对关键数据进行备份，并建立可靠的数据恢复机制，以防止数据丢失或损坏。这可以通过使用Kubernetes的持久化存储卷（Persistent Volume）和备份工具来实现。
+故障切换和容错：通过使用Kubernetes的故障切换功能，可以在节点或容器发生故障时自动将服务切换到备用节点或容器上，确保应用程序的连续性和可用性。
+监控和告警：建立全面的监控系统，实时监测集群和应用程序的运行状态，并设置告警机制，及时发现和处理潜在的故障或异常情况。
+通过采取这些高级方法和策略，可以有效地提高Kubernetes集群的可用性和稳定性，确保应用程序在运行时不会出现服务中断。
+2. Haproxy + Keepalived 优缺点 Haproxy和Keepalived是常用的组合，用于实现负载均衡和高可用性的解决方案。下面是它们的优缺点：
+2.1. Haproxy Haproxy的优点：
+高性能：Haproxy是一个高性能的负载均衡器，能够处理大量的并发连接和请求。 灵活的配置：Haproxy提供了丰富的配置选项，可以根据需求进行灵活的负载均衡策略和规则配置。 健康检查：Haproxy支持对后端服务器进行健康检查，可以自动排除故障的服务器，确保只将请求转发到健康的服务器上。 SSL终止：Haproxy可以作为SSL终止器，将SSL/TLS连接解密后再转发给后端服务器，减轻服务器的负担。 Haproxy 的缺点：
+单点故障：Haproxy本身是单点，如果Haproxy节点发生故障，可能会导致服务中断。 配置复杂：Haproxy的配置相对复杂，需要一定的学习和经验来正确配置和管理。 2.2. Keepalived Keepalived 的优点：
+高可用性：Keepalived可以将多个Haproxy节点组成一个高可用集群，通过VRRP协议实现故障切换，确保服务的连续性和可用性。 快速故障切换：Keepalived能够快速检测到主节点的故障，并将VIP（虚拟IP）迅速切换到备用节点上，减少服务中断时间。 简单配置：Keepalived的配置相对简单，可以快速部署和管理。 Keepalived的缺点：
+配置同步：Keepalived需要确保配置文件的同步，以保证所有节点的配置一致性，这可能需要额外的配置和管理工作。 依赖性：Keepalived依赖于底层网络和操作系统的支持，可能受限于特定的网络环境和操作系统版本。 架构图 3. Haproxy 3.1. 底层原理 Keepalived 是一种用于实现高可用性的软件，其底层原理主要包括以下几个方面：
+VRRP 协议：Keepalived 使用 VRRP（Virtual Router Redundancy Protocol）协议来实现高可用性。VRRP 协议通过将多个服务器组成一个虚拟路由器组，共同提供相同的虚拟 IP 地址，实现了服务器的冗余备份和故障切换。
+虚拟路由器组：多个服务器通过 Keepalived 组成一个虚拟路由器组，共同提供相同的虚拟 IP 地址。其中一个服务器被选举为主服务器（Master），其他服务器为备份服务器（Backup）。
+心跳检测：主备服务器之间通过周期性的心跳消息进行通信，以检测主服务器的可用性。如果备份服务器在一定时间内没有收到主服务器的心跳消息，就会触发主备切换。
+健康检查：Keepalived 支持对服务的健康检查，通过定期检查服务的可用性和性能，及时剔除故障或不可用的服务器，保证了服务的高可用性和稳定性。
+路由表更新：当主服务器发生故障或不可用时，备份服务器中的一台将会被选举为新的主服务器，接管虚拟 IP 地址的转发功能。同时，Keepalived 会更新路由表，将虚拟 IP 地址指向新的主服务器。</description>
+    </item>
+    
+  </channel>
+</rss>

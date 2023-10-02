@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bug on 空树之空</title>
+    <link>https://yezihack.github.io/tags/bug/</link>
+    <description>Recent content in bug on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 Dec 2020 16:11:38 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/bug/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Golang err is shadowed during return</title>
+      <link>https://yezihack.github.io/posts/fix-golang-return/</link>
+      <pubDate>Thu, 24 Dec 2020 16:11:38 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fix-golang-return/</guid>
+      <description>复现 package main import &amp;#34;errors&amp;#34; func main() { TestErr(&amp;#34;go&amp;#34;, &amp;#34;golang&amp;#34;) } func TestErr(t, p string) (s string, err error) { switch t { case &amp;#34;go&amp;#34;: err := check(p) if err != nil { // 返回参数里的 err 作用域是整个函数,即外层作用域 // check 返回的 err 作用域是 switch 范围.即内层作用域. // return 操作,不指明是将内层作用域 返回给外层作用域, 这样在 go 里是不允许的. return } } return } func check(s string) error { if s == &amp;#34;hello&amp;#34; { return nil } return errors.</description>
+    </item>
+    
+  </channel>
+</rss>

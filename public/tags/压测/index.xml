@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>压测 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/%E5%8E%8B%E6%B5%8B/</link>
+    <description>Recent content in 压测 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Aug 2020 19:18:30 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E5%8E%8B%E6%B5%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jmeter Linux 使用</title>
+      <link>https://yezihack.github.io/posts/jmeter-linux/</link>
+      <pubDate>Mon, 03 Aug 2020 19:18:30 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/jmeter-linux/</guid>
+      <description>采用 centos 安装, jmeter 5.3版本
+安装 java jdk 环境 JDK1.8版本即可满足
+yum install java-1.8.0-openjdk 下载 jmeter cd /home/wget https://mirrors.bfsu.edu.cn/apache//jmeter/binaries/apache-jmeter-5.3.zipunzip apache-jmeter-5.3.zipcd apache-jmeter-5.3pwd 配置环境变量 官方下载: https://jmeter.apache.org/download_jmeter.cgi
+export JMETER=/home/apache-jmeter-5.3export CLASSPATH=$JMETER/lib/ext/ApacheJMeter_core.jar:$JMETER/lib/jorphan.jar:$JMETER/lib/logkit-2.0.jar:$CLASSPATHexport PATH=$JMETER/bin/:$PATH 使用 首先在 window 版本上新建jmx文件, 然后保存为测试计划. 将 jmx 文件上传到 linux , 使用以下命令运行即可. 得到 jtl 结果文件, 下载下来, 导入到可视化界面上,即可查看到分析的结果.
+jmeter -n -t test.jmx -l test.jtl 图示: 保存 test.jmx 文件
+图示: 导入分析结果</description>
+    </item>
+    
+    <item>
+      <title>Golang 单元测试/性能测试</title>
+      <link>https://yezihack.github.io/posts/golang-test/</link>
+      <pubDate>Tue, 30 Jun 2020 14:23:04 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/golang-test/</guid>
+      <description>参考 Go 单元测试/性能测试
+性能测试 go test -test.bench=. -test.benchmem 指定方法 go test -test.bench=MyFunc -test.benchmem cpu 性能分析 go test -test.bench=MyFunc -test.cpuprofile cpu.out 内存分析 go test -test.bench=MyFunc -test.memprofile mem.out goroutine 阻塞分析 go test -test.bench=MyFunc -test.blockprofile block.out ###　指定几个cpu分析
+go test -test.bench=MyFunc -test.benchmem -test.cpu 1,2,4 </description>
+    </item>
+    
+    <item>
+      <title>Jmeter入门</title>
+      <link>https://yezihack.github.io/posts/jmeter/</link>
+      <pubDate>Fri, 05 Jun 2020 16:45:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/jmeter/</guid>
+      <description>安装 参考 https://blog.csdn.net/pengjiangchun/article/details/105419683
+使用 切换成中文 新建&amp;quot;线程组&amp;quot; 配置&amp;quot;线程组&amp;quot; 设置Cookie Http请求 Http断言 填写请求的URl 填写报告 参考 https://zhuanlan.zhihu.com/p/142897766 https://blog.csdn.net/pengjiangchun/article/details/105419683 </description>
+    </item>
+    
+  </channel>
+</rss>

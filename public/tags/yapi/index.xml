@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>YAPI on 空树之空</title>
+    <link>https://yezihack.github.io/tags/yapi/</link>
+    <description>Recent content in YAPI on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 13 Mar 2020 13:08:13 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/yapi/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Yapi入门笔记</title>
+      <link>https://yezihack.github.io/posts/yapi-note/</link>
+      <pubDate>Fri, 13 Mar 2020 13:08:13 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/yapi-note/</guid>
+      <description>什么是YAPI 写接口文档的软件, 支持RESTful, Mock假数据, 团队管理协作,非常方便好用.良心之作
+内网安装 参考网上的教程吧. mac: https://www.cnblogs.com/yehuisir/p/12190446.html linux; https://www.jianshu.com/p/6c269d00bb38
+安装cross-request插件 可以在Yapi运行假数据.
+蓝凑云：https://freemt.lanzous.com/i0pDFfo582j
+使用mock假数据 {&amp;#34;status&amp;#34;: 200,//状态码&amp;#34;msg&amp;#34;: &amp;#34;success&amp;#34;,//提示信息&amp;#34;data&amp;#34;: {&amp;#34;page&amp;#34;: 1, //当前页&amp;#34;page_count&amp;#34;: 10, //一共多少页&amp;#34;total_ount&amp;#34;: 100, //数据数量&amp;#34;list|5-18&amp;#34;:[ //生成5到18个子序列{&amp;#34;id&amp;#34;:&amp;#34;@increment&amp;#34;, //生成递增主键ID&amp;#34;name&amp;#34;:&amp;#34;@ctitle(4,6)&amp;#34;,//生成中文字符4到6个之间&amp;#34;uuid&amp;#34;:&amp;#34;@uuid&amp;#34;,//生成uuid &amp;#34;created_at&amp;#34;:&amp;#34;@date(&amp;#39;yyyy-MM-dd&amp;#39;)&amp;#34;,//生成时期格式&amp;#34;status&amp;#34;:&amp;#34;@pick([&amp;#39;未认证&amp;#39;,&amp;#39;已认证&amp;#39;,&amp;#39;已拒绝&amp;#39;,&amp;#39;已冻结&amp;#39;])&amp;#34;//从数组里随机选择一项.}]}} mock常用规则 字符串 @cname() 生成名字 @url 生成url @domain() 生成域名 @email() 生成邮箱 @region() 生成地区， 如华中，华北 @province() 生成省份，如北京，山东，湖南省 @city() 生成城市， 如玉林市，拉萨， @city(true) @county() 生成区域 ， 龙亭区 @county(true) 生成完整的区域， 如山西省 忻州市 神池县 @pick([&amp;ldquo;a&amp;rdquo;, &amp;ldquo;e&amp;rdquo;, &amp;ldquo;i&amp;rdquo;, &amp;ldquo;o&amp;rdquo;, &amp;ldquo;u&amp;rdquo;]) 选择一个元素 @title() 生成标头 @word(），@word(3），@word(3, 5)生成字母，可以指定大小，也可以是范围。 @sentence() @sentence(3) @sentence(3， 5) 生成单词数量 同上 @cparagraph()，@cparagraph(2)， @cparagraph(2，5) 生成句子 同上 @csentence 中文句子 日期 @date(&amp;ldquo;yyyy-MM-dd&amp;rdquo;) 生成日期， &amp;ldquo;2013-05-07&amp;rdquo; @date(&amp;ldquo;yyyy-MM-dd HH:mm:ss&amp;rdquo;) &amp;ldquo;2020-01-02 17:15:04&amp;rdquo; 数字 @guid() 生成uuid @id() 生成ID @id(10) 生成10位的ID @increment() 递增1，2，3 @increment(100) 递增步长100 @natural(1,100000) 生成自然数 @zip() 生成区号 @integer(1, 10) 生成数字， @integer ， @integer(5） 其它 @boolean() 生成true, false @rgba() 生成RBG颜色值 如&amp;quot;rgb(129, 121, 242)&amp;quot; @color() 生成颜色值， 如&amp;quot;#f2798f&amp;quot; 参考 github https://github.</description>
+    </item>
+    
+  </channel>
+</rss>

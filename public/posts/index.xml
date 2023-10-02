@@ -1,0 +1,2652 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on 空树之空</title>
+    <link>https://yezihack.github.io/posts/</link>
+    <description>Recent content in Posts on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Jul 2023 11:41:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Haproxy &#43; Keepalived 实现 k8s 集群高可用</title>
+      <link>https://yezihack.github.io/posts/haproxy-keepalived/</link>
+      <pubDate>Wed, 05 Jul 2023 11:41:00 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/haproxy-keepalived/</guid>
+      <description>1. 什么是 Kubernetes 的高可用 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
+多节点部署：使用多个节点来部署Kubernetes集群，确保即使某个节点发生故障，其他节点仍然可以继续提供服务。
+负载均衡：通过在集群前端引入负载均衡器，将流量分发到多个节点上，实现负载均衡和故障转移。这样即使某个节点发生故障，负载均衡器可以将流量重新路由到其他健康的节点上。
+自动伸缩：利用Kubernetes的自动伸缩功能，根据实际负载情况自动调整集群的节点数量，以满足应用程序的需求。这样可以在高负载时增加节点数量，保证性能，而在低负载时减少节点数量，节省资源。
+容器健康检查：通过定义容器的健康检查机制，Kubernetes可以监控容器的运行状态，并在容器出现故障或异常时自动重启或替换容器，确保应用程序的持续可用性。
+数据备份和恢复：定期对关键数据进行备份，并建立可靠的数据恢复机制，以防止数据丢失或损坏。这可以通过使用Kubernetes的持久化存储卷（Persistent Volume）和备份工具来实现。
+故障切换和容错：通过使用Kubernetes的故障切换功能，可以在节点或容器发生故障时自动将服务切换到备用节点或容器上，确保应用程序的连续性和可用性。
+监控和告警：建立全面的监控系统，实时监测集群和应用程序的运行状态，并设置告警机制，及时发现和处理潜在的故障或异常情况。
+通过采取这些高级方法和策略，可以有效地提高Kubernetes集群的可用性和稳定性，确保应用程序在运行时不会出现服务中断。
+2. Haproxy + Keepalived 优缺点 Haproxy和Keepalived是常用的组合，用于实现负载均衡和高可用性的解决方案。下面是它们的优缺点：
+2.1. Haproxy Haproxy的优点：
+高性能：Haproxy是一个高性能的负载均衡器，能够处理大量的并发连接和请求。 灵活的配置：Haproxy提供了丰富的配置选项，可以根据需求进行灵活的负载均衡策略和规则配置。 健康检查：Haproxy支持对后端服务器进行健康检查，可以自动排除故障的服务器，确保只将请求转发到健康的服务器上。 SSL终止：Haproxy可以作为SSL终止器，将SSL/TLS连接解密后再转发给后端服务器，减轻服务器的负担。 Haproxy 的缺点：
+单点故障：Haproxy本身是单点，如果Haproxy节点发生故障，可能会导致服务中断。 配置复杂：Haproxy的配置相对复杂，需要一定的学习和经验来正确配置和管理。 2.2. Keepalived Keepalived 的优点：
+高可用性：Keepalived可以将多个Haproxy节点组成一个高可用集群，通过VRRP协议实现故障切换，确保服务的连续性和可用性。 快速故障切换：Keepalived能够快速检测到主节点的故障，并将VIP（虚拟IP）迅速切换到备用节点上，减少服务中断时间。 简单配置：Keepalived的配置相对简单，可以快速部署和管理。 Keepalived的缺点：
+配置同步：Keepalived需要确保配置文件的同步，以保证所有节点的配置一致性，这可能需要额外的配置和管理工作。 依赖性：Keepalived依赖于底层网络和操作系统的支持，可能受限于特定的网络环境和操作系统版本。 架构图 3. Haproxy 3.1. 底层原理 Keepalived 是一种用于实现高可用性的软件，其底层原理主要包括以下几个方面：
+VRRP 协议：Keepalived 使用 VRRP（Virtual Router Redundancy Protocol）协议来实现高可用性。VRRP 协议通过将多个服务器组成一个虚拟路由器组，共同提供相同的虚拟 IP 地址，实现了服务器的冗余备份和故障切换。
+虚拟路由器组：多个服务器通过 Keepalived 组成一个虚拟路由器组，共同提供相同的虚拟 IP 地址。其中一个服务器被选举为主服务器（Master），其他服务器为备份服务器（Backup）。
+心跳检测：主备服务器之间通过周期性的心跳消息进行通信，以检测主服务器的可用性。如果备份服务器在一定时间内没有收到主服务器的心跳消息，就会触发主备切换。
+健康检查：Keepalived 支持对服务的健康检查，通过定期检查服务的可用性和性能，及时剔除故障或不可用的服务器，保证了服务的高可用性和稳定性。
+路由表更新：当主服务器发生故障或不可用时，备份服务器中的一台将会被选举为新的主服务器，接管虚拟 IP 地址的转发功能。同时，Keepalived 会更新路由表，将虚拟 IP 地址指向新的主服务器。</description>
+    </item>
+    
+    <item>
+      <title>Istio 限流实现</title>
+      <link>https://yezihack.github.io/posts/istio-ratelimit/</link>
+      <pubDate>Mon, 12 Jun 2023 15:29:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/istio-ratelimit/</guid>
+      <description>1. 介绍限流 限流是一种通过对系统请求进行限制和控制，避免系统过载，保证系统稳定性和安全性的技术手段。
+2. Istio 限流 首先确认需要限流的应用是否已经加载了 sidecar，如果还未安装 istio, 请参考:https://yezihack.github.io/istio-install.html 创建 app-ratelimit.yaml：
+设置流速间隔时间：token_bucket.fill_interval 设置流速令牌数量：token_bucket.max_tokens 选择哪些应用限流：workloadSelector.labels apiVersion: networking.istio.io/v1alpha3 kind: EnvoyFilter metadata: name: app-ratelimit spec: workloadSelector: labels: app: my-app # 用来选择需要进行配置的工作负载 configPatches: - applyTo: HTTP_FILTER match: listener: filterChain: filter: name: &amp;#34;envoy.filters.network.http_connection_manager&amp;#34; patch: operation: INSERT_BEFORE value: name: envoy.filters.http.local_ratelimit typed_config: &amp;#34;@type&amp;#34;: type.googleapis.com/udpa.type.v1.TypedStruct type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit value: stat_prefix: http_local_rate_limiter token_bucket: # 令牌桶算法的配置信息，用于控制每秒放行的请求数量。 max_tokens: 10 # 指定令牌桶中最多可以存储的令牌数，即最大可用令牌数 tokens_per_fill: 10 # 指定每次填充令牌桶的令牌数，即每次可用令牌数。 fill_interval: 60s # 定填充令牌桶的时间间隔，即每隔多长时间填充一次令牌桶。 filter_enabled: # 控制是否启用该过滤器的开关。 runtime_key: local_rate_limit_enabled default_value: numerator: 100 denominator: HUNDRED filter_enforced: # 制是否强制执行该过滤器的开关。 runtime_key: local_rate_limit_enforced default_value: numerator: 100 denominator: HUNDRED response_headers_to_add: - append: false header: key: x-local-rate-limit value: &amp;#39;true&amp;#39; kubectl apply -f app-ratelimit.</description>
+    </item>
+    
+    <item>
+      <title>Istio 安装</title>
+      <link>https://yezihack.github.io/posts/istio-install/</link>
+      <pubDate>Mon, 12 Jun 2023 14:26:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/istio-install/</guid>
+      <description>1. Istio 介绍 Istio 是由 Google、IBM 和 Lyft 开源的微服务管理、保护和监控框架。Istio 为希腊语，意思是”起航“。
+Istio 使用功能强大的 Envoy 服务代理扩展了 Kubernetes，以建立一个可编程的、可感知的应用程序网络。
+Istio 与 Kubernetes 和传统工作负载一起使用，为复杂的部署带来了标准的通用流量管理、遥测和安全性。
+2. 下载 istio 以 CentOS7 为例
+官方下载：https://github.com/istio/istio/releases/
+截止写本文时，版本更新到 v1.18.0。
+2.1. 版本的选择 https://istio.io/latest/zh/docs/releases/supported-releases/
+v1.18.0 适合 k8s 1.24, 1.25, 1.26, 1.27。
+根据你的 kubernetes 版本进行下载相应的 istio 版本。
+cd /opt/src wget https://github.com/istio/istio/releases/download/1.18.0/istio-1.18.0-linux-amd64.tar.gz tar -zxvf istio-1.18.0-linux-amd64.tar.gz cd istio-1.18.0 cp istio-1.18.0/bin/istioctl /usr/local/bin # 查看版本 istioctl version # 如果显示如下，则表示你未设置 KUBECONFIG 环境变量 unable to retrieve Pods: Get &amp;#34;http://localhost:8080/api/v1/namespaces/istio-system/pods?fieldSelector=status.phase%3DRunning&amp;amp;labelSelector=app%3Distiod&amp;#34;: dial tcp [::1]:8080: connect: connection refused 1.</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(10) Etcd V3.2 集群二进制搭建</title>
+      <link>https://yezihack.github.io/posts/etcd-v3.2/</link>
+      <pubDate>Tue, 16 May 2023 11:24:46 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/etcd-v3.2/</guid>
+      <description>1. 准备工作 搭建 ETCD 高可用集群，至少3台或5台或7台，奇数台即可。本地搭建采用3台 Linux CentOS7.9 环境。
+序列 HOSTNAME IP etcd 节点名称 1 kube-10 192.168.9.10 etcd01 2 kube-11 192.168.9.11 etcd02 3 kube-13 192.168.9.13 etcd03 创建目录：
+bin 存储 etcd 二进制文件 data 存储数据目录 sh 脚本目录 ssl 证书目录 # 每个机器上都执行 mkdir -p /opt/etcd/{bin,data,sh,ssl} 2. 证书生成 2.1. cfssl 工具 cd /opt/src # 下载 wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64 wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64 wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64 # 改名 mv cfssl_linux-amd64 cfssl mv cfssljson_linux-amd64 cfssljson mv cfssl-certinfo_linux-amd64 cfssl-certinfo # 添加执行权限 chmod +x cfssl cfssljson cfssl-certinfo # 复制到 /usr/local/bin cp cfssl cfssl-cerinfo cfssljson /usr/local/bin 2.</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(11) Etcd V3.4 集群二进制搭建</title>
+      <link>https://yezihack.github.io/posts/etcd-v3.4/</link>
+      <pubDate>Tue, 16 May 2023 11:24:46 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/etcd-v3.4/</guid>
+      <description>1. 准备工作 适合于 kubernetes 1.17/1.18/1.19/1.20/1.21 搭建 ETCD 高可用集群，至少3台或5台或7台，奇数台即可。本地搭建采用3台 Linux CentOS7.9 环境。
+序列 HOSTNAME IP etcd 节点名称 1 kube-10 192.168.9.10 etcd01 2 kube-11 192.168.9.11 etcd02 3 kube-13 192.168.9.13 etcd03 创建目录：
+bin 存储 etcd 二进制文件 data 存储数据目录 conf 配置目录 sh 脚本目录 ssl 证书目录 # 每个机器上都执行 mkdir -p /opt/etcd-3.4/{bin,data,sh,ssl,conf} 时间同步 # 安装 yum install chrony -y # 管理 systemctl start chronyd #启动 systemctl status chronyd #查看 systemctl restart chronyd #重启 systemctl stop chronyd #停止 systemctl enable chronyd #设置开机启动 # 修改时区 timedatectl set-timezone Asia/Shanghai # 设置完时区后，强制同步下系统时钟： chronyc -a makestep 设置与指定服务器时间同步</description>
+    </item>
+    
+    <item>
+      <title>Nginx 源码安装</title>
+      <link>https://yezihack.github.io/posts/nginx-install/</link>
+      <pubDate>Fri, 03 Mar 2023 15:34:45 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/nginx-install/</guid>
+      <description>源码安装 nginx 下载 http://nginx.org/en/download.html
+wget http://nginx.org/download/nginx-1.23.3.tar.gz tar -zxvf nginx-1.23.3.tar.gz cd nginx-1.23.3 修改源码版本 修改 nginx 默认的版本名称,如 nginx/1.23.3, 可任意修改为: sgfoot/100.0.0
+vim src/core/nginx.h # 大约在14行左右 #define nginx_version 1023003 #define NGINX_VERSION &amp;#34;1.23.3&amp;#34; # 版本号修改 #define NGINX_VER &amp;#34;nginx/&amp;#34; NGINX_VERSION # 软件名称修改 安装 使用自定义用户和用户组,更加安全 开启模块:
+with-http_ssl_module SSL模块 with-http_stub_status_module 统计功能模块,分析 nginx 性能 with-http_realip_module 获取真实IP模块 with-threads 线程池模块,提高nginx性能 with-http_gzip_static_module 开启压缩功能 yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel # 添加用户和组 groupadd www useradd -g www www # 配置 .</description>
+    </item>
+    
+    <item>
+      <title>K8s 跨 Node 机器 Pod 网络异常</title>
+      <link>https://yezihack.github.io/posts/k8s-bug-pod-network/</link>
+      <pubDate>Tue, 07 Feb 2023 18:07:36 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-bug-pod-network/</guid>
+      <description>背景 在 k8s 里部署了应用需要通过 ingress 提供外部调用. ingressController Pod 应用部署在 A 机器上, 应用部署在 B 机器上.
+通过自定义域名调用应用,则需要经过自定义域名配置的 host 的 kube-proxy 到 IngressController Pod 机器,再由 Ingress 负载找到应用的 Service 负载的 endpoint.
+最终请求到应用的 Pod.
+环境 k8s: 1.19 docker: 19.10 linux: CentOS7.6 分析思路 先确定 host:port 端口是否通达？ 再确认 ingress 是否可以访问到 service IP ingress 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(9) Kubernetes Pod 调度策略</title>
+      <link>https://yezihack.github.io/posts/k8s-dispatch/</link>
+      <pubDate>Fri, 16 Dec 2022 18:14:20 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-dispatch/</guid>
+      <description>1.1. 四大调度方式 1.1.1. 自动调试 1.1.2. 定向调度 1.1.2.1. NodeName 1.1.2.2. NodeSelector 1.1.3. 亲和性调度 1.1.3.1. NodeAffinity 1.1.3.2. PodAffinity 1.1.3.3. PodAntiAffinity 1.1.4. 污点（容忍）调度 1.1.4.1. 污点 1.1.4.2. 容忍 1.2. 参考 关于作者 1.1. 四大调度方式 自动调度：运行在哪个节点上完全由Scheduler经过一系列的算法计算得出 定向调度：NodeName、NodeSelector 亲和性调度：NodeAffinity、PodAffinity、PodAntiAffinity 污点（容忍）调度：Taints、Toleration 1.1.1. 自动调试 完全交由 kube-scheduler 来决定 pod 调度到哪里，不受人为控制。
+1.1.2. 定向调度 1.1.2.1. NodeName NodeName用于强制约束将Pod调度到指定的Name的Node节点上。这种方式，其实是直接跳过Scheduler的调度逻辑，直接将Pod调度到指定名称的节点。
+使用实例：
+apiVersion: v1 kind: Pod metadata: name: pod-nodename namespace: dev spec: nodeName: kube-11 # 指定调度到node1节点上 containers: - name: nginx image: nginx:1.17.1 tip: 这种调度不够灵活，必须指定某 node 节点，若 node 异常会导致调度失败。</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(8) Kubeadm 内网补丁版本升级，从v1.16.0至v1.16.15</title>
+      <link>https://yezihack.github.io/posts/kubeadm-upgrade-v1.16/</link>
+      <pubDate>Fri, 09 Dec 2022 16:26:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kubeadm-upgrade-v1.16/</guid>
+      <description>.1. 为什么升级 漏洞问题 使用新功能 .2. 特殊性 内网环境，没有外网。 多 master 集群。 外置 Etcd。 .3. 版本 kubeadm升级前版本：v1.16.0 kubeadm升级后版本：v1.16.15 .4. 升级前的检查 .4.1. 查看当前版本 kubeadm version kubeadm version: &amp;amp;version.Info{Major:&amp;#34;1&amp;#34;, Minor:&amp;#34;16&amp;#34;, GitVersion:&amp;#34;v1.16.0&amp;#34;, GitCommit:&amp;#34;72c30166b2105cd7d3350f2c28a219e6abcd79eb&amp;#34;, GitTreeState:&amp;#34;clean&amp;#34;, BuildDate:&amp;#34;2020-01-18T23:29:13Z&amp;#34;, GoVersion:&amp;#34;go1.13.5&amp;#34;, Compiler:&amp;#34;gc&amp;#34;, Platform:&amp;#34;linux/amd64&amp;#34;} .4.2. 离线下载 kubectl,kubeadm,kubelet 下载 # 必须本机没有安装以下软件 version=&amp;#34;1.16.15&amp;#34; yumdownloader --resolve --destdir=/opt/local-packages/ kubelet-${version} kubeadm-${version} kubectl-${version} .4.3. 制作共享 YUM 源 使用工具：saber
+假定本机IP：192.168.10.10
+# 安装 Createrepo yum install createrepo -y createrepo /opt/local-packages/ # 如果存在 repodata 则使用更新 createrepo --update /opt/local-packages/ # 共享文件 saber fs /opt/local-packages/ .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(7) kubernetes 错误收集</title>
+      <link>https://yezihack.github.io/posts/k8s-error/</link>
+      <pubDate>Wed, 07 Dec 2022 11:31:00 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-error/</guid>
+      <description>.1. 为什么 Kubernetes 众多组件汇集于一身，插件也是多如牛毛，在运维中或日常安装中难免会遇到各种各样的错误，有些错误并不好排查，让人火急火燎搜索一翻，半天已经过去。在此收集日常使用 kubernetes 遇到的问题。
+.2. Ingress-nginx .2.1. Internal error occurred: failed calling webhook &amp;ldquo;validate.nginx.ingress.kubernetes.io&amp;rdquo; .2.1.1. 详细错误信息 Error from server (InternalError): error when creating &amp;#34;ingress.yaml&amp;#34;: Internal error occurred: failed calling webhook &amp;#34;validate.nginx.ingress.kubernetes.io&amp;#34;: Post &amp;#34;https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1beta1/ingresses?timeout=10s&amp;#34;: context deadline exceeded .2.1.2. 解决方法 删除验证
+# 查看 kubectl get validatingwebhookconfigurations # 删除 kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission .3. 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(6) k1s 工具使用教程</title>
+      <link>https://yezihack.github.io/posts/k1s/</link>
+      <pubDate>Tue, 06 Dec 2022 16:46:57 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k1s/</guid>
+      <description>.1. k1s 是 kubectl 辅助工具 .2. 什么是 k1s .3. k1s 特色 .4. 安装 .5. 快速上手 .6. 功能 .6.1. Resources 列表( kubectl 系统对应) .6.2. Resources 列表(扩展功能) .6.3. Action 列表 .6.4. Extend 扩展功能 .6.5. 环境变量 .7. 使用说明 .7.1. 设置环境变量 .7.2. 日志查看 .7.3. 进入容器 .7.4. 资源操作 .7.4.1. nodes 资源 .7.4.2. pods 资源 .7.4.3. deployments 资源 .7.4.4. daemonsets 资源 .7.4.5. services 资源 .7.4.6. 清理垃圾 .8. 关于作者 .1. k1s 是 kubectl 辅助工具 so easy, so fast.</description>
+    </item>
+    
+    <item>
+      <title>Asciinema 搭配 asciicast2gif 终端录屏专家</title>
+      <link>https://yezihack.github.io/posts/asciinema/</link>
+      <pubDate>Tue, 29 Nov 2022 17:40:13 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/asciinema/</guid>
+      <description>.1. 一点点 喜欢写博客的你，曾几何时开启录屏软件进行你的命令行录制，然后再转成 gif 动画图片。
+此刻你看着几兆大小的gif或几十兆大小的gif，是不是有种别无办法的选择了。
+现在告诉你有一种不行帧录制，而是文本录制，大小在 10 kb左右。神器就是：https://asciinema.org/
+如同它的名称，ascii + nema，存储文件里是字符，自然轻盈。
+.2. 介绍 asciinema 录制成文本文件,需要跳转到官方才能播放。 asciicast2gif 将录制的文本文件转成 gif .3. 安装 asciinema 由 python 编写
+CentOS：
+sudo yum install asciinema Ubuntu：
+sudo apt-get install asciinema MacOS：
+brew install asciinema .4. Asciinema 使用 .4.1. 登陆 登陆逻辑：
+asciinema 的登陆有别于传统的帐号密码，只需要一个邮箱即可实现个人登陆。
+使用：asciinema auth 生成一个URL，后面是一串 UUID，做为唯一码。 复制 URL 浏览器上，输入您的邮件地址，系统会发一封认证 URL。 打开邮件点击 URL，采用 Token JWT 实现的。 命令行上传文件时会携带 UUID 到服务器上验证，从而实现登陆功能。 -&amp;gt; # asciinema auth Open the following URL in a browser to register your API token and assign any recorded asciicasts to your profile: https://asciinema.</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(5) Kubernetes GPU 支持与驱动安装</title>
+      <link>https://yezihack.github.io/posts/k8s-gpu/</link>
+      <pubDate>Wed, 23 Nov 2022 08:42:25 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-gpu/</guid>
+      <description>.1. 安装 GPU 驱动 .1.1. 查看 GPU 硬件 .1.2. 检查自带 GPU 驱动 .1.3. 官方下载 GPU 驱动 .1.4. 安装 GPU 驱动 .1.5. 安装失败 .1.5.1. ERROR: An NVIDIA kernel module &amp;rsquo;nvidia-uvm&amp;rsquo; appears to already be loaded in your kernel .1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel .1.6. 重装内核 .1.7. 再次安装 GPU 驱动包 .1.7.1. 安装 .run 文件 .1.7.2. 安装 .rpm 文件 .2. 安装 nvidia-container-runtime .2.1. 作用 .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(4) Kubeadm etcd 堆叠式安装 k8s 1.20</title>
+      <link>https://yezihack.github.io/posts/kubeadm-install-v1.20/</link>
+      <pubDate>Mon, 14 Nov 2022 18:27:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kubeadm-install-v1.20/</guid>
+      <description>.1. 回顾 .2. 安装前的准备 .2.1. 安装要求 .2.2. 集群规划 .2.3. 版本选择 .2.4. 基本设置 .3. Kubernetes 设置的参数 .3.1. br_netfilter 模块 .3.2. 桥接的IPv4流量传递到iptables的链 .3.3. 加载 IPVS .4. Docker 部署 .4.1. 设置 Docker 镜像源 .4.2. 列出 Docker 所有的版本 .4.3. 安装 docker .4.4. 设置 daemon.json .4.4.1. 设置CPU .4.4.2. 支持GPU .4.5. 启动 docker .5. 设置 firewall 防火墙规则 .5.1. k8s master需要开启以下端口 .5.2. k8s node需要开启以下端口 .5.3. 打开 NAT 转发功能 .5.4. calico 需要开启以下端口 .5.5. NFS 防火墙规则设置 .5.6. 其它端口 .</description>
+    </item>
+    
+    <item>
+      <title>Windows 找不到文件 C: Program Files/Windowsapps...launcherrsxruntime.exe，请确定文件名是否正确后，再试一次</title>
+      <link>https://yezihack.github.io/posts/windows-repair/</link>
+      <pubDate>Sun, 13 Nov 2022 08:27:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/windows-repair/</guid>
+      <description>.1. 错误提示 突然有一天，当你重启电脑后，系统就弹出以下错误弹窗，提示某某文件找不到。如果你没有解决，每次重启电脑 都会弹出此窗，非常讨厌，今天我们来解决此问题。
+提示：Windows 找不到文件: &amp;ldquo;C:\Program File&amp;quot; 请确定文件名是否正确后，再试一次。
+.2. 解决方法 打开你的 cmd，使用 win + R 或者开始-&amp;gt; 运行 -&amp;gt; 输入：cmd 注意：使用 administrator 权限打开 CMD 再输入以下代码即可。 sfc /scannow DISM /Online /Cleanup-Image /CheckHealth # 如果执行失败后，重启后再执行此命令 DISM /Online /Cleanup-Image /ScanHealth # 如果执行失败后，重启后再执行此命令 DISM /Online /Cleanup-Image /RestoreHealth 最后重启电脑，以后就不再弹窗啦。一切都安静了。
+.3. 参考 https://learn.microsoft.com/en-us/answers/questions/663590/windows-error.html https://learn.microsoft.com/zh-cn/windows-hardware/manufacture/desktop/repair-a-windows-image?source=recommendations&amp;view=windows-11 .4. 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(3) k8s 安装 dashboard 配置 ingress</title>
+      <link>https://yezihack.github.io/posts/k8s-dashboard-ingress/</link>
+      <pubDate>Tue, 08 Nov 2022 16:47:30 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-dashboard-ingress/</guid>
+      <description>.1. 回顾 .2. 下载对应的版本 .3. 生成自签名的证书 .4. 生成 secret .5. 修改 dashboard.yaml 文件 .6. 部署 Dashboard .7. 创建 token .7.1. 创建 admin token .7.2. 创建某空间的 token .8. 配置 ingress-nginx .9. dashboard 登陆使用 .10. 参考 .11. 关于作者 .1. 回顾 之前写过一篇 kuberntes-dashboard 的文章，介绍如何使用 nodeport 方式部署与访问。
+参考：第十一章 Kubernetes Dashboard
+本次介绍使用 ingress 域名方式访问 dashboard。
+采用 tls 方式配置 ingress-nginx 访问 dashboard。 .2. 下载对应的版本 访问 github 仓库：https://github.com/kubernetes/dashboard/
+如何安装合适自己 kuberntes 版本的 Dashboard 的呢？官方发布 release 时，每个版本都有测试，当前版本支持哪些范围的 kubernetes 版本。还特意列出不完全兼容的版本信息。</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(七) Docker Daemon 配置</title>
+      <link>https://yezihack.github.io/posts/docker-daemon/</link>
+      <pubDate>Sat, 15 Oct 2022 13:37:47 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-daemon/</guid>
+      <description>.1. 参数说明 .1.1. daemon.json 文件位置 .1.2. graph 数据存储 .1.3. storage-driver 存储驱动 .1.4. registry-mirrors 镜像注册 .1.5. insecure-registries 无权限注册 .1.6. exec-opts .1.7. live-restore 实时还原 .1.8. log-driver 日志驱动 .1.9. log-opts 日志参数 .1.10. default-runtime 运行时 .1.11. runtimes 运行时参数设置 .2. daemon.json 配置参考 .2.1. CPU 机器使用 daemon.json .2.2. GPU 机器使用 daemon.json .3. 关于作者 云原生中 docker 有着重要的地位，我们有必要学习下 Docker 几个重要的启动参数，也适合生产。
+.1. 参数说明 .1.1. daemon.json 文件位置 JSON 文件形式默认存储位置: /etc/docker/daemon.json。 dockerd 通过 --config-file 参数指定配置文件位置。 .1.2. graph 数据存储 19.x 版本后官方建议使用：data-root 替代</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16</title>
+      <link>https://yezihack.github.io/posts/kubeadm-install-v1.16/</link>
+      <pubDate>Thu, 04 Aug 2022 10:40:28 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kubeadm-install-v1.16/</guid>
+      <description>.1. Kubeadm 高可用集群 本次安装 Kubernetes 采用官方推荐的 kubeadm 安装方式。
+利用 kubeadm 创建高可用集群，使用 kubeadm 设置一个高可用的 Kubernetes 集群的两种不同方式：
+使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。 使用外部集群。这种方法所需基础设施较多。控制平面的节点和 etcd 成员是分开的。 本次教程采用 etcd 堆叠式高可用集群，即将 etcd 与控制平面的节点在同一个位置。
+.2. 安装前的准备 .2.1. 安装要求 在开始安装 kubernetes 集群机器之前需要满足以下几上条件：
+序列 名称 参考值 命令 1 系统 Linux uname -s 2 内存 &amp;gt;= 2 GB free -hm 3 CPU &amp;gt;= 2 核 cat /proc/cpuinfo |grep &amp;ldquo;processor&amp;rdquo;|wc -l 4 硬盘 &amp;gt;= 20 GB df -h 5 交换分区 必须禁用 swapoff / vim /etc/fstab 6 网络 集群中所有机器之间网络互通 ping 7 主机名 集群中所有机器不重复 hostname 8 MAC地址 集群中所有机器不重复 cat /sys/class/net/ens33/address 9 product_uuid 集群中所有机器不重复 cat /sys/class/dmi/id/product_uuid .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(1) CentOS7 安装</title>
+      <link>https://yezihack.github.io/posts/centos-install/</link>
+      <pubDate>Wed, 03 Aug 2022 16:54:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/centos-install/</guid>
+      <description>.1. 准备 CentOS7 镜像 .2. Vmware Workstation 安装 CentOS7 .3. 配置虚拟机网络 .4. 配置 CentOS 网络 .5. 更改 CentOS7 Yum源 .6. 安装常用的软件 .7. 安装 Oh-my-zsh .8. 克隆系统 .9. 关于作者 .1. 准备 CentOS7 镜像 使用清华大学开源镜像站下载 CentOS7: https://mirrors.tuna.tsinghua.edu.cn/centos/7/isos/x86_64/
+CentOS-7-x86_64-DVD-2009.iso 标准安装版 CentOS-7-x86_64-Everything-2009.iso 完整版，集成所有软件 CentOS-7-x86_64-Minimal-2009.iso 精简版，自带的软件最少 CentOS-7-x86_64-NetInstall-2009.iso 网络安装版（从网络安装或者救援系统) 本次安装教程使用精简版镜像。因为无须图形界面，也无须自带太多的软件。
+.2. Vmware Workstation 安装 CentOS7 操作相对比较简单，下一步即可。
+新建虚拟机 选择镜像源 下一步 调整配置 内存调整为 2GB。 CPU调整为 2 个处理器，每个处理器内核数量为 2。 开启此虚拟机 .3. 配置虚拟机网络 网络规划：192.168.9.0/24 虚拟机采用 NAT 模式连接宿主机网络 菜单 -&amp;gt; 编辑 -&amp;gt; 虚拟网络编辑器：</description>
+    </item>
+    
+    <item>
+      <title>Linux DNS 略解</title>
+      <link>https://yezihack.github.io/posts/dns/</link>
+      <pubDate>Mon, 25 Apr 2022 09:58:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/dns/</guid>
+      <description>DNS 域名系统
+DNS 全称：Domain Name System
+域名系统相当于一个“翻译官”，将域名翻译成对应的IP地址，然后再请求目标IP。
+Linux 设置 DNS /etc/resolv 设置DNS无须重新网络，立即生效。
+cat /etc/resolv.conf search github.com options timeout:1 attempts:1 rotate nameserver 192.168.1.1 nameserver 192.168.1.2 nameserver 192.168.1.3 解释 nameserver:dns服务器的ip地址。最多能设三个。
+timeout:查询一个nameserver的超时时间，单位是秒。系统缺省是5，最大可以设为30。 attempts:这个是查询的整个都尝试一遍的次数。缺省是2。 rotate:这个参数的含义是随机选取一个作为首选查询的dns server。系统缺省是从上到下的。 DNS 排障方法 经常会出现某域名不通，需要使用 nslookup 工具诊断
+# 安装 yum -y install nslookup -&amp;gt; % nslookup www.github.com Server:	114.114.114.114 Address:	114.114.114.114#53 Non-authoritative answer: www.github.com	canonical name = github.com. Name:	github.com Address: 20.205.243.166 </description>
+    </item>
+    
+    <item>
+      <title>Linux 安装 zsh 和 oh-my-zsh </title>
+      <link>https://yezihack.github.io/posts/zsh/</link>
+      <pubDate>Sat, 23 Apr 2022 09:58:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/zsh/</guid>
+      <description>.1. 介绍 .2. 安装 ZSH .3. 安装 oh-my-zsh .4. 设置主题 .5. 一键安装 zsh + oh-my-zsh .6. 推荐一个华丽主题 .1. 介绍 Zsh 是 Shell 脚本的天花板，个人觉得目前没有之一。华丽的外衣，丰富的内含，让你的终端操作如行云流水一般，好不快活，何不尝试一下 Oh-my-zsh。
+.2. 安装 ZSH Zsh 全称 Z-shell，是一款用于交互式使用的shell，也可以作为脚本解释器来使用。其包含了 bash，ksh，tcsh 等其他shell中许多优秀功能，也拥有诸多自身特色。
+# CentOS sudo yum -y install zsh # Ubuntu sudo apt-get -y install zsh # 查看系统支持哪些 shell cat /etc/shells # 设置默认shell chsh -s /bin/zsh # 查看当前默认shell echo $SHELL .3. 安装 oh-my-zsh # 官网下载 sh -c &amp;#34;$(curl -fsSL https://raw.</description>
+    </item>
+    
+    <item>
+      <title>Docker busybox 镜像工具</title>
+      <link>https://yezihack.github.io/posts/docker-tools/</link>
+      <pubDate>Thu, 31 Mar 2022 14:20:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-tools/</guid>
+      <description>.1. busybox .2. progrium/busybox .3. Alpine .3.1. Alpine 替换国内源 .3.2. Dockerfile .3.3. 升级&amp;amp;安装软件 .4. sgfoot/busybox .4.1. 支持常用命令 .4.2. 更加详情的命令列表 busybox 本身集成了300多个常用工具命令. 用于日常开发,维护.也是体积比较小. 但是 busybox 本身不支持 curl,很遗憾,所以有了衍生品.
+.1. busybox 原生的 busybox, 大小718K左右,不及1M大小.
+本身采用 apt-get install 安装工具
+.2. progrium/busybox 官方地址: https://hub.docker.com/r/progrium/busybox
+支持创建自己的镜像,安装,采用 opkg-install 安装软件.
+FROM progrium/busybox RUN opkg-install curl bash git CMD [&amp;#34;/bin/bash&amp;#34;] .3. Alpine .3.1. Alpine 替换国内源 # 查看镜像源 cat /etc/apk/repositories http://dl-cdn.alpinelinux.org/alpine/v3.11/main http://dl-cdn.alpinelinux.org/alpine/v3.11/community # 替换阿里云 sed -i &amp;#39;s/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g&amp;#39; /etc/apk/repositories # 替换科技大学 sed -i &amp;#39;s/dl-cdn.</description>
+    </item>
+    
+    <item>
+      <title>查看 Linux 系统资源</title>
+      <link>https://yezihack.github.io/posts/linux-system-info/</link>
+      <pubDate>Thu, 17 Feb 2022 15:36:03 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/linux-system-info/</guid>
+      <description>1. 系统 uname -a # 查看系统版本全部信息 uname -r # 查看内核版本 hostname # 查看主机名称 cat /etc/redhat-release # 打印系统类型，只对红帽系统有用, 如 CentOS env # 显示环境变量 lspci # 主板信息 2. 资源 free -mh # 查看内存使用量和交换区使用量 df -h # 查看各分区使用情况 du -sh &amp;lt;目录名&amp;gt; # 查看指定目录的大小 uptime # 查看系统运行时间、用户数、负载 cat /proc/loadavg # 查看系统负载 lsblk # 树形显示硬盘结构 nvidia-smi # 显卡信息 cat /proc/cpuinfo | grep &amp;#39;model name&amp;#39; | sort | uniq # 查看CPU型号 cat /proc/cpuinfo | grep &amp;#39;physical id&amp;#39; | sort | uniq | wc -l # 查看 CPU 颗数, 实际Server中插槽上的CPU个数, 物理cpu数量 cat /proc/cpuinfo |grep &amp;#34;cores&amp;#34;|uniq|awk &amp;#39;{print $4}&amp;#39; # 查看 CPU 核数, 一颗CPU上面能处理数据的芯片组的数量。 cat /proc/cpuinfo |grep &amp;#34;processor&amp;#34;|wc -l # 逻辑CPU核数，逻辑CPU数量=物理cpu数量 x cpu cores 这个规格值 x 2(如果支持并开启超线程)。 lspci | grep -i nvidia # 查看nvidia显卡，如果没有lspci, yum -y install pciutils lspci | grep -i vga # 查看内置GPU nvidia-smi # 查看GPU watch -n 10 nvidia-smi # 动态查看GPU 3.</description>
+    </item>
+    
+    <item>
+      <title>算法入门(一) 基础概念</title>
+      <link>https://yezihack.github.io/posts/algo-01/</link>
+      <pubDate>Mon, 17 Jan 2022 22:47:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-01/</guid>
+      <description>.1. 数据结构与算法 .2. 基本概念与术语 .2.1. 数据 .2.2. 数据元素 .2.3. 数据项 .2.4. 数据对象 .2.5. 总结 .3. 逻辑结构与物理结构 .3.1. 逻辑结构 .3.2. 物理结构 .3.3. 总结 .4. 算法 .4.1. 算法的特征 .4.2. 算法设计的要求 .4.3. 算法时间复杂度 .4.4. 最坏情况与平均情况 .4.5. 空间复杂度 .5. 参考 .6. 关于作者 .1. 数据结构与算法 什么是数据结构：是相互之间存在一种或多种特定关系的数据元素的集合。
+什么是算法：是解决特定问题求解步骤的描述。
+.2. 基本概念与术语 .2.1. 数据 是描述客观事物的符号，是计算机可以操作的对象。
+符号必须满足以下两个条件：
+可以输入到计算机中。 能被计算机程序处理。 例：整型，字符串等。
+.2.2. 数据元素 是组成数据的，有一定意义的基本单位，在计算机中通常作为整体处理。也称为记录。
+例：人，动物，狗，虎等。
+.2.3. 数据项 一个数据元素可以由若干个数据项组成。
+数据项是数据不可分割的最小单位。
+.2.4. 数据对象 是性质相同的数据元素的集合，是数据的子集。
+.2.5. 总结 三种之间的关系：数据 &amp;gt; 数据元素 &amp;gt; 数据项</description>
+    </item>
+    
+    <item>
+      <title>优质软件 SOFT</title>
+      <link>https://yezihack.github.io/posts/soft-awesome/</link>
+      <pubDate>Fri, 14 Jan 2022 13:40:23 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/soft-awesome/</guid>
+      <description> 优质软件，一枝独秀，供提参考。
+开发软件 官网 使用参考 平台 描述 Tabby 介绍 macOS(M1),Linux,Windows SSH客户端 PicGo 文档 macOS(M1),Linux,Windows 图床工具 日常软件 官网 使用参考 平台 描述 Free Download Manager 特色 MacOS(M1),Linux,Windows,Android 下载工具 LANDrop 介绍 IOS,MacOS,Windows,Linux,Android 局域网传输工具 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>Git Ignore 常用文件</title>
+      <link>https://yezihack.github.io/posts/gitignore/</link>
+      <pubDate>Fri, 14 Jan 2022 10:05:18 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gitignore/</guid>
+      <description>在开发中，代码管理常用 git，做为优秀的分布式代码管理工具，有着优秀的设计， 其中一项就是 .gitignore 的功能。主要用于忽略某此文件或敏感文件，以防 泄漏。
+常用的 gitignore tmp .env gohub .DS_Store .history # Golang # ###################### # `go test -c` 生成的二进制文件 *.test # go coverage 工具 *.out *.prof *.cgo1.go *.cgo2.c _cgo_defun.c _cgo_gotypes.go _cgo_export.* # 编译文件 # ################### *.com *.class *.dll *.exe *.o *.so # 压缩包 # ############ # Git 自带压缩,如果这些压缩包里有代码,建议解压后 commit *.7z *.dmg *.gz *.iso *.jar *.rar *.tar *.zip # 日志文件和数据库 # ###################### *.log *.sqlite *.db # 临时文件 # ###################### tmp/ .</description>
+    </item>
+    
+    <item>
+      <title>Harbor 安装（TLS）</title>
+      <link>https://yezihack.github.io/posts/harbor-install/</link>
+      <pubDate>Sat, 01 Jan 2022 23:00:33 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/harbor-install/</guid>
+      <description>.1. 前提准备 .2. 安装 Docker 和 Docker-Compose .3. 离线安装之非安全模式 .3.1. 下载安装软件 .3.2. 编辑配置文件 .3.3. 运行安装脚本 .3.4. 查看验证 .3.5. 登陆 Harbor 管理页面 .3.6. Docker 配置 .3.7. Docker 登陆 harbor .3.8. 测试上传镜像 .4. 生成自签名 .4.1. 生成证书颁发机构证书 .4.2. 生成服务器证书 .5. 离线安装之安全模式 .5.1. 下载安装软件 .5.2. 向 Harbor 提供证书 .5.3. 编辑配置文件 .5.4. 运行安装脚本 .5.5. Docker 客户端使用证书 .5.6. Docker 登陆测试 .6. 参考 .7. 关于作者 .1. 前提准备 harbor 2.4.1 版本 基于 CentOS 7 假设我们的 IP 是：192.168.100.8 自定义域名: harbor.</description>
+    </item>
+    
+    <item>
+      <title>第十二章 Minikube 安装</title>
+      <link>https://yezihack.github.io/posts/k8s-minikube/</link>
+      <pubDate>Tue, 28 Dec 2021 17:39:06 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-minikube/</guid>
+      <description>Minikube 安装 仅用于开产使用，生产不能使用。 以下仅以 macOS 系统演示
+1.1 Docker 安装 官方下载，直接安装即可。
+https://docs.docker.com/desktop/mac/install/
+使用国内镜像源，推荐阿里云的。
+参考：https://yezihack.github.io/docker-install.html#docker-加速
+1.2 Kubectl 安装 Kubernetes 命令行工具，kubectl，使得你可以对 Kubernetes 集群运行命令。 你可以使用 kubectl 来部署应用、监测和管理集群资源以及查看日志。
+官方下载，有详细的安装流程。支持：windows, linux, macOS
+参考：https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-macos/
+# Apple Silicon M1 cpu curl -LO &amp;#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl&amp;#34; # Intel cpu curl -LO &amp;#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl&amp;#34; 添加权限，加入 PATH 目录
+# 添加执行权限 chmod +x ./kubectl # 移动到path目录，全局可访问 sudo mv ./kubectl /usr/local/bin/kubectl sudo chown root: /usr/local/bin/kubectl # 查看版本 kubectl version --client 查看配置，了解更多 kubectl 命令</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 总纲及脑图</title>
+      <link>https://yezihack.github.io/posts/k8s-mindmap/</link>
+      <pubDate>Tue, 09 Nov 2021 18:42:18 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-mindmap/</guid>
+      <description>kubernetes 导航目录 第一章 kubernetes 介绍 第二章 Kubernetes 安装 第三章 Kubernetes 资源管理 第四章 Kubernetes 实战操作 第五章 Kubernetes Pod 介绍 第六章 Kubernetes Pod 控制器 第七章 Kubernetes Service 介绍 第八章 Kubernetes Ingress 介绍 第九章 Kubernetes 数据存储 第十章 Kubernetes 权限认证 第十一章 Kubernetes Dashboard 脑图 kubernetes 涉及知识点比较，难以一次全记住，将以上的关于kubernetes 讲解的知识点汇总成脑图，方便查阅，随时复习。
+若下图不方便查看，直接查看原链接轻点，脑图
+关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>第十一章 Kubernetes Dashboard</title>
+      <link>https://yezihack.github.io/posts/k8s-dashboard/</link>
+      <pubDate>Thu, 28 Oct 2021 18:18:16 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-dashboard/</guid>
+      <description>本章节主要介绍 kubernetes 的 Dashboard。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+下载yaml，并运行Dashboard # 下载yaml [root@master ~]# wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml # 修改kubernetes-dashboard的Service类型 kind: Service apiVersion: v1 metadata: labels: k8s-app: kubernetes-dashboard name: kubernetes-dashboard namespace: kubernetes-dashboard spec: type: NodePort # 新增 ports: - port: 443 targetPort: 8443 nodePort: 30009 # 新增 selector: k8s-app: kubernetes-dashboard # 部署 [root@master ~]# kubectl create -f recommended.yaml # 查看namespace下的kubernetes-dashboard下的资源 [root@master ~]# kubectl get pod,svc -n kubernetes-dashboard NAME READY STATUS RESTARTS AGE pod/dashboard-metrics-scraper-c79c65bb7-zwfvw 1/1 Running 0 111s pod/kubernetes-dashboard-56484d4c5-z95z5 1/1 Running 0 111s NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE service/dashboard-metrics-scraper ClusterIP 10.</description>
+    </item>
+    
+    <item>
+      <title>第十章 Kubernetes 权限认证</title>
+      <link>https://yezihack.github.io/posts/k8s-permission/</link>
+      <pubDate>Thu, 28 Oct 2021 18:18:07 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-permission/</guid>
+      <description>本章节主要介绍Kubernetes的安全认证机制。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+访问控制概述 ​ Kubernetes作为一个分布式集群的管理工具，保证集群的安全性是其一个重要的任务。所谓的安全性其实就是保证对Kubernetes的各种客户端进行认证和鉴权操作。
+客户端
+在Kubernetes集群中，客户端通常有两类：
+User Account：一般是独立于kubernetes之外的其他服务管理的用户账号。
+Service Account：kubernetes管理的账号，用于为Pod中的服务进程在访问Kubernetes时提供身份标识。
+认证、授权与准入控制
+ApiServer是访问及管理资源对象的唯一入口。任何一个请求访问ApiServer，都要经过下面三个流程：
+Authentication（认证）：身份鉴别，只有正确的账号才能够通过认证 Authorization（授权）： 判断用户是否有权限对访问的资源执行特定的动作 Admission Control（准入控制）：用于补充授权机制以实现更加精细的访问控制功能。 认证管理 Kubernetes集群安全的最关键点在于如何识别并认证客户端身份，它提供了3种客户端身份认证方式：
+HTTP Base认证：通过用户名+密码的方式认证
+这种认证方式是把“用户名:密码”用BASE64算法进行编码后的字符串放在HTTP请求中的Header Authorization域里发送给服务端。服务端收到后进行解码，获取用户名及密码，然后进行用户身份认证的过程。 HTTP Token认证：通过一个Token来识别合法用户
+这种认证方式是用一个很长的难以被模仿的字符串&amp;ndash;Token来表明客户身份的一种方式。每个Token对应一个用户名，当客户端发起API调用请求时，需要在HTTP Header里放入Token，API Server接到Token后会跟服务器中保存的token进行比对，然后进行用户身份认证的过程。 HTTPS证书认证：基于CA根证书签名的双向数字证书认证方式
+这种认证方式是安全性最高的一种方式，但是同时也是操作起来最麻烦的一种方式。 HTTPS认证大体分为3个过程：
+证书申请和下发
+HTTPS通信双方的服务器向CA机构申请证书，CA机构下发根证书、服务端证书及私钥给申请者 客户端和服务端的双向认证
+1&amp;gt; 客户端向服务器端发起请求，服务端下发自己的证书给客户端， 客户端接收到证书后，通过私钥解密证书，在证书中获得服务端的公钥， 客户端利用服务器端的公钥认证证书中的信息，如果一致，则认可这个服务器 2&amp;gt; 客户端发送自己的证书给服务器端，服务端接收到证书后，通过私钥解密证书， 在证书中获得客户端的公钥，并用该公钥认证证书信息，确认客户端是否合法 服务器端和客户端进行通信
+服务器端和客户端协商好加密方案后，客户端会产生一个随机的秘钥并加密，然后发送到服务器端。 服务器端接收这个秘钥后，双方接下来通信的所有内容都通过该随机秘钥加密 注意: Kubernetes允许同时配置多种认证方式，只要其中任意一个方式认证通过即可
+授权管理 ​ 授权发生在认证成功之后，通过认证就可以知道请求用户是谁， 然后Kubernetes会根据事先定义的授权策略来决定用户是否有权限访问，这个过程就称为授权。
+​ 每个发送到ApiServer的请求都带上了用户和资源的信息：比如发送请求的用户、请求的路径、请求的动作等，授权就是根据这些信息和授权策略进行比较，如果符合策略，则认为授权通过，否则会返回错误。
+API Server目前支持以下几种授权策略：
+AlwaysDeny：表示拒绝所有请求，一般用于测试
+AlwaysAllow：允许接收所有请求，相当于集群不需要授权流程（Kubernetes默认的策略）
+ABAC：基于属性的访问控制，表示使用用户配置的授权规则对用户请求进行匹配和控制
+Webhook：通过调用外部REST服务对用户进行授权
+Node：是一种专用模式，用于对kubelet发出的请求进行访问控制
+RBAC：基于角色的访问控制（kubeadm安装方式下的默认选项）
+RBAC(Role-Based Access Control) 基于角色的访问控制，主要是在描述一件事情：给哪些对象授予了哪些权限
+其中涉及到了下面几个概念：
+对象：User、Groups、ServiceAccount 角色：代表着一组定义在资源上的可操作动作(权限)的集合 绑定：将定义好的角色跟用户绑定在一起 RBAC引入了4个顶级资源对象：</description>
+    </item>
+    
+    <item>
+      <title>第九章 Kubernetes 数据存储</title>
+      <link>https://yezihack.github.io/posts/k8s-storage/</link>
+      <pubDate>Thu, 28 Oct 2021 18:08:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-storage/</guid>
+      <description>本章节主要介绍kubernetes的数据存储。
+在前面已经提到，容器的生命周期可能很短，会被频繁地创建和销毁。那么容器在销毁时，保存在容器中的数据也会被清除。这种结果对用户来说，在某些情况下是不乐意看到的。为了持久化保存容器的数据，kubernetes引入了Volume的概念。
+​ Volume是Pod中能够被多个容器访问的共享目录，它被定义在Pod上，然后被一个Pod里的多个容器挂载到具体的文件目录下，kubernetes通过Volume实现同一个Pod中不同容器之间的数据共享以及数据的持久化存储。Volume的生命容器不与Pod中单个容器的生命周期相关，当容器终止或者重启时，Volume中的数据也不会丢失。
+kubernetes的Volume支持多种类型，比较常见的有下面几个：
+简单存储：EmptyDir、HostPath、NFS 高级存储：PV、PVC 配置存储：ConfigMap、Secret 基本存储 EmptyDir ​ EmptyDir是最基础的Volume类型，一个EmptyDir就是Host上的一个空目录。
+​ EmptyDir是在Pod被分配到Node时创建的，它的初始内容为空，并且无须指定宿主机上对应的目录文件，因为kubernetes会自动分配一个目录，当Pod销毁时， EmptyDir中的数据也会被永久删除。 EmptyDir用途如下：
+临时空间，例如用于某些应用程序运行时所需的临时目录，且无须永久保留
+一个容器需要从另一个容器中获取数据的目录（多容器共享目录）
+接下来，通过一个容器之间文件共享的案例来使用一下EmptyDir。
+​ 在一个Pod中准备两个容器nginx和busybox，然后声明一个Volume分别挂在到两个容器的目录中，然后nginx容器负责向Volume中写日志，busybox中通过命令将日志内容读到控制台。
+创建一个volume-emptydir.yaml
+apiVersion: v1 kind: Pod metadata: name: volume-emptydir namespace: dev spec: containers: - name: nginx image: nginx:1.14-alpine ports: - containerPort: 80 volumeMounts: # 将logs-volume挂在到nginx容器中，对应的目录为 /var/log/nginx - name: logs-volume mountPath: /var/log/nginx - name: busybox image: busybox:1.30 command: [&amp;#34;/bin/sh&amp;#34;,&amp;#34;-c&amp;#34;,&amp;#34;tail -f /logs/access.log&amp;#34;] # 初始命令，动态读取指定文件中内容 volumeMounts: # 将logs-volume 挂在到busybox容器中，对应的目录为 /logs - name: logs-volume mountPath: /logs volumes: # 声明volume， name为logs-volume，类型为emptyDir - name: logs-volume emptyDir: {} # 创建Pod [root@master ~]# kubectl create -f volume-emptydir.</description>
+    </item>
+    
+    <item>
+      <title>第八章 Kubernetes Ingress 介绍</title>
+      <link>https://yezihack.github.io/posts/k8s-ingress/</link>
+      <pubDate>Thu, 28 Oct 2021 17:58:04 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-ingress/</guid>
+      <description>本章节主要介绍kubernetes的流量负载组件：Ingress。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+在前面课程中已经提到，Service对集群之外暴露服务的主要方式有两种：NotePort和LoadBalancer，但是这两种方式，都有一定的缺点：
+NodePort方式的缺点是会占用很多集群机器的端口，那么当集群服务变多的时候，这个缺点就愈发明显 LB方式的缺点是每个service需要一个LB，浪费、麻烦，并且需要kubernetes之外设备的支持 ​ 基于这种现状，kubernetes提供了Ingress资源对象，Ingress只需要一个NodePort或者一个LB就可以满足暴露多个Service的需求。工作机制大致如下图表示：
+​ 实际上，Ingress相当于一个7层的负载均衡器，是kubernetes对反向代理的一个抽象，它的工作原理类似于Nginx，可以理解成在Ingress里建立诸多映射规则，Ingress Controller通过监听这些配置规则并转化成Nginx的反向代理配置 , 然后对外部提供服务。在这里有两个核心概念：
+ingress：kubernetes中的一个对象，作用是定义请求如何转发到service的规则 ingress controller：具体实现反向代理及负载均衡的程序，对ingress定义的规则进行解析，根据配置的规则来实现请求转发，实现方式有很多，比如Nginx, Contour, Haproxy等等 Ingress（以Nginx为例）的工作原理如下：
+用户编写Ingress规则，说明哪个域名对应kubernetes集群中的哪个Service Ingress控制器动态感知Ingress服务规则的变化，然后生成一段对应的Nginx反向代理配置 Ingress控制器会将生成的Nginx配置写入到一个运行着的Nginx服务中，并动态更新 到此为止，其实真正在工作的就是一个Nginx了，内部配置了用户定义的请求转发规则 Ingress使用 环境准备 搭建ingress环境
+# 创建文件夹 [root@master ~]# mkdir ingress-controller [root@master ~]# cd ingress-controller/ # 获取ingress-nginx，本次案例使用的是0.30版本 [root@master ingress-controller]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml [root@master ingress-controller]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/baremetal/service-nodeport.yaml # 修改mandatory.yaml文件中的仓库 # 修改quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.30.0 # 为quay-mirror.qiniu.com/kubernetes-ingress-controller/nginx-ingress-controller:0.30.0 # 创建ingress-nginx [root@master ingress-controller]# kubectl apply -f ./ # 查看ingress-nginx [root@master ingress-controller]# kubectl get pod -n ingress-nginx NAME READY STATUS RESTARTS AGE pod/nginx-ingress-controller-fbf967dd5-4qpbp 1/1 Running 0 12h # 查看service [root@master ingress-controller]# kubectl get svc -n ingress-nginx NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE ingress-nginx NodePort 10.</description>
+    </item>
+    
+    <item>
+      <title>第七章 Kubernetes Service 介绍</title>
+      <link>https://yezihack.github.io/posts/k8s-service/</link>
+      <pubDate>Thu, 28 Oct 2021 17:54:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-service/</guid>
+      <description>本章节主要介绍kubernetes的流量负载组件：Service。
+Service介绍 ​ 在kubernetes中，pod是应用程序的载体，我们可以通过pod的ip来访问应用程序，但是pod的ip地址不是固定的，这也就意味着不方便直接采用pod的ip对服务进行访问。
+​ 为了解决这个问题，kubernetes提供了Service资源，Service会对提供同一个服务的多个pod进行聚合，并且提供一个统一的入口地址。通过访问Service的入口地址就能访问到后面的pod服务。
+​ Service在很多情况下只是一个概念，真正起作用的其实是kube-proxy服务进程，每个Node节点上都运行着一个kube-proxy服务进程。当创建Service的时候会通过api-server向etcd写入创建的service的信息，而kube-proxy会基于监听的机制发现这种Service的变动，然后它会将最新的Service信息转换成对应的访问规则。
+# 10.97.97.97:80 是service提供的访问入口 # 当访问这个入口的时候，可以发现后面有三个pod的服务在等待调用， # kube-proxy会基于rr（轮询）的策略，将请求分发到其中一个pod上去 # 这个规则会同时在集群内的所有节点上都生成，所以在任何一个节点上访问都可以。 [root@node1 ~]# ipvsadm -Ln IP Virtual Server version 1.2.1 (size=4096) Prot LocalAddress:Port Scheduler Flags -&amp;gt; RemoteAddress:Port Forward Weight ActiveConn InActConn TCP 10.97.97.97:80 rr -&amp;gt; 10.244.1.39:80 Masq 1 0 0 -&amp;gt; 10.244.1.40:80 Masq 1 0 0 -&amp;gt; 10.244.2.33:80 Masq 1 0 0 kube-proxy目前支持三种工作模式:
+userspace 模式
+​ userspace模式下，kube-proxy会为每一个Service创建一个监听端口，发向Cluster IP的请求被Iptables规则重定向到kube-proxy监听的端口上，kube-proxy根据LB算法选择一个提供服务的Pod并和其建立链接，以将请求转发到Pod上。 ​ 该模式下，kube-proxy充当了一个四层负责均衡器的角色。由于kube-proxy运行在userspace中，在进行转发处理时会增加内核和用户空间之间的数据拷贝，虽然比较稳定，但是效率比较低。
+iptables 模式
+​ iptables模式下，kube-proxy为service后端的每个Pod创建对应的iptables规则，直接将发向Cluster IP的请求重定向到一个Pod IP。 ​ 该模式下kube-proxy不承担四层负责均衡器的角色，只负责创建iptables规则。该模式的优点是较userspace模式效率更高，但不能提供灵活的LB策略，当后端Pod不可用时也无法进行重试。</description>
+    </item>
+    
+    <item>
+      <title>第六章 Kubernetes Pod 控制器</title>
+      <link>https://yezihack.github.io/posts/k8s-pod-controller/</link>
+      <pubDate>Thu, 28 Oct 2021 17:45:21 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-pod-controller/</guid>
+      <description>本章节主要介绍各种Pod控制器的详细使用。
+Pod控制器介绍 Pod是kubernetes的最小管理单元，在kubernetes中，按照pod的创建方式可以将其分为两类：
+自主式pod：kubernetes直接创建出来的Pod，这种pod删除后就没有了，也不会重建
+控制器创建的pod：kubernetes通过控制器创建的pod，这种pod删除了之后还会自动重建
+什么是Pod控制器
+Pod控制器是管理pod的中间层，使用Pod控制器之后，只需要告诉Pod控制器，想要多少个什么样的Pod就可以了，它会创建出满足条件的Pod并确保每一个Pod资源处于用户期望的目标状态。如果Pod资源在运行中出现故障，它会基于指定策略重新编排Pod。
+在kubernetes中，有很多类型的pod控制器，每种都有自己的适合的场景，常见的有下面这些：
+ReplicationController：比较原始的pod控制器，已经被废弃，由ReplicaSet替代
+ReplicaSet：保证副本数量一直维持在期望值，并支持pod数量扩缩容，镜像版本升级
+Deployment：通过控制ReplicaSet来控制Pod，并支持滚动升级、回退版本
+Horizontal Pod Autoscaler：可以根据集群负载自动水平调整Pod的数量，实现削峰填谷
+DaemonSet：在集群中的指定Node上运行且仅运行一个副本，一般用于守护进程类的任务
+Job：它创建出来的pod只要完成任务就立即退出，不需要重启或重建，用于执行一次性任务
+Cronjob：它创建的Pod负责周期性任务控制，不需要持续后台运行
+StatefulSet：管理有状态应用
+ReplicaSet(RS) ReplicaSet的主要作用是保证一定数量的pod正常运行，它会持续监听这些Pod的运行状态，一旦Pod发生故障，就会重启或重建。同时它还支持对pod数量的扩缩容和镜像版本的升降级。
+ReplicaSet的资源清单文件：
+apiVersion: apps/v1 # 版本号 kind: ReplicaSet # 类型 metadata: # 元数据 name: # rs名称 namespace: # 所属命名空间 labels: #标签 controller: rs spec: # 详情描述 replicas: 3 # 副本数量 selector: # 选择器，通过它指定该控制器管理哪些pod matchLabels: # Labels匹配规则 app: nginx-pod matchExpressions: # Expressions匹配规则 - {key: app, operator: In, values: [nginx-pod]} template: # 模板，当副本数量不足时，会根据下面的模板创建pod副本 metadata: labels: app: nginx-pod spec: containers: - name: nginx image: nginx:1.</description>
+    </item>
+    
+    <item>
+      <title>第五章 Kubernetes Pod 介绍</title>
+      <link>https://yezihack.github.io/posts/k8s-pod/</link>
+      <pubDate>Thu, 28 Oct 2021 16:37:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-pod/</guid>
+      <description>本章节将详细介绍Pod资源的各种配置（yaml）和原理。
+Pod结构 每个Pod中都可以包含一个或者多个容器，这些容器可以分为两类：
+用户程序所在的容器，数量可多可少
+Pause容器，这是每个Pod都会有的一个根容器，它的作用有两个：
+可以以它为依据，评估整个Pod的健康状态
+可以在根容器上设置Ip地址，其它容器都此Ip（Pod IP），以实现Pod内部的网路通信
+这里是Pod内部的通讯，Pod的之间的通讯采用虚拟二层网络技术来实现，我们当前环境用的是Flannel
+Pod定义 下面是Pod的资源清单：
+apiVersion: v1 #必选，版本号，例如v1 kind: Pod #必选，资源类型，例如 Pod metadata: #必选，元数据 name: string #必选，Pod名称 namespace: string #Pod所属的命名空间,默认为&amp;#34;default&amp;#34; labels: #自定义标签列表 - name: string spec: #必选，Pod中容器的详细定义 containers: #必选，Pod中容器列表 - name: string #必选，容器名称 image: string #必选，容器的镜像名称 imagePullPolicy: [ Always|Never|IfNotPresent ] #获取镜像的策略 command: [string] #容器的启动命令列表，如不指定，使用打包时使用的启动命令 args: [string] #容器的启动命令参数列表 workingDir: string #容器的工作目录 volumeMounts: #挂载到容器内部的存储卷配置 - name: string #引用pod定义的共享存储卷的名称，需用volumes[]部分定义的的卷名 mountPath: string #存储卷在容器内mount的绝对路径，应少于512字符 readOnly: boolean #是否为只读模式 ports: #需要暴露的端口库号列表 - name: string #端口的名称 containerPort: int #容器需要监听的端口号 hostPort: int #容器所在主机需要监听的端口号，默认与Container相同 protocol: string #端口协议，支持TCP和UDP，默认TCP env: #容器运行前需设置的环境变量列表 - name: string #环境变量名称 value: string #环境变量的值 resources: #资源限制和请求的设置 limits: #资源限制的设置 cpu: string #Cpu的限制，单位为core数，将用于docker run --cpu-shares参数 memory: string #内存限制，单位可以为Mib/Gib，将用于docker run --memory参数 requests: #资源请求的设置 cpu: string #Cpu请求，容器启动的初始可用数量 memory: string #内存请求,容器启动的初始可用数量 lifecycle: #生命周期钩子 postStart: #容器启动后立即执行此钩子,如果执行失败,会根据重启策略进行重启 preStop: #容器终止前执行此钩子,无论结果如何,容器都会终止 livenessProbe: #对Pod内各容器健康检查的设置，当探测无响应几次后将自动重启该容器 exec: #对Pod容器内检查方式设置为exec方式 command: [string] #exec方式需要制定的命令或脚本 httpGet: #对Pod内个容器健康检查方法设置为HttpGet，需要制定Path、port path: string port: number host: string scheme: string HttpHeaders: - name: string value: string tcpSocket: #对Pod内个容器健康检查方式设置为tcpSocket方式 port: number initialDelaySeconds: 0 #容器启动完成后首次探测的时间，单位为秒 timeoutSeconds: 0 #对容器健康检查探测等待响应的超时时间，单位秒，默认1秒 periodSeconds: 0 #对容器监控检查的定期探测时间设置，单位秒，默认10秒一次 successThreshold: 0 failureThreshold: 0 securityContext: privileged: false restartPolicy: [Always | Never | OnFailure] #Pod的重启策略 nodeName: &amp;lt;string&amp;gt; #设置NodeName表示将该Pod调度到指定到名称的node节点上 nodeSelector: obeject #设置NodeSelector表示将该Pod调度到包含这个label的node上 imagePullSecrets: #Pull镜像时使用的secret名称，以key：secretkey格式指定 - name: string hostNetwork: false #是否使用主机网络模式，默认为false，如果设置为true，表示使用宿主机网络 volumes: #在该pod上定义共享存储卷列表 - name: string #共享存储卷名称 （volumes类型有很多种） emptyDir: {} #类型为emtyDir的存储卷，与Pod同生命周期的一个临时目录。为空值 hostPath: string #类型为hostPath的存储卷，表示挂载Pod所在宿主机的目录 path: string #Pod所在宿主机的目录，将被用于同期中mount的目录 secret: #类型为secret的存储卷，挂载集群与定义的secret对象到容器内部 scretname: string items: - key: string path: string configMap: #类型为configMap的存储卷，挂载预定义的configMap对象到容器内部 name: string items: - key: string path: string #小提示： #	在这里，可通过一个命令来查看每种资源的可配置项 # kubectl explain 资源类型 查看某种资源可以配置的一级属性 #	kubectl explain 资源类型.</description>
+    </item>
+    
+    <item>
+      <title>第四章 Kubernetes 实战操作</title>
+      <link>https://yezihack.github.io/posts/k8s-operation/</link>
+      <pubDate>Thu, 28 Oct 2021 16:33:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-operation/</guid>
+      <description>本章节将介绍如何在kubernetes集群中部署一个nginx服务，并且能够对其进行访问。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+Namespace Namespace是kubernetes系统中的一种非常重要资源，它的主要作用是用来实现多套环境的资源隔离或者多租户的资源隔离。
+默认情况下，kubernetes集群中的所有的Pod都是可以相互访问的。但是在实际中，可能不想让两个Pod之间进行互相的访问，那此时就可以将两个Pod划分到不同的namespace下。kubernetes通过将集群内部的资源分配到不同的Namespace中，可以形成逻辑上的&amp;quot;组&amp;quot;，以方便不同的组的资源进行隔离使用和管理。
+可以通过kubernetes的授权机制，将不同的namespace交给不同租户进行管理，这样就实现了多租户的资源隔离。此时还能结合kubernetes的资源配额机制，限定不同租户能占用的资源，例如CPU使用量、内存使用量等等，来实现租户可用资源的管理。
+kubernetes在集群启动之后，会默认创建几个namespace
+[root@master ~]# kubectl get namespace NAME STATUS AGE default Active 45h # 所有未指定Namespace的对象都会被分配在default命名空间 kube-node-lease Active 45h # 集群节点之间的心跳维护，v1.13开始引入 kube-public Active 45h # 此命名空间下的资源可以被所有人访问（包括未认证用户） kube-system Active 45h # 所有由Kubernetes系统创建的资源都处于这个命名空间 下面来看namespace资源的具体操作：
+查看
+# 1 查看所有的ns 命令：kubectl get ns [root@master ~]# kubectl get ns NAME STATUS AGE default Active 45h kube-node-lease Active 45h kube-public Active 45h kube-system Active 45h # 2 查看指定的ns 命令：kubectl get ns ns名称 [root@master ~]# kubectl get ns default NAME STATUS AGE default Active 45h # 3 指定输出格式 命令：kubectl get ns ns名称 -o 格式参数 # kubernetes支持的格式有很多，比较常见的是wide、json、yaml [root@master ~]# kubectl get ns default -o yaml apiVersion: v1 kind: Namespace metadata: creationTimestamp: &amp;#34;2020-04-05T04:44:16Z&amp;#34; name: default resourceVersion: &amp;#34;151&amp;#34; selfLink: /api/v1/namespaces/default uid: 7405f73a-e486-43d4-9db6-145f1409f090 spec: finalizers: - kubernetes status: phase: Active # 4 查看ns详情 命令：kubectl describe ns ns名称 [root@master ~]# kubectl describe ns default Name: default Labels: &amp;lt;none&amp;gt; Annotations: &amp;lt;none&amp;gt; Status: Active # Active 命名空间正在使用中 Terminating 正在删除命名空间 # ResourceQuota 针对namespace做的资源限制 # LimitRange针对namespace中的每个组件做的资源限制 No resource quota.</description>
+    </item>
+    
+    <item>
+      <title>第三章 Kubernetes 资源管理</title>
+      <link>https://yezihack.github.io/posts/k8s-resource/</link>
+      <pubDate>Thu, 28 Oct 2021 16:19:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-resource/</guid>
+      <description>本章节主要介绍yaml语法和kubernetes的资源管理方式
+资源管理介绍 在kubernetes中，所有的内容都抽象为资源，用户需要通过操作资源来管理kubernetes。
+kubernetes的本质上就是一个集群系统，用户可以在集群中部署各种服务，所谓的部署服务，其实就是在kubernetes集群中运行一个个的容器，并将指定的程序跑在容器中。
+kubernetes的最小管理单元是pod而不是容器，所以只能将容器放在Pod中，而kubernetes一般也不会直接管理Pod，而是通过Pod控制器来管理Pod的。
+Pod可以提供服务之后，就要考虑如何访问Pod中服务，kubernetes提供了Service资源实现这个功能。
+当然，如果Pod中程序的数据需要持久化，kubernetes还提供了各种存储系统。
+学习kubernetes的核心，就是学习如何对集群上的Pod、Pod控制器、Service、存储等各种资源进行操作
+YAML语言介绍 YAML是一个类似 XML、JSON 的标记性语言。它强调以数据为中心，并不是以标识语言为重点。因而YAML本身的定义比较简单，号称&amp;quot;一种人性化的数据格式语言&amp;quot;。
+&amp;lt;heima&amp;gt; &amp;lt;age&amp;gt;15&amp;lt;/age&amp;gt; &amp;lt;address&amp;gt;Beijing&amp;lt;/address&amp;gt; &amp;lt;/heima&amp;gt; heima: age: 15 address: Beijing YAML的语法比较简单，主要有下面几个：
+大小写敏感 使用缩进表示层级关系 缩进不允许使用tab，只允许空格( 低版本限制 ) 缩进的空格数不重要，只要相同层级的元素左对齐即可 &amp;lsquo;#&amp;lsquo;表示注释 YAML支持以下几种数据类型：
+纯量：单个的、不可再分的值 对象：键值对的集合，又称为映射（mapping）/ 哈希（hash） / 字典（dictionary） 数组：一组按次序排列的值，又称为序列（sequence） / 列表（list） # 纯量, 就是指的一个简单的值，字符串、布尔值、整数、浮点数、Null、时间、日期 # 1 布尔类型 c1: true (或者True) # 2 整型 c2: 234 # 3 浮点型 c3: 3.14 # 4 null类型 c4: ~ # 使用~表示null # 5 日期类型 c5: 2018-02-17 # 日期必须使用ISO 8601格式，即yyyy-MM-dd # 6 时间类型 c6: 2018-02-17T15:02:31+08:00 # 时间使用ISO 8601格式，时间和日期之间使用T连接，最后使用+代表时区 # 7 字符串类型 c7: heima # 简单写法，直接写值 , 如果字符串中间有特殊字符，必须使用双引号或者单引号包裹 c8: line1 line2 # 字符串过多的情况可以拆成多行，每一行会被转化成一个空格 # 对象 # 形式一(推荐): heima: age: 15 address: Beijing # 形式二(了解): heima: {age: 15,address: Beijing} # 数组 # 形式一(推荐): address: - 顺义 - 昌平	# 形式二(了解): address: [顺义,昌平] 小提示：</description>
+    </item>
+    
+    <item>
+      <title>第二章 Kubernetes 安装</title>
+      <link>https://yezihack.github.io/posts/k8s-install/</link>
+      <pubDate>Thu, 28 Oct 2021 15:24:42 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-install/</guid>
+      <description>kubectl 安装 kind 安装 创建一个集群 查看集群 删除集群 kubernetes 安装比较复杂，用于学习可以搭建单机集群安装。 推荐使用 linux 系统安装实验。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+kubernetes有多种部署方式，目前主流的方式有kind、kubeadm、minikube、二进制包
+kind: 一个基于 Docker 安装的 kubernetes 工具（推荐） minikube：一个用于快速搭建单节点 kubernetes 的工具 kubeadm：一个用于快速搭建 kubernetes 集群的工具 二进制包 ：从官网下载每个组件的二进制包，依次去安装，此方式对于理解 kubernetes 组件更加有效 kubectl 安装 参考: https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-linux/
+kubectl 是 kubernetes 运行命令工具，用于部署应用、监测和管理集群资源以及查看日志。
+# 下载安装 curl -LO &amp;#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&amp;#34; # 添加权限，复制到/bin下，方便全局使用 chmod +x kubectl mkdir -p ~/.local/bin/kubectl mv ./kubectl ~/.local/bin/kubectl # 验证安装是否成功 kubectl version --client kind 安装 官网：https://kind.sigs.k8s.io/
+下载二进制包，无须其它依赖
+https://github.com/kubernetes-sigs/kind/releases</description>
+    </item>
+    
+    <item>
+      <title>第一章 kubernetes 介绍</title>
+      <link>https://yezihack.github.io/posts/k8s-intro/</link>
+      <pubDate>Thu, 28 Oct 2021 14:57:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-intro/</guid>
+      <description>应用部署方式演变 kubernetes简介 kubernetes组件 kubernetes概念 参考 本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+应用部署方式演变 在部署应用程序的方式上，主要经历了三个时代：
+传统部署：互联网早期，会直接将应用程序部署在物理机上
+优点：简单，不需要其它技术的参与
+缺点：不能为应用程序定义资源使用边界，很难合理地分配计算资源，而且程序之间容易产生影响
+虚拟化部署：可以在一台物理机上运行多个虚拟机，每个虚拟机都是独立的一个环境
+优点：程序环境不会相互产生影响，提供了一定程度的安全性
+缺点：增加了操作系统，浪费了部分资源
+容器化部署：与虚拟化类似，但是共享了操作系统
+优点：
+可以保证每个容器拥有自己的文件系统、CPU、内存、进程空间等
+运行应用程序所需要的资源都被容器包装，并和底层基础架构解耦
+容器化的应用程序可以跨云服务商、跨Linux操作系统发行版进行部署
+容器化部署方式给带来很多的便利，但是也会出现一些问题，比如说：
+一个容器故障停机了，怎么样让另外一个容器立刻启动去替补停机的容器 当并发访问量变大的时候，怎么样做到横向扩展容器数量 这些容器管理的问题统称为容器编排问题，为了解决这些容器编排问题，就产生了一些容器编排的软件：
+Swarm：Docker自己的容器编排工具 Mesos：Apache的一个资源统一管控的工具，需要和Marathon结合使用 Kubernetes：Google开源的的容器编排工具 kubernetes简介 ​
+kubernetes，是一个全新的基于容器技术的分布式架构领先方案，是谷歌严格保密十几年的秘密武器 Borg 系统的一个开源版本，于2014年9月发布第一个版本，2015年7月发布第一个正式版本。
+kubernetes的本质是一组服务器集群，它可以在集群的每个节点上运行特定的程序，来对节点中的容器进行管理。目的是实现资源管理的自动化，主要提供了如下的主要功能：
+自我修复：一旦某一个容器崩溃，能够在1秒中左右迅速启动新的容器 弹性伸缩：可以根据需要，自动对集群中正在运行的容器数量进行调整 服务发现：服务可以通过自动发现的形式找到它所依赖的服务 负载均衡：如果一个服务起动了多个容器，能够自动实现请求的负载均衡 版本回退：如果发现新发布的程序版本有问题，可以立即回退到原来的版本 存储编排：可以根据容器自身的需求自动创建存储卷 kubernetes组件 一个kubernetes集群主要是由 控制节点(master)、工作节点(node) 构成，每个节点上都会安装不同的组件。
+master：集群的控制平面，负责集群的决策 ( 管理 )
+ApiServer : 资源操作的唯一入口，接收用户输入的命令，提供认证、授权、API注册和发现等机制
+Scheduler : 负责集群资源调度，按照预定的调度策略将Pod调度到相应的node节点上
+ControllerManager : 负责维护集群的状态，比如程序部署安排、故障检测、自动扩展、滚动更新等
+Etcd：负责存储集群中各种资源对象的信息
+node：集群的数据平面，负责为容器提供运行环境 ( 干活 )
+Kubelet : 负责维护容器的生命周期，即通过控制docker，来创建、更新、销毁容器
+KubeProxy : 负责提供集群内部的服务发现和负载均衡</description>
+    </item>
+    
+    <item>
+      <title>如何搭建博客</title>
+      <link>https://yezihack.github.io/posts/how-blog/</link>
+      <pubDate>Thu, 21 Oct 2021 11:02:22 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/how-blog/</guid>
+      <description>关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>Awesome Go</title>
+      <link>https://yezihack.github.io/posts/awesome-go/</link>
+      <pubDate>Tue, 28 Sep 2021 20:35:09 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/awesome-go/</guid>
+      <description> 收录极好的Golang库及框架，也是本人使用过，认为不错的。分享给大家。
+框架类 名称 网址 Gin Web 框架 https://github.com/gin-gonic/gin Colly 爬虫框架 https://github.com/gocolly/colly 工具类 名称 网址 Gjson 动态获取JSON https://github.com/tidwall/gjson Sjson 动态设置JSON https://github.com/tidwall/sjson 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>Prometheus: Grafana 监控 Node Exporter 主机</title>
+      <link>https://yezihack.github.io/posts/node-exporter/</link>
+      <pubDate>Fri, 24 Sep 2021 17:05:06 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/node-exporter/</guid>
+      <description>node_exporter 安装 监控远程 linux 服务器CPU、内存、磁盘、I/O等信息
+下载慢，请查看软件下载列表
+https://prometheus.io/download/
+cd /usr/local/srcwget https://github.com/prometheus/node_exporter/releases/download/v1.0.1/node_exporter-1.0.1.linux-amd64.tar.gztar -zxvf node_exporter-1.0.1.linux-amd64.tar.gz -C /usr/local/cd /usr/local/mv node_exporter-1.0.1.linux-amd64 node_exportercd node_exporter 运行 先创建 systemd 服务
+cat &amp;gt; /usr/lib/systemd/system/node_exporter.service &amp;lt;&amp;lt; EOF[Unit]Description=node_exporterDocumentation=https://prometheus.io/After=network.target[Service]Type=simpleUser=rootExecStart=/usr/local/node_exporter/node_exporterKillMode=processRestart=on-failureRestartSec=10s[Install]WantedBy=multi-user.targetEOF 刷新 systemd &amp;amp;&amp;amp; 运行 &amp;amp;&amp;amp; 查看
+systemctl daemon-reload # 刷新 systemd 配置systemctl enable node_exporter # 加入开机启动systemctl start node_exporter # 启动服务 systemctl status node_exporter # 查看详情 预览 http://192.</description>
+    </item>
+    
+    <item>
+      <title>Prometheus: 安装</title>
+      <link>https://yezihack.github.io/posts/prometheus-install/</link>
+      <pubDate>Fri, 24 Sep 2021 17:04:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/prometheus-install/</guid>
+      <description>.1. 安装 .1.1. 下载 .1.2. 运行 .1.3. 预览 .1.4. nginx 反向代理 .2. Docker 安装 .3. 关于作者 .1. 安装 .1.1. 下载 prometheus提供二进制,直接解压即可用.由 go 编写
+官网下载: https://prometheus.io/download/
+Centos 64x 选择下载 *linux-amd64.tar.gz
+wget -c https://github.com/prometheus/prometheus/releases/download/v2.18.1/prometheus-2.18.1.darwin-amd64.tar.gz tar -xvf prometheus-2.18.1.darwin-amd64.tar.gz -C /usr/local/ .1.2. 运行 创建 systemd 服务
+--config.file 配置文件 --storage.tsdb.retention 数据保留多少天 --query.max-concurrency 最大并发数 --storage.tsdb.path 数据存储位置 --web.max-connections 最大连接数 cat &amp;gt; /usr/lib/systemd/system/prometheus.service &amp;lt;&amp;lt; EOF [Unit] Description=Prometheus Documentation=https://prometheus.io/ After=network.target [Service] Type=simple ExecStart=/usr/local/prometheus/prometheus \\ --config.file=/usr/local/prometheus/prometheus.yml \\ --web.read-timeout=5m \\ --web.</description>
+    </item>
+    
+    <item>
+      <title>再述 SOLID 原则</title>
+      <link>https://yezihack.github.io/posts/again-solid/</link>
+      <pubDate>Thu, 06 May 2021 16:40:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/again-solid/</guid>
+      <description>再述 SOLID 原则，因为这些原则是设计模式的基石，所有的模式都是基于这些原则展开的。
+单一职责原则 经典定义：应该有且仅有一个原因引起”类“的变更。(不仅仅适应于类，还适应于方法，接口，函数等)
+好处：
+类的复杂性降低，实现什么职责都有清晰的定义。 可读性提高，复杂性降低，那当然可读性提高了。 可维护性提高，可读性提高，那当然更容易维护了。 变更引 起的风险降低，变更是必不可少的，如果接口的单一职责做得好，一个接口修改只对相应的实现类有影响，对其他的接口无影响，这对系统的扩展性、维护性都有非常大的帮助。 一句话：单一职责原则，最重要做到单一职责，类的设计尽量做到只有一个原因引起变化。
+里氏替换原则 经典定义：父类能出现的地方子类就可以出现，而且替换为子类也不会产生任何错误或异常。使用者可能根本就不需要知道是父类还是子类。但是，反过来就不行，有子类出现的地方，父类未必能适应。
+继承即有优点与有缺点，为了平衡引入里氏替换原则。
+继承的优点：
+代码共享，减少创建类的工作量。 提高代码的重用性。 子类可以形似父类，但又异于父类。 提高代码的可扩展性。 提高产品或项目的开放性。 继承的缺点：
+继承是侵入性的。 降低代码的灵活性。 增强了耦合性。 一句话：父类出现的地方子类就可以出现且无异常。反之不行。
+依赖倒置原则 经典定义：高层模块不应该依赖低层模块，两者都应该依赖其抽象。抽象不应该依赖细节。细节应该依赖抽象。
+每一个逻辑的实现都是由原子逻辑组成的，不可以分割的原子逻辑就是低层模块，原子逻辑的再组装就是高层模块。
+抽象是指接口或抽象类，两者都是不能直接被实例化的。
+细节就是实现类，实现接口或继承抽象而产生的类就是细节。
+优点：
+减少类间的耦合性。 易于扩展 依赖的三种写法：
+构造函数传递依赖对象。 Setter 方法传递依赖对象。 接口声明依赖对象即依赖注入。 一句话：面向接口编程。
+接口隔离原则 经典定义：客户端不应该依赖它不需要的接口。或类间依赖关系应该建立在最小的接口上。
+接口要尽量小。 接口要高内聚。 定制服务 。 接口设计是有限度的。 接口的设计粒度越小，系统越灵活 一句话：接口尽量细化，同时接口中的方法尽量少。
+迪米特法则 经典定义：一个对象应该对其他对象有最少的了解。
+只与直接的朋友通信。 朋友间也是有距离的。 尽量不要对外公布太多的 public 方法和非静态的 public 变量。 多使用 private 权限。 是自己的就是自己的。 如果一个方法放在本类中，即不增加类间的关系，也对本类不产生负面影响，那就放置在本类中。 谨慎使用 Serializable 一句话：一个对象应该对自己需要耦合或调用的类知道得最少。
+开闭原则 开闭原则是最基础的一个原则。也是前五个原则的精神领袖。
+经典定义：对修改关闭，对扩展开放。</description>
+    </item>
+    
+    <item>
+      <title>Docker 安装 php 环境</title>
+      <link>https://yezihack.github.io/posts/docker-php/</link>
+      <pubDate>Tue, 06 Apr 2021 11:38:33 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-php/</guid>
+      <description>php 环境需要与 nginx 配合安装，共享 nginx 解析的目录(www)
+基本参数 -d 后台启动 --name 定义一个别名 -v 挂载目录 --link 链接其它 docker 容器名称 安装 php 即安装 php-fpm 环境
+docker search php
+docker run --name dev-phpfpm -v /d/local/nginx/www:/www -d php:5.6-fpm /d/local/nginx/www 这里必须是 nginx 解析的目录，也就是与 nginx 共享目录。 安装 nginx ro 表示只读权限
+docker run --name dev-nginx-php -p 8080:80 -d -v /d/local/nginx/www:/usr/share/nginx/html:ro -v /d/local/nginx/conf.d:/etc/nginx/conf.d:ro --link dev-phpfpm:php nginx /d/local/nginx/www , /d/local/nginx/conf.d是宿主机的目录，可以自定义。 /usr/share/nginx/html, /etc/nginx/conf.d 是 nginx 里的固定目录，不能更改。 --link dev-phpfpm:php 是链接上面的 php 容器，dev-phpfpm是别名，php 是php容器 修改nginx配置文件 /d/local/nginx/conf.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(七) 安装 Redis</title>
+      <link>https://yezihack.github.io/posts/docker-redis/</link>
+      <pubDate>Tue, 23 Mar 2021 11:49:46 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-redis/</guid>
+      <description>下载镜像 docker search redis docker pull redis # 下载最新的 redis 安装脚本 #!/bin/bash ################ # DOCKER 创建 Redis 实例 # ################ name=$1 # Docker 名称 home=$2 # 安装目录 port=6379 # 端口号 host=&amp;#34;0.0.0.0&amp;#34; # 绑定HOST password=&amp;#34;123456&amp;#34; # 密码 # docker 名称必须输入 if test -z $name; then echo &amp;#34;docker name is null&amp;#34; exit 0 fi # 未设置安装目录则默认 /data/docker if test -z $home;then home=/data/docker/ fi # redis 存储目录 redis_home=&amp;#34;${home}redis/&amp;#34; # 持久化存储目录 append_home=&amp;#34;${redis_home}data/&amp;#34; # 配置存储目录 conf_home=&amp;#34;${redis_home}conf/&amp;#34; # 配置文件名 conf_filename=&amp;#34;${conf_home}redis.</description>
+    </item>
+    
+    <item>
+      <title>Systemd 管理 Golang 进程</title>
+      <link>https://yezihack.github.io/posts/systemd-golang/</link>
+      <pubDate>Mon, 15 Mar 2021 20:13:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/systemd-golang/</guid>
+      <description>systemd 脚本 #!/bin/bash project_name=&amp;#34;mygo&amp;#34; project_path=&amp;#34;/data/backend/&amp;#34; exec_path=&amp;#34;${project_path}${project_name}&amp;#34; cat &amp;gt; /lib/systemd/system/${project_name}.service &amp;lt;&amp;lt; EOF [Unit] Description=mygo systemd Documentation=https://yezihack.github.io After=network.target [Service] Type=simple User=root # 启动命令 ExecStart=${exec_path} # 重启命令 ExecReload=/bin/kill -SIGINT # 环境变量 Environment=&amp;#34;SGFOOT_ENV=pro&amp;#34; Environment=&amp;#34;SGFOOT_PATH=/data/conf&amp;#34; KillMode=process Restart=on-failure RestartSec=3s [Install] WantedBy=multi-user.targe EOF 管理 systemctl daemon-reload # 更新配置 systemctl start mygo # 启动 systemctl stop mygo # 停止 systemctl restart mygo # 重启 systemctl enable mygo # 加入开机启动 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>linux 忘记密码</title>
+      <link>https://yezihack.github.io/posts/linux-forget-password/</link>
+      <pubDate>Wed, 03 Mar 2021 15:57:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/linux-forget-password/</guid>
+      <description>启动 使用上下键选择不同的内核（可能有些机器就只有一个内核） 选中内核后，按e 键进入编辑状态 编辑 以下内容都是可以编辑，添加或删除的代码。（谨慎操作） 找到linux16的字符串， 然后再在本行中找到ro的字母，将其替换成rw init=/sysroot/bin/sh 然后按ctrl+x组合键，系统进入emergency(紧急情况)模式 chroot /sysroot/ # 切换回原始系统 LANG=en # 如果出现方块，不是字母的情况下设置成英文语言 passwd root # 对 root 修改密码 touch /.autorelabel # 使SELinux生效，密码生效 exit # 退出 reboot # 重启命令 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>设计模式-设计原则与思想总结(二十)</title>
+      <link>https://yezihack.github.io/posts/gof-think-summary/</link>
+      <pubDate>Fri, 26 Feb 2021 21:12:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-think-summary/</guid>
+      <description>编写高质量代码 代码质量评判标准 面向对象 设计原则 规范与重构 以上脑图来自极客时间
+关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>Iptables 防火墙基础操作(一)</title>
+      <link>https://yezihack.github.io/posts/iptables/</link>
+      <pubDate>Tue, 23 Feb 2021 11:53:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/iptables/</guid>
+      <description> 基于 linxu centos 7
+查看防火墙 iptables 命令大小写敏感
+iptables -nL 添加一条规则 添加一条开放 9090 端口的规则
+# 插入最前面 iptables -I INPUT -p tcp --dport 9090 -j ACCEPT # 追加最后面 iptables -A INPUT -p tcp --dport 9090 -j ACCEPT # 插入某指定位置 iptables -I INPUT 3 -p tcp --dport 9090 -j ACCEPT 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>设计模式-重构-15条编程规范(十九)</title>
+      <link>https://yezihack.github.io/posts/gof-refactor-4/</link>
+      <pubDate>Mon, 22 Feb 2021 19:48:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-refactor-4/</guid>
+      <description>为什么要编程规范 构建一个大型项目，往往是很多人一起参与，堆砌的代码行数都是成千上万行。如何保证代码的健壮性？编程规范必不可少。
+命名 命名能力体现了一个程序员的基本编程素养。
+让你的名字承载更多的信息，把信息装到名字里。
+命名的关键是能准确达意，对于不同作用域的命名，我们可以适当地选择不同的长度。 利用上下文简化命名。 命名要可读，可搜索。如 get, select, set等等。 用具体的名字代替抽象的名字。 检测服务是否可以监听某个给定的TCP/IP端口。 ServerCanStart() 换成 CanListenOnPort() tip: 可以到 github 上找一些相关的项目，看看别人是如何命名的。
+注释 命名很重要，注释跟命名同等重要。注释就是对代码的有力解释。
+注释的内容主要包括三个方面：做什么(what)，为什么(why)，怎么做(how)。
+为什么要写注释呢？
+注释比代码承载的信息更多。 注释起到总结性作用，文档的作用。通过注释大概了解代码的实现思路，阅读起来更加容易。 一些总结性注释能让代码结构更清晰。 对于类和函数一定要写注释，尽量写全面，详细。对于函数内部，可以少写一些。
+代码行数 函数的行数最好不要超过一屏幕。大约在50~80行。
+写长函数时，需要拆分主干逻辑和次要逻辑。抽取公共且独立的处理逻辑。
+一行代码 一行代码最好不要超过IDE显示的宽度。大约在80~100个字符。
+如果超出行数导致换行会影响代码的整洁，不利用阅读。
+空行分割单元块 对于那些影响逻辑的长函数，无法拆分的长函数，为了让逻辑更加清晰，可以使用空行来分割各个代码块。
+代码缩进 Go 语言，使用 gofmt 或 goimports 自动缩进。
+目前有使用两格缩进和四格缩进。主要看你使用的语言业内，主流如何使用。
+如 php 用四格缩进，JAVA 用两格缩进。
+大括号是否另起一行 Go 语言强制使用与函数名同一行。
+目前有使用与函数名同一行或单独占一行。
+主要看你使用的语言业内，主流如何使用。
+如 php 喜欢使用单独占一行。JAVA 喜欢使用与函数名同一行。
+排列顺序 Go 语言，使用 gofmt 或 goimports 自动排序。
+依赖类，按照字母序从小到大排列。 在类中，成员变量排在函数前面。 在函数中，成员排在最上面。 作用域从大到小排列。public &amp;gt; protected &amp;gt; private。 把代码分割成更小的单元块 为什么要分割更小的单元块：</description>
+    </item>
+    
+    <item>
+      <title>设计模式-重构-解耦(十八)</title>
+      <link>https://yezihack.github.io/posts/gof-refactor-3/</link>
+      <pubDate>Sat, 20 Feb 2021 21:22:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-refactor-3/</guid>
+      <description>解耦为何如此重要 解耦是保证代码的松耦合，高内聚。防止代码质量腐化到不可救药地步的有效手段。
+代码”高内聚，松耦合“也就意味着，代码结构清晰，分层和模块化合理，依赖关系简单，模块或类之间的耦合小，代码质量自然就高。
+代码是否需要解耦 判断代码是否符合”高内聚，松耦合”，可以从如下方法判断。
+看修改代码会不会牵一发而动全身。 把模块与模块之间，类与类之间的依赖关系画出来。根据依赖关系图的复杂性判断是否需要解耦重构。 如何给代码解耦 1.封装与抽象 封装和抽象可以有效地隐藏实现的复杂性，隔离实现的易变性，给依赖的模块提供稳定且易用的抽象接口。
+2.中间层 引入中间层能简化模块或类之间的依赖关系。
+我们在进行重构的时候，引入中间层可以起到过渡的作用，能够让开发和重构同步进行，不互相干扰。
+分四个阶段完成接口的修改：
+引入一个中间层，包裹老的接口，提供新的接口定义。 新开发的代码依赖中间层提供的新接口。 将依赖老接口的代码改为调用新接口。 确保所有代码都调用新接口之后，删除掉老的接口。 3.模块化 模块化是构建复杂系统常用的手段。
+将大而复杂的系统拆分成各个独立的模块，让不同人负责不同的模块。
+每个模块之间耦合很小，每个小团队聚集于一个独立的高内聚模块来开发。
+最终像搭积木一样将各个模块组装起来，构建成一个超级复杂的系统。
+4.设计思想和原则 单一职责原则 基于接口而非实现编程 依赖注入 多用组合少用继承 迪米特法则 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>设计模式-重构-单元测试(十七)</title>
+      <link>https://yezihack.github.io/posts/gof-refactor-2/</link>
+      <pubDate>Fri, 19 Feb 2021 21:06:22 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-refactor-2/</guid>
+      <description>什么是单元测试 单元测试是代码层面的测试，由研发自己来编写，用于测试“自己”编写的代码逻辑的正确性。
+单元测试主要测试范围：
+类 函数 单元测试有别于集成测试。
+集成测试主要测试范围：
+模块 系统 功能块 tip: 单元测试是粒度小的测试。考验程序员思维的缜密程度。
+为什么要写单元测试 单元测试能有效地帮你发现代码中的BUG 写代码的最高境界就是 bug free 的状态。 避免低级 bug 的出现。 保证每一行代码运行良好，逻辑正确。 写单元测试能帮你发现代码设计上的问题 如果我很难为其编写单元测试，或者单元测试写起来很吃力，那往往就意味着代码设计得不够合理。 如没有使用依赖注入，大量使用静态函数，全局变量，代码调试耦合等情况。 单元测试是对集成测试的有力补充 集成测试无法覆盖得很全面，复杂系统往往很多模块。需要单元测试加持。 如果我们能保证每个类，每个函数能按照我们的预期来执行，底层bug少了。组装起来的整个系统，bug也相应减少。 写单元测试的过程本身就是代码重构的过程 单元测试实际上就是落地执行持续重构的一个有效途径。 编写单元测试就相当于对代码的一次自我Code Review。 阅读单元测试能帮助你快速熟悉代码 单元测试用例就是用户用例，反映了代码的功能和如何使用。 单元测试是TDD可落地执行的改进方案 单元测试正好是对TDD测试驱动开发的一种改进方案。 如何编写单元测试 每个语言都有不同的写法。如 Golang 只需要以下划线加 test 命名，函数以 Test 开头就是单元测试。
+func TestFunc(t *testing.T) { // todo } 还可以使用第三方提供的单元测试框架。如 GoConvey 。
+写单元测试真的是件很耗时的事情。单元测试代码量一般是被测代码本身的1~2倍 单元测试不会在生产上运行，而且每个类的测试代码比较独立，基本不互相依赖。 单元测试覆盖率做到 60 ~ 70% 之间算合格。GoConvey 也有提供覆盖率的报告。 单元测试不依赖被测试函数的具体实现逻辑，它只关心被测函数实现了什么功能。 tip: 对于函数写不写单元测试，工程师要有足够的主人翁意识(ownership)。 也是拉开与其它人差距的“杀手锏“。
+测试不友好的代码 代码中包含未决行为逻辑 滥用可变全局变量 滥用静态方法 使用复杂的继承关系 高度耦合的代码 关于我 我的博客：https://yezihack.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-重构(十六)</title>
+      <link>https://yezihack.github.io/posts/gof-refactor-1/</link>
+      <pubDate>Thu, 18 Feb 2021 19:48:20 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-refactor-1/</guid>
+      <description>纲要 3W1H
+why 为什么重构 what 重构什么 when 什么时候重构 how 如何重构 重构的定义 软件设计大师 Martin Fowler 这样定义重构：
+“重构是一种对软件内部结构的改善，目的是在不改变软件的可见行为的情况下，使其更易理解，修改成本更低。”
+重构的目的：为什么要重构 (why) 首先，重构是时刻保证代码质量的一个极其有效的手段，不至于让代码腐化到无可救药的地步。
+其次，优秀的代码或架构不是一开始就能完全设计好的。是一个迭代，不断演进的过程。
+最后，重构是避免过度设计的有效手段。
+tip: 初级工程师在维护代码，高级工程师在设计代码，资深工程师在重构代码。
+重构的对象：到底重构什么(what) 根据重构的规模，我们可以笼统地分为大规模高层次重构(大重构)和小规模低层次重构(小重构)。
+大重构：
+重构的范围 系统 模块 代码结构 类与类之间的关系 重构手段 分层 模块化 解耦 抽象可复用组件 重构工具 设计思想 设计原则 设计模式 小重构：
+重构范围 类 函数 变量 重构手段 规范命名 规范注释 消除超大类或函数 提取重复代码 tip:我们重构的对象是软件重个生命周期。
+重构的时机：什么时候重构(when) 重构可以是一刀切，也可以分阶段。我们提倡的策略是持续重构。
+把重构作为我们开发的一部分，见到不符合编码规范，不好的设计，超长函数都可以随时重构一下。成为一种开发习惯，对项目对自己都会很有好处。
+tip: 持续重构意识很重要
+重构的方法：又该如何重构(how) 对于大重构难度比较大，需要有组织，有计划地进行，分阶段地小步快跑，时刻让代码处于一个可运行的状态。
+对于小重构难度相对小，因为影响范围小，改动耗时短，所以只要你愿意并且有时间，随时随地都可以重构。
+tip: 不管大还是小重构，都要保证代码可运行，逻辑正确的状态。
+关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>小狗钱钱</title>
+      <link>https://yezihack.github.io/posts/puppy-money/</link>
+      <pubDate>Sat, 13 Feb 2021 21:50:42 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/puppy-money/</guid>
+      <description>《小狗钱钱》是一本让孩子和家长共同成长的金钱童话，非常有趣，故事性很强，也很容易读。
+本书的副标题：从此拥有财富，开启富足快乐的人生。
+大纲 正视金钱 我们总是有种这样的感觉，我们与财富无关，既然这么想，内心就会对金钱有抵触，觉得自己不可能会变得富有。
+如果我们正视金钱，认为追求生活无忧本就是我们与生俱来的权利。有了足够的金钱，我们能更有尊严地生活，更好地对待自己和他人。如果你听说金钱是万恶之源的话，这是一个大错特错的说法。金钱本身是中性的，主要是看金钱在谁的手里。
+我们要正视金钱，什么都不能阻挡你享有与生俱来的权利，让自己变得富裕。
+一句话: 追求金钱是我们与生惧来的权利。
+明确方向 要想成事，我们必须有目标，否则就是无头苍蝇。而且目标越明确，越容易实现。
+老子说：天下难事，必作于易。天下大事，必做于细。
+首先写出10个你想变得富有的理由，即十个愿望清单。然后仔细看看这张清单，选出最重要的三个愿望。
+人往往想要的太多，能做的太少。三个愿望是让你专注，聚集。
+我们必须明确自己内心的愿望，知道它是什么，才有可能得到它。
+不是写完就完事了，而是每天要读一读你的清单，你的愿望，这样才能把它们真正放在心上，然后你就要开始密切关注和寻找帮助你实现愿望的机会。
+一句话：专注自己的目标方向
+梦想相册 明确了自己的愿望，然后就是制作相册。因为图片比文字更具体，这样会让你想象你实现你的梦想是多么开心的事，多么有成就的事，值得为之奋斗。
+这本书已经出版20年啦，如今我们可以借用自己手机相册，制作同样效果的相册。
+书中提到一些小技巧
+做某事，我们不要说尝试一下，而是直接去做 。因为“尝试”只不过是为失败提前找借口，为自己找退路。 学习新的思想，新的观念。如果一个人总是用同样的方式思考，他永远只能得出同样的结论。 精力集中在哪儿，哪儿就会开花结果。 只有去寻找，才能发现。只有拥有强烈的渴望，才会去寻找。而只有不断地去想象，才会拥有强烈的渴望。 一句话: 智慧的海鸥：在你展翅飞翔之前，你就必须相信自己一定能到达目的地。
+梦想储蓄罐 为你想要实现的愿望准备一个梦想储蓄罐，在梦想储蓄罐上写上你的愿望，把照片贴在储蓄罐上。每月向储蓄罐存入钱。这种方法其实就是视觉法。
+当然我们可以使用手机APP来代替。
+这个方法，更加具象，更加立体，时刻提醒自己，不要忘记自己的梦想。
+一句话:梦想储蓄罐是让自己紧盯目标，经常提醒自己。
+成功日记 成功日记主要是建立自信，因为自信决定着你是否敢去做某事。也是实现梦想的基石。
+坚持写成功日记，就会不断更深入地思考自己，思考世界，思考成功的规律。
+现在行动吧。每天记录5条成果，任何小事都可以。
+那如何才能让自己有更多的成功的事记录呢？答案就是：做自己擅长的事。
+要把精力始终集中在你知道的，能做到的和拥有的东西上。
+更直白的说就是要始终去帮别人解决问题，才能挣到钱。
+那些不知道，不擅长的事，交给别人去做。
+一句话: 成功日记是让你发现更多挣钱的机会，专注自己能做好的事。
+致富经 没有现成的发财路等着我们，但随时随地都能挣到钱，你只要到处看看就能发现机会。
+先从你自己喜欢做的事情上思考，想想如何通过这些事来挣到钱。当然想法别太多，而要集中精力做一件事，会出现神奇的作用。
+一句话：不要总是想那些做不成的事情，而是要多想想什么能做成。
+做重要的事 人们总是十万火急的去做某事，却没有时间考虑真正重要的问题。这是一种悲剧。
+只有你的梦想清单上的事才是重要的事，千万别忘记啦。
+生活虽不易，但三件重要的事必须做：
+即使遇到困难和问题，我们也得实施自己的计划。 只有在出现真正问题时，谁强谁弱才能见分晓。 当一切进展顺利，你也应当坚持做下去。 高兴过头，把自己的计划抛之脑后。实属愚蠢。 72法则。 决定做一件事时，必须在72小时之内开始行动，否则就很有可能再也不会做了。 一句话: 幸运只不过是充分准备加上努力工作的结果。决定做不做一件事，72法则见分晓
+摆脱债务 如果你遇到债务危机的话，尝试以下方法。
+注销所有的信用卡 每个月尽可以少地偿还贷款 除了生活支出，剩下的存起来 这真的有必要吗？ 这句话贴在你的手机上，每次消费时问一问自己。 一句话: 绝不去借债，应该学会如何赚钱，如何理财，做金钱的主人，而不是奴隶。
+金蛋的鹅 我们应该养一只会下金蛋的鹅，为我们下更多更多的金蛋。</description>
+    </item>
+    
+    <item>
+      <title>设计模式-通用系统开发(十五)</title>
+      <link>https://yezihack.github.io/posts/gof-common-dev/</link>
+      <pubDate>Wed, 10 Feb 2021 17:37:59 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-common-dev/</guid>
+      <description> 针对非业务通用框架开发，需要做到尽量通用，适合百变的场景，做到良好的扩展。
+需求分析 功能性需求分析 满足使用者的需求，尽量通用。 借助设计产品线框图工具来罗列需求点。 把最终的数据显示样式画出来，一目了然。 非功能性需求分析 一个通用系统，需要做好良好的兼容性。
+易用性
+框架是否易集成，易插拔，跟业务代码是否松耦合，提供的接口是否够灵活。 性能
+当集成到业务系统的框架里，不会影响业务性能。 做到低延时，内存消耗低。 扩展性
+做到不修改框架源码进行扩展。 做到给框架开发插件一样扩展。 容错性
+非常重要，不能因为框架本身异常导致接口请求错误。
+对外暴露的接口抛出的所有运行时，非运行时异常都要进行捕获处理。
+通用性
+能够灵活应用到各种场景中。 多思考一下，除了当前需求场景，还适合其它哪些场景中。 框架设计 借鉴TDD（测试驱动开发）和 Prototype (最小原型)的思想
+先聚集一个简单的应用场景。 设计实现一个简单的原型。 尽管功能不完善，但它能够看得见，摸得着，比较具体，不抽象，能够很有效地帮助自己缕清更复杂的设计思路，是迭代设计的基础。 在原型系统的代码实现中，我们可以把所有代码都塞到一个类中，暂时不用考虑任何代码质量，线程安全，性能，扩展性等等问题，怎么简单怎么来就行。 最小原型的代码实现虽然简陋，但它帮我们将思路理顺很多。 我们现在就基于它做最终的框架设计。 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>设计模式-业务系统开发(十四)</title>
+      <link>https://yezihack.github.io/posts/gof-business-dev/</link>
+      <pubDate>Wed, 10 Feb 2021 15:13:23 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-business-dev/</guid>
+      <description>纲要 完整的系统流程包括：
+前期的需求沟通分析 中期的代码设计实现 后期的系统上线维护 需求分析 做为技术人员不仅仅是等着产品设计文档，线框图，照着实现就可以。应该参与到产品设计中。具有产品思维，前期应该去市场上调研，参考，借鉴已成熟的产品。充分了解自己公司的产品后，然后再将其糅合到自己的产品中，并做适当的微创新。
+调研产品 充分了解自家产品 微创新 tip: 技术人也要有一些产品思维
+系统设计 合理地将功能划分到不同模块 合理地划分代码可以实现代码的高内聚，低耦合，类与类之间的交互简单清晰，代码整体结构一目了然。
+设计模块与模块之间的交互关系
+同步接口调用 适合上下层之间的关系 异步接口调用 适合同级间的关系 设计模块的接口，数据库，业务模型
+代码实现 前提 数据库和接口设计非常重要，一旦设计好并投入使用之后，这两部门都不能轻易改动。
+改动数据库表结构，需要涉及数据的迁移和适配。 改动接口，需要推动接口的使用都作相应的代码修改。 一定要多花点心思和时间，切不可过于随意。
+业务逻辑代码侧重内部实现，不涉及外部依赖的接口，也不包括持久化的数据，所以对改动的容忍性更大。
+MVC Controller 层负责接口暴露 Repository 层负责数据读写 Service 层负责核心业务逻辑 两种开发模式
+充血 DDD 开发模式 贫血 OOP 开发模式 为什么使用MVC开发 分层能起到代码复用的作用 同一个 Repository 可能会被多个 Service 来调用。 同一个 Service 可能会被多个 Controller 调用。 分层能起到隔离变化的作用 Repository 层封装了对数据库访问的操作，提供了抽象的数据访问接口。 基于接口而非实现编程的设计思想，Service 层使用 Repository 层提供的接口，并不关心底层依赖是哪种具体的数据库。 如果需要替换不同的数据库，只需要修改 Repository 层，Service 层的代码完全不需要修改。 三层的稳定程序也不同。越底层越应该稳定。 分层能起到隔离关注点的作用 Repository 层只关注数据的读写。 Service 层只关注业务逻辑，不关注数据的来源。 Controller 层只关注与外界打交道，数据校验，封装，格式转换，并不关心业务逻辑。 三层之间的关注点不同，分层之后，职责分明，更加符合单一职责原则，代码的内聚性更好。 分层能提高代码可测试性 使用依赖注入方式，采用 mock 数据替代真实数据。 分层能应对系统的复杂性 水平方向基于业务来做拆分，就是模块化。 垂直方向基于流程来做拆分，就是分层。 tip: 对于工作不满意，应该我花点时间在技术上;对于当前工作很满意则多花时间在业务上。</description>
+    </item>
+    
+    <item>
+      <title>Proxy</title>
+      <link>https://yezihack.github.io/posts/proxy/</link>
+      <pubDate>Tue, 09 Feb 2021 10:51:23 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/proxy/</guid>
+      <description>设置GIT代理 // 查看当前代理设置 git config --global http.proxy git config --global https.proxy // 设置当前代理为 http://127.0.0.1:1080 或 socket5://127.0.0.1:1080 git config --global http.proxy &amp;#39;http://127.0.0.1:1080&amp;#39; git config --global https.proxy &amp;#39;http://127.0.0.1:1080&amp;#39; git config --global http.proxy &amp;#39;socks5://127.0.0.1:1080&amp;#39; git config --global https.proxy &amp;#39;socks5://127.0.0.1:1080&amp;#39; // 删除 proxy git config --global --unset http.proxy git config --global --unset https.proxy </description>
+    </item>
+    
+    <item>
+      <title>设计模式-KISS,YAGNI,DRY,LOD 原则(十三)</title>
+      <link>https://yezihack.github.io/posts/gof-principle-other/</link>
+      <pubDate>Mon, 08 Feb 2021 12:21:28 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-principle-other/</guid>
+      <description>纲要 KISS原则 Keep It Simple and Stupid
+尽量保持简单
+代码行数越少就越“简单”吗？
+答案是否定的，实现逻辑需要简单，易维护，不过度优化
+代码逻辑复杂就违背 Kiss 原则吗？
+​	答案也是否定的，需要考虑逻辑复杂度，实现难度，可代码的可读性。
+总结
+不要使用很另类的技术实现代码 不要重复造轮子，善于使用已有的工具类库 不要过度优化 一句话：KISS原则讲”如何做“的问题（尽量保持简单）
+tip: 在开发中不要过度设计，越是能用简单的方法解决复杂的问题，越能体现一个人的能力。
+YAGNI原则 You Ain&amp;rsquo;t Gonna Need It
+你不会需要它
+核心思想：不要做过度设计。
+一句话：YAGNI原则讲”要不要做“的问题（当前不需要的就不要做）
+DRY原则 Don&amp;rsquo;t Repeat Yourself
+不要重复自己，即不要写重复的代码。
+三种典型的代码重复情况：
+实现逻辑重复 实现逻辑重复，但功能语义不重复的代码，并不违反DRY原则。 功能语义重复 实现逻辑不重复，但功能语义重复的代码，也算是违反DRY原则。 代码执行重复 重复执行相同的代码也是违反DRY原则。 代码复用性 三个不同的概念：
+代码复用性(Code Reusability) 表示一段代码可被复用的特性或能力 代码复用(Code Resue) 尽量复用已经存在的代码 DRY原则(Don&amp;rsquo;t Repeat Yourself) 不要写重复的代码 复用和可复用性关注角度不同
+“可复用性”是从代码开发者的角度出发的。
+“复用”是从代码使用者的角度出发的。
+实际上目的是一样的，都是为了减少代码量，提高代码可读性，可维护性。
+提高复用性方法 减少代码耦合 高度耦合的代码，往往是牵一发而动全身。 尽量减少代码耦合，提高代码的复用性。 满足单一职责原则 模块，类，函数尽量职责单一。 越细粒度的代码，代码的通用性会越好，越容易被复用。 模块化 类， 函数要尽量将独立的功能封装成模块。 独立的模块像一块一块积木，更加容易复用，可以直接拿来搭建更加复杂的系统。 业务与非业务逻辑分离 越是跟业务无关的代码越是容易复用。 越是针对特定业务的代码越难复用。 为了复用跟业务无关的代码，将业务与非业务逻辑代码分离，抽取成一些通用的框架，类库，组件等 通用代码下沉 从分层的角度来看，越底层的代码越通用，会被越多模块调用，越应该设计得足够可复用。 避免交叉调用导致关系混乱 只允许上层代码调用下层代码及同层代码之间调用。 杜绝下层代码调用上层代码。 通用的代码尽量下沉到更下层。 继承，多态，抽象，封装 利用继承：可以将公共的代码抽取到父类，子类复用父类的属性和方法。 利用多态：动态地替换一段代码的部分逻辑，让这段代码可复用。 利用抽象：越抽象，越不依赖具体实现，越容易复用。 利用封装：代码封装模块，隐藏可变的细节，暴露不变的接口，就越容易复用。 应用模板等设计模式 使用设计模式，提高代码复用性。 其它 泛型编程，也是提高代码复用性。 复用意识非常重要，时常要多去思考一下，这部分代码是否可以抽取出来，作为一个独立的模块，类或函数供多处使用。 设计每个模块，类，函数的时候，要像设计一个外部API一样，去思考它的复用性。 LOD原则 Low of Demeter</description>
+    </item>
+    
+    <item>
+      <title>设计模式-控制反转IOC.Go实例(十二)</title>
+      <link>https://yezihack.github.io/posts/gof-ioc-code/</link>
+      <pubDate>Mon, 08 Feb 2021 11:23:01 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-ioc-code/</guid>
+      <description>控制反转(IOC) Inversion Of Control
+“控制”是指对程序执行流程的控制
+”反转“ 指没有使用框架之前，程序员自己控制整个程序的执行。在使用框架之后，整个程序的执行流程可以通过框架来控制。流程的控制权从程序员”反转“到了框架。
+tip: 控制反转是指对程序执行流程的控制权交给框架完成。
+Go代码实现 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;sync&amp;#34; &amp;#34;time&amp;#34; ) // 控制反转 ioc // 定义一个发送接口 type Sender interface { Send() // 发送函数 } // 定义一个发送 app 结构体，实现控制反转操作 type SendIoc struct { list chan Sender // 使用 chan 的发送接口 } var ( // 定义一个全局的 Ioc 对象，保证全局唯一 __sendApp *SendIoc __sendAppOnce sync.Once ) func NewSendIoc() *SendIoc { __sendAppOnce.Do(func() { __sendApp = &amp;amp;SendIoc{ list: make(chan Sender, 10), } go __sendApp.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-依赖注入DI.Go实例(十一)</title>
+      <link>https://yezihack.github.io/posts/gof-di-code/</link>
+      <pubDate>Mon, 08 Feb 2021 11:22:56 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-di-code/</guid>
+      <description>依赖注入(DI) Dependency Injection
+不通过 new() 的方式在类内部创建依赖类对象，而是将依赖的类对象在外部创建好之后，通过构造函数，函数参数等方式传递（或注入）给类使用。
+tip: 基于接口而非实现编程
+Go代码实现 package main import &amp;#34;fmt&amp;#34; // DI 依赖注入:Dependency Injection // 定义一个发送接口类 type ManagerSender interface { // 发送类 Send(phone, message string) } // 定义短信发送结构体，实现 ManagerSender 接口 type SmsSender struct { } func (s *SmsSender) Send(phone, message string) { fmt.Printf(&amp;#34;正在使用短信发送消息，手机号:%s,消息内容:%s\n&amp;#34;, phone, message) } // 定义站内发送结构体，实现 ManagerSender 接口 type InboxSender struct { } func (s *InboxSender) Send(phone, message string) { fmt.Printf(&amp;#34;正在使用站内发送消息，手机号:%s,消息内容:%s\n&amp;#34;, phone, message) } // ----------------- 实现注入的代码 -------------------- // 定义一个发消息结构体 type Notification struct { ms ManagerSender } // 将接口赋值给 Notification func NewNotification(m ManagerSender) *Notification { return &amp;amp;Notification{ms: m} } // 实现发消息，使用接口的对象 Send func (n *Notification) SendMessage(phone, message string) { n.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(六) 安装 PHPMyAdmin</title>
+      <link>https://yezihack.github.io/posts/docker-phpmyadmin/</link>
+      <pubDate>Wed, 03 Feb 2021 14:47:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-phpmyadmin/</guid>
+      <description>开发项目涉及到 MySQL时就需要MySQL管理工具, phpmyadmin 是一款网页功能强大的免费软件。
+安装 MySQL 命令方式：
+docker run -itd --name dev_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql docker-compose.yml 方式：
+version: &amp;#39;3&amp;#39; services: mysql: image: &amp;#34;mysql&amp;#34; restart: always container_name: &amp;#34;mysqld&amp;#34; environment: MYSQL_ROOT_PASSWORD: &amp;#34;123456&amp;#34; ports: - &amp;#34;3306:3306&amp;#34; 安装 phpmyadmin 管理 MySQL 的软件
+修改 MySQL 配置 docker exec -it &amp;lt;dockerID&amp;gt; /bin/bash # 进入容器 mysql -u root -p # 进入 mysql # 将root账号（可替换成其他）的host修改为% update mysql.user set host = &amp;#39;%&amp;#39; where user = &amp;#39;root&amp;#39;; # 查看修改结果 select host, user from user; # 刷新加密方式 flush privileges; 安装 phpmyadmin 命令行方式：</description>
+    </item>
+    
+    <item>
+      <title>Jenkins 构建及回滚任务</title>
+      <link>https://yezihack.github.io/posts/jenkins-build-rollback/</link>
+      <pubDate>Wed, 03 Feb 2021 14:47:04 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/jenkins-build-rollback/</guid>
+      <description>以 golang 构建项目为例。
+新建任务 输入一个任务名称 选择：构建一个自由风格的软件项目 可选：也可以复制已创建的任务 确定提交 配置 再次编辑刚创建的任务
+描述 对你的项目进行描述，可以写如下信息。
+项目名称 部署的IP地址 部署远程的目录 日志路径 配置目录及文件名称 启动服务 停止服务 重启服务 等等 Job Notifications 参数化构建过程
+构选： 参数化构建过程
+GIT参数 选项参数 配置“构建” 和 “回滚” 参数。供构建时选择 字符参数 设置填写构建ID号。 源码管理 一般使用GIT，在 branches to build 指定分支使用变量 ${GIT_COMMIT},即参数化构建过程那一步使用的GIT参数名称
+填写有效的 GIT 地址。并使用授权的用户帐号，保证可以访问仓库代码。
+构建 会用到以下二个选项：
+执行Shell Send files or execute commands over SSH 构建项目的SHELL 定义变量 删除或创建目录 判断用户是“构建”还是“回滚”进行区别操作 源码：
+set -x # 定义名称 program_name=go_test # 项目压缩名称 program_filename=${program_name}.tar.gz # 项目路径 target_path=&amp;#34;${WORKSPACE}/target/&amp;#34; # 备份路径 back_path=&amp;#34;${WORKSPACE}/bak/&amp;#34; if [ -f &amp;#34;${back_path}${program_filename}&amp;#34; ];then rm -f ${back_path}${program_filename} fi ls -l $back_path # 当前构建ID的路径 back_path_num=&amp;#34;${back_path}${BUILD_NUMBER}&amp;#34; # 删除前必须判断是否存在 if [ -f &amp;#34;${target_path}${program_filename}&amp;#34; ]; then rm -rf &amp;#34;${target_path}${program_filename}&amp;#34; echo &amp;#34;${target_path}${program_filename} 删除成功&amp;#34; fi # 备份路径不存在则创建 if [ !</description>
+    </item>
+    
+    <item>
+      <title>如何阅读一本书(二)</title>
+      <link>https://yezihack.github.io/posts/how-to-read-a-book-2/</link>
+      <pubDate>Thu, 28 Jan 2021 10:24:09 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/how-to-read-a-book-2/</guid>
+      <description>纲要 基础阅读 从一个孩童的视角切入。共四个阶段，循序渐进。
+阅读准备阶段 身体方面的准备 良好的视力和听力。 起码的认知能力。 语言上的准备 口齿清晰。 个人的准备 与其它人一起学习时，保持注意力。 读一些简单的读物 看图识字。 字句的使用， 词名的含意，字句的发音等等。 快速建立词汇能力 阅读不同领域的书籍，像科学，社会学，语言艺术等等。 保持开放的心灵与好奇心，不断扩大自己的视野，增进阅读量。 精练与增进所学的技巧 此阶段为阅读的成熟阶段
+开始消化阅读的经验 从一本书所提出来的一个观点转化到另一个观点。 在同一个主题上，对不同的作者所提出来的观点作比较。 检视阅读 检视阅读，才算是真正进入阅读的层次。
+必须精通基础阅读，否则没法进入检视阅读层次。
+略读的作用：
+略读的目标是发现这本书值不值得花时间仔细阅读， 略读也能告诉你许多这本书有关的事。
+略读的阅读 这是一种非常主动的阅读，需要集中精神来阅读。
+先看书名页， 然后看序 特别注意副标题。 序囊括了这本书大部分的观点与内容。 在大脑里给这本书归个类。 研究目录页 对这本书的基本架构做概括性的理解。 检阅书中附有的索引 判断出这本书里的重要词汇，关系到作者的意图与态度。 了解下出版社和作者的背景 一个好的出版社会对他出版的图书背书的。 作者的背景与经历决定着这本书的高度。 挑几个看来跟主题息息相关的篇章来看 检阅这本书写得如何。 把书打开来，东翻翻西翻翻，念上一两段，有时候连续读几页，但不要太多 随时寻找主要论点的讯号，留意主题的基本脉动。 不要忽略最后的两三页，代表着一本书的收尾。 tip: 通过以上步骤有系统地略读过一本书，完成第一种型态的检视阅读。时间控制在一小时内完成。最后决定这本书是否值得继续投下时间与注意。
+粗浅的阅读 对于一本难懂的书，阅读的规则：
+头一次面对一本难讲的书的时候，从头到尾先读完一遍，碰到不懂的地方不要停下来查询或思索。
+略过那些不懂的部分，直到读到你看得懂的地方，集中精神在这个部分，继续这样读下去。 将全书读完，不要被一个看不懂的章节，注解，评论或参考资料阻挠或泄气。 如果你让自己被困住了，如果你容许自己被某个顽固的段落绑住了，你就是被打败了。 在读第二遍的时候，你对那个地方的了解可能会多一些，但是在那之前，你必须至少将这本书先从头到尾读一遍才行。 从头到尾读一遍之后比你让自己在一碰上困难的地方就停止要好很多，后者让你对这本书真的一无所知。 阅读的速度：
+​	检视阅读是一种训练有素的快速阅读。懂得能快速读，也能用不同速度来阅读。
+tip: 每一本书，不论是多么难读的书，在无关紧要的间隙部分就可以读快一点。而一本好书，总会包含一些比较困难的内容，应该慢慢阅读内容。
+逗留与倒退：
+许多人会从最初学会阅读之后，多年一直使用“半出声(sub-vocalize)”的方式来阅读。
+此外还有些阅读者，在阅读一行字的时候会在五六个地方发生“逗留(fix-ate)”。
+更糟的是，不熟练的阅读者在每看过两三行之后，眼睛就自然地“倒退”到先前读过的句子上去。
+以上这些现象或习惯不但浪费时间而且降低阅读的速度。
+我们的头脑跟眼睛不一样，并不需要一次只“读”一个字或一个句子。我们的头脑是个惊人的工具，可以在“一瞥”之间掌握住一个句子或段落。
+矫正眼睛逗留的有效方法：</description>
+    </item>
+    
+    <item>
+      <title>如何阅读一本书(一)</title>
+      <link>https://yezihack.github.io/posts/how-to-read-a-book/</link>
+      <pubDate>Wed, 27 Jan 2021 19:53:05 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/how-to-read-a-book/</guid>
+      <description>阅读的艺术 阅读是一件主动的事，而非被动。
+阅读的误区 太多的资讯就如同太少的资讯一样, 都是一种对理解力的阻碍.
+我们在这个互联网上接触的到的音频,视频及文章等等, 都是一些经过太精心的设计, 使得思考形同没有需要了, 长期接受这样的信息会对我们的理解力产生阻碍.
+tip: 远离二手信息, 直击源头知识.
+主动的阅读 阅读越主动, 效果越好.
+任务一种阅读都是一种活动, 那就必须要有一些主动的活力. 完全被动, 就阅读不了&amp;ndash; 我们不可能在双眼停滞, 头脑昏睡的状况下阅读.
+第一提醒读者: 阅读可以是一件主动的事. 第二提醒读者: 阅读越主动, 效果越好. 一个读者更主动一些, 在阅读的世界里探索能就更强一些, 收获更多一些, 因而也更高明一些.
+读者对他自己, 以及面前的书籍, 要求的越多, 获得的就越多.
+阅读的目标 以获得知识而读, 以及为求得理解而读.
+一本书摆在你面前, 想要与你沟通一些想法. 你要能成功地阅读这本书, 完全看你能接获多少作者要要传达的讯息.
+只有一种方式是真正地在阅读:
+没有任何外力的帮助, 你就是要读这本书. 你什么都没有, 只凭着内心的力量, 玩味着眼前的字句, 慢慢地提升自己,从只有模糊的概念到更清楚地理解为止. 这样的一种提升, 是在阅读时的一种脑力活动, 也是更高的阅读技巧. 这种阅读就是让一本书向你即有的理解力做挑战。
+两种不同意义的阅读:
+第一种：阅读网文, 杂志, 公众号等, 凭我们的阅读技巧与聪明才智, 一下子便融会贯通. 这样的读物能增加我们的资讯, 却不能增进我们的理解力。 因为在开始阅读之前， 我们的理解力就已经与他们完全相当了。 否则我们一路读下去会被卡壳的。 第二种：试着读某样一开始并不怎么了解的东西。这个东西的水平就是比阅读的人高上一截。这个作者想要表达的东西， 能增进读者的理解力。 增进理解而阅读的两种状况：
+第一是一开始时不相等的理解程度。 其次，阅读的人一定要把不相等的理解力克服到一定程度之内。一旦达到相同的理解程序，就完成了清楚的沟通。 tip: 我们只能从比我们&amp;quot;更高&amp;quot;的人身上学习。我们一定要知道他们是谁， 如何跟他们学习。</description>
+    </item>
+    
+    <item>
+      <title>设计模式-SOLID五大原则(十)</title>
+      <link>https://yezihack.github.io/posts/gof-solid/</link>
+      <pubDate>Mon, 25 Jan 2021 21:03:38 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-solid/</guid>
+      <description>[TOC]
+SOLID原则包括单一职责，开闭原则，里氏替换原则，接口隔离原则，依赖倒置原则。
+单一职责原则(SRP) SRP: Single Responsibility Principle
+A class or module should have a single reponsilibility.一个类或者模块只负责完成一个职责(或者功能)
+一个类只负责完成一个职责或功能, 也就是说, 不要设计大而全的类, 要设计粒度小, 功能单一的类.
+换个角度来讲就是. 一个类包含了两个或两个以上业务不相干的功能, 我们就说它的职责不够单一, 应该将它拆分成多个功能更加单一, 粒度更细的类.
+如何判断类是否单一 类中的代码行数,函数或者属性过多. 类依赖的其它类过多, 或者依赖类的其它类过多, 不符合高内聚, 低耦合的设计思想. 私有方法过多 比较难给类起一个合适的名字 类中大量的方法都是集中操作类中的某几个属性. 如何设计单一类 技巧: 持续重构. 没有一尘不变的设计
+单一职责原则通过避免设计大而全的类, 避免将不相关的功能耦合在一起, 来提高类的内聚性. 同时类职责单一, 类依赖和被依赖的其它类也会变少, 减少了代码的耦合性, 以此来实现代码的高内聚, 低耦合.
+但是, 如果拆分得过细, 实际上会适得其反, 反倒会降低内聚性, 也会影响代码的可维护性.
+开闭原则(OCP) OCP: Open Closed Priciple
+Software entities (modules, classes, functions, etc.) should be open for extension, but closed for modification.</description>
+    </item>
+    
+    <item>
+      <title>GitHub 徽章制作</title>
+      <link>https://yezihack.github.io/posts/badge/</link>
+      <pubDate>Fri, 22 Jan 2021 14:23:07 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/badge/</guid>
+      <description>很早前写过一篇关于Golang持续集成服务之Travis教程, 今天再写写关于 github 上常见的徽章是如何制作的. 让你的开源项目更高大上, 让你的代码也更健壮.
+徽章的含意 当你浏览一个开源项目时,看到各种徽章, 有些徽章是直接反应这个开源库的质量和完整性等等.
+如上图所示
+第一个徽章即 Github 自带的 workflow 提供的持续集成(CI)和持续部署(CD), 官方称之为 Actions, 图示显示为 CI, CD 是否通过 第二个徽章即 Codecov 是一个测试结果分析工具, 图标显示测试覆盖率. 第三个徽章即 shields.io 一个可以自定义徽章的网站 第四个徽章即 goreportcard 是一个项目综合评分网站 第五个徽章即 gitter 自定义讨论组的网站 CI&amp;amp;CD 徽章 github 于2018. 10月推荐 GitHub Actions 持续集成服务, 在此之前大家都是使用 https://travis-ci.org/ 持续集成服务, 之前我也写过相关文章. Golang持续集成服务之Travis教程.
+持续集成和持续部署目前 github 官方自带支持, 官方称之为 GitHub Actions.
+只要你在 github 上创建一个开源项目仓库就自带 Actions 功能, 支持各种语言. 还可以自动发布 GitHub Pages 等功能, 十分强大.
+如何使用可以参考阮一峰写的GitHub Actions 入门教程
+关于GO的持续集成服务模板参考:
+使用 GitHub Actions 后会在你的项目里自带生成一个.</description>
+    </item>
+    
+    <item>
+      <title>Go 优雅追踪堆栈错误包</title>
+      <link>https://yezihack.github.io/posts/go-library-error/</link>
+      <pubDate>Thu, 21 Jan 2021 14:42:08 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/go-library-error/</guid>
+      <description>Golang tracks stack error package. 优雅追踪堆栈错误包
+安装(Install) go get github.com/yezihack/e 介绍(Introduction) github.com/yezihack/e 项目是一个优雅地追踪你的堆栈信息.方便存储日志里. 而且还扩展了error包,自定义 code,msg 信息.
+特色(Features) 优雅地追踪堆栈错误信息
+基于github.com/pkg/errors包进行封装 支持 code, msg 自定义错误码和错误信息 方便存储日志json文件 堆栈信息以人性化展示 文档(Documentation) https://godoc.org/github.com/yezihack/e
+简单使用(Use) package main import ( &amp;#34;github.com/yezihack/e&amp;#34; &amp;#34;log&amp;#34; ) func foo() error { return e.New(&amp;#34;foo&amp;#34;) } func main() { err := foo() if err != nil { // 需要判断是否是自定义error, 否则无法输出堆栈信息. if e.Assert(err) { log.Println(e.Convert(err).ToStr()) // 输出字符串形式 log.Println(e.Convert(err).ToArr()) // 输出数组形式 } else { log.Println(err) // 系统的 error } } } 与原堆栈信息对比 github.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-充血模式(九)</title>
+      <link>https://yezihack.github.io/posts/gof-ddd/</link>
+      <pubDate>Thu, 14 Jan 2021 14:37:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-ddd/</guid>
+      <description> 充血模式即领域驱动设计(Domain Driven Design, 简称 DDD)
+贫血模式 在之前我们写一篇关于贫血模式的文章, 点击查看.
+贫血模式是目前主流的一种开发模式, 基于MVC结构的开发模式.
+MVC三层架构中
+M 表示 Model 即数据层 V 表示 View 即展示层 C 表示 Controller 即逻辑层 做为后端开发MVC有所调整
+1. Model 层 负责数据访问2. Service层 负责业务逻辑3. Controller层 负责暴露接口 </description>
+    </item>
+    
+    <item>
+      <title>孩子是如何认识世界的?</title>
+      <link>https://yezihack.github.io/posts/kids-piaget/</link>
+      <pubDate>Wed, 13 Jan 2021 15:21:16 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kids-piaget/</guid>
+      <description>让.皮亚杰 瑞士人，近代最有名的发展心理学家，他的认知发展学成为了这个学科的典范。
+20世纪最伟大的心理学家. 与弗洛伊德称为心理学史上两位巨人。
+主要贡献是对儿童的心理发展做了全面的解释, 不同于成熟论与外铄论, 这些理论都不足以让人信服, 直到让.皮亚杰提出认识发展理论提出.也称之为建构主义.
+皮亚杰认为孩子的认知不是被动的,而是个体与环境相互交互的时候形成的, 孩子们都是天生的科学家与哲学家. 他们有一套非常神奇的认识外界的方法. 就象小树苗一样是有所选择的接受外界的营养.
+理论 图式理论 认知发展的核心理论.
+孩子从婴儿时期什么也不懂, 只知道喝奶, 这叫遗传图式, 而有一个人总是给他喂奶, 建立起妈妈的概念, 妈妈就是总喂奶的那个人. 就这样通过外界不断刺激下建构成自己的一个一个的图式.
+图式主要是通过外界对自身的刺激在自己的大脑里形成一个个概念, 即是建构图式
+Tip: 图式具有对客体信息进行整理,归类.改造和创造功能,以使主体有效地适应环境.
+同化理论 同化过程是对图式量的提升
+同化是指遇到外界刺激后他们尝试着使用自己的这个图式去理解外界, 希望把外界纳入到原有的图式之中. 这个过程称之为同化
+例:　如对狗的认识, 如吉娃娃狗的图式概念, 知道他长着四条脚, 一个尾巴, 会旺旺的叫, 下次遇到哈士奇, 就会使用这个图式解释他,也就是说他会把这个图式进行同化成为之前图式的一部分, 图式也得到的发展与巩固. 但是遇到一只猫时, 他使用同样的方式解释时, 妈妈告诉他这不是一条狗, 是一只猫. 这个时候孩子就混乱啦, 然后旁边的妈妈解释给他听, 猫的嘴巴上有长长的胡须, 还会喵喵的叫, 这个叫猫. 此时孩子会在大脑中重新构建新的图式概念, 这个过程是一种顺应.
+同化是一个非常重要的概念, 只有对一个图式不断的同化,得到量的积累, 才会得以建立更加完善, 更加巩固. 成年人学习一个新知识也是一样, 需要不断的同化过程, 也就是需要做相关练习, 多加应用, 得到更多的同化过程, 你的知识图式才会更加牢固完美.
+同化过程是对图式量的提升
+Tip: 中国俗语称: 熟能生巧.
+顺应理论 构建新图式的过程
+外界的刺激不可能永远可以用同样的图式去解释，顺应是指同化失败后, 产生混乱时重新构建新的图式的一个过程. 如上面所说的猫的认识过程.</description>
+    </item>
+    
+    <item>
+      <title>工程师-定律(三)</title>
+      <link>https://yezihack.github.io/posts/engineer-law/</link>
+      <pubDate>Tue, 12 Jan 2021 09:42:28 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/engineer-law/</guid>
+      <description>朴实定律 程序应该熟悉的常用定律法则
+二八定律 二八定律是指在任何一组东西中, 最重要的只占其中一小部分, 约20%. 其余80%尽管是多数, 却是次要的.
+如世界上的财富分配也属于二八定律, 20%人的撑握着世界80%的财富.
+工程定律 海恩法则 是德国飞机涡轮机的发明者德国人帕布斯.海恩提出的一个在航空界关于飞行安全的法则.
+海恩法则: 指任务不安全事故都是可以预防的.
+海恩法则强调两点:
+一是事故的发生是量的积累的结果 二是再好的技术, 再完美的规章, 在实际操作层面, 也无法取代人自身的素质和责任心. Tip: 软件行业也是如些, 生产上的程序出现故障, 也符合海恩法则.
+墨菲定律 事情往往会向你所想到的不好的方向发展.只要有这个可能性.
+比如你衣袋里有两把钥匙, 一把是房间的, 一把是车的, 如果你现在想拿车钥匙, 会发生什么呢?是的, 你往往是拿错了房间钥匙.
+Tip: 如果做某项工作有多种方法, 而其中一种方法将导致事故, 那么一定有人会按这种方法去做.
+康威定律 设计系统的架构受制于产生这些设计的组织的沟通结构
+&amp;mdash; M.Conway
+即系统设计本质上反映了企业的组织机构.
+系统各个模块间的接口也反映了企业各个部门之间的信息流动和合作方式.
+Tip: 系统设计的结构必定反映其团队的组织结构
+管理定律 SMART 原则 Smart 原则是目标管理中的一种方法.
+由五个字母组成
+S (Specific) 明确性: 指目标必须是明确的, 具体的.不能笼统. M (Measurable) 可衡量: 目标可以量化, 有计划的, 数据支撑. A (Achievable) 可达成: 付出努力的情况下可以实现你的目标, 避免设立过高或过低的目标. R (Relevant) 相关性: 指目标与那些还有关联, 需要配合, 辅助你完成目标.</description>
+    </item>
+    
+    <item>
+      <title>工程师-阅读(二)</title>
+      <link>https://yezihack.github.io/posts/engineer-read/</link>
+      <pubDate>Tue, 12 Jan 2021 09:40:24 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/engineer-read/</guid>
+      <description>技术书籍 推荐参考: &amp;laquo;豆瓣编程图书TOP10&amp;raquo;
+程序员修炼之道(第2版) 豆瓣分:9.0
+原英文名&amp;laquo;The Pragmatic Programmer&amp;raquo; 直译为: 务实的程序员, 即靠谱的程序员.
+这是一本如同航海的指南般的书, 被一代代开发者奉为圭臬.
+已经出版20年啦, 当之无愧的&amp;quot;道&amp;quot;, 可惜在国内出现各种修炼之道相关的书籍, 内容干货少之又少, 实在汗颜.
+深入理解计算机系统(第2版) 豆瓣分: 9.7
+原英文名Computer Systems: A programmer&amp;rsquo;s Perpective
+工程师人人必读之书, 没有之一.
+本书最大的优点是从程序员的视角详细阐述计算机系统的本质概念.
+主要包括: 1. 信息的表示和处理 2. 程序的机器级表示 3. 处理器体系结构 4. 优化程序性能 5. 存储器层次结构 6. 链接 7. 异常控制流 8. 虚拟存储器 9. 系统级I/O 10. 网络编程 11. 并发编程
+Tip: 书比较厚, 读之前做好心理准备, 打硬仗.
+代码大全(第2版) 豆瓣分: 9.3
+原英文名称&amp;laquo;Code Complete&amp;raquo; 完成代码, 是一种教你如何一步一步完成开发.
+这本书覆盖了软件全过程, 从需求分析, 系统架构,设计到具体编码规范, 编码技巧, 整个项目的生命周期. 是一部软件构建的百科全书.
+重构:改善即有代码的设计(第2版) 豆瓣分:9.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-接口组合(八)</title>
+      <link>https://yezihack.github.io/posts/gof-interface-combination/</link>
+      <pubDate>Mon, 11 Jan 2021 20:23:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-interface-combination/</guid>
+      <description> 有一种非常经典的设计原则: 组合优于继承, 多用组合少用继承
+为什么少用继承 继承是面向对象的四大特性之一, 表示类之间的 is-a 关系. 支持多态特性, 可以解决代码复用问题.
+如果继承层次过深, 过复杂, 会影响到代码的可维护性, 可读性.
+如上面, 继承带来的后果就是代码变得复杂, 因为层次过深, 继承关系过于复杂, 影响到代码的可读性与可维护性.
+组合的优势 可以利用组合(composition), 接口(interface), 委托(delegation) 三个技术手段解决继承的问题.(如上面的问题)
+利用接口实现多态特性
+利用组合和委托实现代码复用问题
+通过组合, 接口, 委托三个技术手段完全可以替换掉继承.
+Tip: 在项目中不用或少用继承关系, 特别是一些复杂的继承关系 .
+什么时候使用继承还是组合 一个技术的出现, 一定是有他的用武之地, 并非一无是处.
+当类之间的继承结构稳定, 继承层次比较浅(最多有两层继承关系), 我们可以大胆使用继承.
+当类之间的继承结构不稳定, 复杂, 继承层次又深,我们尽量考虑使用组合来替代继承
+哪些设计模式使用了继承?
+装饰者模式(decorator pattern) 策略模式(strategy pattern) 组合模式(composite pattern) 哪些设计模式使用了组合?
+模板模式(template pattern) </description>
+    </item>
+    
+    <item>
+      <title>设计模式-接口编程(七)</title>
+      <link>https://yezihack.github.io/posts/gof-program-to-interface/</link>
+      <pubDate>Mon, 11 Jan 2021 11:38:43 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-program-to-interface/</guid>
+      <description>何为&amp;quot;接口&amp;quot;编程 基于接口而非实现编程.
+英文: Program to an interface, not an implementation
+这条原则是一条比较抽象,泛化的设计思想.
+接口的本质: 接口就是一组协议或者约定, 是功能提供者给使用者的一个&amp;quot;功能列表&amp;quot;
+接口编程 这条原则能非常有效地提高代码质量.
+接口编程是将接口与实现相分离, 封装不稳定的实现, 暴露稳定的接口.
+上游系统面向接口而非实现编程, 不依赖不稳定的实现细节. 当实现发生变化的时候, 上游系统基于上不需要做改动, 以些来降低耦合性,提高扩展性.
+在软件开发中, 最大的挑战之一就是需求的不断变化, 这也是考验代码设计的好坏的一个标准.
+越抽象, 越顶层,越脱离具体某一实现的设计, 越能提高代码的灵活性, 越能应对未来的需求变化.
+好的代码设计, 不仅能应对当下的需求, 而且在将来需求发生变化的时候,仍然能够在不破坏原有代码设计性况下奶灵活应对.
+而抽象就是提高代码扩展性, 灵活性, 可维护性最有效的手段之一
+接口编程要点 函数的命名不能暴露任何实现细节 封装具体的实现细节 为实现类定义抽象接口. Tip: 做开发的时候, 一定要有抽象意识, 封装意识, 接口意识. 在定义接口的时候, 不要暴露任何实现细节.
+接口的定义只表明做什么, 而不是怎么做.
+什么时候使用接口 任何事物都有两面, 一味使用接口编程会导致不必要的开发负担.具体要搞清楚我们为了解决什么问题.
+如果业务场景中, 某个功能只有一种实现方式, 未来也不可能被其它实现方式替换,则我们没必要设计接口.也没必须基于接口编程.直接使用类即可.
+如果业务场景中, 某个功能可能被两种以上, 不</description>
+    </item>
+    
+    <item>
+      <title>设计模式-贫血模式(六)</title>
+      <link>https://yezihack.github.io/posts/gof-mvc/</link>
+      <pubDate>Fri, 08 Jan 2021 14:02:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-mvc/</guid>
+      <description>贫血开发模式 传统的MVC结构分为: Model 层, Controller 层, View层.
+而做为前后端分离的MVC变为后端被分为: Controller, Service, Model 层.
+Controller 层负责暴露接口给前端调用. Service 层负责核心业务逻辑 Model 层负责数据读写 以上为典型的面向过程的编程风格.也称为分血模式的开发模式
+这也是我们现在非常常用的一个 Web项目的开发模式.
+Tip: 与之相对是充血开发模式即DDD, 也称领域驱动设计
+面向过程VS面向对象 面向过程编程风格是一种符合我们人脑思维方式. 如同在生活中, 你去完成一个任务:
+先做什么 后做什么 最后完成整个任务 面向对象编程风格是一种自底向上的思维方式, 它不是先去按照执行流程来分解任务:
+先将任务翻译成一个一个小的模块(也就是类) 然后设计类之间的交互 最后按照流程将类组装起来 完成整个任务 面向过程与面向对象是互相协作完成整个项目的
+面向过程编程是面向对象编程的基础 面向对象编程离不开基础的面向过程编程. 如一个方法的实现逻辑即是一个面向过程的逻辑. Tip: 我们编程最终的目的是写出易维护, 易读, 易复用, 易扩展的高质量代码.
+面向对象编程常见的坑 面向对象的封装特性的本质就是通过设置访问权限隐藏代码
+随意设置 Public 权限
+解决方法: 慎重使用 Public , 使用之前询问自己 为什么要开放 开放会带来哪些后果. 滥用全局变量和全局方法
+从分配内存空间: 全局变量, 静态局部变量, 静态全局变量都在静态存储区分配空间, 而局部变量在栈分配空间. 从作用域来看: 破坏边界, 不利后续调试等. 常用的面向过程场景 编写Shell 脚本. 数据处理 算法为主, 数据为辅.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-封装,抽象,继承,多态的作用(五)</title>
+      <link>https://yezihack.github.io/posts/gof-oop/</link>
+      <pubDate>Thu, 07 Jan 2021 19:40:53 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-oop/</guid>
+      <description>封装, 抽象, 继承, 多态 是面向对象编程语言的四大特性. 而它们又分别承担什么职责呢. 实际编程中起什么作用呢.
+封装 (Encapsulation) 封装也称信息隐藏或者数据访问保护. 通过对变量, 函数或类进行设置访问权限.控制它们的对外访问限制.从而保护它们不被随便修改.
+作用 封装如同一把智能锁
+隐藏信息 保护数据 提高易用性 防止恶意修改 抽象 (Abstraction) 抽象是指如何隐藏方法的具体实现, 让调用者只关心方法提供了哪些功能, 并不需要知道这些功能是如何实现的.
+抽象并不需要非得依靠接口类或抽象类这些特殊语法机制来支持. 如类的方法是通过编程语言中的&amp;quot;函数&amp;quot;这一语法机制来实现的, 通过函数包裹具体的实现逻辑, 这本身就是一种抽象. 调用者在使用函数时,只需要了解函数命名, 注释或者文档, 不需要研究函数内部具体实现. 直接就可以使用.
+作用 抽象无处不在
+简化复杂逻辑 隐藏具体实现 Tip: 抽象是一个非常通用的设计思想, 并不单单用在面向对象编程中, 也可以用来指导架构设计等
+继承 (Inheritance) 继承是用来表示类之间的is-a关系.
+继承分两种模式:
+单继承 一个子类只继承一个父类 多继承 一个子类可以继承多个父类 作用 继承并非一剂良药, 请勿过度使用. 更加推荐&amp;quot;多用组全少用继承&amp;quot;的思想.
+代码复用 多态 (Polymorphism) 多态是指子类可以替换父类.
+实现多态特性
+继承+方法重写 接口类语法 duck-typing 只有一些动态语言才支持, 如python, javascript 作用 多态会72变
+提高扩展性 提高复用性 Tip: 多态也是很多设计模式,设计原则,编程技巧的代码实现基础, 如策略模式, 基于接口而非实现编程, 依赖倒置原则, 里式替换原则, 利用多态去掉冗长的if-else语句等等.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-学习地图(四)</title>
+      <link>https://yezihack.github.io/posts/gof-map/</link>
+      <pubDate>Mon, 04 Jan 2021 19:35:56 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-map/</guid>
+      <description>学习之前先罗列一下学习框架地图. 方便今后的学习.
+三种编程范式 面向过程
+面向对象(最主流)
+函数式编程(如go语言)
+面向对象7大知识点 面向对象的四大特性: 封装, 抽象, 继承, 多态 面向对象编程与面向过程编程的区别和联系 面向对象分析, 面向对象设计, 面向对象编程 接口与抽象的区别以及各自的应用场景 基于接口而非实现编程的设计思想 多用组合少用继承的设计思想 面向过程的贫血模型和面向对象的充血模型. 设计原则 SRP 单一职责原则 OCP 开闭原则 LSP 里式替换原则 ISP 接口隔离原则 DIP 依赖倒置原则 其它原则 DRY 原则 Don&amp;rsquo;t repeat yourself 不要重复自己 出现两次或多次的重复代码就需要提取出来 KISS 原则 Keep It Simple, Stupid 保持简单, 愚蠢 KISS原则使代码简单、清晰、易于理解 编程语言是为人类所理解的 保证你的方法尽量很小； 每个方法都不应该超过40-50行代码 每个方法应该只解决一个小问题，而不是实现很复杂的功能 YAGNI 原则 You aren&amp;rsquo;t gonna need it 你不会需要它 这是&amp;ldquo;极限编程&amp;rdquo;提倡的原则，指的是你自以为有用的功能，实际上都是用不到的。 LOD 原则 迪米特法则（Law of Demeter）又叫作最少知识原则 不和陌生人说话 迪米特法则的初衷在于降低类之间的耦合 门面模式（Facade）和中介模式（Mediator），都是迪米特法则应用的例子 设计模式 经典设计模式有23种.</description>
+    </item>
+    
+    <item>
+      <title>设计模式-如何评价代码质量好坏?(三)</title>
+      <link>https://yezihack.github.io/posts/gof-check-code/</link>
+      <pubDate>Tue, 29 Dec 2020 20:56:04 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-check-code/</guid>
+      <description>评价常用词汇 描述代码质量所有常用词汇
+最常用的评价标准 评价属于主观, 主观的准确度与工程师自身经验有极大的关系. 接下来我们从以下几个维度评价代码, 也是更为常见的维度.
+其中可维护性, 可读性, 可扩展性最重要的三个评价标准
+1. 可维护性 (maintainability) 易维护的代码是指在不破坏原有的代码设计, 不引入新的Bug的情况下, 能够快速地修改或者添加代码.
+不易维护的代码是指修改或者添加代码需要冒着极大的引入新Bug的风险,并且需要花费大量很长的时间才能完成
+2. 可读性 (readability) 软件设计大师 Martin Fowler 金句: &amp;ldquo;Any fool can write code that a computer can understand. Good programmers write code that humans can understand.&amp;rdquo;
+任何傻瓜都会编写计算机能理解的代码, 好的程序员能够编写人能够理的代码
+代码的可读性是评价代码质量最重要的指标之一
+我们编写代码的时候, 时刻要考虑到代码是否易读, 易理解.
+除此之外, 代码的可读性在非常大程度上影响代码的可维护性.
+以下为评介一段代码的可读性的几个维护
+编码是否规范 命名是否达意 注释是否详尽 函数是否长短合适 模块划分是否清晰 是否符合高内聚合低耦合 Tip: Code review 是一个很好的测验代码的可读性手段.
+3. 可扩展性 (extensibility) 可扩展性也是一个评价代码质量非常重要的标准
+它表示我们的代码应对未来需求变化的能力.
+易扩展是指在不修改或少量修改原有的代码情况下, 通过扩展方式添加新的功能代码.
+不易扩展是指添加一个功能而大动干戈, 改动大量的原始代码.</description>
+    </item>
+    
+    <item>
+      <title>鲁班工具之 Markdown 生成目录(一)</title>
+      <link>https://yezihack.github.io/posts/toc/</link>
+      <pubDate>Thu, 24 Dec 2020 17:06:46 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/toc/</guid>
+      <description> 命令行对 markdown 生成目录结构, 主要解决 markdown 不自动生成目录的困扰. 即[TOC]不支持.
+工具源码 https://github.com/ekalinin/github-markdown-toc.go
+下载安装 $ wget https://github.com/ekalinin/github-markdown-toc.go/releases/download/1.1.0/gh-md-toc.linux.amd64.tgz $ tar xzvf gh-md-toc.linux.amd64.tgz gh-md-toc $ ./gh-md-toc --version 1.1.0 mac
+brew install github-markdown-toc 使用方式 gh-md-toc README.md * [音乐开关，true/false](#音乐开关truefalse) * [只支持163的音乐，在生成外链播放器获取ID](#只支持163的音乐在生成外链播放器获取id) * [是否自动播放 1是，0否](#是否自动播放-1是0否) * [weight: 1](#weight-1) * [description: &amp;#34;&amp;#34;](#description-) * [镜像介绍](#镜像介绍) * [获取镜像](#获取镜像) * [查看镜像](#查看镜像) * [查找镜像](#查找镜像) * [删除镜像](#删除镜像) * [清理镜像](#清理镜像) * [创建镜像](#创建镜像) * [基本已有镜像](#基本已有镜像) * [基于Dockefile创建](#基于dockefile创建) * [导入与导出镜像](#导入与导出镜像) * [导出镜像](#导出镜像) * [导入镜像](#导入镜像) * [上传镜像](#上传镜像) </description>
+    </item>
+    
+    <item>
+      <title>Golang err is shadowed during return</title>
+      <link>https://yezihack.github.io/posts/fix-golang-return/</link>
+      <pubDate>Thu, 24 Dec 2020 16:11:38 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fix-golang-return/</guid>
+      <description>复现 package main import &amp;#34;errors&amp;#34; func main() { TestErr(&amp;#34;go&amp;#34;, &amp;#34;golang&amp;#34;) } func TestErr(t, p string) (s string, err error) { switch t { case &amp;#34;go&amp;#34;: err := check(p) if err != nil { // 返回参数里的 err 作用域是整个函数,即外层作用域 // check 返回的 err 作用域是 switch 范围.即内层作用域. // return 操作,不指明是将内层作用域 返回给外层作用域, 这样在 go 里是不允许的. return } } return } func check(s string) error { if s == &amp;#34;hello&amp;#34; { return nil } return errors.</description>
+    </item>
+    
+    <item>
+      <title>解决tcp6问题</title>
+      <link>https://yezihack.github.io/posts/fix-tcp-tcp6/</link>
+      <pubDate>Sat, 19 Dec 2020 18:00:57 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fix-tcp-tcp6/</guid>
+      <description>背景: 在 windows 上安装了 vmware linux . 在 linux 上开启一个服务对外提供8080端口, 而在 windows 上无法访问到.
+解决思路 使用 netstat -nplt 查看端口上 tcp, 还是 tcp6 查看是否只绑定在 ipv6 上 sysctl net.ipv6.bindv6only 查看ipv4 上可以转发数据 : sysctl net.ipv4.ip_forward 查看防火墙是否禁用端口. 第一步: 查看端口 netstat -nplt
+-&amp;gt; # netstat -nplt Active Internet connections (only servers) Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN 1001/sshd tcp 0 0 127.0.0.1:25 0.0.0.0:* LISTEN 1156/master tcp6 0 0 :::8080 :::* LISTEN 28187/output/bin/go 可以看出 8080端口只出现在 tcp6 上.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(五) 镜像管理</title>
+      <link>https://yezihack.github.io/posts/docker-image/</link>
+      <pubDate>Thu, 17 Dec 2020 13:12:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-image/</guid>
+      <description>镜像是 Docker 三大核心概念中最重要的 Docker 三大核心:
+镜像 容器 仓库 镜像介绍 Docker 运行容器前需要本地存在对应的镜像, 如果镜像不存在, Docker 会尝试远程仓库里拉取. 默认为 Docker Hub 仓库.用户也可以自定义镜像仓库.
+获取镜像 docker pull ubuntu:18.04
+如果不指定TAG标签, 则拉取 latest标签, 如上面使用tag: 18.04 镜像文件一般由若干层(layer)组成, 每一层由唯一的ID标记 : 63ca9dsd732a1 (实际完整ID包括 256比特, 64个十六进制字符组成) 当不同镜像包括相同的层, 本地仅存储一份内容. 减少存储空间. 以上ubuntu:18.04 相当于 docker pull registry.hub.docker.com/ubuntu:18.04. 默认注册服务器为 Docker Hub. 有时需要代理服务来加速Docker镜像获取过程. 可能在docker 服务启时配置中增加--registry-mirror=proxy_URL, 如国内: https://registry.docker-cn.com 查看镜像 列出本地镜像
+docker images
+-&amp;gt; # docker images REPOSITORY TAG IMAGE ID CREATED SIZE mysql latest ab2f358b8612 5 days ago 545MB redis 5.</description>
+    </item>
+    
+    <item>
+      <title>Forgetting Curve</title>
+      <link>https://yezihack.github.io/posts/forgetting-curve/</link>
+      <pubDate>Fri, 20 Nov 2020 19:26:36 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/forgetting-curve/</guid>
+      <description>48天计划表 365天计划表(只显示部分) 下载 https://pan.baidu.com/s/1SNhx_N3mkELewuJdPiOj7w 密码:fdd7</description>
+    </item>
+    
+    <item>
+      <title>Git 简明命令</title>
+      <link>https://yezihack.github.io/posts/git/</link>
+      <pubDate>Fri, 20 Nov 2020 17:10:43 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/git/</guid>
+      <description>基本概念 Workspace：工作区 Index / Stage：暂存区 Repository：仓库区（或本地仓库） Remote：远程仓库 初使化 新建仓库 git init 配置 # 显示全部配置 git config --list # 编辑配置 git config -e [--global] # 设置用户和邮箱 git config [--global] user.name &amp;#34;百里&amp;#34; git config [--global] user.email &amp;#34;freeit@126.com&amp;#34; 拉取 克隆仓库 git clone git@github.com:yezihack/barry.git 克隆指定分支 -b 指定分支名 git clone -b master git@github.com:yezihack/barry.git
+分支 查看本地分支 git branch
+查看所有远程分支 git branch -r
+查看所有分支 git branch -a
+创建并切换分支 git checkout -b dev
+新建一个分支 git branch dev
+切换分支 git checkout dev 合并分支 # 当前分支master, 要将dev分支合并到master分支 git checkout master git merge dev 删除分支 git branch -d dev</description>
+    </item>
+    
+    <item>
+      <title>linux 制作绿色安装包</title>
+      <link>https://yezihack.github.io/posts/make-linux-green-soft/</link>
+      <pubDate>Mon, 16 Nov 2020 17:51:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/make-linux-green-soft/</guid>
+      <description>绿色安装包的概念来自于 win 的概念, 也就是说无需安装即可使用软件. 即为绿色安装包. 在 linux 为了方便, 我们也需要制作绿色安装包, 方便相同系统之间的 copy. 即高效又好用. 何乐不为.
+你将了解到 LD_LIBRARY_PATH 的概念 ldd 是什么东西 如何制作绿色安装包 安装 mediainfo 在 CentOS7 192.168.1. 100 机器上操作.
+yum -y install mediainfo 制作ldd打包脚本 本脚本用于将 mediainfo 所依赖的动态库或依赖文件都复制出来
+文件名:pack.sh
+#!/bin/bash set +x # 需要打包的命令全路径 file_path=$1 # 需要复制的目录 target_dir=$2 # check file path if [ ! -f $file_path ];then echo &amp;#34;$file_path is not file&amp;#34; exit 0 fi # 判断目录是否为空 if [ -z $target_dir ]; then echo &amp;#34;target_dir is null&amp;#34; exit 0 fi # 目录不存在,自动创建 if [ !</description>
+    </item>
+    
+    <item>
+      <title>Nginx 搭建静态服务器</title>
+      <link>https://yezihack.github.io/posts/nginx-static/</link>
+      <pubDate>Wed, 11 Nov 2020 17:34:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/nginx-static/</guid>
+      <description>快捷安装 nginx CentOS 安装
+yum -y install nginx 源码安装
+# 下载, 解包 wget http://nginx.org/download/nginx-1.19.4.tar.gz &amp;amp;&amp;amp; tar -zxvf nginx-1.19.4.tar.gz &amp;amp;&amp;amp; cd nginx-1.19.4 # 编译安装 ./configure --prefix=/usr/local/nginx --without-http_rewrite_module make &amp;amp;&amp;amp; make install # 建立软链 ln -s /usr/local/nginx/sbin/nginx /usr/sbin/ 配置静态服务器 yum 安装的配置文件目录在 /etc/nginx
+手动安装目录在: /usr/local/nginx
+关键参数配置
+root /data/wwwroot/;# 指向你的文件目录 autoindex on;# 显示目录 autoindex_exact_size on;# 显示文件大小 autoindex_localtime on;# 显示文件时间 yum 安装方式配置
+vim /etc/nginx/nginx.conf 手动安装方式配置
+vim /usr/local/nginx/conf/nginx.conf 可以找到默认的 server {}
+server { listen 80 default_server; listen [::]:80 default_server; server_name _; #root /usr/share/nginx/html; root /data/wwwroot/; autoindex on;# 显示目录 autoindex_exact_size on;# 显示文件大小 autoindex_localtime on;# 显示文件时间 # Load configuration files for the default server block.</description>
+    </item>
+    
+    <item>
+      <title>Prometheus: Grafana 监控 Ngnix </title>
+      <link>https://yezihack.github.io/posts/ngnix-exporter/</link>
+      <pubDate>Fri, 06 Nov 2020 17:41:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/ngnix-exporter/</guid>
+      <description>.1. 概述 .2. 安装 nginx-module-vts 模块 .2.1. 下载 nginx-module-vts 模块文件 .2.2. 重新编译 nginx .2.3. 配置 server 信息 .3. 安装 nginx-vts-exporter .3.1. 下载软件 .3.2. 解压&amp;amp;安装 .3.3. 制作 systemctl .3.4. 管理 nginx-exporter .3.5. 查看 metrics .4. 添加到 prometheus 数据源 .5. MySQL Over 图表安装 .1. 概述 Prometheus 监控 nginx 需要用到两个模块
+nginx-module-vts 主要用于收集 nginx 各项指标.能提供 json 数据 nginx-vts-exporter 向 prometheus 提供可以识别的数据结构 .2. 安装 nginx-module-vts 模块 需要对 nginx 进行重新编译, 对于正在运行的 nginx 需要热启动, 谨慎操作.
+.2.1. 下载 nginx-module-vts 模块文件 cd /usr/local/src git clone https://github.</description>
+    </item>
+    
+    <item>
+      <title>Docker Enter 进入容器脚本</title>
+      <link>https://yezihack.github.io/posts/sh-docker-enter/</link>
+      <pubDate>Fri, 06 Nov 2020 11:26:24 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/sh-docker-enter/</guid>
+      <description>快捷进入容器内部命令.只需要填写容器ID即可. enter containerID
+脚本 创建 /usr/bin/enter文件
+touch /usr/bin/enter &amp;amp;&amp;amp; chmod +x /usr/bin/enter enter 文件内容
+#!/bin/sh if [ -e $(dirname &amp;#34;$0&amp;#34;)/nsenter ]; then # with boot2docker, nsenter is not in the PATH but it is in the same folder NSENTER=$(dirname &amp;#34;$0&amp;#34;)/nsenter else NSENTER=nsenter fi if [ -z &amp;#34;$1&amp;#34; ]; then echo &amp;#34;Usage: `basename &amp;#34;$0&amp;#34;` CONTAINER [COMMAND [ARG]...]&amp;#34; echo &amp;#34;&amp;#34; echo &amp;#34;Enters the Docker CONTAINER and executes the specified COMMAND.&amp;#34; echo &amp;#34;If COMMAND is not specified, runs an interactive shell in CONTAINER.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(四) 容器管理</title>
+      <link>https://yezihack.github.io/posts/docker-container/</link>
+      <pubDate>Thu, 05 Nov 2020 15:28:01 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-container/</guid>
+      <description>.1. 容器管理 .1.1. 容器运行 .1.2. 查看容器 .1.3. 查看容器日志 .1.4. 容器删除 .1.5. 查看容器系统资源信息 .1.6. 容器内部命令 .1.7. 复制文件相互 .2. 导入导出容器 .2.1. 导出容器 .2.2. 导入容器 .3. 重启启动 .3.1. 系统开机启动 .3.2. 容器开机启动 .4. 多容器管理 .4.1. Docker Compose .4.2. docker-compose 安装 .4.2.1. 启动/停止 .4.2.2. 操作指定文件yml的容器 .5. 参考 Docker 倡导的理念是: “一个容器一个进程”
+容器是镜像运行的一个实例
+它们的区别是镜像是一个静态只读文件, 而容器是一个运行时可写的文件层.
+.1. 容器管理 dockerID 是由128位组成, 前16位保证唯一. docker ps --no-trunc
+.1.1. 容器运行 基本命令: docker run
+例docker run --name db --env MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mariadb</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(三) 基础知识</title>
+      <link>https://yezihack.github.io/posts/docker-base/</link>
+      <pubDate>Wed, 04 Nov 2020 15:20:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-base/</guid>
+      <description>.1. Docker 三大基础组件 .2. Docker 指令 Docker 三大基础组件 三个重要的概念
+仓库(Repository) 镜像(Image) 容器(Container) 实例命令:　docker run --name db --env MYSQL_ROOT_PASSWORD=sgfoot.com -d mariadb
+先在本机查找有没有 mariadb 镜像, 如果没有,就到 docker 的仓库查找 mariadb 镜像, 然后下载到本机 基本 mariadb 镜像创建容器 db, 提供 mysql 服务 然后通过 docker ps 查看正在运行的容器. Docker 指令 基本命令格式如下: docker + command(如run, ps) + 一系列参数(args...) 如: docker run --name db --env MYSQL_ROOT_PASSWORD=sgfoot.com -d mariadb
+命令帮助 docker command --help
+如: docker run --help
+命令分四大类 系统资源设置和全局信息获取: docker info, docker system df Docker 仓库查询, 下载操作:docker search, docker pull Docker 镜像查询,创建,删除操作: docker images, docker build, docker rmi Docker 容器查询,创建,开启,停止,删除,详情操作:docker ps, docker run, docker start, docker stop, docker rm, docker inspect Docker 调试: docker logs(日志), docker stats(运行状态) 其它: 删除所有停止运行的容器 docker rm $(docker ps -a -q) (危险操作)</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(七) 命令</title>
+      <link>https://yezihack.github.io/posts/docker-command/</link>
+      <pubDate>Tue, 03 Nov 2020 19:49:09 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-command/</guid>
+      <description>前面教程介绍过 docker 是 c/s 模式, 通过 client 命令 与 server 端进行交互, docker 有着强大的命令系统, 我们需要系统学习下.
+基础的命令 查看版本 docker version
+查看 docker 信息 会显示多少镜像,容器, 运行中,暂停中, 停止的容器数量, cpu, memory, system等信息
+docker info
+容器操作 下载仓库 docker pull centos
+运行容器 docker run -it centos /bin/bash
+docker run -it
+-i 交互式操作 -t 终端 centos 镜像 /bin/bash 交互使用/bin/bash模式 查看容器 docker ps 查看正在运行的容器
+docker ps -a 查看所有容器,包括运行中,停止和暂停的容器
+启动指定ID的容器 docker start ID 支持3位数操作.
+停止容器 docker stop ID
+暂停容器 docker pause ID</description>
+    </item>
+    
+    <item>
+      <title>Git Tag 常用命令</title>
+      <link>https://yezihack.github.io/posts/git-tag/</link>
+      <pubDate>Fri, 30 Oct 2020 16:43:01 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/git-tag/</guid>
+      <description>git tag 是给当前仓库设置一个快照,常用于设置版本号, 你有必须知道一下.
+查看 git tag # 查看当前项目的tag git show v1.0.0 # 查看某 tag 的详情 创建 git tag v1.0.0 # 给当前项目版本打上 v1.0.0 版本号 # 给指定的提交版本号打上 tag git log --pretty=oneline --abbrev-commit # 查看所有短ID 312bda6 (HEAD -&amp;gt; master) # 给日志 312bda6 打上 tag git tag v1.0.3 312bda6 # 给标签写上注释 git tag -a v1.2.0 -m &amp;#34;tag notes&amp;#34; 提交 git push origin v1.0.0 # 将 v1.0.0 推送到远程 git push --tags # 推送本地的所有的 Tag 删除 git tag -d v1.</description>
+    </item>
+    
+    <item>
+      <title>Go Mod 引用私有仓库</title>
+      <link>https://yezihack.github.io/posts/go-mod-private/</link>
+      <pubDate>Fri, 30 Oct 2020 16:01:25 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/go-mod-private/</guid>
+      <description>在做 go 开发, 如果是使用 go1.11 版本, 相信大家都会使用到 go mod 做为依赖管理, 因为 go mod 可以设置代理,国外的包,轻松下载. 但是在某一天你使用公司自建的 gitlab ,需要引用 gitlab 上面的依赖包,就需要做一些设置才会正常 go mod tidy,否则会出现无法引用的问题. 本文介绍一下如何操作.
+适用于 window, linux 环境, 本人没 macOSX
+你将学到:
+如何设置 go mod 代理 如何设置 go env GOPRIVATE 变量 如何在代码里引用自建的 gitlab 依赖代码 设置 go mod 代理 linux, window 设置
+go env -w GO111MODULE=ongo env -w GOPROXY=https://goproxy.io,direct 实践 假定私有 gitlab 仓库地址为: http://mygit.sgfoot.com/ (注意只支持http, 不支持https)
+创建一个 gitlab 依赖代码 仓库地址HTTP: http://mygit.sgfoot.com/common.git 仓库地址SSH: git@mygit.</description>
+    </item>
+    
+    <item>
+      <title>万能工具箱</title>
+      <link>https://yezihack.github.io/posts/tools/</link>
+      <pubDate>Thu, 29 Oct 2020 17:11:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tools/</guid>
+      <description>脚本工具 名称 安装/下载 备注 检查 shell 工具 yum -y install ShellCheck 下载 能检查sh语法 </description>
+    </item>
+    
+    <item>
+      <title>mysqld_export 一键安装</title>
+      <link>https://yezihack.github.io/posts/onekey-mysqld-exporter/</link>
+      <pubDate>Thu, 22 Oct 2020 14:32:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/onekey-mysqld-exporter/</guid>
+      <description>仅适用 CentOS 7
+mysqld_export 安装 prometheus 监听 mysql 服务
+一键安装
+curl -sSL http://s1.sgfoot.com/sh/mysql_exporter.sh | sudo bash 验证 # 验证进程是否启动 netstat -nplt |grep mysqld_exporter # 验证是否可以获取 metrics curl http://localhost:9104/metrics 配置nginx安全访问 如果涉及到外网访问则需要配置密码访问
+参考：nginx 添加权限验证
+htpasswd -bc /etc/nginx/htpasswd.users sgfoot sgfoot.pass # sgfoot 是帐号名 # sgfoot.pass 是密码 nginx 的vhost配置 mysqld_exporter.conf
+server { listen 80; server_name mysqld_exporter.io; location / { auth_basic &amp;#34;Prometheus&amp;#34;; auth_basic_user_file /etc/nginx/htpasswd.users;# 验证文件 proxy_pass http://127.0.0.1:9104; } } 添加 prometheus 节点 配置 host</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-流实例(八)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-stream-simple/</link>
+      <pubDate>Wed, 21 Oct 2020 14:20:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-stream-simple/</guid>
+      <description>你将会学到
+一个完整的gRPC流实例，包括单向流与双向流的操作 如何实现gRPC流服务端代码 如何实现gRPC流客户端代码 准备 新建一个文件夹 go-grpc-simple-stream 在go-grpc-simple文件夹下建立三个目录: client, proto,server 使用 go mod 管理代码 在 go-grpc-simple-stream 目录下执行 go mod init go-grpc-simple-stream 编写 proto 文件 在 go-grpc-simple-stream/proto 目录下新建 hello.proto 文件
+syntax = &amp;#34;proto3&amp;#34;; package hello; service HelloService { // 定义一个服务端推送客户的单向流 rpc ServerToClient(StreamRequest) returns (stream StreamResponse){}; //　定义一个客户端推送服务端的单向流 rpc ClientToServer(stream StreamRequest) returns (StreamResponse){}; // 定义一个服务端与客户端的双向流 rpc AllStream(stream StreamRequest) returns (stream StreamResponse){}; } // stream 请求结构 message StreamRequest { string data = 1; } // stream 响应结构 message StreamResponse { string data = 1; } 生成 pb go 代码 在 go-grpc-simple-stream/proto 目录下新建 gen.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-简单实例(七)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-simple/</link>
+      <pubDate>Wed, 21 Oct 2020 14:20:39 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-simple/</guid>
+      <description>你将会学到
+一个完整的gRPC实例 如何实现gRPC服务端代码 如何实现gRPC客户端代码 准备 新建一个文件夹 go-grpc-simple 在go-grpc-simple文件夹下建立三个目录: client, proto,server 使用 go mod 管理代码 在 go-grpc-simple 目录下执行 go mod init grpc-simple 编写 proto 文件 在 go-grpc-simple/proto 目录下新建 hello.proto 文件
+// 选择 proto3 语法 syntax = &amp;#34;proto3&amp;#34;; // 定义一个包名 package hello; // 定义一个 service 服务，相当于 GO 接口定义 service HelloService { // 以 rpc 开头，定义未实现的方法名称。 必须要有一个请求 message 和响应 message // rpc, returns 都是关键字 rpc Hello(StringRequest) returns (StringResponse){}; } // message 相当于一个结构体，里面定义字段属性， 先类型后变量名，然后序列号。 // protoful 编码是通过成员的唯一编号来绑定对应的数据。 // 定义一个请求结构体 message StringRequest { string value = 1; } // 定义一个响应结构体 message StringResponse { string result = 1; } 生成 pb go 代码 在 go-grpc-simple/proto 目录下新建 gen.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-Protobuf(六)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-protobuf/</link>
+      <pubDate>Wed, 21 Oct 2020 14:20:32 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-protobuf/</guid>
+      <description>Protobuf 是 Protobuf Buffers 的简称，它是 Google 公司开发的一种数据描述语言，并于2008年开源。
+可用作为设计安全的跨语言 RPC 接口的基础工具。
+目前 Protobuf 已经发展到第3版本，即 syntax = &amp;quot;proto3&amp;quot;; 你将会学到
+如何编写 protobuf 文件 如何通过protoc工具生成 go 代码 编写 protobuf 文件 先定义语法版本 再定义package 定义一个 service 定义一组 request，response 的 message 创建 hello.proto 文件
+第一行结尾需要写上分号; service 相当于定义接口， rpc 定义未实现的接口方法 message 相当于定义一个结构体，里面定义字段属性， 先类型后变量名，然后序列号。 每一行数据类型后需要写一个编号，从1开始，因为编码是通过成员的唯一编号来绑定对应的数据。 推荐使用请求message后加上Request关键字, 如StringRequest 推荐使用响应message后加上Response关键字，如StringResponse // 选择 proto3 语法 syntax = &amp;#34;proto3&amp;#34;; // 定义一个包名为 hello package hello; // 定义一个 service 服务名为 HelloService，相当于 GO 接口定义 service HelloService { // 以 rpc 开头，定义未实现的方法名称。 必须要有一个请求 message 和响应 message // rpc, returns 都是关键字 rpc Hello(StringRequest) returns (StringResponse){}; } // message 相当于一个结构体，里面定义字段属性， 先类型后变量名，然后序列号。 // protoful 编码是通过成员的唯一编号来绑定对应的数据。 // 定义一个请求结构体 message StringRequest { string value = 1; } // 定义一个响应结构体 message StringResponse { string result = 1; } 标量类型 以下只列出常用的类型对应关系。更多参考最下面的链接</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-gRPC-简介(五)</title>
+      <link>https://yezihack.github.io/posts/tutorial-grpc-base/</link>
+      <pubDate>Wed, 21 Oct 2020 14:18:34 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-grpc-base/</guid>
+      <description>什么是gRPC RPC 是远程过程调用 (Remote Procedure Call)的缩写。在 RPC 中，客户端应用程序可以直接调用不同机器上的服务器应用程序上的方法，就像它是本地对象一样，使您可以更轻松地创建分布式应用程序和服务。
+gRPC 是 Google 开源的基于 Protobuf 和 Http2.0 协议的通信框架，底层由netty提供。
+是一款语言中立、平台中立、开源的远程过程调用(RPC)系统。
+特点 基于HTTP/2协议实现，实现多路复用，双向流等特点。 基于 Protobuf 协议，支持多种语言。 参考 gRPC 官方文档中文版
+推荐学习 gRPC入门 简介 gRPC入门 Protobuf gRPC入门 搭建完整gRPC gRPC入门 实现双向流 </description>
+    </item>
+    
+    <item>
+      <title>书籍 BOOK</title>
+      <link>https://yezihack.github.io/posts/book/</link>
+      <pubDate>Mon, 19 Oct 2020 17:33:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/book/</guid>
+      <description> 拒绝某度盘，支持蓝凑盘, 欢迎留言，提供资源。只提供最优质的资源。
+序列 书名 备注 1 高性能MySQL（第3版） 带目录 2 设计模式之禅 带目录，第1版本 </description>
+    </item>
+    
+    <item>
+      <title>rsyslog 占用内存过高</title>
+      <link>https://yezihack.github.io/posts/fix-rsyslog/</link>
+      <pubDate>Fri, 16 Oct 2020 10:38:58 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fix-rsyslog/</guid>
+      <description>排查问题 使用top 再按大写M， 对内存采用降序显示，一目了然看到谁占用内存最高。
+定位到rsyslogd进程占用内存25.7%，非常可怕，需要急需解决掉它。
+什么是rsyslog: 系统提供的多线性日志系统，参考: https://www.rsyslog.com/
+解决问题 rsyslogd是它的守护进程，可以通过systemctl status rsyslog 查看运行状态
+红色显示错误信息。
+使用journalctl --verify 检查系统日志卷文件损坏情况
+如果检查出来有红色的文件，则直接删除即可。
+删除/var/lib/rsyslog/imjournal.state 文件
+重启rsyslogd进程， systemctl restart rsyslog
+然后使用 top 查看，内存占用率是否没有啦。
+避免再次发生 修改/etc/rsyslog.conf 文件
+最后行添加2行代码
+$imjournalRatelimitInterval 0 $imjournalRatelimitBurst 0 重启服务:systemctl restart rsyslog
+关闭 journal 压缩配置
+vim /etc/systemd/journald.conf # 找到 #Compress=yes 修改成 no Compress=no # 重启服务 systemctl restart systemd-journald </description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(二) 安装</title>
+      <link>https://yezihack.github.io/posts/docker-install/</link>
+      <pubDate>Thu, 15 Oct 2020 17:12:16 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-install/</guid>
+      <description>适合于 CentOS 系统
+docker 一键安装 curl -sSL https://cdn.jsdelivr.net/gh/yezihack/assets/sh/docker-install.sh |sudo sh #!/bin/bash ################ # CentOS 一键安装 # From: sgfoot.com ################# # 卸载旧版本 sudo yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine # 设置仓库 sudo yum install -y yum-utils \ device-mapper-persistent-data \ lvm2 # 使用阿里源地址 sudo yum-config-manager \ --add-repo \ http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo # 安装 Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io -y # 启动 systemctl start docker # 测试一下 sudo docker run hello-world echo &amp;#34;安装完毕&amp;#34; docker-compose 安装 docker-compose 是负责 docker 编排使用的</description>
+    </item>
+    
+    <item>
+      <title>node_export 一键安装</title>
+      <link>https://yezihack.github.io/posts/onekey-node_export/</link>
+      <pubDate>Thu, 15 Oct 2020 16:49:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/onekey-node_export/</guid>
+      <description>仅适合用 CentOS 7
+node_export 安装 linux 服务器信息等资源收集安装包
+一键安装
+curl -sSL http://s1.sgfoot.com/sh/node_exporter.sh |sh 验证 netstat -nplt |grep node_exporter 配置nginx安全访问 如果涉及到外网访问则需要配置密码访问
+参考：nginx 添加权限验证
+htpasswd -bc /etc/nginx/htpasswd.users sgfoot sgfoot.pass # sgfoot 是帐号名 # sgfoot.pass 是密码 nginx 的vhost配置 node_exporter.conf
+server { listen 80; server_name node_exporter.io; location / { auth_basic &amp;#34;Prometheus&amp;#34;; auth_basic_user_file /etc/nginx/htpasswd.users;# 验证文件 proxy_pass http://127.0.0.1:9100; } } 添加 prometheus 节点 配置 host
+vim /etc/hosts 127.0.0.1 mysqld_exporter.io vim /data/local/prometheus/prometheus.yml 在 node_exporter.targets 添加 host:port
+scrape_configs: - job_name: &amp;#39;node_exporter&amp;#39; static_configs: - targets: [&amp;#39;sgfoot.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(一) 原理</title>
+      <link>https://yezihack.github.io/posts/docker-theory/</link>
+      <pubDate>Wed, 14 Oct 2020 18:11:18 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-theory/</guid>
+      <description>
+什么是docker Docker 是 dotCloud 公司开源的一款产品，2013年开源(基于golang开发)。
+Docker 英文意思是“搬运工&amp;quot;, 是一种容器化技术，将您的运行软件封到一个沙盒里，随意搬运的应用容器引擎。
+容器技术是所有云应用的基石，也把互联网升到到下一代。足以说明 docker 的强大之处。
+Google 自2004年开始使用容器技术，对Docker的贡献之大，开源了Cgroup和Imctfy项目，还开源了容器管理系统 Kubernetes.
+向开源致敬！
+Docker 架构 采用 c/s 模式体系架构， Docker 客户端与 Docker Daemon 守护进程通信。
+Docker Daemon: 是Docker服务端的守护进程， 用来监听 Docker API 的请求和管理 Docker 对象，比如镜像、容器、网络和 Volume。 Docker Client: docker client 是我们和 Docker 进行交互的最主要的方式方法 Docker Registry：用来存储 Docker 镜像的仓库 Images：镜像，镜像是一个只读模板 Containers：容器，容器是一个镜像的可运行的实例,容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间 底层技术支持：Namespaces（做隔离）、CGroups（做资源限制）、UnionFS（镜像和容器的分层） Docker 核心技术 Docker 的基础是 Linux 容器(LXC) 等技术
+三大底层技术实现 Docker 的关键技术
+Namespaces 解决了进程，网络及文件系统的隔离 命名空间（namespaces）是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法 CGroups 解决了CPU,内存等资源隔离 Namespaces 并不能够为我们提供物理资源上的隔离。比如CPU，内存等。这样会导致多个Docker抢占物理资源。 Control Groups（简称 CGroups）就是能够隔离宿主机器上的物理资源，例如 CPU、内存、磁盘 I/O 和网络带宽。 UnionFS 解决了镜像隔离 Union File System，联合文件系统 将多个不同位置的目录联合挂载到同一个目录，将相同的部分合并 </description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-基本语法(四)</title>
+      <link>https://yezihack.github.io/posts/tutorial-golang-base/</link>
+      <pubDate>Tue, 29 Sep 2020 17:29:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-golang-base/</guid>
+      <description>本篇主要介绍，基本数据类型、控制语句和数据结构及函数、方法、接口等知识。为后面学习打下基础，有个基本的认识。也为您将来进阶做准备。
+基础语法 之前我们在Go 实践教程-工具及运行(三)写过一个“hello world”程序，讲解了三个概念：package,import,main
+注释 写代码时必不可少需要写一些代码注释，方便以后回过头来看程序。Go里面提供两种方法注释
+// 单行注释 （注意 //之后需要一个空格，之于为什么，go doc 方便自动生成文档抓取注释） /* 多行注释，在这里面都属于被注释的内容 */ 标识符 标识符用来命名变量，类型等程序实体。允许由大小写字母(a-z|A-Z)和数据(0~9)及下划线(_)组成，但第一个字符必须由字母和下划线组成
+a := 10 // ok _a := 22 // ok case := &amp;#34;abc&amp;#34;// 无效变量 error 9a := 10 // 无效变量 error 变量命名 Go 语言的变量命名比较独特，如果你熟悉其它语言你会不习惯的。
+先变量名 后跟类型名称
+全局变量
+必须有 var 关键字
+import main var num int func main() { } // 优雅的方法,适合多个变量， 也适用于import 里 var ( num int age int name string ) // 等价于 var num int var age int var name string 函数内的局部变量</description>
+    </item>
+    
+    <item>
+      <title>fdisk lvm对根目录扩容</title>
+      <link>https://yezihack.github.io/posts/fdisk-rsync/</link>
+      <pubDate>Tue, 22 Sep 2020 20:04:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fdisk-rsync/</guid>
+      <description>生产服务器根目录空间余量告急，你可能会选择对重装系统重装，这种方式对生产服务器不友好，也不推荐。网上你可以看到很多文章进行LVM进行根目录扩容，当然一顿猛操作后，发现无计于事，因为你的根目录挂载的磁盘根本不是LVM方式，无法这样操作。在不重装，也不影响线上生产，有没有一种方式可以实现动态扩容呢？答案：有
+概要 使用rsync命令带属性方式转移数据 然后再使用lvm方式进行对某些目录进行重装挂载 这样就可以扩出容量。 LVM 原理 LVM的工作原理其实很简单，它就是通过将底层的物理硬盘抽象的封装起来，然后以逻辑卷的方式呈现给上层应用
+掌握4个基本的逻辑卷概念
+PE(Physical Extend) 物理扩展（底层） PV(Physical Volume) 物理卷（底层） VG(Volume Group) 卷组 LV(Logical Volume) 逻辑卷（上层） 工作原理
+常用命令操作
+# 格式为物理卷 pvcreate /dev/vda1 [可以多个] pvdisplay #查看物理卷 pvs #查看物理卷列表 # 创建卷组 vgcreate vg1 /dev/vda1 # vg1 是卷组名称， /dev/vda1 是分区名称 vgdisplay # 查看卷组 vgs # 查看卷组列表 # 创建逻辑卷 lvcreate -n lv1 -L 50G vg1 # lv1 是逻辑卷名称， 50G 是转成逻辑卷大小 vg1就是卷组 lvdisplay # 查看逻辑卷信息 lvs # 查看逻辑卷列表 实战 查看你的磁盘分区信息(df -h) 查看你的磁盘信息(fdisk -l) 对指点磁盘进行分区操作(fdisk /dev/vdc 每个人的磁盘分区名称不一样) 创建物理卷 创建卷组 创建逻辑卷 对逻辑卷进行格式化 ext4 挂载某目录 # 1.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-工具及运行(三)</title>
+      <link>https://yezihack.github.io/posts/tutorial-golang-runing/</link>
+      <pubDate>Wed, 16 Sep 2020 16:45:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-golang-runing/</guid>
+      <description>经过前面二篇 Go 简介,Go 环境配置 学习，大家对 Golang 有个大概的了解了， 环境也配置好了，就差上手写代码啦，今天主要介绍 Golang 的开发工具与工具链，如何写出第一个 &amp;ldquo;Hello World&amp;rdquo;
+Goland 开发工具 编写 Golang ，首选 Goland 开发工具，当然 Goland 是收费的(可试用30天)。国内也有破解教程。自行 Google，在此也会介绍一种快捷的方式
+下载 Goland
+https://www.jetbrains.com/go/
+安装
+官方提供：Window, Mac, Linux 三个平台的安装包。
+安装过程下一步，下一步即可，在此不赘述。
+激活
+可能会遇到用一段时间就失效啦，你只需要再次来到这个网站下载激活码，重新激活一次即可。
+http://idea.medeming.com/jetbrains/
+设置 Go Modules
+File -&amp;gt; Settings -&amp;gt; Go -&amp;gt; Go Modules
+![image-20200916200143415](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916200144.png?imageslim)将 `GOPROXY=https://goproxy.cn,direct` 填写到 Environment 处。用于 Go GET 加速下载依赖包。![image-20200916170456456](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916170457.png?imageslim)第一个 Go 程序 新建项目
+File -&amp;gt; New -&amp;gt; Project
+新建 Go 文件
+右击 awesomeProject -&amp;gt; New -&amp;gt; Go -&amp;gt; 选择&amp;quot;Simple Application&amp;quot;</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(七) Docker 安装 Es, Kibana,Head和IK分词器(es7.14.1)</title>
+      <link>https://yezihack.github.io/posts/es-install-docker/</link>
+      <pubDate>Tue, 15 Sep 2020 12:00:27 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-install-docker/</guid>
+      <description>docker 的优点，就是简化所有的安装流程。移植性好，安装快捷。
+在安装之前，Elasticsearch 与 Kibana 需要注意版本一致。
+当前IK分词器也需要一致。见 github release
+dockerhub es dockerhub kibana github ik analysis Docker 创建网络栈 后面创建 elaticsearch, kibana 需要用到。
+docker network create es-network Elasticsearch 安装 docker pull elasticsearch:7.14.1 docker run -d --name elasticsearch --net es-network -p 9200:9200 -p 9300:9300 -e &amp;#34;discovery.type=single-node&amp;#34; elasticsearch:7.14.1 --net es-network 使用刚创建的网络栈 -e &amp;quot;discovery.type=single-node&amp;quot; 设置配置参数为单结点集群 --name elasticsearch 设置容器名称 -p 9200:9200 设置端口映射，前为宿主机端口，后为容器里的端口。 -d 后台运行模式 elasticsearch:7.14.1 镜像名称，通过docker images 查看，若没有会自动下载 查看日志，发现一处警告： docker logs elasticsearch
+{ &amp;#34;type&amp;#34;:&amp;#34;deprecation.elasticsearch&amp;#34;, &amp;#34;timestamp&amp;#34;:&amp;#34;2021-09-15T03:55:39,835Z&amp;#34;, &amp;#34;level&amp;#34;:&amp;#34;DEPRECATION&amp;#34;, &amp;#34;component&amp;#34;:&amp;#34;o.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-安装及环境配置(二)</title>
+      <link>https://yezihack.github.io/posts/tutorial-golang-install/</link>
+      <pubDate>Fri, 11 Sep 2020 18:10:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-golang-install/</guid>
+      <description>本教程基于 Go1.11版本展开， 也就是官方提供 Go Module 功能。
+安装 Golang 国内推荐下载点 Go 语言中文网 ，默认大家使用 CPU Amd 64 架构
+最新版本：go1.15.2
+Window https://studygolang.com/dl/golang/go1.15.2.windows-amd64.msi
+傻瓜式一键安装即可。安装目录推荐 c:\\Go
+Linux cd /usr/local/src/ wget https://studygolang.com/dl/golang/go1.15.2.linux-amd64.tar.gz tar -zxvf go1.15.2.linux-amd64.tar.gz -C /usr/local/ MacOS https://studygolang.com/dl/golang/go1.15.2.darwin-amd64.pkg
+cd /usr/local/src/ wget https://studygolang.com/dl/golang/go1.15.2.darwin-amd64.tar.gz tar -zxvf go1.15.2.darwin-amd64.tar.gz -C /usr/local/ 设置 Goproxy 国内加速代理，用于加速下载 github 或 google 上的包
+window设置方法
+临时生效设置方法 # 启用 Go Modules 功能 $env:GO111MODULE=&amp;#34;on&amp;#34; # 配置 GOPROXY 环境变量 $env:GOPROXY=&amp;#34;https://goproxy.io,direct&amp;#34; 永久生效设置方法 计算机 图标上鼠标右击 选择 属性 选择左侧 高级系统设置 GO111MODULE=&amp;quot;on&amp;quot; GOPROXY=&amp;quot;https://goproxy.</description>
+    </item>
+    
+    <item>
+      <title>Go 实践教程-简介(一)</title>
+      <link>https://yezihack.github.io/posts/tutorial-golang-info/</link>
+      <pubDate>Fri, 11 Sep 2020 18:10:03 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tutorial-golang-info/</guid>
+      <description>为什么写这个教程 Golang在中国发展非常不错，国内关于 Golang 的书籍也挺多，网上的 Golang 教程也不在少数。为什么我还要重复造这个轮子呢？我自学 Golang 也是看网上各种教程，学至今日，我回头看过来。刚开始学习时会写个 &amp;ldquo;Hello World&amp;rdquo;，懂 Golang 语法，然后实际项目应用上感觉还是从零开始一样，刚开始无法自己去独立构建一个项目，只能采用模仿公司前辈写的项目再加领导指点一下，在写项目其间也遇到各种坑，如指针，Chan，切片等问题。而网上的教程大多数都是一种教科书式的，基本模式是：学习理论 -&amp;gt; 实践 -&amp;gt; 入坑 -&amp;gt; 理论 -&amp;gt; 实践 。 完成一个完整的闭环，你算是从理论入门到实践入门再到理论与实践结合入门。
+这个教程的初衷就是让你一次：实践入门，至于基本理论原理涉及篇幅太大，不过其间也会略提一些。我也会推荐一些非常棒的教程供大家学习。
+本入门系列只带你实践入门，教你写出日常工程代码
+历史 Go 语言起源于 2007 年，并在 2009 年正式发布 Go 是一门非常年轻的语言，它“兼具 Python 的简洁，C/C++ 的性能与安全” Go 被誉为“21世纪的 C 语言&amp;quot; 创始人 Rob Pike Go语言项目总负责人，贝尔实验室 Unix 团队成员 Ken Thompson 贝尔实验室 Unix 团队成员，C语言、Unix 和 Plan 9 的创始人之一 Robert Griesemer 就职于 Google，参与开发 Java HotSpot 虚拟机，对语言设计有深入的认识，并负责 Chrome 浏览器和 Node.js 使用的 Google V8 JavaScript 引擎的代码生成部分。 特点&amp;amp;优势 语言层面支持并发编程 跨平台编译 特性少，语法简单，易于上手 静态类型语言 丰富的标准库和丰富的工具链 可直接编译成机器码，不依赖其他库 内嵌C支持 支持GC 支持反射 匿名函数和闭包 用途 网络编程 系统编程 并发编程 分布式编程 知名项目 Kubernetes Etcd Prometheus Grafana Docker Hugo Influxdb 推荐教程 Go入门指南 Go 语言设计与实现 &amp;mdash; 底层实现原理一一讲透 Go 语言101&amp;mdash;也是讲底层实现的不可多得的教程 Go 语言学习资料与社区索引 </description>
+    </item>
+    
+    <item>
+      <title>Computer Systems 深入理解计算机</title>
+      <link>https://yezihack.github.io/posts/computer-systems/</link>
+      <pubDate>Wed, 02 Sep 2020 14:59:56 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/computer-systems/</guid>
+      <description> 最近同事发了一篇硬核！30 张图解 HTTP 常见的面试题 文章给我看，一打开就被博主的博客风格吸引，条理清晰，采用总分总的形式写的，图文并茂，文章虽然很长，看完也不觉得累，而且还乐在其中，将久违的知识又重新复习了一篇，又重新学习了一篇，加深了理解。文章写得好，做个搬运工，整理下方便以后查阅。也感谢博主小林。
+图解计算机系统原理 序列 超链 1 20 张图揭开「内存管理」的迷雾，瞬间豁然开朗 2 进程、线程基础知识全家桶，30 张图一套带走 3 多线程为了同个资源打起架来了，该如何让他们安定？ 4 凉了！张三同学没答好「进程间通信」，被面试官挂了&amp;hellip;. 5 一口气搞懂「文件系统」，就靠这 25 张图了 图解计算机网络 序列 超链 1 硬核！30 张图解 HTTP 常见的面试题 2 30张图解：键入网址后，到网页显示，其间发生了什么？ 3 20 张图解： ping 的工作原理 4 35 张图解：被问千百遍的 TCP 三次握手和四次挥手面试题 5 30张图解： TCP 重传、滑动窗口、流量控制、拥塞控制 6 IP 基础知识全家桶，45 张图一套带走 7 实战！我用 Wireshark 让你“看见“ TCP 8 TCP 半连接队列和全连接队列满了会发生什么？又该如何应对？ 9 面试官：换人！他连 TCP 这几个参数都不懂 </description>
+    </item>
+    
+    <item>
+      <title>Prometheus:  Grafana 监控 MySQL</title>
+      <link>https://yezihack.github.io/posts/mysqld_exporter/</link>
+      <pubDate>Wed, 02 Sep 2020 11:02:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mysqld_exporter/</guid>
+      <description>mysqld_exporter 安装 下载慢，请查看软件下载列表
+https://prometheus.io/download/
+cd /usr/local/src/ wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.12.1/mysqld_exporter-0.12.1.darwin-amd64.tar.gz tar -zxvf mysqld_exporter-0.12.1.darwin-amd64.tar.gz -C /usr/local/ mv /usr/local/mysqld_exporter-0.12.1.darwin-amd64 /usr/local/mysqld_exporter 创建 .my.cnf 文件
+host 主机地址 user mysql名称 password mysql密码 cat &amp;gt; /usr/local/mysqld_exporter/.my.cnf &amp;lt;&amp;lt; EOF [client] host=127.0.0.1 user=root password=root EOF 创建 systemd 服务
+cat &amp;gt; /lib/systemd/system/mysqld_exporter.service &amp;lt;&amp;lt; EOF [Unit] Description=mysqld_exporter Documentation=https://prometheus.io/ After=network.target [Service] Type=simple User=root ExecStart=/usr/local/mysqld_exporter/mysqld_exporter --config.my-cnf=/usr/local/mysqld_exporter/.my.cnf KillMode=process Restart=on-failure RestartSec=10s [Install] WantedBy=multi-user.target EOF 启动 systemctl daemon-reload systemctl start mysqld_exporter systemctl status mysqld_exporter 验证 metrics
+显示有数据则表示已经采集到数据啦。</description>
+    </item>
+    
+    <item>
+      <title>Debug 调试</title>
+      <link>https://yezihack.github.io/posts/debug/</link>
+      <pubDate>Tue, 01 Sep 2020 17:24:01 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/debug/</guid>
+      <description>Linux 网络调试 tcpdump 监听网卡 eth0 及 端口 80 tcpdump -i eth0 -nnA &amp;#39;port 80&amp;#39; </description>
+    </item>
+    
+    <item>
+      <title>Prometheus: Grafana 入门</title>
+      <link>https://yezihack.github.io/posts/grafana/</link>
+      <pubDate>Mon, 31 Aug 2020 20:29:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/grafana/</guid>
+      <description>.1. 简介 Grafana是一个开源的度量分析和可视化工具，可以通过将采集的数据分 析，查询，然后进行可视化的展示,并能实现报警
+官网：https://grafana.com/ .2. 源码安装 官方最新版本下载：https://grafana.com/grafana/download
+# 下载 cd /usr/local/src wget https://dl.grafana.com/oss/release/grafana-7.1.5.linux-amd64.tar.gz wget https://dl.grafana.com/oss/release/grafana-9.0.0.linux-amd64.tar.gz # 解压 tar -zxvf /grafana-7.1.5.linux-amd64.tar.gz -C /usr/local # 重命名文件夹 grafana mv /usr/local/grafana-7.1.5.linux-amd64 /usr/local/grafana .3. RPM 方式安装 wget https://dl.grafana.com/enterprise/release/grafana-enterprise-9.0.0-1.x86_64.rpm sudo yum install grafana-enterprise-9.0.0-1.x86_64.rpm sudo systemctl daemon-reload sudo systemctl start grafana-server sudo systemctl status grafana-server sudo systemctl enable grafana-server 创建 systemd 服务
+-homepath grafana的工作目录。 cat &amp;gt; /lib/systemd/system/grafana.service &amp;lt;&amp;lt; EOF [Unit] Description=Grafana Documentation=https://grafana.com/ After=network.target [Service] Type=notify ExecStart=/usr/local/grafana/bin/grafana-server -homepath /usr/local/grafana/ Restart=on-failure RestartSec=42s [Install] WantedBy=multi-user.</description>
+    </item>
+    
+    <item>
+      <title>Prometheus: 入门</title>
+      <link>https://yezihack.github.io/posts/prometheus/</link>
+      <pubDate>Mon, 31 Aug 2020 10:59:18 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/prometheus/</guid>
+      <description>基于 CentOS 7 amd64 系统
+Prometheus 多维数据模型（有metric名称和键值对确定的时间序列） 灵活的查询语言 不依赖分布式存储 通过pull方式采集时间序列，通过http协议传输 支持通过中介网关的push时间序列的方式 监控数据通过服务或者静态配置来发现 支持图表和dashboard等多种方式 组件： Prometheus 主程序，主要是负责存储、抓取、聚合、查询方面。 Alertmanager 程序，主要是负责实现报警功能。 Pushgateway 程序，主要是实现接收由Client push过来的指标数据，在指定的时间间隔，由主程序来抓取。 node_exporter 监控远程 linux 服务器CPU、内存、磁盘、I/O等信息 生态架构图 普罗米修斯的体系结构及其一些生态系统组件
+https://prometheus.io/docs/introduction/overview/
+工作流程
+Prometheus 服务器定期从配置好的 jobs 或者 exporters 中获取度量数据；或者接收来自推送网关发送过来的 度量数据。 Prometheus 服务器在本地存储收集到的度量数据，并对这些数据进行聚合； 运行已定义好的 alert.rules，记录新的时间序列或者向告警管理器推送警报。 告警管理器根据配置文件，对接收到的警报进行处理，并通过email等途径发出告警。 Grafana等图形工具获取到监控数据，并以图形化的方式进行展示。 Client Library 提供度量的四种类型 Counter 类型： 计数器。 是一个累计的指标，代表一个单调递增的计数器，它的值只会增加或在重启时重置为零。 一般用于记录访问数，错误数，任务数等 Gauge 类型：计量器。 是代表一个数值类型的指标，它的值可以增或减 如CPU的负载，协程数，并发请求量，内存使用量等 Histogram 柱状图 是一种累积直方图，在一段时间范围内对数据进行采样，并将其计入可配置的存储桶（bucket）中。 histogram并不会保存数据采样点值，每个bucket只有记录样本数的counter,即histogram存储是区间的样本数据统计值。 如请求持续时间或响应大小等。 Summary 摘要 是对百分数进行统计的。 即在一段时间内（默认10分钟）的每个采样点进行统计，并形成分位图 （如：正态分布一样，统计低于60分不及格的同学比例，统计低于80分的同学比例，统计低于95分的同学比例） 参考 文档下载 官方文档 非官方中文文档 CentOS7.5 Prometheus2.</description>
+    </item>
+    
+    <item>
+      <title>Docker 问题集</title>
+      <link>https://yezihack.github.io/posts/docker-issue/</link>
+      <pubDate>Wed, 26 Aug 2020 11:00:28 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-issue/</guid>
+      <description>Docker映射端口时仅有IPv6无法到IPv4解决方法 启动 docker 某服务，只显示 ipv6 的端口信息。ipv4 无端口信息，导致外部无法通过 ipv4 访问服务，报 Connection refused 错误
+解决方法
+在服务器上禁用 ipv6
+vim /etc/default/grub 在第6行中增加 ipv6.disable=1
+GRUB_CMDLINE_LINUX=&amp;#34;ipv6.disable=1 crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&amp;#34; 重新配置grub并重启服务器
+grub2-mkconfig -o /boot/grub2/grub.cfg reboot WARNING: bridge-nf-call-iptables is disabled WARNING: bridge-nf-call-iptables is disabledWARNING: bridge-nf-call-ip6tables is disabled 解决方法
+vim /etc/sysctl.conf # 添加以下二行内容 net.bridge.bridge-nf-call-ip6tables = 1 net.bridge.bridge-nf-call-iptables = 1 # 然后使其生效 sysctl -p /etc/sysctl.conf # 验证 docker info docker 磁盘不足 第一步： 查看服务的磁盘情况
+df -h
+第二步：查看 docker 使用的磁盘路径</description>
+    </item>
+    
+    <item>
+      <title>设计模式-七大原则(二)</title>
+      <link>https://yezihack.github.io/posts/gof-seven-principle/</link>
+      <pubDate>Wed, 19 Aug 2020 13:00:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-seven-principle/</guid>
+      <description>用最少的语言记住更多的东西
+本文提纲 设计模式的目的 高内聚，低耦合
+可重用性 可扩展性 可阅读性 可靠性 1. 单一职责原则(SRP) 单一职责原则提出了一个编写程序的标准，用”职责“或”变化原因“来衡量接口或类设计得是否优良。
+Single Responsibility Principle
+一个类(方法)只描述一件事, 应该有且仅有一个原因引起的变更。
+There should never be more than one reason for a class to change（一个类的变化不应该有一个以上的原因引起）
+单一职责原则好处
+类的复杂性降低，实现什么职责都有清晰明确的定义 可读性提高，复杂性降低，那当然可读性提高了。 可维护性提高，可读性提高，那当然更容易维护了。 变更引起的风险降低。变更是必不可少的，如果接口单一职责做得好，一个接口修改只对相应的实现类有影响，对其它接口无影响，这对系统的扩展性，维护性都有非常大的帮助。 2. 开闭原则(OCP) Open Closed Principle
+3W原则： What 是什么，Why为什么，How怎么做。
+对修改关闭，对扩展开放
+3. 接口隔离原则(ISP) Interface Segregation Principle
+定义单一接口，不要建立臃肿庞大的接口。
+客户端不应该依赖它不需要的接口 类间的依赖关系应该建立在最小接口上 接口隔离原则拆分接口时，首先必须满足单一职责原则
+接口要高内聚 少使用public方法，接口对外承诺越少，对系统开发越有利，变更的风险也就越少，同时也有利于降低成本。 定制服务 就是单独为一个个体提供优良的服务。 只提供访问者需要的方法。 接口设计 是有限度的 接口的设计粒度越小，系统越灵活 一个接口只服务于一个子模块或业务逻辑。 接口隔离原则与单一职责原则的区别
+接口隔离原则要求接口中的方法尽量少，专门的接口。
+单一职责原则注重的是职责，是业务逻辑上的划分。
+4. 里氏替换原则(LSP) Liskov Substitution Principle</description>
+    </item>
+    
+    <item>
+      <title>设计模式-简介(一)</title>
+      <link>https://yezihack.github.io/posts/gof/</link>
+      <pubDate>Wed, 19 Aug 2020 11:39:20 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof/</guid>
+      <description>什么是设计模式 设计模式 (Design pattern) 代表了最佳实践 通常被有经验的面向对象的软件开发人员所采用。设计模式是软件开发人员在软件开发过程中面临的一般问题的解决方案。这些解决方案是众多软件开发人员经过相当长的一段时间的试验和错误总结出来的。 使用设计模式是为了重用代码，让代码更容易被他人理解，保证代码可靠性。 设计模式是软件工程的基石，如同大厦的一块块砖石一样。 项目中合理使用设计模式可以完美解决很多问题，每种设计模式都描述了我们周围不断重复发生的问题，以及该问题核心解决方案。 什么是GOF 在 1994 年，由 Erich Gamma、Richard Helm、Ralph Johnson 和 John Vlissides 四人合著出版了一本名为 Design Patterns - Elements of Reusable Object-Oriented Software（中文译名：设计模式 - 可复用的面向对象软件元素） 的书 四位作者合称 GOF（四人帮，全拼 Gang of Four） 他们所提出的设计模式主要是基于以下的面向对象设计原则。 对接口编程而不是对实现编程 优先使用对象组合而不是继承 设计模式的类型 根据设计模式的参考书 Design Patterns - Elements of Reusable Object-Oriented Software（中文译名：设计模式 - 可复用的面向对象软件元素） 中所提到的，总共有 23 种设计模式。这些模式可以分为三大类：创建型模式（Creational Patterns）、结构型模式（Structural Patterns）、行为型模式（Behavioral Patterns）</description>
+    </item>
+    
+    <item>
+      <title>Go 并发</title>
+      <link>https://yezihack.github.io/posts/go-concurrence/</link>
+      <pubDate>Thu, 06 Aug 2020 12:01:45 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/go-concurrence/</guid>
+      <description>golang 天生语言层面支持并发, 非常棒的语言, 有时我们业务开发时, 遇到复杂场景, 需要用于并发, 将多个请求使用协程组完成并发, 当遇到嵌套循环,还存在上下文关系需要改造为并发请求, 将之前的时间复杂度为O(n^2)改为O(n)的时间复杂度, 那是否还能否并时间复杂度进一步降为O(1)呢? 就出现嵌套并发. 具体如何嵌套并发, 如何写. 今天就一步一步分析.
+串行执行 时间复杂度为O(n^2) 不使用并发 结果执行时间为 9s // 串行执行 func SerializeRun() { start := time.Now() xx := []int{1, 2, 3} yy := []int{100, 200, 300} for _, x := range xx { for _, y := range yy { abc(x, y) } } fmt.Printf(&amp;#34;串行执行总时间:%s\n&amp;#34;, time.Since(start)) } func abc(x, y int) { time.Sleep(time.Second * 1) fmt.Printf(&amp;#34;x:%d, y:%d\n&amp;#34;, x, y) } 执行结果</description>
+    </item>
+    
+    <item>
+      <title>Go 字符串指纹</title>
+      <link>https://yezihack.github.io/posts/go-fingerprint/</link>
+      <pubDate>Wed, 05 Aug 2020 15:34:32 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/go-fingerprint/</guid>
+      <description>写项目时,有时我们需要缓存, 缓存就会需要唯一的key. 常规是对字符串求md5指纹. 在golang里我们也可以使用, 目前可以计算一个字符串的crc32, md5, sha1的指纹.
+md5 : 一种被广泛使用的密码散列函数，可以产bai生出一个128位（du16字节）的散列值（hash value），用于确保信息传输完整一zhi致。MD5由美国密码学家罗纳德·李维斯特（Ronald Linn Rivest）设计，于1992年公开，用以取代MD4算法。
+sha1: SHA1是由NISTNSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为160bit的散列值，因此抗穷举(brute-force)性更好。SHA-1基于MD5，MD5又基于MD4。
+crc32: 本身是“冗余校验码”的意思，CRC32则表示会产生一个32bit（8位十六进制数）的校验值。由于CRC32产生校验值时源数据块的每一个bit（位）都参与了计算，所以数据块中即使只有一位发生了变化，也会得到不同的CRC32值。
+golang 实现 md5 // md5值 func Md5Str(s string) string { hash := md5.Sum([]byte(s)) return hex.EncodeToString(hash[:]) } sha1 // 散列值 func Sha1Str(s string) string { r := sha1.Sum([]byte(s)) return hex.EncodeToString(r[:]) } crc32 // String hashes a string to a unique hashcode.// https://github.com/hashicorp/terraform/blob/master/helper/hashcode/hashcode.go// crc32 returns a uint32, but for our use we need// and non negative integer.</description>
+    </item>
+    
+    <item>
+      <title>Jmeter Linux 使用</title>
+      <link>https://yezihack.github.io/posts/jmeter-linux/</link>
+      <pubDate>Mon, 03 Aug 2020 19:18:30 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/jmeter-linux/</guid>
+      <description>采用 centos 安装, jmeter 5.3版本
+安装 java jdk 环境 JDK1.8版本即可满足
+yum install java-1.8.0-openjdk 下载 jmeter cd /home/wget https://mirrors.bfsu.edu.cn/apache//jmeter/binaries/apache-jmeter-5.3.zipunzip apache-jmeter-5.3.zipcd apache-jmeter-5.3pwd 配置环境变量 官方下载: https://jmeter.apache.org/download_jmeter.cgi
+export JMETER=/home/apache-jmeter-5.3export CLASSPATH=$JMETER/lib/ext/ApacheJMeter_core.jar:$JMETER/lib/jorphan.jar:$JMETER/lib/logkit-2.0.jar:$CLASSPATHexport PATH=$JMETER/bin/:$PATH 使用 首先在 window 版本上新建jmx文件, 然后保存为测试计划. 将 jmx 文件上传到 linux , 使用以下命令运行即可. 得到 jtl 结果文件, 下载下来, 导入到可视化界面上,即可查看到分析的结果.
+jmeter -n -t test.jmx -l test.jtl 图示: 保存 test.jmx 文件
+图示: 导入分析结果</description>
+    </item>
+    
+    <item>
+      <title>Ab和curl使用</title>
+      <link>https://yezihack.github.io/posts/ab_curl/</link>
+      <pubDate>Thu, 30 Jul 2020 15:06:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/ab_curl/</guid>
+      <description>curl post json 如果多个头信息, 多次使用-H即可.
+curl -H &amp;#34;Content-Type: application/json&amp;#34; -X POST --data &amp;#39;{&amp;#34;username:&amp;#34;:&amp;#34;abc&amp;#34;, &amp;#34;password&amp;#34;:&amp;#34;abc&amp;#34;}&amp;#39; http://www.github.com/login -H 请求头信息 -X 请求方式, GET, POST --data 数据 ab post json ab -r -k -c 50 -n 100 -T &amp;#39;application/json&amp;#39; -p json.txt http://www.github.com/login json.txt
+{ &amp;#34;username&amp;#34;:&amp;#34;abc&amp;#34;, &amp;#34;password&amp;#34;:&amp;#34;1234&amp;#34; } -T就Content-Type -H 自定义头信息 Token:111 -c 请求并发数 -n 请求数. -r 不要退出套接字接收错误 -k 保持 KeepAlive </description>
+    </item>
+    
+    <item>
+      <title>Python Window10 安装</title>
+      <link>https://yezihack.github.io/posts/python-window-install/</link>
+      <pubDate>Mon, 27 Jul 2020 11:14:29 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/python-window-install/</guid>
+      <description>window 10环境下安装 python3.8 版本. 采用国内镜像, 国内官方下载实在太慢, 无法忍受.
+下载安装 推荐华为镜像下载.
+https://mirrors.huaweicloud.com/python/3.8.0/
+选择 window 64 位
+下载后,双击文件
+python 安装的目录
+勾选加入环境变量. 如果忘记勾选需要配置环境变量.
+右击我的电脑-&amp;gt;高级系统设置-&amp;gt;环境变量-&amp;gt;系统变量(最下面的框)-&amp;gt;找到path变量名称-&amp;gt;点击编辑-&amp;gt;点击新建-&amp;gt;把 python的目录加入即可.(即安装时的目录) 配置 pip pip 是安装 python 模块的工具.
+还是那样, 默认下载源非常慢, 配置国内源.
+window 10 找到 C:\Users\&amp;lt;yourname&amp;gt;\AppData\Roaming\pip 也许你找不到这个目录, &amp;lt;yourname&amp;gt;是你的计算机名称, AppData 是一个隐藏目录, 点击输入栏输入AppData进入, 然后找到Roaming, 如果没有找到pip目录,请新建一个pip目录, 然后在pip目录下新建一个pip.ini文件, 填下以下内容即可.
+[global] index-url = https://mirrors.huaweicloud.com/repository/pypi/simple trusted-host = mirrors.huaweicloud.com timeout = 120 更新 pip 打开你的cmd工具, 输入 python -m pip install --upgrade pip即可更新
+划线部分显示采用了刚才配置的源信息.说明没有走官网的源.这样非常快的更新完了. 如果你的界面没有动, 回车一下即可.(window常见的毛病)
+如果镜像不好用,可以临时指定镜像, 如安装 requests 库</description>
+    </item>
+    
+    <item>
+      <title>Filebeat 学习(一) 原理&amp;安装</title>
+      <link>https://yezihack.github.io/posts/filebeat-info/</link>
+      <pubDate>Sun, 26 Jul 2020 16:14:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/filebeat-info/</guid>
+      <description>Filebeat是用于转发和集中日志数据的轻量级传送程序。作为服务器上的代理安装，Filebeat监视您指定的日志文件或位置，收集日志事件，并将它们转发到Elasticsearch或 Logstash进行索引。
+架构 工作原理是启动 filebeat 时, 它将启动一个或多个输入, 这些输入将在日志数据指定位置中查找, 对于 filebeat 所找到的每个日志, filebeat 都会启动收集器, 每个收割机都读取单个日志以获取新内容，并将新日志数据发送到libbeat，libbeat将聚集事件，并将聚集的数据发送到为Filebeat配置的输出。
+配置输入源, 可以是日志(log), 也可以是标准输入(stdin), 可以配置多个输入(input) 为每个日志启一个(Harvester) 收集器, 将不停的读取数据 数据卷轴, 将数据不断的输出到其它终端 终端, 如 es, kafaka, redis 原理 Filebeat由两个主要组件组成：prospector 和 harvester
+harvester 收集器
+负责读取单个文件的的内容,如果文件被删除啦,也会继续监听这个文件的变化.
+prospector 探测器
+prospector 负责管理 harvester 并找到所有要读取的文件来源
+如果输入类型是日志类型, 则查找器路径匹配的所有文件, 并为每一个文件启动一个 harvester 收集器
+filebeat 目前支持两种 prospector 类型: stdin 和 log
+Filebeat 如何保持文件的读取状态
+Filebeat 保存每个文件的状态并经常将状态刷新到磁盘上的注册文件中。 注册文件位于 /usr/local/filebeat/data/registry/filebeat/data.json 该状态用于记住harvester正在读取的最后偏移量，并确保发送所有日志行。 如果输出（例如Elasticsearch或Logstash）无法访问，Filebeat会跟踪最后发送的行，并在输出再次可用时继续读取文件 安装 官方下载 https://www.elastic.co/cn/downloads/beats/filebeat, 一般国内都很慢, 推荐使用国内镜像下载. https://mirrors.huaweicloud.com/filebeat/ 找到对应的版本.
+我这里使用是 7.8.0 版本</description>
+    </item>
+    
+    <item>
+      <title>Filebeat 学习(二) 配置</title>
+      <link>https://yezihack.github.io/posts/filebeat-config/</link>
+      <pubDate>Sat, 25 Jul 2020 17:33:29 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/filebeat-config/</guid>
+      <description>基于 filebeat 7.8.0
+7filebeat 监听文件的变化, 进行记录文件位移, 从而实现不断读取数据,并收割数据并输送到指定终端或服务
+配置 配置文件需要注意,分顶格写, - 表示数组, 缩进采用2个空格方式
+输出控制台 监听文件夹下的所有*.log文件, 并自定义字段, tags标识
+cd /usr/local/filebeat vim test.yml # 输入配置 filebeat.inputs: - type: log # 定义输入的类型, 可以是 stdin, log, tcp, udp, json enabled: true # 启动 paths: # 文件路径, 可以是多个路径 - /data/logs/tmp/*.log # 配置要监听读取的文件路径, *表示通配符 tags: [&amp;#34;sgfoot&amp;#34;] # 自定义标签, 可以设置多个 fields: # 自定义字段, 默认在 fields 节点下, 可以通过 fields_under_root = true 设置为跟节点 www: sgfoot # 设置字段, key =&amp;gt; value fields_under_root: false # true 为根目录, false 是在 fields 节点下.</description>
+    </item>
+    
+    <item>
+      <title>elasticsearch 分词器</title>
+      <link>https://yezihack.github.io/posts/es-analyzer/</link>
+      <pubDate>Thu, 23 Jul 2020 20:07:29 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-analyzer/</guid>
+      <description>介绍 Character Filter 在 Tokenizer 之前对文本进行处理, 例如增加删除及替换字符, 可以配置多个 Character Filters, 会影响 Tokenizer 的 position 和 offset 信息
+自带: html_strip, mapping, pattern replace
+Tokenizer 将原始的文本按照一定的规则, 切分为词 (term or token)
+自带: whitespace, standard/ pattern/ keyword/ path hierarchy
+Token Filter 将 Tokenizer 输出的单词 (term), 进行增加, 修改, 删除.
+如自带的 lowercase, stop, synonym(添加近义词)
+定义分词器 过滤html标签 # 自定义分词器POST _analyze{&amp;#34;tokenizer&amp;#34;: &amp;#34;keyword&amp;#34;,&amp;#34;char_filter&amp;#34;: [&amp;#34;html_strip&amp;#34;],&amp;#34;text&amp;#34;:&amp;#34;&amp;lt;b&amp;gt;hello world&amp;lt;/b&amp;gt;&amp;#34;} 过滤之后的结果
+{&amp;#34;tokens&amp;#34; : [{&amp;#34;token&amp;#34; : &amp;#34;hello world&amp;#34;,&amp;#34;start_offset&amp;#34; : 3,&amp;#34;end_offset&amp;#34; : 18,&amp;#34;type&amp;#34; : &amp;#34;word&amp;#34;,&amp;#34;position&amp;#34; : 0}]} 替换 将一个字符替换成其它字符</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch Mapping学习</title>
+      <link>https://yezihack.github.io/posts/es-mapping/</link>
+      <pubDate>Thu, 23 Jul 2020 19:49:49 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-mapping/</guid>
+      <description>Mapping的定义 可以对索引的数据字段设置类型, 还可以设置不变索引.也就是说不被搜索到.
+PUT users {&amp;#34;mappings&amp;#34;: {&amp;#34;properties&amp;#34;: {&amp;#34;firstName&amp;#34;:{&amp;#34;type&amp;#34;: &amp;#34;text&amp;#34;},&amp;#34;lastName&amp;#34;:{&amp;#34;type&amp;#34;: &amp;#34;text&amp;#34;},&amp;#34;mobile&amp;#34;:{&amp;#34;type&amp;#34;: &amp;#34;text&amp;#34;,&amp;#34;index&amp;#34;: false # 设置不变索引的字段}}}} 结果
+{&amp;#34;acknowledged&amp;#34; : true,&amp;#34;shards_acknowledged&amp;#34; : true,&amp;#34;index&amp;#34; : &amp;#34;users&amp;#34;} 添加真实数据.
+PUT users/_doc/1{&amp;#34;firstName&amp;#34;:&amp;#34;sg&amp;#34;,&amp;#34;lastName&amp;#34;:&amp;#34;foot&amp;#34;,&amp;#34;mobile&amp;#34;:&amp;#34;123&amp;#34;} 对已经禁止索引的mobile字段查询
+POST /users/_search{&amp;#34;query&amp;#34;: {&amp;#34;match&amp;#34;: {&amp;#34;mobile&amp;#34;: &amp;#34;123&amp;#34;}}} 结果显示报错是:
+{&amp;#34;error&amp;#34; : {&amp;#34;root_cause&amp;#34; : [{&amp;#34;type&amp;#34; : &amp;#34;query_shard_exception&amp;#34;,&amp;#34;reason&amp;#34; : &amp;#34;failed to create query: Cannot search on field [mobile] since it is not indexed.</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(六) cerebro 集群管理工具</title>
+      <link>https://yezihack.github.io/posts/es-cerebro/</link>
+      <pubDate>Wed, 22 Jul 2020 15:32:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-cerebro/</guid>
+      <description>之前介绍过head, hd 软件, 两种都不如今天的主角(cerebro), 也推荐使用. 言归正传. 开始吧.
+介绍 源码: https://github.com/lmenezes/cerebro
+下载二进制包: https://github.com/lmenezes/cerebro/releases
+集群名称 节点数 索引数 分片数 文档数 磁盘剩余量 节点名称,实心的星为主节点(即master节点), 空心的星为副节点(cluster节点) master 节点才有权限修改集群的状态 实线的方块代表主分片 虚线的方块代表副本分片 图片最上面有一条为黄色的线. 表示服务的健康状态. 在elasticsearch里有三种颜色
+green 绿色为健康状态 所有的主分片和副本分片都已分配。你的集群是 100% 可用的。 yellow 黄色为亚健康状态 所有的主分片已经分片了，但至少还有一个副本是缺失的。不会有数据丢失，所以搜索结果依然是完整的。不过，你的高可用性在某种程度上被弱化。如果 更多的 分片消失，你就会丢数据了。把 yellow 想象成一个需要及时调查的警告。 red 红色为非健康状态 至少一个主分片（以及它的全部副本）都在缺失中。这意味着你在缺少数据：搜索只能返回部分数据，而分配到这个分片上的写入请求会返回一个异常。 安装 # 下载二进制包cd /usr/localwget https://github.com/lmenezes/cerebro/releases/download/v0.9.2/cerebro-0.9.2.zipunzip cerebro-0.9.2.zip 修改配置文件 vim conf/application.conf# 大约70行. 去掉 # 可以配置多个.hosts = [{host = &amp;#34;http://127.0.0.1:9200&amp;#34; # 设置 elasticsearch 地址name = &amp;#34;Localhost cluster&amp;#34; # 显示名称# headers-whitelist = [ &amp;#34;x-proxy-user&amp;#34;, &amp;#34;x-proxy-roles&amp;#34;, &amp;#34;X-Forwarded-For&amp;#34; ]}# Example of host with authentication#{# host = &amp;#34;http://some-authenticated-host:9200&amp;#34;# name = &amp;#34;Secured Cluster&amp;#34;# auth = {# username = &amp;#34;username&amp;#34;# password = &amp;#34;secret-password&amp;#34;# }#}] 启动 bin/cerebroor nohup bin/cerebro &amp;amp; </description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(五) HD 可视化界面</title>
+      <link>https://yezihack.github.io/posts/es-hd/</link>
+      <pubDate>Wed, 22 Jul 2020 11:33:08 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-hd/</guid>
+      <description>效果 图表格式显示, 展示比较丰富 可以自定义elasticsearch 的地址, 并显示服务的健康状态 安装使用 下载地址
+wget https://github.com/360EntSecGroup-Skylar/ElasticHD/releases/tag/1.4 linux &amp;amp; maxOS
+Step1: Download the corresponding elasticHD version，unzip xxx_elasticHd_xxx.zipStep2: chmod 0777 ElasticHDStep3: exec elastichd ./ElasticHD -p 127.0.0.1:9800# 指定127.0.0.1地址与 9800 端口. window
+Step1: Download the corresponding elasticHD version，Double click zip package to unzipStep2: exec elastichd ./ElasticHD -p 127.0.0.1:9800 # 指定127.0.0.1地址与 9800 端口. nginx 代理 vim hd.conf upstream hd_server { server 127.0.0.1:9800 weight=1 max_fails=3 fail_timeout=60; } server { listen 80; server_name hd.</description>
+    </item>
+    
+    <item>
+      <title>nginx 添加权限验证</title>
+      <link>https://yezihack.github.io/posts/htpasswd/</link>
+      <pubDate>Tue, 21 Jul 2020 19:57:25 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/htpasswd/</guid>
+      <description>.1. 安装 httpd-tools .2. 创建密码目录 .3. 生成新的用户名和密码 .4. 查看用户名 .5. 应用到nginx配置上 .6. 报错无扩展(http_auth_basic_module) .6.1. 编译 http_auth_basic_module 扩展 安全永久是第一位
+.1. 安装 httpd-tools yum install -y httpd-tools .2. 创建密码目录 mkdir -p /etc/nginx/ .3. 生成新的用户名和密码 可以创建多个用户和密码.
+# admin 是你的帐号 # password 是你的密码 htpasswd -bc /etc/nginx/htpasswd.users admin password # 添加 root 帐号和密码 htpasswd -bc /etc/nginx/htpasswd.users root password .4. 查看用户名 cat /etc/nginx/htpasswd.users # admin:$apr1$9c2/hWtI$0CSGPb8xGTxbZ4CLOx2N3. # root:$apr1$9c2/fsadfasf1213xGTxbZ4fas12311. .5. 应用到nginx配置上 添加以下二行代码在 server节点上
+auth_basic &amp;#34;Restricted Access&amp;#34;; # 验证 auth_basic_user_file /etc/nginx/htpasswd.</description>
+    </item>
+    
+    <item>
+      <title>国内各类镜像(LST)</title>
+      <link>https://yezihack.github.io/posts/mirror/</link>
+      <pubDate>Fri, 17 Jul 2020 19:39:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mirror/</guid>
+      <description> 为什么使用镜像,因为你在一个特色的国度, 所以你需要镜像为你加速,为你的开发加油.
+github 镜像 GitClone README github镜像 直接搜索你要的库,请勿注册 码云github加速 软件镜像库 下载国外的软件,如 elasticsearch, docker, k8s 很慢, 就可以直接在这下载, 时时更新的.
+华为开源镜像站 </description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(三) Head 助手安装</title>
+      <link>https://yezihack.github.io/posts/es-head/</link>
+      <pubDate>Thu, 16 Jul 2020 19:38:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-head/</guid>
+      <description>下载 elasticsearch-head cd /usr/localgit clone https://github.com/mobz/elasticsearch-head 安装 npm 国内的 npm 很慢, 推荐使用 taobao 的镜像
+使用 npm 别名方式
+# 默认 bashvim ~/.bashrc# 如果你使用的是 zsh 的话vim ~/.zshrc# 最后一行添加alias cnpm=&amp;#34;npm --registry=https://registry.npm.taobao.org \--cache=$HOME/.npm/.cache/cnpm \--disturl=https://npm.taobao.org/dist \--userconfig=$HOME/.cnpmrc&amp;#34;# 验证一下cnpm -v 修改 Gruntfile.js 修改 elasticsearch-head 对外提供服务的配置
+cd /usr/local/elasticsearch-head vim Gruntfile.js # 大约96行, connect.server.options 节点 修改连接 es 服务的配置 cd /usr/local/elasticsearch-headvim _site/app.js# 大约 4374 行 修改 elasticsearch.yml 文件 使用 head 助手需要 es 允许跨域访问</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(一) 介绍</title>
+      <link>https://yezihack.github.io/posts/es-info/</link>
+      <pubDate>Thu, 16 Jul 2020 14:22:17 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-info/</guid>
+      <description>Elasticsearch 是什么 Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全文搜索引擎.
+还是一个分布式文档数据库, 其中每个字段均是被索引的数据且可被搜索,它能够扩展至数以百计的服务器存储以及处理PB级的数据.它可以在很短的时间内存储, 搜索和分析大量的数据.
+Elasticsearch就是为高可用和可扩展(水平扩展)而生
+优点 横向可扩展性: 只需要增加一台服务器, 调整一点儿配置,启动一下Elasticsearch进程就可以并入集群. 分片机制提供更好的分布性: 同一个索引分成多个分片(sharding), 这点类似于HDFS的块机制,分而治之的方式可提升处理效率. 高可用:提供复制(replica)机制,一个分片可以设置多个复制,使得某台服务器在宕机的情况下,集群仍可以照常运行,并会把服务器宕机丢失的数据信息复制恢复到其它可用节点上. 使用简单:解压即可使用. 无需安装(bin/elasticsearch). 相关产品 Beats 它是一个代理, 将不同类型的数据发送到Elasticsearch中.
+Filebeat: 主要用于转发和集中日志数据。 Metricbeat: 定期收集操作系统、软件或服务的指标数据 Metricbeat支持收集的module非常多，常用的有docker、kafka、mysql、nginx、redis、zookeeper等等 Packetbeat: 是一款轻量型网络数据包分析器，Packetbeat的工作原理是捕获应用程序服务器之间的网络流量，解码应用程序层协议（HTTP，MySQL，Redis等） Winlogbeat: Windows 事件日志 Auditbeat: Auditbeat 允许您在 Linux、macOS 和 Windows 平台上仔细监控任何您感兴趣的文件目录,主要用来记录安全信息，用于对系统安全事件的追溯 Heartbeat: 主要是检测服务或主机是否正常运行或存活，Heartbeat 能够通过 ICMP、TCP 和 HTTP 进行 ping 检测。 Functionbeat: 是在无服务器环境中部署的Elastic Beat，用于收集由云服务生成的事件并将事件发送到Elasticsearch。 Lucene 倒排索引 倒排索引与之相对是正向索引. 正向索引是通过 key 找 value, 倒排索引是对关键字建立倒排索引
+正排索引: 文档ID到文档内容和单词的关联
+倒排索引: 单词到文档ID的关系
+例如, 假设我们有两个文档, 每个文档的内容如下:
+我是一名程序员 我是一名高级程序员 为了创建倒排索引, 我们首先将每个文档的content域拆分成单独的词(称词条),创建一个包含所有不重复词条的排序列表，然后列出每个词条出现在哪个文档。结果如下所示：</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(四) 查询</title>
+      <link>https://yezihack.github.io/posts/es-search/</link>
+      <pubDate>Wed, 15 Jul 2020 19:52:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-search/</guid>
+      <description>概要 Elasticsearch对外提供的API遵循REST原则
+GET POST PUT DELETE 简介 _index 索引, 文档在哪儿存放 _type 类型, 7.x以后都使用 _doc类型 _id 文档唯一标识, 不指定则自动生成. 一个文档的 _index 、 _type 和 _id 唯一标识一个文档
+基本RESTful操作 新增记录 create 二种操作. PUT, POST
+PUT方法, /{_index}/_create/{id} 如果文档存在,操作失败
+还可以使用 /{_index}/_doc/{id}?op_type=create
+# 创建一个文档, 如果文档存在,操作失败# 使用_createPUT /student/_create/1{&amp;#34;name&amp;#34;: &amp;#34;张三&amp;#34;,&amp;#34;age&amp;#34;:19,&amp;#34;sex&amp;#34;:1}# 使用 _doc指定操作类型PUT /student/_doc/3?op_type=create{&amp;#34;name&amp;#34;: &amp;#34;张三丰&amp;#34;,&amp;#34;age&amp;#34;:600,&amp;#34;sex&amp;#34;:1}# 自动生成IDPUT /student/_doc/{&amp;#34;name&amp;#34;: &amp;#34;张三元&amp;#34;,&amp;#34;age&amp;#34;:600,&amp;#34;sex&amp;#34;:1} POST方法 {index}/_doc/{id} 如果文档不存在则创建新文档, 文档存在则旧文档删除, 新的文档被索引, 版本信息+1</description>
+    </item>
+    
+    <item>
+      <title>Redis 配置</title>
+      <link>https://yezihack.github.io/posts/redis-config/</link>
+      <pubDate>Tue, 14 Jul 2020 17:11:29 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/redis-config/</guid>
+      <description>配置文件目录 以上是常见的redis存放目录
+vim /etc/redis.confvim /etc/redis/6379.conf 启动配置 # 后台运行: yes 是, no 不是daemonize yes # 提供服务的端口port 6379# 对外提供的ip地址bind 127.0.0.1 # 只允许本地连接,如果没有其它服务访问, 推荐这种.bind 10.11.12.9 # 只允许局域网连接, 还有其它服务访问, [推荐]bind 0.0.0.0 # 允许任意连接 # 设置客户端连接后进行任何其他指定前需要使用的密码。requirepass mypass 限制配置 内存设置 默认redis没有内存上限, 如果超时物理内存就会实例挂掉. 所以勿必设置内存大小, 然后配合淘汰策略使用.
+# 连接数限制 如果设置 maxclients 0，表示不作限制。# 注意 2g 和 2gb 是有区别的. 见下面, 大小写不区分.maxclients 1024 maxmemory 2gb 设置完后可以在: info memory看到
+maxmemory:2147483648maxmemory_human:2.00G 配置内存大小参考 # 1k =&amp;gt; 1000 bytes# 1kb =&amp;gt; 1024 bytes# 1m =&amp;gt; 1000000 bytes# 1mb =&amp;gt; 1024*1024 bytes# 1g =&amp;gt; 1000000000 bytes# 1gb =&amp;gt; 1024*1024*1024 bytes 淘汰策略设置 # volatile-lru -&amp;gt; 利用LRU算法移除设置过过期时间的key (LRU:最近使用 Least Recently Used )# allkeys-lru -&amp;gt; 利用LRU算法移除任何key# volatile-random -&amp;gt; 移除设置过过期时间的随机key# allkeys-&amp;gt;random -&amp;gt; remove a random key, any key# volatile-ttl -&amp;gt; 移除即将过期的key(minor TTL)# noeviction -&amp;gt; 不移除任何可以，只是返回一个写错误 maxmemory-policy volatile-lru 快照配置 # save 900 1 900秒内至少有1个key被改变# save 300 10 300秒内至少有300个key被改变# save 60 10000 60秒内至少有10000个key被改变save 900 1save 300 10save 60 10000# 存储至本地数据库时（持久化到rdb文件）是否压缩数据，默认为yesrdbcompression yes# 本地持久化数据库文件名，默认值为dump.</description>
+    </item>
+    
+    <item>
+      <title>Tcp/Ip</title>
+      <link>https://yezihack.github.io/posts/tcp-ip/</link>
+      <pubDate>Wed, 08 Jul 2020 09:30:34 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/tcp-ip/</guid>
+      <description>什么是TCP/IP 什么网络协议 网络协议是一组用于网络上的计算机(或其他设备)之间通信的规则和数据格式的集合.
+TCP/IP 在internel和很多其他网络上使用的网络协议族.
+端口 端口是用来将数据路由到适当网络应用程序的逻辑通道
+DNS 负责将域名映射为IP地址
+路由器 通过逻辑地址来转发数据的一种网络设备,并且也可以将大型网络分为几个较小的子网.也可以 将一个局域子网从较大的网络中分离出来.
+TCP/IP如何工作 tcp/ip四层模型 应用层: 提供网络排错设施,文件传输,远程控制和其他基于网络的工具,此外它还提供应用程序用来访问网络的API 传输层: 提供错误检测,流量控制,确认服务 网际层: 为数据报提供逻辑寻址和路由 网络访问层: 提供物理硬件的接口. OSI七层模型 应用层: 为应用程序提供网络接口,支持文件传输,通信等功能的网络应用 表示层:把数据转换为标准格式,管理数据加密与压缩 会话层: 在计算机通信应用程序之间建立会话 传输层: 为网络提供错误控制和数据流控制 网络层: 支持逻辑寻址与路由选择. 数据链路层: 提供与网络适配器相连的接口,维护子网的逻辑链接 物理层:将数据转换为传输介质上的电子流或模拟脉冲,并且监视数据的传输 哪一层处理帧 网络访问层.
+每一层封装数据的真实含义? 在发送端. 数据向下传输到下一层之前,会先在数据中附加一个特定层的报头.
+在接收端，数据的还原需要进行一个封装的反过程，从物理层向上直到应用层，随着数据逐层向上传递，协议数据单元的报头及报尾被一层层剥离。
+最终实现了数据从发送端到接收端的传递。
+TCP 传输控制协议 传输层中一个可靠的, 面向连接的协议. 面向连接的协议提供更复杂的流量控制和错误控制, 相比UDP更可靠.因额外需要错误检查,所以比UDP慢
+UDP 用户数据报协议 传输层中一个不可靠的,无连接的协议.比TCP快, 它把错误控制的责任推给了应用.</description>
+    </item>
+    
+    <item>
+      <title>Cobra使用说明</title>
+      <link>https://yezihack.github.io/posts/cobra/</link>
+      <pubDate>Tue, 07 Jul 2020 18:54:40 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/cobra/</guid>
+      <description>Cobra 概念 Cobra有三个基本概念commands,arguments和flags。
+commands代表行为
+arguments代表数值
+flags代表对行为的改变
+例:
+# clone是commands，URL是arguments，brae是flagsgit clone URL --bare 使用 参考 使用 go cobra创建命令行项目 </description>
+    </item>
+    
+    <item>
+      <title>Ab 压测</title>
+      <link>https://yezihack.github.io/posts/ab/</link>
+      <pubDate>Tue, 07 Jul 2020 15:36:03 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/ab/</guid>
+      <description>ab 简单使用 并发100, 请求数为1000次.
+ab -c 100 -n 1000 http://localhost/test.html ab post json使用 -p 数据 -T 请求内容格式, 如json: application/json ab -c 100 -n 1000 -p data.json -T application/json http://localhost/1.html data.json
+{&amp;#34;username&amp;#34;:&amp;#34;sgfoot.com&amp;#34;} 解读报告 ab压力测试报错 Benchmarking 192.168.1.10 (be patient)apr_socket_recv: Connection reset by peer (104) 以上错误, 说明192.168.1.10机器重设连接. 因为apr_socket_recv是操作系统内核的一个参数, 如果系统感应到大量的请求时,会降慢速度,对连接进行重置. 这是一种面对SYN flood攻击保护. 但是我们压测时需要关闭这个保护.
+关闭保护
+# vim /etc/sysctl.conf net.ipv4.tcp_syncookies = 0# sysctl -p </description>
+    </item>
+    
+    <item>
+      <title>Linux 命令集</title>
+      <link>https://yezihack.github.io/posts/linux-commands/</link>
+      <pubDate>Mon, 06 Jul 2020 18:07:38 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/linux-commands/</guid>
+      <description>文件类 查看文件大小 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP
+-r 递归处理，将指定目录下的所有文件和子目录一并处理。 -y 直接保存符号连接，而非该连接所指向的文件，本参数仅在UNIX之类的系统下有效。 -v 显示指令执行过程或显示版本信息。 -j 只保存文件名称及其内容，而不存放任何目录名称。 -b 添加注释 -u 更新文件 # 压缩 # target.zip 是压缩后的文件名 # source-dir 要压缩的文件夹名 zip -r target.zip source-dir # 压缩保留软链, 只对类 unix 系统有效 # -y 保留软链 zip -ry target.zip source-dir # 压缩带注释 zip -ryb target.zip source-dir # 解压 unzip target.zip # 查看压缩文件, 不压缩 unzip -v target.</description>
+    </item>
+    
+    <item>
+      <title>zerolog 占大量内存剖析</title>
+      <link>https://yezihack.github.io/posts/optimize-zerolog/</link>
+      <pubDate>Wed, 01 Jul 2020 19:06:01 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/optimize-zerolog/</guid>
+      <description>分析过程 使用 pprof top分析 可见 json.Marshal占第一内存. 为什么呢? 我们进一步分析
+使用 tree 分析 查看到 zerolog AppendInterface 方法占用 73.32%的内存量. 而 zerolog 是一个很优秀的日志库, 比 zap 还优秀. 为什么呢?我们需要查看源码
+822.70MB 73.32% | github.com/rs/zerolog/internal/json.Encoder.AppendInterface 分析源码 找到 github.com/rs/zerolog/internal/json.Encoder.AppendInterface` 366 行
+// AppendInterface marshals the input interface to a string and// appends the encoded string to the input byte slice.func (e Encoder) AppendInterface(dst []byte, i interface{}) []byte {marshaled, err := json.Marshal(i)if err != nil {return e.</description>
+    </item>
+    
+    <item>
+      <title>Url Values Opimize</title>
+      <link>https://yezihack.github.io/posts/optimize-url-values/</link>
+      <pubDate>Wed, 01 Jul 2020 17:58:24 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/optimize-url-values/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Redis 性能分析</title>
+      <link>https://yezihack.github.io/posts/optimize-redis/</link>
+      <pubDate>Tue, 30 Jun 2020 16:17:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/optimize-redis/</guid>
+      <description>查看 Clients 属性 127.0.0.1:6379&amp;gt;info clients # Clientsconnected_clients:1 # 已连接客户端的数量（不包括通过从属服务器连接的客户端）client_recent_max_input_buffer:2 # 当前连接的客户端当中，最长的输出列表client_recent_max_output_buffer:0 # 当前连接的客户端当中，最大输入缓存blocked_clients:0 # 正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量 查看 Memeory 属性 127.0.0.1:6379&amp;gt;info memory used_memory_human:1.92G # 用户数据所占用的内存，就是你缓存的数据的大小。used_memory_rss_human:30.73M # 常驻内存, 与top占用内存一致used_memory_peak_human:1.93G # 内存使用峰值total_system_memory_human:1.78G # 整个系统的内存mem_fragmentation_ratio:0.02 # 内存碎片比率. used_memory_rss/used_memory求的值. 如果小于1时,需要优化内存碎片. mem_fragmentation_ratio 查看内存碎片比率,
+小于&amp;lt;1时,Redis实例可能会把部分数据交换到硬盘上，内存交换会严重影响Redis的性能，所以应该增加可用物理内存 大于&amp;gt;1时, 说明碎片占用 更多的内存, 需要整理, 在1~1.5 之间比较健康. 重启Redis服务；也能达到碎片整理目的
+查看是否开启自动碎片整理: config get activedefrag
+设置自动碎片整理: config set activedefrag yes
+直接手动整理碎片: memory purge
+redis.conf配置设置自动整理碎片
+redis 4.0
+# Enabled active defragmentation# 碎片整理总开关# activedefrag yes# Minimum amount of fragmentation waste to start active defrag# 当碎片达到 100mb 时，开启内存碎片整理active-defrag-ignore-bytes 100mb# Minimum percentage of fragmentation to start active defrag# 当碎片超过 10% 时，开启内存碎片整理active-defrag-threshold-lower 10# Maximum percentage of fragmentation at which we use maximum effort# #内存碎片超过 100%，则尽最大努力整理active-defrag-threshold-upper 100# Minimal effort for defrag in CPU percentage# 内存自动整理占用资源最小百分比active-defrag-cycle-min 25# Maximal effort for defrag in CPU percentage# 内存自动整理占用资源最大百分比active-defrag-cycle-max 75 查看 Stats 属性 只列出部分属性.</description>
+    </item>
+    
+    <item>
+      <title>Golang 单元测试/性能测试</title>
+      <link>https://yezihack.github.io/posts/golang-test/</link>
+      <pubDate>Tue, 30 Jun 2020 14:23:04 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/golang-test/</guid>
+      <description>参考 Go 单元测试/性能测试
+性能测试 go test -test.bench=. -test.benchmem 指定方法 go test -test.bench=MyFunc -test.benchmem cpu 性能分析 go test -test.bench=MyFunc -test.cpuprofile cpu.out 内存分析 go test -test.bench=MyFunc -test.memprofile mem.out goroutine 阻塞分析 go test -test.bench=MyFunc -test.blockprofile block.out ###　指定几个cpu分析
+go test -test.bench=MyFunc -test.benchmem -test.cpu 1,2,4 </description>
+    </item>
+    
+    <item>
+      <title>Optimize Http Response Body</title>
+      <link>https://yezihack.github.io/posts/optimize-http-response-body/</link>
+      <pubDate>Tue, 30 Jun 2020 11:34:21 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/optimize-http-response-body/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>io.ReadAll优化</title>
+      <link>https://yezihack.github.io/posts/optimize-make_slice/</link>
+      <pubDate>Tue, 30 Jun 2020 11:05:28 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/optimize-make_slice/</guid>
+      <description>解析方案 // 替换 ioutil.ReadAllfunc ReadAll(data io.ReadCloser) (body []byte) {buffer := bytes.NewBuffer(make([]byte, 0, 65536))io.Copy(buffer, data)temp := buffer.Bytes()length := len(temp)if cap(temp) &amp;gt; (length + length/10) {body = make([]byte, length)copy(body, temp)} else {body = temp}return} 参考 [golang]内存不断增长bytes.makeSlice
+Golang Slices And The Case Of The Missing Memory</description>
+    </item>
+    
+    <item>
+      <title>Top</title>
+      <link>https://yezihack.github.io/posts/top/</link>
+      <pubDate>Mon, 22 Jun 2020 10:21:47 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/top/</guid>
+      <description>top 是 linux 最常用的命令, 包括很多少直观的信息, 有利于我们对系统运行状态的把握.
+top 使用 top 系统自带命令,可以直接使用.
+top top 详情 a. 如图编号(1)
+top - 10:34:07 up 16 min, 1 user, load average: 0.00, 0.01, 0.05 10:34:07 当前时间 up 16 min 系统运行时间, 如 16 分钟 1 user 当前登陆用户数 load average: 0.00, 0.01, 0.05 系统负载. 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。 b. 如图编号(2)
+Tasks: 206 total, 1 running, 205 sleeping, 0 stopped, 0 zombie Tasks: 206 total 进程总数 1 running 正在运行的进程数 205 sleeping 睡眠进程数 0 stopped 停止进程数 0 zombie 僵尸进程数 c.</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能优化</title>
+      <link>https://yezihack.github.io/posts/mysql-optimize/</link>
+      <pubDate>Fri, 19 Jun 2020 20:23:17 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mysql-optimize/</guid>
+      <description>MySQL 并发参数调整 max_connections 参数 该参数设置mysql连接最大数量. max_connections 默认151个连接.
+show variables like &amp;#39;max_connections&amp;#39; 服务器性能优时可以调节这个参数, 范围: 500~1000
+注 当连接过大时, 查看 Connection_errors_max_connections 参数是否大于0 , 表示连接过多, 错误连接
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; back_log 参数 积压栈的大小.
+也就是说当 mysql 连接超过 max_connections 连接数时, 如果back_log大小为0时, mysql将授予连接资源. 如果back_log大于零时,则接受多余的请求, 以等待某一连接释放.而等待的连接数大于back_log数时则也将不授予连接资源.
+back_log默认大小: 50 + (max_connections/5), 最大可设置为900
+show variables like &amp;#39;back_log&amp;#39; table_open_cache 该参数用来控制所有SQL语句执行线程可打开表缓存的数量.
+最大数量设定: max_connections * N
+show variables like &amp;#39;table_open_cache&amp;#39; thread_cache_size 该参数可控制 mysql缓存客户服务线程的数量, 相当于mysql的线程池, 也备重用.
+show variables like &amp;#39;thread_cache_size&amp;#39; innodb_lock_wait_timeout 该参数是用来设置innoDB事务等待行锁的时间, 默认值:50ms. 如果并发要求高时: 可以设置小一点, 以避占用时间过长.</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能分析</title>
+      <link>https://yezihack.github.io/posts/mysql-analysis/</link>
+      <pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mysql-analysis/</guid>
+      <description>MySQL 运行的状态 重点关注以下参数
+show status like &amp;#39;Queries&amp;#39;;show status like &amp;#39;Threads_connected&amp;#39;;show status like &amp;#39;Threads_running&amp;#39;;show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
+slow_query_log 开启慢查询
+mysql&amp;gt; show variables like &amp;#39;%slow_query_log%&amp;#39;; +---------------------+--------------------------------------+ | Variable_name | Value | +---------------------+--------------------------------------+ | slow_query_log | ON | | slow_query_log_file | /var/lib/mysql/7709d56792f9-slow.log | +---------------------+--------------------------------------+ 2 rows in set (0.00 sec) set global slow_query_log=1; slow_query_log_file 慢日志存放位置
+set global slow_query_log_file=&amp;#39;/data/logs/slow-mysql.log&amp;#39;; long_query_time 表示1秒的SQL就记录
+mysql&amp;gt; show variables like &amp;#39;long_query_time&amp;#39;; +-----------------+-----------+ | Variable_name | Value | +-----------------+-----------+ | long_query_time | 10.</description>
+    </item>
+    
+    <item>
+      <title>Systemctl使用与自定义</title>
+      <link>https://yezihack.github.io/posts/systemctl/</link>
+      <pubDate>Thu, 18 Jun 2020 19:52:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/systemctl/</guid>
+      <description>systemd是Linux电脑操作系统之下的一套中央化系统及设置管理程序（init），包括有守护进程、程序库以及应用软件 在Unix中常以“d”作为系统守护进程（英语：daemon，亦称后台进程）的后缀标识
+systemctl 命令的使用 以下以 redis 为例
+启动 systemctl start redis 停止 systemctl stop redis 重启 systemctl restart redis 状态 systemctl status redis 刷新服务 systemctl daemon-reload ###　设置开机启动
+systemctl enable redis 自定义配置 新建 systemctl 文件 以 redis 服务为例
+touch /lib/systemd/system/redis.servicevim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
+[Unit]Description=RedisAfter=network.target[Service]Type=forkingExecStart=/usr/local/bin/redis-server /etc/redis/redis.confExecReload=/usr/local/bin/redis-server -s reloadExecStop=/usr/local/bin/redis-server -s stopPrivateTmp=trueType=simpleKillMode=processRestart=on-failureRestartSec=3s[Install]WantedBy=multi-user.target [Unit] 表示这是基础信息
+Description 是描述 After 是在那个服务后面启动，一般是网络服务启动后启动 [Service] 表示这里是服务信息</description>
+    </item>
+    
+    <item>
+      <title>Goland 提高效率的技巧</title>
+      <link>https://yezihack.github.io/posts/goland-tips/</link>
+      <pubDate>Wed, 17 Jun 2020 11:31:17 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/goland-tips/</guid>
+      <description> 工欲善其事, 必先利其器
+添加 Go MOD File-&amp;gt;Settings-&amp;gt;Go-&amp;gt;Go Modules
+填写 goproxy: GOPROXY=https://goproxy.cn,direct 结构体添加 tags File-&amp;gt;Settings-&amp;gt;Editor-&amp;gt;Live Templates -&amp;gt; Go
+复制一个 tag 新建一个 &amp;ldquo;gorm&amp;rdquo; 使用 保存时并格式代码 File-&amp;gt;Settings-&amp;gt;Tools-&amp;gt;File Watchers
+选择 go fmt </description>
+    </item>
+    
+    <item>
+      <title>Gin_validator</title>
+      <link>https://yezihack.github.io/posts/gin_validator/</link>
+      <pubDate>Mon, 15 Jun 2020 18:35:49 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gin_validator/</guid>
+      <description>gin 自带验证器 参考文档: https://godoc.org/gopkg.in/go-playground/validator.v8#hdr-Baked_In_Validators_and_Tags
+gin 是个优秀的web框架, 集大成于一身. 对于参数的验证可以进行过滤. gin是引用了 go-playground框架, 今天我们来学习一下如何使用验证器.</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(二) 安装</title>
+      <link>https://yezihack.github.io/posts/es-install/</link>
+      <pubDate>Thu, 11 Jun 2020 14:36:27 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-install/</guid>
+      <description>[TOC]
+基于es 7.x版本
+安装 1. 安装jdk1.8 浏览不同的es版本对java版本的要求: https://www.elastic.co/cn/support/matrix#matrix_jvm
+elasticsearch 7以后自带 java jdk, 无需以下安装操作.
+JDK1.8下载与安装
+centos
+yum -y install java-1.8.0-openjdk-devel.x86_64 ubuntu
+apt-get -y install java-1.8.0-openjdk-devel.x86_64 安装完后查看java版本
+java -version 2. 下载es v7.6.2 https://www.elastic.co/cn/downloads/elasticsearch 3. linux/win环境安装 目录概述
+bin 执行文件目录 bin/elasticsearch.bat 双击安装(window) bin/elasticsearch (linux) 加个 -d 参数的话表示后台静默运行 config 配置目录 elasticsearch.yml es配置文件 jvm.options jdk配置文件 -Xms1g 表示使用1G内存 log4j2.properties 日志配置文件 data 数据目录 lib jar包目录 logs日志目录 modules 模块目录 plugins 插件目录 后台启动
+./bin/elasticsearch -d -p /var/elasticsearch/es.pid 启动ElaticSearch
+window: 双击bin/elasticsearch.bat 文件, 差不多需要1~2分钟, 注意屏幕不动, 敲个回车.</description>
+    </item>
+    
+    <item>
+      <title>golang http句柄泄露</title>
+      <link>https://yezihack.github.io/posts/curl/</link>
+      <pubDate>Thu, 11 Jun 2020 14:36:27 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/curl/</guid>
+      <description>前言 平时我们做Web开发, 经常会遇到需要请求网络资源,使用http请求, 如下面代码,注释处如果没有打开话,会导致句柄泄露, 最终报: dial tcp 127.0.0.1:80: socket: too many open files 这是为什么呢? 在linux中万物皆文件, 网络请求也相当于打开一个文件.如果打开文件忘记关闭的话, 没有及时回收资源, linux有文件打开上限,可以使用ulimit -n 查看最大支持文件打开数.
+如下代码会导致句柄泄露 cli := &amp;amp;http.Client{}req, err := http.NewRequest(http.MethodGet, &amp;#34;http://www.google.com&amp;#34;, nil)if err != nil {return}resp, err := cli.Do(req)if err != nil {return}// 必须关闭, 如果我们没有写关闭resp.Body打开的句柄,就会导致句柄泄露// defer resp.Body.Close() // data, err := ioutil.ReadAll(resp.Body)if err != nil {return}fmt.Println(string(data))return 分析 可以使用并发工具请求你的代码, 如使用Jmeter, 然后使用lsof -p 18001 |wc -l , 18001就你程序的进程ID, 可以查看当前程序打开文件数.</description>
+    </item>
+    
+    <item>
+      <title>pprof火焰图分析利器之压测</title>
+      <link>https://yezihack.github.io/posts/benchmark/</link>
+      <pubDate>Tue, 09 Jun 2020 11:21:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/benchmark/</guid>
+      <description>Benchmark 新建测试文件 util.go文件
+func GetMd5V(s string) string {h := md5.New()h.Write([]byte(s))return hex.EncodeToString(h.Sum(nil))}func SumMd5(s string) string {data := []byte(s)return fmt.Sprintf(&amp;#34;%x&amp;#34;, md5.Sum(data))} 以_test结尾的文件, 如util_test.go
+func BenchmarkSumMd5(b *testing.B) {for i := 0; i &amp;lt; b.N; i++ {SumMd5(&amp;#34;1&amp;#34;)}}func BenchmarkGetMd5V(b *testing.B) {for i := 0; i &amp;lt; b.N; i++ {GetMd5V(&amp;#34;1&amp;#34;)}} 运行Benchmark函数 go test -bench=&amp;#34;.&amp;#34; -benchmem 输出结果 BenchmarkSumMd5-8 1719777 847 ns/op 64 B/op 3 allocs/opBenchmarkGetMd5V-8 1861362 644 ns/op 184 B/op 5 allocs/opPASSok openapi/app/util 4.</description>
+    </item>
+    
+    <item>
+      <title>pprof火焰图性能分析利器之入门</title>
+      <link>https://yezihack.github.io/posts/pprof/</link>
+      <pubDate>Fri, 05 Jun 2020 19:16:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/pprof/</guid>
+      <description>前言 如果你的应用是一直运行的，比如 web 应用，那么可以使用 net/http/pprof 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
+可以先看下pprof入门
+go1.10自带 go tool pprof工具
+go version 查看golang版本
+安装 引用包_ &amp;quot;net/http/pprof&amp;quot;
+内置包的路径: net\http\pprof\pprof.go
+const (PProfPort = 6060 // 端口)func PprofServer() {runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪go func() {err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil)if err != nil {zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;)}}()}func main() {PprofServer()select{}} 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description>
+    </item>
+    
+    <item>
+      <title>Jmeter入门</title>
+      <link>https://yezihack.github.io/posts/jmeter/</link>
+      <pubDate>Fri, 05 Jun 2020 16:45:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/jmeter/</guid>
+      <description>安装 参考 https://blog.csdn.net/pengjiangchun/article/details/105419683
+使用 切换成中文 新建&amp;quot;线程组&amp;quot; 配置&amp;quot;线程组&amp;quot; 设置Cookie Http请求 Http断言 填写请求的URl 填写报告 参考 https://zhuanlan.zhihu.com/p/142897766 https://blog.csdn.net/pengjiangchun/article/details/105419683 </description>
+    </item>
+    
+    <item>
+      <title>golang select用法</title>
+      <link>https://yezihack.github.io/posts/select/</link>
+      <pubDate>Fri, 05 Jun 2020 10:59:18 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/select/</guid>
+      <description>select 用于chan通道专用的控制结构
+ch := make(chan bool)select {case c &amp;lt;- ch:fmt.Println(&amp;#34;hello world&amp;#34;)default:return} 使用误区 39行, return 会一直阻塞? 希望大神解释下? 答: return相当于返回,不再继续,将永远阻塞,直到主程序退出.一般用于结束这个goroutine才加上return,否则不要轻易使用. 如果return 换成break或continue就不会阻塞 package mainimport (&amp;#34;fmt&amp;#34;&amp;#34;github.com/gin-gonic/gin&amp;#34;&amp;#34;log&amp;#34;&amp;#34;math/rand&amp;#34;&amp;#34;sync&amp;#34;)type Cache struct {ch chan int}var (_cache *Cache_once sync.Once)func NewCache() *Cache {_once.Do(func() {_cache = &amp;amp;Cache{ch: make(chan int, 10),}_cache.monitor()})return _cache}func (c *Cache) Push(x int) {c.</description>
+    </item>
+    
+    <item>
+      <title>Shell运算符</title>
+      <link>https://yezihack.github.io/posts/shell/</link>
+      <pubDate>Thu, 04 Jun 2020 11:03:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/shell/</guid>
+      <description>运算符 算术运算符 八种运算符号 +, -, *, /, %, =, ==, !=采用此表达式: `expr $a + $b` 计算加法, 其它类似数字判断相等: [ $a == $b ] 数字判断不相等: [ $a != $b ] 乘号比较特殊: val=`expr $a \* $b` 需要加\才能运算不使用expr, 可以使用$((表达式))代替例: a=10b=20val=`expr $a + $b`echo &amp;#34;a + b : $val&amp;#34; 关系运算符 关系运算符只支持数字, 不支持字符串,除非字符串是数字
+六种运算符号-eq 判断左边等于右边-ne 判断左边不相等右边-gt 判断左边大于右边-lt 判断左边小于右边-ge 判断左边大于等于右边-le 判断左边小于等于右边例: a=10b=20if [ $a -eq $b ]; thenecho &amp;#34;a与b相等&amp;#34;elseecho &amp;#34;a与b不相等&amp;#34;fi 布尔运算符 共三种符号: !</description>
+    </item>
+    
+    <item>
+      <title>Supervisor进程守护工具</title>
+      <link>https://yezihack.github.io/posts/supervisor/</link>
+      <pubDate>Wed, 27 May 2020 14:46:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/supervisor/</guid>
+      <description>介绍 supervisor是python写的一个进程守护工具,非常实用,时时监听你的进程是否正常, 发现异常自动启动, 生产环境必备软件.
+安装 CentOS Yum安装 #!/bin/bashyum install -y epel-release # 依赖yum install -y supervisor # 安装systemctl enable supervisord # 开机自启动systemctl start supervisord # 启动supervisord服务systemctl status supervisord # 查看supervisord服务状态ps -ef|grep supervisord # 查看是否存在supervisord进程 离线安装 参考: https://segmentfault.com/a/1190000011696023 基础 supervisord 启动工具 echo_supervisord_conf 生成配置工具 supervisorctl 管理进程工具 /etc/supervisor.conf 默认配置工具路径 /etc/supervisord.d/ 配置工具目录 supervisorctl 命令使用 status 查看状态 reload 重启所有服务 update 更新 stop [进程名] start [进程名] restart [进程名] supervisor.conf配置 vim /etc/supervisor.</description>
+    </item>
+    
+    <item>
+      <title>Go Package优秀的包</title>
+      <link>https://yezihack.github.io/posts/go-package/</link>
+      <pubDate>Wed, 13 May 2020 14:40:23 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/go-package/</guid>
+      <description> Go 资源汇总 文件 微服务 缓存 日志&amp;amp;调试 池 WEB框架 测试框架 配置 唯一ID 网络 工具包 Go 资源汇总 收集的资源大而全，提供更多选择，更大视野。
+Github 描述 go-awesome Go 语言优秀资源整理 Golang Go 资料包 awesome-go-cn Go 资源列表 文件 pkg 文档 描述 fsnotify 用法 监听文件修改进而自动重新加载 微服务 pkg 文档 描述 ratelimit 漏桶率限制算法 Jaeger 分布式追踪系统 hystrix-go 流量控制,熔断,容错,隔离功能 缓存 pkg 文档 描述 cache2go go 进程内缓存 golang-lru 实现LRU缓存策略 日志&amp;amp;调试 pkg 文档 描述 errors 错误处理 zerolog 零拷贝日志 池 pkg 文档 描述 grpool 轻量级协程池 ants 协程池 WEB框架 pkg 文档 描述 gin web 高效框架 测试框架 pkg 文档 描述 goConvey 单元测试框架, 自带 Web 界面 配置 pkg 文档 描述 ini ini 配置文件 gjson 用法 用于读取 JSON 串 sjson 用法 用于设置 JSON 串 唯一ID pkg 文档 描述 uuid uuid 码 sonyflake sony 雪花算法 xid 全局唯一ID生成器 20个字符长度 网络 pkg 文档 描述 ping go ping 包 工具包 pkg 文档 描述 cron 用法 定时器 by linux crontab endless 优雅重启 go 程序 com 工具包 cast 全类型转换 gopass 交互模式输入密码 cobra 命令行框架, spf13大神出品 go-humanize 各种数字的人性化转换 </description>
+    </item>
+    
+    <item>
+      <title>2020年5月份的分享</title>
+      <link>https://yezihack.github.io/posts/share-5month/</link>
+      <pubDate>Wed, 13 May 2020 12:47:13 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/share-5month/</guid>
+      <description>2020.05.13 第1期 Golang 标准库限流器 time/rate 实现剖析 Makedown排版 中文文案排版指北 技术文章配图指南 Google网站打分工具 给文章自动添加空格 编程沉思录之个人博客及公众号常用工具 </description>
+    </item>
+    
+    <item>
+      <title>Golang学习资源收集</title>
+      <link>https://yezihack.github.io/posts/golang-study/</link>
+      <pubDate>Fri, 08 May 2020 14:43:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/golang-study/</guid>
+      <description>Golang 系列进阶文章 Golang 系列文章 来源: 飞雪无情 Go包管理 Go开发工具 Go Doc 文档 Go 数组 Go 切片 Go Map Go 类型 Go 函数方法 Go 接口 Go 嵌入类型 Go 标志符可见性 Go goroutine Go 并发资源竞争 Go 通道 Go 并发示例-Runner Go 并发示例-Pool Go 读写锁 Go log 日志 Go Writer 和 Reader Go Context Go 单元测试 Go 基准测试 Go 调试 Go 反射 Go Struct Tag Go unsafe 包之内存布局 Go unsafe Pointer Go 后记 Golang 每日一库 Golang 每日一库 来源 darjun flag go-flags go-homedir go-ini cobra viper fsnotify cast log logrus godotenv carbon email dig gojsonq message-bus watermill wire mergo copier jennifer go-cmp buntdb gjson sjson jj govaluate validator gopsutil gentleman plot go-app zap zerolog nutsdb sqlc </description>
+    </item>
+    
+    <item>
+      <title>Goz学习笔记</title>
+      <link>https://yezihack.github.io/posts/goz/</link>
+      <pubDate>Tue, 28 Apr 2020 20:33:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/goz/</guid>
+      <description>分析 项目四个Go文件, 每个文件仅描述一件事, 思路非常清淅, 故此学习并总结一下里面的精华.
+定义Options结构体接受外部定义的配置 定义入口文件, 整个项目的入口, 并返回一个下一层处理的结构体 定义逻辑结构体, 下一层结构体担负着处理逻辑的任务,并返回处理结构的结构体. 定义收尾结构体, 将上一层的处理的结果进行进一步分析,最终展现给用户 入口文件 Goz.go 只初使化了Request结构体. 可以定义初使配置Options, 整个项目所需的配置都在Options结构里 options.go#L6 // NewClient new request object func NewClient(opts ...Options) *Request { req := &amp;amp;Request{} if len(opts) &amp;gt; 0 { req.opts = opts[0] } return req } 配置文件 Options.go 定义了整个项目需要的外部参数 变量首字母都大写 options.go#L6 // Options object type Options struct { BaseURI string Timeout float32 timeout time.Duration Query interface{} Headers map[string]interface{} Cookies interface{} FormParams map[string]interface{} JSON interface{} Proxy string } 核心处理文件 Request.</description>
+    </item>
+    
+    <item>
+      <title>Golang持续集成服务之Travis教程</title>
+      <link>https://yezihack.github.io/posts/golang-travis/</link>
+      <pubDate>Fri, 24 Apr 2020 20:19:39 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/golang-travis/</guid>
+      <description>为什么使用集成服务呢 我们向github提交代码时, 我们得保证我们的代码是能运行的, 我们会写测试用例, 保证我们的代码功能能正常使用.常见大神们的开源项目都一个绿色图标&amp;quot;build|passing 表示构建OK
+如何使用Travis服务呢 打开这个网站 https://travis-ci.org/ 点击登陆, 使用github登陆.目前似也只支持github
+1. 添加仓库 2. 开启集成 3. 项目根目录添加.travis.yml文件 cd ~/github_webhooktouch .travis.yml 4. 编写.travis.yml文件 language: go 表示当前仓库是go语言 go - 1.14 表示使用golang版本 sudo:required 表示需要root权限 os 表示使用运行环境, linux, osx是苹果系统 install 安装需要集成的必要软件 script 代表运行的脚本 以下是个测试空命令文件, 可以拿测试.看看能不能运行
+language: gogo:- 1.14sudo: requiredos:- linux- osxinstall:- echo &amp;#34;install&amp;#34;script:- echo &amp;#34;script&amp;#34; 以下是一个正式的集成测试文件
+language: gogo:- 1.14sudo: requiredos:- linux- osxinstall:- echo &amp;#34;install&amp;#34;- go get -u github.</description>
+    </item>
+    
+    <item>
+      <title>github-webhook工具实现github自动构建</title>
+      <link>https://yezihack.github.io/posts/github-webhook/</link>
+      <pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/github-webhook/</guid>
+      <description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建 github-webhook 文档 更多详情文档 https://github.com/yezihack/github-webhook 使用github-webhook 源码: https://github.com/yezihack/github-webhook 别忘记点个小星星哦.
+1. 下载github-webhook工具 https://github.com/yezihack/github-webhook/releases
+github release下载太慢, 试试这个
+wget https://cdn.jsdelivr.net/gh/yezihack/assets/github-webhook1.4.1.linux-amd64.tar.gz 2. 运行github-webhook 安装
+tar -zxvf github-webhook1.4.1.linux-amd64.tar.gzcp github-webhook /usr/bin/chmod u+x /usr/bin/github-webhook 运行
+默认端口: 2020 有效访问地址: http://ip:2020/web-hook -b 是shell脚本路径参数 -s 是github webhook设置的密码 # 非后台运行github-webhook -b [shell脚本路径] -s [github webhook设置的密码]# 后台运行nohup github-webhook -b [shell脚本路径] -s [github webhook设置的密码] &amp;amp; # 定向日志输出nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe &amp;gt;&amp;gt; ~/logs/webhook.</description>
+    </item>
+    
+    <item>
+      <title>Go命令行下星号代替输入内容</title>
+      <link>https://yezihack.github.io/posts/gopass/</link>
+      <pubDate>Fri, 17 Apr 2020 19:34:16 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gopass/</guid>
+      <description>(图片来自网络,有侵权,联系我删除)
+当我们做命令行工具时, 遇到用户需要输入密码时, 常规处理是当字符串显示输入,这样并不是很好.应该像mysqld工具一样,输入密码时,以星号代替.对敏感数据进行脱敏处理.
+今天要介绍一个golang这方面的包github.com/howeyc/gopass
+代码实例使用 1. 当输入密码时,不显示任何信息 func GetPasswd() { fmt.Printf(&amp;#34;1.请输入密码:&amp;#34;) pass, err := gopass.GetPasswd() if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 2. 当输入密码时,以星号*代替你输入的字符 func GetPasswdMasked() { fmt.Printf(&amp;#34;2.请输入密码:&amp;#34;) pass, err := gopass.GetPasswdMasked() if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 3.你输入密码时,以星号*代替你输入的字符 func GetPasswdPrompt() {pass, err := gopass.GetPasswdPrompt(&amp;#34;3.请输入密码:&amp;#34;, true, os.Stdin, os.Stdout)if err != nil {log.Fatalln(err)return}fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass))} 效果 1.</description>
+    </item>
+    
+    <item>
+      <title>算法第6天:跳水板</title>
+      <link>https://yezihack.github.io/posts/algo-6-day/</link>
+      <pubDate>Tue, 14 Apr 2020 21:22:39 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-6-day/</guid>
+      <description>leetcode: 16.11 https://leetcode-cn.com/problems/diving-board-lcci
+题目 你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为shorter，长度较长的木板长度为longer。你必须正好使用k块木板。编写一个方法，生成跳水板所有可能的长度。
+返回的长度需要从小到大排列。
+思路 题目的意思就是求一个k的组合, 利用给出的长短木板进行组合.
+边界条件考虑:
+如果k = 0, 也就是不需要组合.返回空数组.
+如果长短目录都相等, 最长的目录组就是 k * 长度(shorter, longer)
+代码求解 func LivingBoard(shorter, longer, k int) []int { if k == 0 { // 也就是不需要组合.返回空数组. return nil } if shorter == longer { // 如果长短目录都相等, 最长的目录组就是 k * 长度(shorter, longer) return []int{shorter * k} } group := make([]int, k+1) // 为什么k+1, 因为在组合中我可以使用全是长木板也可以使用全是短木板. for i := 0; i &amp;lt; k+1; i++ { fmt.</description>
+    </item>
+    
+    <item>
+      <title>Window Subsystem Ubuntu</title>
+      <link>https://yezihack.github.io/posts/window-subsystem-ubuntu/</link>
+      <pubDate>Sat, 14 Mar 2020 22:36:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/window-subsystem-ubuntu/</guid>
+      <description>做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令 而window虽然有powershell,还是不够尽兴,如果有一台linux系统又运行在window上,而又不是 那种笨重的虚拟机,那该多好.而win10就满足了你的需求.win10内置linux子系统,让你操作如飞的感觉.
+win10安装linux子系统 第一步: 启用或关闭Windows功能 开始-&amp;gt;设置-&amp;gt;应用-&amp;gt;找到&amp;quot;程序和功能&amp;quot;(一般在右边位置&amp;quot;)-&amp;gt;找到&amp;quot;启用或关闭Windows功能&amp;quot;
+点击弹出窗口后, 向下拉找到&amp;quot;适用于Linux的Windows子系统&amp;quot;选项. 勾选后,确定. 重新电脑.
+第二步: 安装Ubuntu子系统 在Microsoft Store搜索ubuntu,点击免费安装.
+下载完, 在开始程序中找到.点击进行初使化, 数分钟后安装完毕.
+第三步: 设置新帐号 系统会 提示你设置一个用户名,然后再设置密码即可.正常使用ubuntu. 此时你还不是root帐号.安装东西需要使用root帐号 第四步: 初使root密码 sudo passwd root #回车输入新密码确认密码# 切换rootsu root 更换ubuntu软件源 切换root帐号
+su root #回车
+备份一下之前的源
+cp /etc/apt/sources.list /etc/apt/sources.list.backup
+编辑sources.list
+vim /etc/apt/source.list #按ecs,一直按d按键清空源,然后再i键
+复制下面的aliyun源
+aliyun源
+# 1.阿里云源deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiversedeb http://mirrors.</description>
+    </item>
+    
+    <item>
+      <title>Yapi入门笔记</title>
+      <link>https://yezihack.github.io/posts/yapi-note/</link>
+      <pubDate>Fri, 13 Mar 2020 13:08:13 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/yapi-note/</guid>
+      <description>什么是YAPI 写接口文档的软件, 支持RESTful, Mock假数据, 团队管理协作,非常方便好用.良心之作
+内网安装 参考网上的教程吧. mac: https://www.cnblogs.com/yehuisir/p/12190446.html linux; https://www.jianshu.com/p/6c269d00bb38
+安装cross-request插件 可以在Yapi运行假数据.
+蓝凑云：https://freemt.lanzous.com/i0pDFfo582j
+使用mock假数据 {&amp;#34;status&amp;#34;: 200,//状态码&amp;#34;msg&amp;#34;: &amp;#34;success&amp;#34;,//提示信息&amp;#34;data&amp;#34;: {&amp;#34;page&amp;#34;: 1, //当前页&amp;#34;page_count&amp;#34;: 10, //一共多少页&amp;#34;total_ount&amp;#34;: 100, //数据数量&amp;#34;list|5-18&amp;#34;:[ //生成5到18个子序列{&amp;#34;id&amp;#34;:&amp;#34;@increment&amp;#34;, //生成递增主键ID&amp;#34;name&amp;#34;:&amp;#34;@ctitle(4,6)&amp;#34;,//生成中文字符4到6个之间&amp;#34;uuid&amp;#34;:&amp;#34;@uuid&amp;#34;,//生成uuid &amp;#34;created_at&amp;#34;:&amp;#34;@date(&amp;#39;yyyy-MM-dd&amp;#39;)&amp;#34;,//生成时期格式&amp;#34;status&amp;#34;:&amp;#34;@pick([&amp;#39;未认证&amp;#39;,&amp;#39;已认证&amp;#39;,&amp;#39;已拒绝&amp;#39;,&amp;#39;已冻结&amp;#39;])&amp;#34;//从数组里随机选择一项.}]}} mock常用规则 字符串 @cname() 生成名字 @url 生成url @domain() 生成域名 @email() 生成邮箱 @region() 生成地区， 如华中，华北 @province() 生成省份，如北京，山东，湖南省 @city() 生成城市， 如玉林市，拉萨， @city(true) @county() 生成区域 ， 龙亭区 @county(true) 生成完整的区域， 如山西省 忻州市 神池县 @pick([&amp;ldquo;a&amp;rdquo;, &amp;ldquo;e&amp;rdquo;, &amp;ldquo;i&amp;rdquo;, &amp;ldquo;o&amp;rdquo;, &amp;ldquo;u&amp;rdquo;]) 选择一个元素 @title() 生成标头 @word(），@word(3），@word(3, 5)生成字母，可以指定大小，也可以是范围。 @sentence() @sentence(3) @sentence(3， 5) 生成单词数量 同上 @cparagraph()，@cparagraph(2)， @cparagraph(2，5) 生成句子 同上 @csentence 中文句子 日期 @date(&amp;ldquo;yyyy-MM-dd&amp;rdquo;) 生成日期， &amp;ldquo;2013-05-07&amp;rdquo; @date(&amp;ldquo;yyyy-MM-dd HH:mm:ss&amp;rdquo;) &amp;ldquo;2020-01-02 17:15:04&amp;rdquo; 数字 @guid() 生成uuid @id() 生成ID @id(10) 生成10位的ID @increment() 递增1，2，3 @increment(100) 递增步长100 @natural(1,100000) 生成自然数 @zip() 生成区号 @integer(1, 10) 生成数字， @integer ， @integer(5） 其它 @boolean() 生成true, false @rgba() 生成RBG颜色值 如&amp;quot;rgb(129, 121, 242)&amp;quot; @color() 生成颜色值， 如&amp;quot;#f2798f&amp;quot; 参考 github https://github.</description>
+    </item>
+    
+    <item>
+      <title>算法第5天:最大子序和</title>
+      <link>https://yezihack.github.io/posts/algo-5-day/</link>
+      <pubDate>Mon, 24 Feb 2020 15:16:57 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-5-day/</guid>
+      <description>leetcode 53. 最大子序和 simple
+题目 给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+示例: 输入: [-2,1,-3,4,-1,2,1,-5,4], 输出: 6 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+解题思路 共三种思路: 暴力求解;贪心算法,动态规划
+暴力求解 数组每一种组合都查看一遍, 每个组合都与保存当前最大值的变量比较一下.
+//暴力求解//Time:O(n^2), space:O(1)func MaxSubArray(nums []int) int {count := len(nums)if count == 0 {return 0}max := 0for i := 0; i &amp;lt; count; i++ {sum := 0for j := i; j &amp;lt; count; j++ {sum += nums[j] //累加操作if sum &amp;gt; max { //如果大于max则替换掉.</description>
+    </item>
+    
+    <item>
+      <title>算法第4天:LRU缓存机制</title>
+      <link>https://yezihack.github.io/posts/algo-4-day/</link>
+      <pubDate>Mon, 24 Feb 2020 15:16:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-4-day/</guid>
+      <description>leetcode 146. LRU缓存机制 middle
+题目 运用你所掌握的数据结构，设计和实现一个 LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。 获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。 写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。
+进阶: 你是否可以在 O(1) 时间复杂度内完成这两种操作？ 解题方法 采用hash+double-linked实现LRU缓存算法机制. 先独立写个双链表, 然后引用双链表和hash实现LRU
+双链表 有些多除的方法,主要为了调试使用.
+type Linkeder interface {AddHead(key, value int) *LinkedNode //插入头位置Append(key, value int) *LinkedNode //追求到尾部RemoveNode(node *LinkedNode) bool //删除指定位置的节点RemoveTail() *LinkedNode //删除尾部的节点Reverse() *LinkedNode //反转链表Print() string //打印链表PrintLink(head *LinkedNode) string}type LinkedNode struct {key int //keyvalue int //valuenext *LinkedNode //next pointerprev *LinkedNode //prev pointer}type Linked struct {length int //链表长度head *LinkedNode //链表头部节点tail *LinkedNode //链表尾部节点}func NewLinked() Linkeder {return &amp;amp;Linked{}}//插入头部操作.</description>
+    </item>
+    
+    <item>
+      <title>算法第3天:最长公共前缀</title>
+      <link>https://yezihack.github.io/posts/algo-3-day/</link>
+      <pubDate>Mon, 24 Feb 2020 15:16:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-3-day/</guid>
+      <description>leetcode 14. 最长公共前缀 simple
+题目 编写一个函数来查找字符串数组中的最长公共前缀。 如果不存在公共前缀，返回空字符串 &amp;ldquo;&amp;quot;。
+输入: [&amp;ldquo;flower&amp;rdquo;,&amp;ldquo;flow&amp;rdquo;,&amp;ldquo;flight&amp;rdquo;] 输出: &amp;ldquo;fl&amp;rdquo;
+输入: [&amp;ldquo;dog&amp;rdquo;,&amp;ldquo;racecar&amp;rdquo;,&amp;ldquo;car&amp;rdquo;] 输出: &amp;quot;&amp;rdquo; 解释: 输入不存在公共前缀。
+解题思路 解法一: 挨个比较 首先要注意边界条件, 数组为空的情况 先找到数组里最短的字符串,因为题目是求最短前缀,必须先找最短的字符串 拿最短字符串与数组里每一个字符串的每一个字符进行比较. 如果不相等则截取,即获取最短前缀. 注意这里是最外层循环是最短的字符串循环, 然后里层循环是数组循环, 挨个字符串进行比较. 也就是查看所有的字符串与最短的字符串是否一致.如果出现不一致则截取返回. func LongestCommonPrefix(strs []string) string {l := len(strs)if l == 0 { //边界条件return &amp;#34;&amp;#34;}short := strs[0]//从数组里查找到最小字符串.for i := 1; i &amp;lt; l; i++ {if len(short) &amp;gt; len(strs[i]) { //只要存在比第一个字符还短的则进行赋值操作.short = strs[i]}}//如果最短字符串长度为0则,返回空if len(short) == 0 { //边界条件 .</description>
+    </item>
+    
+    <item>
+      <title>算法第1天: 缺失的第一个正数</title>
+      <link>https://yezihack.github.io/posts/algo-1-day/</link>
+      <pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-1-day/</guid>
+      <description>感触 为了坚持学习算法, 每篇算法标题写上坚持多少天,以此鼓励自己坚持学下去. 会把自己理解的都写在代码处, 你在看代码时也方便, 为什么这一行这么写. 也是锻炼自己的文档水平.
+题目 LeetCode:41题, 困难
+给定一个未排序的整数数组，找出其中没有出现的最小的正整数。示例 1:输入: [1,2,0]输出: 3示例 2:输入: [3,4,-1,1]输出: 2示例 3:输入: [7,8,9,11,12]输出: 1 要求: 你的算法的时间复杂度应为O(n)，并且只能使用常数级别的空间
+解法一: 利用map+for-range实现 Time: O(n), Space:O(n)不符合题目要求
+//解法一: 利用map+for-range实现.时间复杂度O(n), 空间是常数O(n) //	4 ms	2.8 MB func FirstMissingPositive(nums []int) int { hash := make(map[int]struct{}, len(nums)) for i := 0; i &amp;lt; len(nums); i++ { hash[nums[i]] = struct{}{} } fmt.Println(hash) //1-n之间检查, 如果有缺失则是最小值. for i := 1; i &amp;lt;= len(nums); i++ { //从1循环到n, 包含n if _, ok := hash[i]; !</description>
+    </item>
+    
+    <item>
+      <title>算法第2天: 盛最多水的容器</title>
+      <link>https://yezihack.github.io/posts/algo-2-day/</link>
+      <pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/algo-2-day/</guid>
+      <description>LeetCode:11题, 中等
+解析题目 解析题目: 将数组想象成一个矩形, 寻找这个矩形盛最多水的大小. 决定盛水高度取决于最低的那根木板.也就是数字最小的那个值, 决定盛水最多还得取决于它的长度.也就是数组的头与尾之间的距离.
+暴力求解. 对数组从小到大都查看一遍, 取最大容器的那个.
+//暴力求解//Time:O(n^2), Space:O(1)func ContainerWithMostWater(height []int) int {if len(height) == 0 {return 0}//暴力求解, 任何可能都不放过.maxArea := 0 //存放最大面积的变量.for i := 0; i &amp;lt; len(height); i++ {for j := i + 1; j &amp;lt; len(height); j++ {//获取最短板的那个数字,也就是最小值的数字minHeight := height[i]if height[j] &amp;lt; minHeight {minHeight = height[j]}//获取j与i之间的差距离.distance := j - i//求面积.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://yezihack.github.io/posts/go-limiter/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/go-limiter/</guid>
+      <description>参考 https://www.cyhone.com/articles/analisys-of-golang-rate/ https://www.cyhone.com/articles/analysis-of-uber-go-ratelimit/ </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://yezihack.github.io/posts/timeout/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/timeout/</guid>
+      <description>图解 参考 Go net / http超时的完整指南 https://blog.cloudflare.com/exposing-go-on-the-internet </description>
+    </item>
+    
+  </channel>
+</rss>
