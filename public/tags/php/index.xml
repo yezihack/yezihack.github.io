@@ -1,5 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>php on</title><link>https://yezihack.github.io/tags/php/</link><description>Recent content in php on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 06 Apr 2021 11:38:33 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/php/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker 安装 php 环境</title><link>https://yezihack.github.io/posts/docker-php/</link><pubDate>Tue, 06 Apr 2021 11:38:33 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-php/</guid><description>php 环境需要与 nginx 配合安装，共享 nginx 解析的目录(www)
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>php on 空树之空</title>
+    <link>https://yezihack.github.io/tags/php/</link>
+    <description>Recent content in php on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 06 Apr 2021 11:38:33 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker 安装 php 环境</title>
+      <link>https://yezihack.github.io/posts/docker-php/</link>
+      <pubDate>Tue, 06 Apr 2021 11:38:33 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-php/</guid>
+      <description>php 环境需要与 nginx 配合安装，共享 nginx 解析的目录(www)
 基本参数 -d 后台启动 --name 定义一个别名 -v 挂载目录 --link 链接其它 docker 容器名称 安装 php 即安装 php-fpm 环境
 docker search php
 docker run --name dev-phpfpm -v /d/local/nginx/www:/www -d php:5.6-fpm /d/local/nginx/www 这里必须是 nginx 解析的目录，也就是与 nginx 共享目录。 安装 nginx ro 表示只读权限
-docker run --name dev-nginx-php -p 8080:80 -d -v /d/local/nginx/www:/usr/share/nginx/html:ro -v /d/local/nginx/conf.d:/etc/nginx/conf.d:ro --link dev-phpfpm:php nginx /d/local/nginx/www , /d/local/nginx/conf.d是宿主机的目录，可以自定义。 /usr/share/nginx/html, /etc/nginx/conf.d 是 nginx 里的固定目录，不能更改。 --link dev-phpfpm:php 是链接上面的 php 容器，dev-phpfpm是别名，php 是php容器 修改nginx配置文件 /d/local/nginx/conf.</description></item></channel></rss>
+docker run --name dev-nginx-php -p 8080:80 -d -v /d/local/nginx/www:/usr/share/nginx/html:ro -v /d/local/nginx/conf.d:/etc/nginx/conf.d:ro --link dev-phpfpm:php nginx /d/local/nginx/www , /d/local/nginx/conf.d是宿主机的目录，可以自定义。 /usr/share/nginx/html, /etc/nginx/conf.d 是 nginx 里的固定目录，不能更改。 --link dev-phpfpm:php 是链接上面的 php 容器，dev-phpfpm是别名，php 是php容器 修改nginx配置文件 /d/local/nginx/conf.</description>
+    </item>
+    
+  </channel>
+</rss>

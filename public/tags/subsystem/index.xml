@@ -1,13 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>subsystem on</title><link>https://yezihack.github.io/tags/subsystem/</link><description>Recent content in subsystem on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 14 Mar 2020 22:36:14 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/subsystem/index.xml" rel="self" type="application/rss+xml"/><item><title>Window Subsystem Ubuntu</title><link>https://yezihack.github.io/posts/window-subsystem-ubuntu/</link><pubDate>Sat, 14 Mar 2020 22:36:14 +0800</pubDate><guid>https://yezihack.github.io/posts/window-subsystem-ubuntu/</guid><description>做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令 而window虽然有powershell,还是不够尽兴,如果有一台linux系统又运行在window上,而又不是 那种笨重的虚拟机,那该多好.而win10就满足了你的需求.win10内置linux子系统,让你操作如飞的感觉.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>subsystem on 空树之空</title>
+    <link>https://yezihack.github.io/tags/subsystem/</link>
+    <description>Recent content in subsystem on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 14 Mar 2020 22:36:14 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/subsystem/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Window Subsystem Ubuntu</title>
+      <link>https://yezihack.github.io/posts/window-subsystem-ubuntu/</link>
+      <pubDate>Sat, 14 Mar 2020 22:36:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/window-subsystem-ubuntu/</guid>
+      <description>做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令 而window虽然有powershell,还是不够尽兴,如果有一台linux系统又运行在window上,而又不是 那种笨重的虚拟机,那该多好.而win10就满足了你的需求.win10内置linux子系统,让你操作如飞的感觉.
 win10安装linux子系统 第一步: 启用或关闭Windows功能 开始-&amp;gt;设置-&amp;gt;应用-&amp;gt;找到&amp;quot;程序和功能&amp;quot;(一般在右边位置&amp;quot;)-&amp;gt;找到&amp;quot;启用或关闭Windows功能&amp;quot;
 点击弹出窗口后, 向下拉找到&amp;quot;适用于Linux的Windows子系统&amp;quot;选项. 勾选后,确定. 重新电脑.
 第二步: 安装Ubuntu子系统 在Microsoft Store搜索ubuntu,点击免费安装.
 下载完, 在开始程序中找到.点击进行初使化, 数分钟后安装完毕.
-第三步: 设置新帐号 系统会 提示你设置一个用户名,然后再设置密码即可.正常使用ubuntu. 此时你还不是root帐号.安装东西需要使用root帐号 第四步: 初使root密码 sudo passwd root #回车
-输入新密码
-确认密码
-# 切换root
-su root 更换ubuntu软件源 切换root帐号
+第三步: 设置新帐号 系统会 提示你设置一个用户名,然后再设置密码即可.正常使用ubuntu. 此时你还不是root帐号.安装东西需要使用root帐号 第四步: 初使root密码 sudo passwd root #回车输入新密码确认密码# 切换rootsu root 更换ubuntu软件源 切换root帐号
 su root #回车
 备份一下之前的源
 cp /etc/apt/sources.list /etc/apt/sources.list.backup
@@ -15,8 +26,8 @@ cp /etc/apt/sources.list /etc/apt/sources.list.backup
 vim /etc/apt/source.list #按ecs,一直按d按键清空源,然后再i键
 复制下面的aliyun源
 aliyun源
-# 1.阿里云源
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb http://mirrors.</description></item></channel></rss>
+# 1.阿里云源deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiversedeb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiversedeb http://mirrors.</description>
+    </item>
+    
+  </channel>
+</rss>

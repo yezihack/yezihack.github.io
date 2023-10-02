@@ -1,23 +1,36 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>systemctl on</title><link>https://yezihack.github.io/tags/systemctl/</link><description>Recent content in systemctl on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 15 Mar 2021 20:13:44 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/systemctl/index.xml" rel="self" type="application/rss+xml"/><item><title>Systemd 管理 Golang 进程</title><link>https://yezihack.github.io/posts/systemd-golang/</link><pubDate>Mon, 15 Mar 2021 20:13:44 +0800</pubDate><guid>https://yezihack.github.io/posts/systemd-golang/</guid><description>systemd 脚本 #!/bin/bash project_name=&amp;#34;mygo&amp;#34; project_path=&amp;#34;/data/backend/&amp;#34; exec_path=&amp;#34;${project_path}${project_name}&amp;#34; cat &amp;gt; /lib/systemd/system/${project_name}.service &amp;lt;&amp;lt; EOF [Unit] Description=mygo systemd Documentation=https://yezihack.github.io After=network.target [Service] Type=simple User=root # 启动命令 ExecStart=${exec_path} # 重启命令 ExecReload=/bin/kill -SIGINT # 环境变量 Environment=&amp;#34;SGFOOT_ENV=pro&amp;#34; Environment=&amp;#34;SGFOOT_PATH=/data/conf&amp;#34; KillMode=process Restart=on-failure RestartSec=3s [Install] WantedBy=multi-user.targe EOF 管理 systemctl daemon-reload # 更新配置 systemctl start mygo # 启动 systemctl stop mygo # 停止 systemctl restart mygo # 重启 systemctl enable mygo # 加入开机启动 关于我 我的博客：https://yezihack.github.io
-欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>Systemctl使用与自定义</title><link>https://yezihack.github.io/posts/systemctl/</link><pubDate>Thu, 18 Jun 2020 19:52:12 +0800</pubDate><guid>https://yezihack.github.io/posts/systemctl/</guid><description>systemd是Linux电脑操作系统之下的一套中央化系统及设置管理程序（init），包括有守护进程、程序库以及应用软件 在Unix中常以“d”作为系统守护进程（英语：daemon，亦称后台进程）的后缀标识
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>systemctl on 空树之空</title>
+    <link>https://yezihack.github.io/tags/systemctl/</link>
+    <description>Recent content in systemctl on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 15 Mar 2021 20:13:44 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/systemctl/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Systemd 管理 Golang 进程</title>
+      <link>https://yezihack.github.io/posts/systemd-golang/</link>
+      <pubDate>Mon, 15 Mar 2021 20:13:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/systemd-golang/</guid>
+      <description>systemd 脚本 #!/bin/bash project_name=&amp;#34;mygo&amp;#34; project_path=&amp;#34;/data/backend/&amp;#34; exec_path=&amp;#34;${project_path}${project_name}&amp;#34; cat &amp;gt; /lib/systemd/system/${project_name}.service &amp;lt;&amp;lt; EOF [Unit] Description=mygo systemd Documentation=https://yezihack.github.io After=network.target [Service] Type=simple User=root # 启动命令 ExecStart=${exec_path} # 重启命令 ExecReload=/bin/kill -SIGINT # 环境变量 Environment=&amp;#34;SGFOOT_ENV=pro&amp;#34; Environment=&amp;#34;SGFOOT_PATH=/data/conf&amp;#34; KillMode=process Restart=on-failure RestartSec=3s [Install] WantedBy=multi-user.targe EOF 管理 systemctl daemon-reload # 更新配置 systemctl start mygo # 启动 systemctl stop mygo # 停止 systemctl restart mygo # 重启 systemctl enable mygo # 加入开机启动 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>Systemctl使用与自定义</title>
+      <link>https://yezihack.github.io/posts/systemctl/</link>
+      <pubDate>Thu, 18 Jun 2020 19:52:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/systemctl/</guid>
+      <description>systemd是Linux电脑操作系统之下的一套中央化系统及设置管理程序（init），包括有守护进程、程序库以及应用软件 在Unix中常以“d”作为系统守护进程（英语：daemon，亦称后台进程）的后缀标识
 systemctl 命令的使用 以下以 redis 为例
 启动 systemctl start redis 停止 systemctl stop redis 重启 systemctl restart redis 状态 systemctl status redis 刷新服务 systemctl daemon-reload ###　设置开机启动
 systemctl enable redis 自定义配置 新建 systemctl 文件 以 redis 服务为例
-touch /lib/systemd/system/redis.service
-vim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
-[Unit]
-Description=Redis
-After=network.target
-[Service]
-Type=forking
-ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
-ExecReload=/usr/local/bin/redis-server -s reload
-ExecStop=/usr/local/bin/redis-server -s stop
-PrivateTmp=true
-Type=simple
-KillMode=process
-Restart=on-failure
-RestartSec=3s
-[Install]
-WantedBy=multi-user.target [Unit] 表示这是基础信息
-Description 是描述 After 是在那个服务后面启动，一般是网络服务启动后启动 [Service] 表示这里是服务信息</description></item></channel></rss>
+touch /lib/systemd/system/redis.servicevim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
+[Unit]Description=RedisAfter=network.target[Service]Type=forkingExecStart=/usr/local/bin/redis-server /etc/redis/redis.confExecReload=/usr/local/bin/redis-server -s reloadExecStop=/usr/local/bin/redis-server -s stopPrivateTmp=trueType=simpleKillMode=processRestart=on-failureRestartSec=3s[Install]WantedBy=multi-user.target [Unit] 表示这是基础信息
+Description 是描述 After 是在那个服务后面启动，一般是网络服务启动后启动 [Service] 表示这里是服务信息</description>
+    </item>
+    
+  </channel>
+</rss>

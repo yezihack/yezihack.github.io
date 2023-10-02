@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>七大原则 on</title><link>https://yezihack.github.io/tags/%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/</link><description>Recent content in 七大原则 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Aug 2020 13:00:55 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/index.xml" rel="self" type="application/rss+xml"/><item><title>设计模式-七大原则(二)</title><link>https://yezihack.github.io/posts/gof-seven-principle/</link><pubDate>Wed, 19 Aug 2020 13:00:55 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-seven-principle/</guid><description>用最少的语言记住更多的东西
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>七大原则 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/</link>
+    <description>Recent content in 七大原则 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 19 Aug 2020 13:00:55 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设计模式-七大原则(二)</title>
+      <link>https://yezihack.github.io/posts/gof-seven-principle/</link>
+      <pubDate>Wed, 19 Aug 2020 13:00:55 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/gof-seven-principle/</guid>
+      <description>用最少的语言记住更多的东西
 本文提纲 设计模式的目的 高内聚，低耦合
 可重用性 可扩展性 可阅读性 可靠性 1. 单一职责原则(SRP) 单一职责原则提出了一个编写程序的标准，用”职责“或”变化原因“来衡量接口或类设计得是否优良。
 Single Responsibility Principle
@@ -14,4 +29,8 @@ There should never be more than one reason for a class to change（一个类的�
 接口要高内聚 少使用public方法，接口对外承诺越少，对系统开发越有利，变更的风险也就越少，同时也有利于降低成本。 定制服务 就是单独为一个个体提供优良的服务。 只提供访问者需要的方法。 接口设计 是有限度的 接口的设计粒度越小，系统越灵活 一个接口只服务于一个子模块或业务逻辑。 接口隔离原则与单一职责原则的区别
 接口隔离原则要求接口中的方法尽量少，专门的接口。
 单一职责原则注重的是职责，是业务逻辑上的划分。
-4. 里氏替换原则(LSP) Liskov Substitution Principle</description></item></channel></rss>
+4. 里氏替换原则(LSP) Liskov Substitution Principle</description>
+    </item>
+    
+  </channel>
+</rss>

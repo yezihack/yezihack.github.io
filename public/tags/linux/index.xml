@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on</title><link>https://yezihack.github.io/tags/linux/</link><description>Recent content in linux on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Jul 2023 11:41:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Haproxy + Keepalived 实现 k8s 集群高可用</title><link>https://yezihack.github.io/posts/haproxy-keepalived/</link><pubDate>Wed, 05 Jul 2023 11:41:00 +0800</pubDate><guid>https://yezihack.github.io/posts/haproxy-keepalived/</guid><description>1. 什么是 Kubernetes 的高可用 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>linux on 空树之空</title>
+    <link>https://yezihack.github.io/tags/linux/</link>
+    <description>Recent content in linux on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Jul 2023 11:41:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Haproxy &#43; Keepalived 实现 k8s 集群高可用</title>
+      <link>https://yezihack.github.io/posts/haproxy-keepalived/</link>
+      <pubDate>Wed, 05 Jul 2023 11:41:00 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/haproxy-keepalived/</guid>
+      <description>1. 什么是 Kubernetes 的高可用 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
 多节点部署：使用多个节点来部署Kubernetes集群，确保即使某个节点发生故障，其他节点仍然可以继续提供服务。
 负载均衡：通过在集群前端引入负载均衡器，将流量分发到多个节点上，实现负载均衡和故障转移。这样即使某个节点发生故障，负载均衡器可以将流量重新路由到其他健康的节点上。
 自动伸缩：利用Kubernetes的自动伸缩功能，根据实际负载情况自动调整集群的节点数量，以满足应用程序的需求。这样可以在高负载时增加节点数量，保证性能，而在低负载时减少节点数量，节省资源。
@@ -17,15 +32,60 @@ VRRP 协议：Keepalived 使用 VRRP（Virtual Router Redundancy Protocol）协�
 虚拟路由器组：多个服务器通过 Keepalived 组成一个虚拟路由器组，共同提供相同的虚拟 IP 地址。其中一个服务器被选举为主服务器（Master），其他服务器为备份服务器（Backup）。
 心跳检测：主备服务器之间通过周期性的心跳消息进行通信，以检测主服务器的可用性。如果备份服务器在一定时间内没有收到主服务器的心跳消息，就会触发主备切换。
 健康检查：Keepalived 支持对服务的健康检查，通过定期检查服务的可用性和性能，及时剔除故障或不可用的服务器，保证了服务的高可用性和稳定性。
-路由表更新：当主服务器发生故障或不可用时，备份服务器中的一台将会被选举为新的主服务器，接管虚拟 IP 地址的转发功能。同时，Keepalived 会更新路由表，将虚拟 IP 地址指向新的主服务器。</description></item><item><title>Nginx 源码安装</title><link>https://yezihack.github.io/posts/nginx-install/</link><pubDate>Fri, 03 Mar 2023 15:34:45 +0800</pubDate><guid>https://yezihack.github.io/posts/nginx-install/</guid><description>源码安装 nginx 下载 http://nginx.org/en/download.html
+路由表更新：当主服务器发生故障或不可用时，备份服务器中的一台将会被选举为新的主服务器，接管虚拟 IP 地址的转发功能。同时，Keepalived 会更新路由表，将虚拟 IP 地址指向新的主服务器。</description>
+    </item>
+    
+    <item>
+      <title>Nginx 源码安装</title>
+      <link>https://yezihack.github.io/posts/nginx-install/</link>
+      <pubDate>Fri, 03 Mar 2023 15:34:45 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/nginx-install/</guid>
+      <description>源码安装 nginx 下载 http://nginx.org/en/download.html
 wget http://nginx.org/download/nginx-1.23.3.tar.gz tar -zxvf nginx-1.23.3.tar.gz cd nginx-1.23.3 修改源码版本 修改 nginx 默认的版本名称,如 nginx/1.23.3, 可任意修改为: sgfoot/100.0.0
 vim src/core/nginx.h # 大约在14行左右 #define nginx_version 1023003 #define NGINX_VERSION &amp;#34;1.23.3&amp;#34; # 版本号修改 #define NGINX_VER &amp;#34;nginx/&amp;#34; NGINX_VERSION # 软件名称修改 安装 使用自定义用户和用户组,更加安全 开启模块:
-with-http_ssl_module SSL模块 with-http_stub_status_module 统计功能模块,分析 nginx 性能 with-http_realip_module 获取真实IP模块 with-threads 线程池模块,提高nginx性能 with-http_gzip_static_module 开启压缩功能 yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel # 添加用户和组 groupadd www useradd -g www www # 配置 .</description></item><item><title>云运维笔记(9) Kubernetes Pod 调度策略</title><link>https://yezihack.github.io/posts/k8s-dispatch/</link><pubDate>Fri, 16 Dec 2022 18:14:20 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-dispatch/</guid><description>1.1. 四大调度方式 1.1.1. 自动调试 1.1.2. 定向调度 1.1.2.1. NodeName 1.1.2.2. NodeSelector 1.1.3. 亲和性调度 1.1.3.1. NodeAffinity 1.1.3.2. PodAffinity 1.1.3.3. PodAntiAffinity 1.1.4. 污点（容忍）调度 1.1.4.1. 污点 1.1.4.2. 容忍 1.2. 参考 关于作者 1.1. 四大调度方式 自动调度：运行在哪个节点上完全由Scheduler经过一系列的算法计算得出 定向调度：NodeName、NodeSelector 亲和性调度：NodeAffinity、PodAffinity、PodAntiAffinity 污点（容忍）调度：Taints、Toleration 1.1.1. 自动调试 完全交由 kube-scheduler 来决定 pod 调度到哪里，不受人为控制。
+with-http_ssl_module SSL模块 with-http_stub_status_module 统计功能模块,分析 nginx 性能 with-http_realip_module 获取真实IP模块 with-threads 线程池模块,提高nginx性能 with-http_gzip_static_module 开启压缩功能 yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel # 添加用户和组 groupadd www useradd -g www www # 配置 .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(9) Kubernetes Pod 调度策略</title>
+      <link>https://yezihack.github.io/posts/k8s-dispatch/</link>
+      <pubDate>Fri, 16 Dec 2022 18:14:20 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k8s-dispatch/</guid>
+      <description>1.1. 四大调度方式 1.1.1. 自动调试 1.1.2. 定向调度 1.1.2.1. NodeName 1.1.2.2. NodeSelector 1.1.3. 亲和性调度 1.1.3.1. NodeAffinity 1.1.3.2. PodAffinity 1.1.3.3. PodAntiAffinity 1.1.4. 污点（容忍）调度 1.1.4.1. 污点 1.1.4.2. 容忍 1.2. 参考 关于作者 1.1. 四大调度方式 自动调度：运行在哪个节点上完全由Scheduler经过一系列的算法计算得出 定向调度：NodeName、NodeSelector 亲和性调度：NodeAffinity、PodAffinity、PodAntiAffinity 污点（容忍）调度：Taints、Toleration 1.1.1. 自动调试 完全交由 kube-scheduler 来决定 pod 调度到哪里，不受人为控制。
 1.1.2. 定向调度 1.1.2.1. NodeName NodeName用于强制约束将Pod调度到指定的Name的Node节点上。这种方式，其实是直接跳过Scheduler的调度逻辑，直接将Pod调度到指定名称的节点。
 使用实例：
-apiVersion: v1 kind: Pod metadata: name: pod-nodename namespace: dev spec: nodeName: kube-11 # 指定调度到node1节点上 containers: - name: nginx image: nginx:1.17.1 tip: 这种调度不够灵活，必须指定某 node 节点，若 node 异常会导致调度失败。</description></item><item><title>云运维笔记(8) Kubeadm 内网补丁版本升级，从v1.16.0至v1.16.15</title><link>https://yezihack.github.io/posts/kubeadm-upgrade-v1.16/</link><pubDate>Fri, 09 Dec 2022 16:26:37 +0800</pubDate><guid>https://yezihack.github.io/posts/kubeadm-upgrade-v1.16/</guid><description>.1. 为什么升级 漏洞问题 使用新功能 .2. 特殊性 内网环境，没有外网。 多 master 集群。 外置 Etcd。 .3. 版本 kubeadm升级前版本：v1.16.0 kubeadm升级后版本：v1.16.15 .4. 升级前的检查 .4.1. 查看当前版本 kubeadm version kubeadm version: &amp;amp;version.Info{Major:&amp;#34;1&amp;#34;, Minor:&amp;#34;16&amp;#34;, GitVersion:&amp;#34;v1.16.0&amp;#34;, GitCommit:&amp;#34;72c30166b2105cd7d3350f2c28a219e6abcd79eb&amp;#34;, GitTreeState:&amp;#34;clean&amp;#34;, BuildDate:&amp;#34;2020-01-18T23:29:13Z&amp;#34;, GoVersion:&amp;#34;go1.13.5&amp;#34;, Compiler:&amp;#34;gc&amp;#34;, Platform:&amp;#34;linux/amd64&amp;#34;} .4.2. 离线下载 kubectl,kubeadm,kubelet 下载 # 必须本机没有安装以下软件 version=&amp;#34;1.16.15&amp;#34; yumdownloader --resolve --destdir=/opt/local-packages/ kubelet-${version} kubeadm-${version} kubectl-${version} .4.3. 制作共享 YUM 源 使用工具：saber
+apiVersion: v1 kind: Pod metadata: name: pod-nodename namespace: dev spec: nodeName: kube-11 # 指定调度到node1节点上 containers: - name: nginx image: nginx:1.17.1 tip: 这种调度不够灵活，必须指定某 node 节点，若 node 异常会导致调度失败。</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(8) Kubeadm 内网补丁版本升级，从v1.16.0至v1.16.15</title>
+      <link>https://yezihack.github.io/posts/kubeadm-upgrade-v1.16/</link>
+      <pubDate>Fri, 09 Dec 2022 16:26:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kubeadm-upgrade-v1.16/</guid>
+      <description>.1. 为什么升级 漏洞问题 使用新功能 .2. 特殊性 内网环境，没有外网。 多 master 集群。 外置 Etcd。 .3. 版本 kubeadm升级前版本：v1.16.0 kubeadm升级后版本：v1.16.15 .4. 升级前的检查 .4.1. 查看当前版本 kubeadm version kubeadm version: &amp;amp;version.Info{Major:&amp;#34;1&amp;#34;, Minor:&amp;#34;16&amp;#34;, GitVersion:&amp;#34;v1.16.0&amp;#34;, GitCommit:&amp;#34;72c30166b2105cd7d3350f2c28a219e6abcd79eb&amp;#34;, GitTreeState:&amp;#34;clean&amp;#34;, BuildDate:&amp;#34;2020-01-18T23:29:13Z&amp;#34;, GoVersion:&amp;#34;go1.13.5&amp;#34;, Compiler:&amp;#34;gc&amp;#34;, Platform:&amp;#34;linux/amd64&amp;#34;} .4.2. 离线下载 kubectl,kubeadm,kubelet 下载 # 必须本机没有安装以下软件 version=&amp;#34;1.16.15&amp;#34; yumdownloader --resolve --destdir=/opt/local-packages/ kubelet-${version} kubeadm-${version} kubectl-${version} .4.3. 制作共享 YUM 源 使用工具：saber
 假定本机IP：192.168.10.10
-# 安装 Createrepo yum install createrepo -y createrepo /opt/local-packages/ # 如果存在 repodata 则使用更新 createrepo --update /opt/local-packages/ # 共享文件 saber fs /opt/local-packages/ .</description></item><item><title>云运维笔记(6) k1s 工具使用教程</title><link>https://yezihack.github.io/posts/k1s/</link><pubDate>Tue, 06 Dec 2022 16:46:57 +0800</pubDate><guid>https://yezihack.github.io/posts/k1s/</guid><description>.1. k1s 是 kubectl 辅助工具 .2. 什么是 k1s .3. k1s 特色 .4. 安装 .5. 快速上手 .6. 功能 .6.1. Resources 列表( kubectl 系统对应) .6.2. Resources 列表(扩展功能) .6.3. Action 列表 .6.4. Extend 扩展功能 .6.5. 环境变量 .7. 使用说明 .7.1. 设置环境变量 .7.2. 日志查看 .7.3. 进入容器 .7.4. 资源操作 .7.4.1. nodes 资源 .7.4.2. pods 资源 .7.4.3. deployments 资源 .7.4.4. daemonsets 资源 .7.4.5. services 资源 .7.4.6. 清理垃圾 .8. 关于作者 .1. k1s 是 kubectl 辅助工具 so easy, so fast.</description></item><item><title>Asciinema 搭配 asciicast2gif 终端录屏专家</title><link>https://yezihack.github.io/posts/asciinema/</link><pubDate>Tue, 29 Nov 2022 17:40:13 +0800</pubDate><guid>https://yezihack.github.io/posts/asciinema/</guid><description>.1. 一点点 喜欢写博客的你，曾几何时开启录屏软件进行你的命令行录制，然后再转成 gif 动画图片。
+# 安装 Createrepo yum install createrepo -y createrepo /opt/local-packages/ # 如果存在 repodata 则使用更新 createrepo --update /opt/local-packages/ # 共享文件 saber fs /opt/local-packages/ .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(6) k1s 工具使用教程</title>
+      <link>https://yezihack.github.io/posts/k1s/</link>
+      <pubDate>Tue, 06 Dec 2022 16:46:57 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/k1s/</guid>
+      <description>.1. k1s 是 kubectl 辅助工具 .2. 什么是 k1s .3. k1s 特色 .4. 安装 .5. 快速上手 .6. 功能 .6.1. Resources 列表( kubectl 系统对应) .6.2. Resources 列表(扩展功能) .6.3. Action 列表 .6.4. Extend 扩展功能 .6.5. 环境变量 .7. 使用说明 .7.1. 设置环境变量 .7.2. 日志查看 .7.3. 进入容器 .7.4. 资源操作 .7.4.1. nodes 资源 .7.4.2. pods 资源 .7.4.3. deployments 资源 .7.4.4. daemonsets 资源 .7.4.5. services 资源 .7.4.6. 清理垃圾 .8. 关于作者 .1. k1s 是 kubectl 辅助工具 so easy, so fast.</description>
+    </item>
+    
+    <item>
+      <title>Asciinema 搭配 asciicast2gif 终端录屏专家</title>
+      <link>https://yezihack.github.io/posts/asciinema/</link>
+      <pubDate>Tue, 29 Nov 2022 17:40:13 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/asciinema/</guid>
+      <description>.1. 一点点 喜欢写博客的你，曾几何时开启录屏软件进行你的命令行录制，然后再转成 gif 动画图片。
 此刻你看着几兆大小的gif或几十兆大小的gif，是不是有种别无办法的选择了。
 现在告诉你有一种不行帧录制，而是文本录制，大小在 10 kb左右。神器就是：https://asciinema.org/
 如同它的名称，ascii + nema，存储文件里是字符，自然轻盈。
@@ -35,34 +95,142 @@ sudo yum install asciinema Ubuntu：
 sudo apt-get install asciinema MacOS：
 brew install asciinema .4. Asciinema 使用 .4.1. 登陆 登陆逻辑：
 asciinema 的登陆有别于传统的帐号密码，只需要一个邮箱即可实现个人登陆。
-使用：asciinema auth 生成一个URL，后面是一串 UUID，做为唯一码。 复制 URL 浏览器上，输入您的邮件地址，系统会发一封认证 URL。 打开邮件点击 URL，采用 Token JWT 实现的。 命令行上传文件时会携带 UUID 到服务器上验证，从而实现登陆功能。 -&amp;gt; # asciinema auth Open the following URL in a browser to register your API token and assign any recorded asciicasts to your profile: https://asciinema.</description></item><item><title>云运维笔记(4) Kubeadm etcd 堆叠式安装 k8s 1.20</title><link>https://yezihack.github.io/posts/kubeadm-install-v1.20/</link><pubDate>Mon, 14 Nov 2022 18:27:51 +0800</pubDate><guid>https://yezihack.github.io/posts/kubeadm-install-v1.20/</guid><description>.1. 回顾 .2. 安装前的准备 .2.1. 安装要求 .2.2. 集群规划 .2.3. 版本选择 .2.4. 基本设置 .3. Kubernetes 设置的参数 .3.1. br_netfilter 模块 .3.2. 桥接的IPv4流量传递到iptables的链 .3.3. 加载 IPVS .4. Docker 部署 .4.1. 设置 Docker 镜像源 .4.2. 列出 Docker 所有的版本 .4.3. 安装 docker .4.4. 设置 daemon.json .4.4.1. 设置CPU .4.4.2. 支持GPU .4.5. 启动 docker .5. 设置 firewall 防火墙规则 .5.1. k8s master需要开启以下端口 .5.2. k8s node需要开启以下端口 .5.3. 打开 NAT 转发功能 .5.4. calico 需要开启以下端口 .5.5. NFS 防火墙规则设置 .5.6. 其它端口 .</description></item><item><title>云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16</title><link>https://yezihack.github.io/posts/kubeadm-install-v1.16/</link><pubDate>Thu, 04 Aug 2022 10:40:28 +0800</pubDate><guid>https://yezihack.github.io/posts/kubeadm-install-v1.16/</guid><description>.1. Kubeadm 高可用集群 本次安装 Kubernetes 采用官方推荐的 kubeadm 安装方式。
+使用：asciinema auth 生成一个URL，后面是一串 UUID，做为唯一码。 复制 URL 浏览器上，输入您的邮件地址，系统会发一封认证 URL。 打开邮件点击 URL，采用 Token JWT 实现的。 命令行上传文件时会携带 UUID 到服务器上验证，从而实现登陆功能。 -&amp;gt; # asciinema auth Open the following URL in a browser to register your API token and assign any recorded asciicasts to your profile: https://asciinema.</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(4) Kubeadm etcd 堆叠式安装 k8s 1.20</title>
+      <link>https://yezihack.github.io/posts/kubeadm-install-v1.20/</link>
+      <pubDate>Mon, 14 Nov 2022 18:27:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kubeadm-install-v1.20/</guid>
+      <description>.1. 回顾 .2. 安装前的准备 .2.1. 安装要求 .2.2. 集群规划 .2.3. 版本选择 .2.4. 基本设置 .3. Kubernetes 设置的参数 .3.1. br_netfilter 模块 .3.2. 桥接的IPv4流量传递到iptables的链 .3.3. 加载 IPVS .4. Docker 部署 .4.1. 设置 Docker 镜像源 .4.2. 列出 Docker 所有的版本 .4.3. 安装 docker .4.4. 设置 daemon.json .4.4.1. 设置CPU .4.4.2. 支持GPU .4.5. 启动 docker .5. 设置 firewall 防火墙规则 .5.1. k8s master需要开启以下端口 .5.2. k8s node需要开启以下端口 .5.3. 打开 NAT 转发功能 .5.4. calico 需要开启以下端口 .5.5. NFS 防火墙规则设置 .5.6. 其它端口 .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16</title>
+      <link>https://yezihack.github.io/posts/kubeadm-install-v1.16/</link>
+      <pubDate>Thu, 04 Aug 2022 10:40:28 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/kubeadm-install-v1.16/</guid>
+      <description>.1. Kubeadm 高可用集群 本次安装 Kubernetes 采用官方推荐的 kubeadm 安装方式。
 利用 kubeadm 创建高可用集群，使用 kubeadm 设置一个高可用的 Kubernetes 集群的两种不同方式：
 使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。 使用外部集群。这种方法所需基础设施较多。控制平面的节点和 etcd 成员是分开的。 本次教程采用 etcd 堆叠式高可用集群，即将 etcd 与控制平面的节点在同一个位置。
 .2. 安装前的准备 .2.1. 安装要求 在开始安装 kubernetes 集群机器之前需要满足以下几上条件：
-序列 名称 参考值 命令 1 系统 Linux uname -s 2 内存 &amp;gt;= 2 GB free -hm 3 CPU &amp;gt;= 2 核 cat /proc/cpuinfo |grep &amp;ldquo;processor&amp;rdquo;|wc -l 4 硬盘 &amp;gt;= 20 GB df -h 5 交换分区 必须禁用 swapoff / vim /etc/fstab 6 网络 集群中所有机器之间网络互通 ping 7 主机名 集群中所有机器不重复 hostname 8 MAC地址 集群中所有机器不重复 cat /sys/class/net/ens33/address 9 product_uuid 集群中所有机器不重复 cat /sys/class/dmi/id/product_uuid .</description></item><item><title>云运维笔记(1) CentOS7 安装</title><link>https://yezihack.github.io/posts/centos-install/</link><pubDate>Wed, 03 Aug 2022 16:54:31 +0800</pubDate><guid>https://yezihack.github.io/posts/centos-install/</guid><description>.1. 准备 CentOS7 镜像 .2. Vmware Workstation 安装 CentOS7 .3. 配置虚拟机网络 .4. 配置 CentOS 网络 .5. 更改 CentOS7 Yum源 .6. 安装常用的软件 .7. 安装 Oh-my-zsh .8. 克隆系统 .9. 关于作者 .1. 准备 CentOS7 镜像 使用清华大学开源镜像站下载 CentOS7: https://mirrors.tuna.tsinghua.edu.cn/centos/7/isos/x86_64/
+序列 名称 参考值 命令 1 系统 Linux uname -s 2 内存 &amp;gt;= 2 GB free -hm 3 CPU &amp;gt;= 2 核 cat /proc/cpuinfo |grep &amp;ldquo;processor&amp;rdquo;|wc -l 4 硬盘 &amp;gt;= 20 GB df -h 5 交换分区 必须禁用 swapoff / vim /etc/fstab 6 网络 集群中所有机器之间网络互通 ping 7 主机名 集群中所有机器不重复 hostname 8 MAC地址 集群中所有机器不重复 cat /sys/class/net/ens33/address 9 product_uuid 集群中所有机器不重复 cat /sys/class/dmi/id/product_uuid .</description>
+    </item>
+    
+    <item>
+      <title>云运维笔记(1) CentOS7 安装</title>
+      <link>https://yezihack.github.io/posts/centos-install/</link>
+      <pubDate>Wed, 03 Aug 2022 16:54:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/centos-install/</guid>
+      <description>.1. 准备 CentOS7 镜像 .2. Vmware Workstation 安装 CentOS7 .3. 配置虚拟机网络 .4. 配置 CentOS 网络 .5. 更改 CentOS7 Yum源 .6. 安装常用的软件 .7. 安装 Oh-my-zsh .8. 克隆系统 .9. 关于作者 .1. 准备 CentOS7 镜像 使用清华大学开源镜像站下载 CentOS7: https://mirrors.tuna.tsinghua.edu.cn/centos/7/isos/x86_64/
 CentOS-7-x86_64-DVD-2009.iso 标准安装版 CentOS-7-x86_64-Everything-2009.iso 完整版，集成所有软件 CentOS-7-x86_64-Minimal-2009.iso 精简版，自带的软件最少 CentOS-7-x86_64-NetInstall-2009.iso 网络安装版（从网络安装或者救援系统) 本次安装教程使用精简版镜像。因为无须图形界面，也无须自带太多的软件。
 .2. Vmware Workstation 安装 CentOS7 操作相对比较简单，下一步即可。
-新建虚拟机 选择镜像源 下一步 调整配置 内存调整为 2GB。 CPU调整为 2 个处理器，每个处理器内核数量为 2。 开启此虚拟机 .3. 配置虚拟机网络 网络规划：192.168.9.0/24 虚拟机采用 NAT 模式连接宿主机网络 菜单 -&amp;gt; 编辑 -&amp;gt; 虚拟网络编辑器：</description></item><item><title>Linux DNS 略解</title><link>https://yezihack.github.io/posts/dns/</link><pubDate>Mon, 25 Apr 2022 09:58:14 +0800</pubDate><guid>https://yezihack.github.io/posts/dns/</guid><description>DNS 域名系统
+新建虚拟机 选择镜像源 下一步 调整配置 内存调整为 2GB。 CPU调整为 2 个处理器，每个处理器内核数量为 2。 开启此虚拟机 .3. 配置虚拟机网络 网络规划：192.168.9.0/24 虚拟机采用 NAT 模式连接宿主机网络 菜单 -&amp;gt; 编辑 -&amp;gt; 虚拟网络编辑器：</description>
+    </item>
+    
+    <item>
+      <title>Linux DNS 略解</title>
+      <link>https://yezihack.github.io/posts/dns/</link>
+      <pubDate>Mon, 25 Apr 2022 09:58:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/dns/</guid>
+      <description>DNS 域名系统
 DNS 全称：Domain Name System
 域名系统相当于一个“翻译官”，将域名翻译成对应的IP地址，然后再请求目标IP。
 Linux 设置 DNS /etc/resolv 设置DNS无须重新网络，立即生效。
 cat /etc/resolv.conf search github.com options timeout:1 attempts:1 rotate nameserver 192.168.1.1 nameserver 192.168.1.2 nameserver 192.168.1.3 解释 nameserver:dns服务器的ip地址。最多能设三个。
 timeout:查询一个nameserver的超时时间，单位是秒。系统缺省是5，最大可以设为30。 attempts:这个是查询的整个都尝试一遍的次数。缺省是2。 rotate:这个参数的含义是随机选取一个作为首选查询的dns server。系统缺省是从上到下的。 DNS 排障方法 经常会出现某域名不通，需要使用 nslookup 工具诊断
-# 安装 yum -y install nslookup -&amp;gt; % nslookup www.github.com Server: 114.114.114.114 Address: 114.114.114.114#53 Non-authoritative answer: www.github.com canonical name = github.com. Name: github.com Address: 20.205.243.166</description></item><item><title>Linux 安装 zsh 和 oh-my-zsh</title><link>https://yezihack.github.io/posts/zsh/</link><pubDate>Sat, 23 Apr 2022 09:58:14 +0800</pubDate><guid>https://yezihack.github.io/posts/zsh/</guid><description>.1. 介绍 .2. 安装 ZSH .3. 安装 oh-my-zsh .4. 设置主题 .5. 一键安装 zsh + oh-my-zsh .6. 推荐一个华丽主题 .1. 介绍 Zsh 是 Shell 脚本的天花板，个人觉得目前没有之一。华丽的外衣，丰富的内含，让你的终端操作如行云流水一般，好不快活，何不尝试一下 Oh-my-zsh。
+# 安装 yum -y install nslookup -&amp;gt; % nslookup www.github.com Server:	114.114.114.114 Address:	114.114.114.114#53 Non-authoritative answer: www.github.com	canonical name = github.com. Name:	github.com Address: 20.205.243.166 </description>
+    </item>
+    
+    <item>
+      <title>Linux 安装 zsh 和 oh-my-zsh </title>
+      <link>https://yezihack.github.io/posts/zsh/</link>
+      <pubDate>Sat, 23 Apr 2022 09:58:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/zsh/</guid>
+      <description>.1. 介绍 .2. 安装 ZSH .3. 安装 oh-my-zsh .4. 设置主题 .5. 一键安装 zsh + oh-my-zsh .6. 推荐一个华丽主题 .1. 介绍 Zsh 是 Shell 脚本的天花板，个人觉得目前没有之一。华丽的外衣，丰富的内含，让你的终端操作如行云流水一般，好不快活，何不尝试一下 Oh-my-zsh。
 .2. 安装 ZSH Zsh 全称 Z-shell，是一款用于交互式使用的shell，也可以作为脚本解释器来使用。其包含了 bash，ksh，tcsh 等其他shell中许多优秀功能，也拥有诸多自身特色。
-# CentOS sudo yum -y install zsh # Ubuntu sudo apt-get -y install zsh # 查看系统支持哪些 shell cat /etc/shells # 设置默认shell chsh -s /bin/zsh # 查看当前默认shell echo $SHELL .3. 安装 oh-my-zsh # 官网下载 sh -c &amp;#34;$(curl -fsSL https://raw.</description></item><item><title>查看 Linux 系统资源</title><link>https://yezihack.github.io/posts/linux-system-info/</link><pubDate>Thu, 17 Feb 2022 15:36:03 +0800</pubDate><guid>https://yezihack.github.io/posts/linux-system-info/</guid><description>1. 系统 uname -a # 查看系统版本全部信息 uname -r # 查看内核版本 hostname # 查看主机名称 cat /etc/redhat-release # 打印系统类型，只对红帽系统有用, 如 CentOS env # 显示环境变量 lspci # 主板信息 2. 资源 free -mh # 查看内存使用量和交换区使用量 df -h # 查看各分区使用情况 du -sh &amp;lt;目录名&amp;gt; # 查看指定目录的大小 uptime # 查看系统运行时间、用户数、负载 cat /proc/loadavg # 查看系统负载 lsblk # 树形显示硬盘结构 nvidia-smi # 显卡信息 cat /proc/cpuinfo | grep &amp;#39;model name&amp;#39; | sort | uniq # 查看CPU型号 cat /proc/cpuinfo | grep &amp;#39;physical id&amp;#39; | sort | uniq | wc -l # 查看 CPU 颗数, 实际Server中插槽上的CPU个数, 物理cpu数量 cat /proc/cpuinfo |grep &amp;#34;cores&amp;#34;|uniq|awk &amp;#39;{print $4}&amp;#39; # 查看 CPU 核数, 一颗CPU上面能处理数据的芯片组的数量。 cat /proc/cpuinfo |grep &amp;#34;processor&amp;#34;|wc -l # 逻辑CPU核数，逻辑CPU数量=物理cpu数量 x cpu cores 这个规格值 x 2(如果支持并开启超线程)。 lspci | grep -i nvidia # 查看nvidia显卡，如果没有lspci, yum -y install pciutils lspci | grep -i vga # 查看内置GPU nvidia-smi # 查看GPU watch -n 10 nvidia-smi # 动态查看GPU 3.</description></item><item><title>Systemd 管理 Golang 进程</title><link>https://yezihack.github.io/posts/systemd-golang/</link><pubDate>Mon, 15 Mar 2021 20:13:44 +0800</pubDate><guid>https://yezihack.github.io/posts/systemd-golang/</guid><description>systemd 脚本 #!/bin/bash project_name=&amp;#34;mygo&amp;#34; project_path=&amp;#34;/data/backend/&amp;#34; exec_path=&amp;#34;${project_path}${project_name}&amp;#34; cat &amp;gt; /lib/systemd/system/${project_name}.service &amp;lt;&amp;lt; EOF [Unit] Description=mygo systemd Documentation=https://yezihack.github.io After=network.target [Service] Type=simple User=root # 启动命令 ExecStart=${exec_path} # 重启命令 ExecReload=/bin/kill -SIGINT # 环境变量 Environment=&amp;#34;SGFOOT_ENV=pro&amp;#34; Environment=&amp;#34;SGFOOT_PATH=/data/conf&amp;#34; KillMode=process Restart=on-failure RestartSec=3s [Install] WantedBy=multi-user.targe EOF 管理 systemctl daemon-reload # 更新配置 systemctl start mygo # 启动 systemctl stop mygo # 停止 systemctl restart mygo # 重启 systemctl enable mygo # 加入开机启动 关于我 我的博客：https://yezihack.github.io
-欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>linux 忘记密码</title><link>https://yezihack.github.io/posts/linux-forget-password/</link><pubDate>Wed, 03 Mar 2021 15:57:12 +0800</pubDate><guid>https://yezihack.github.io/posts/linux-forget-password/</guid><description>启动 使用上下键选择不同的内核（可能有些机器就只有一个内核） 选中内核后，按e 键进入编辑状态 编辑 以下内容都是可以编辑，添加或删除的代码。（谨慎操作） 找到linux16的字符串， 然后再在本行中找到ro的字母，将其替换成rw init=/sysroot/bin/sh 然后按ctrl+x组合键，系统进入emergency(紧急情况)模式 chroot /sysroot/ # 切换回原始系统 LANG=en # 如果出现方块，不是字母的情况下设置成英文语言 passwd root # 对 root 修改密码 touch /.autorelabel # 使SELinux生效，密码生效 exit # 退出 reboot # 重启命令 关于我 我的博客：https://yezihack.github.io
-欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>Iptables 防火墙基础操作(一)</title><link>https://yezihack.github.io/posts/iptables/</link><pubDate>Tue, 23 Feb 2021 11:53:51 +0800</pubDate><guid>https://yezihack.github.io/posts/iptables/</guid><description> 基于 linxu centos 7
+# CentOS sudo yum -y install zsh # Ubuntu sudo apt-get -y install zsh # 查看系统支持哪些 shell cat /etc/shells # 设置默认shell chsh -s /bin/zsh # 查看当前默认shell echo $SHELL .3. 安装 oh-my-zsh # 官网下载 sh -c &amp;#34;$(curl -fsSL https://raw.</description>
+    </item>
+    
+    <item>
+      <title>查看 Linux 系统资源</title>
+      <link>https://yezihack.github.io/posts/linux-system-info/</link>
+      <pubDate>Thu, 17 Feb 2022 15:36:03 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/linux-system-info/</guid>
+      <description>1. 系统 uname -a # 查看系统版本全部信息 uname -r # 查看内核版本 hostname # 查看主机名称 cat /etc/redhat-release # 打印系统类型，只对红帽系统有用, 如 CentOS env # 显示环境变量 lspci # 主板信息 2. 资源 free -mh # 查看内存使用量和交换区使用量 df -h # 查看各分区使用情况 du -sh &amp;lt;目录名&amp;gt; # 查看指定目录的大小 uptime # 查看系统运行时间、用户数、负载 cat /proc/loadavg # 查看系统负载 lsblk # 树形显示硬盘结构 nvidia-smi # 显卡信息 cat /proc/cpuinfo | grep &amp;#39;model name&amp;#39; | sort | uniq # 查看CPU型号 cat /proc/cpuinfo | grep &amp;#39;physical id&amp;#39; | sort | uniq | wc -l # 查看 CPU 颗数, 实际Server中插槽上的CPU个数, 物理cpu数量 cat /proc/cpuinfo |grep &amp;#34;cores&amp;#34;|uniq|awk &amp;#39;{print $4}&amp;#39; # 查看 CPU 核数, 一颗CPU上面能处理数据的芯片组的数量。 cat /proc/cpuinfo |grep &amp;#34;processor&amp;#34;|wc -l # 逻辑CPU核数，逻辑CPU数量=物理cpu数量 x cpu cores 这个规格值 x 2(如果支持并开启超线程)。 lspci | grep -i nvidia # 查看nvidia显卡，如果没有lspci, yum -y install pciutils lspci | grep -i vga # 查看内置GPU nvidia-smi # 查看GPU watch -n 10 nvidia-smi # 动态查看GPU 3.</description>
+    </item>
+    
+    <item>
+      <title>Systemd 管理 Golang 进程</title>
+      <link>https://yezihack.github.io/posts/systemd-golang/</link>
+      <pubDate>Mon, 15 Mar 2021 20:13:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/systemd-golang/</guid>
+      <description>systemd 脚本 #!/bin/bash project_name=&amp;#34;mygo&amp;#34; project_path=&amp;#34;/data/backend/&amp;#34; exec_path=&amp;#34;${project_path}${project_name}&amp;#34; cat &amp;gt; /lib/systemd/system/${project_name}.service &amp;lt;&amp;lt; EOF [Unit] Description=mygo systemd Documentation=https://yezihack.github.io After=network.target [Service] Type=simple User=root # 启动命令 ExecStart=${exec_path} # 重启命令 ExecReload=/bin/kill -SIGINT # 环境变量 Environment=&amp;#34;SGFOOT_ENV=pro&amp;#34; Environment=&amp;#34;SGFOOT_PATH=/data/conf&amp;#34; KillMode=process Restart=on-failure RestartSec=3s [Install] WantedBy=multi-user.targe EOF 管理 systemctl daemon-reload # 更新配置 systemctl start mygo # 启动 systemctl stop mygo # 停止 systemctl restart mygo # 重启 systemctl enable mygo # 加入开机启动 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>linux 忘记密码</title>
+      <link>https://yezihack.github.io/posts/linux-forget-password/</link>
+      <pubDate>Wed, 03 Mar 2021 15:57:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/linux-forget-password/</guid>
+      <description>启动 使用上下键选择不同的内核（可能有些机器就只有一个内核） 选中内核后，按e 键进入编辑状态 编辑 以下内容都是可以编辑，添加或删除的代码。（谨慎操作） 找到linux16的字符串， 然后再在本行中找到ro的字母，将其替换成rw init=/sysroot/bin/sh 然后按ctrl+x组合键，系统进入emergency(紧急情况)模式 chroot /sysroot/ # 切换回原始系统 LANG=en # 如果出现方块，不是字母的情况下设置成英文语言 passwd root # 对 root 修改密码 touch /.autorelabel # 使SELinux生效，密码生效 exit # 退出 reboot # 重启命令 关于我 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>Iptables 防火墙基础操作(一)</title>
+      <link>https://yezihack.github.io/posts/iptables/</link>
+      <pubDate>Tue, 23 Feb 2021 11:53:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/iptables/</guid>
+      <description> 基于 linxu centos 7
 查看防火墙 iptables 命令大小写敏感
 iptables -nL 添加一条规则 添加一条开放 9090 端口的规则
 # 插入最前面 iptables -I INPUT -p tcp --dport 9090 -j ACCEPT # 追加最后面 iptables -A INPUT -p tcp --dport 9090 -j ACCEPT # 插入某指定位置 iptables -I INPUT 3 -p tcp --dport 9090 -j ACCEPT 关于我 我的博客：https://yezihack.github.io
-欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>解决tcp6问题</title><link>https://yezihack.github.io/posts/fix-tcp-tcp6/</link><pubDate>Sat, 19 Dec 2020 18:00:57 +0800</pubDate><guid>https://yezihack.github.io/posts/fix-tcp-tcp6/</guid><description>背景: 在 windows 上安装了 vmware linux . 在 linux 上开启一个服务对外提供8080端口, 而在 windows 上无法访问到.
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~ </description>
+    </item>
+    
+    <item>
+      <title>解决tcp6问题</title>
+      <link>https://yezihack.github.io/posts/fix-tcp-tcp6/</link>
+      <pubDate>Sat, 19 Dec 2020 18:00:57 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fix-tcp-tcp6/</guid>
+      <description>背景: 在 windows 上安装了 vmware linux . 在 linux 上开启一个服务对外提供8080端口, 而在 windows 上无法访问到.
 解决思路 使用 netstat -nplt 查看端口上 tcp, 还是 tcp6 查看是否只绑定在 ipv6 上 sysctl net.ipv6.bindv6only 查看ipv4 上可以转发数据 : sysctl net.ipv4.ip_forward 查看防火墙是否禁用端口. 第一步: 查看端口 netstat -nplt
--&amp;gt; # netstat -nplt Active Internet connections (only servers) Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN 1001/sshd tcp 0 0 127.0.0.1:25 0.0.0.0:* LISTEN 1156/master tcp6 0 0 :::8080 :::* LISTEN 28187/output/bin/go 可以看出 8080端口只出现在 tcp6 上.</description></item><item><title>linux 制作绿色安装包</title><link>https://yezihack.github.io/posts/make-linux-green-soft/</link><pubDate>Mon, 16 Nov 2020 17:51:10 +0800</pubDate><guid>https://yezihack.github.io/posts/make-linux-green-soft/</guid><description>绿色安装包的概念来自于 win 的概念, 也就是说无需安装即可使用软件. 即为绿色安装包. 在 linux 为了方便, 我们也需要制作绿色安装包, 方便相同系统之间的 copy. 即高效又好用. 何乐不为.
+-&amp;gt; # netstat -nplt Active Internet connections (only servers) Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN 1001/sshd tcp 0 0 127.0.0.1:25 0.0.0.0:* LISTEN 1156/master tcp6 0 0 :::8080 :::* LISTEN 28187/output/bin/go 可以看出 8080端口只出现在 tcp6 上.</description>
+    </item>
+    
+    <item>
+      <title>linux 制作绿色安装包</title>
+      <link>https://yezihack.github.io/posts/make-linux-green-soft/</link>
+      <pubDate>Mon, 16 Nov 2020 17:51:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/make-linux-green-soft/</guid>
+      <description>绿色安装包的概念来自于 win 的概念, 也就是说无需安装即可使用软件. 即为绿色安装包. 在 linux 为了方便, 我们也需要制作绿色安装包, 方便相同系统之间的 copy. 即高效又好用. 何乐不为.
 你将了解到 LD_LIBRARY_PATH 的概念 ldd 是什么东西 如何制作绿色安装包 安装 mediainfo 在 CentOS7 192.168.1. 100 机器上操作.
 yum -y install mediainfo 制作ldd打包脚本 本脚本用于将 mediainfo 所依赖的动态库或依赖文件都复制出来
 文件名:pack.sh
-#!/bin/bash set +x # 需要打包的命令全路径 file_path=$1 # 需要复制的目录 target_dir=$2 # check file path if [ ! -f $file_path ];then echo &amp;#34;$file_path is not file&amp;#34; exit 0 fi # 判断目录是否为空 if [ -z $target_dir ]; then echo &amp;#34;target_dir is null&amp;#34; exit 0 fi # 目录不存在,自动创建 if [ !</description></item><item><title>rsyslog 占用内存过高</title><link>https://yezihack.github.io/posts/fix-rsyslog/</link><pubDate>Fri, 16 Oct 2020 10:38:58 +0800</pubDate><guid>https://yezihack.github.io/posts/fix-rsyslog/</guid><description>排查问题 使用top 再按大写M， 对内存采用降序显示，一目了然看到谁占用内存最高。
+#!/bin/bash set +x # 需要打包的命令全路径 file_path=$1 # 需要复制的目录 target_dir=$2 # check file path if [ ! -f $file_path ];then echo &amp;#34;$file_path is not file&amp;#34; exit 0 fi # 判断目录是否为空 if [ -z $target_dir ]; then echo &amp;#34;target_dir is null&amp;#34; exit 0 fi # 目录不存在,自动创建 if [ !</description>
+    </item>
+    
+    <item>
+      <title>rsyslog 占用内存过高</title>
+      <link>https://yezihack.github.io/posts/fix-rsyslog/</link>
+      <pubDate>Fri, 16 Oct 2020 10:38:58 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fix-rsyslog/</guid>
+      <description>排查问题 使用top 再按大写M， 对内存采用降序显示，一目了然看到谁占用内存最高。
 定位到rsyslogd进程占用内存25.7%，非常可怕，需要急需解决掉它。
 什么是rsyslog: 系统提供的多线性日志系统，参考: https://www.rsyslog.com/
 解决问题 rsyslogd是它的守护进程，可以通过systemctl status rsyslog 查看运行状态
@@ -76,63 +244,80 @@ yum -y install mediainfo 制作ldd打包脚本 本脚本用于将 mediainfo 所�
 最后行添加2行代码
 $imjournalRatelimitInterval 0 $imjournalRatelimitBurst 0 重启服务:systemctl restart rsyslog
 关闭 journal 压缩配置
-vim /etc/systemd/journald.conf # 找到 #Compress=yes 修改成 no Compress=no # 重启服务 systemctl restart systemd-journald</description></item><item><title>fdisk lvm对根目录扩容</title><link>https://yezihack.github.io/posts/fdisk-rsync/</link><pubDate>Tue, 22 Sep 2020 20:04:14 +0800</pubDate><guid>https://yezihack.github.io/posts/fdisk-rsync/</guid><description>生产服务器根目录空间余量告急，你可能会选择对重装系统重装，这种方式对生产服务器不友好，也不推荐。网上你可以看到很多文章进行LVM进行根目录扩容，当然一顿猛操作后，发现无计于事，因为你的根目录挂载的磁盘根本不是LVM方式，无法这样操作。在不重装，也不影响线上生产，有没有一种方式可以实现动态扩容呢？答案：有
+vim /etc/systemd/journald.conf # 找到 #Compress=yes 修改成 no Compress=no # 重启服务 systemctl restart systemd-journald </description>
+    </item>
+    
+    <item>
+      <title>fdisk lvm对根目录扩容</title>
+      <link>https://yezihack.github.io/posts/fdisk-rsync/</link>
+      <pubDate>Tue, 22 Sep 2020 20:04:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/fdisk-rsync/</guid>
+      <description>生产服务器根目录空间余量告急，你可能会选择对重装系统重装，这种方式对生产服务器不友好，也不推荐。网上你可以看到很多文章进行LVM进行根目录扩容，当然一顿猛操作后，发现无计于事，因为你的根目录挂载的磁盘根本不是LVM方式，无法这样操作。在不重装，也不影响线上生产，有没有一种方式可以实现动态扩容呢？答案：有
 概要 使用rsync命令带属性方式转移数据 然后再使用lvm方式进行对某些目录进行重装挂载 这样就可以扩出容量。 LVM 原理 LVM的工作原理其实很简单，它就是通过将底层的物理硬盘抽象的封装起来，然后以逻辑卷的方式呈现给上层应用
 掌握4个基本的逻辑卷概念
 PE(Physical Extend) 物理扩展（底层） PV(Physical Volume) 物理卷（底层） VG(Volume Group) 卷组 LV(Logical Volume) 逻辑卷（上层） 工作原理
 常用命令操作
-# 格式为物理卷 pvcreate /dev/vda1 [可以多个] pvdisplay #查看物理卷 pvs #查看物理卷列表 # 创建卷组 vgcreate vg1 /dev/vda1 # vg1 是卷组名称， /dev/vda1 是分区名称 vgdisplay # 查看卷组 vgs # 查看卷组列表 # 创建逻辑卷 lvcreate -n lv1 -L 50G vg1 # lv1 是逻辑卷名称， 50G 是转成逻辑卷大小 vg1就是卷组 lvdisplay # 查看逻辑卷信息 lvs # 查看逻辑卷列表 实战 查看你的磁盘分区信息(df -h) 查看你的磁盘信息(fdisk -l) 对指点磁盘进行分区操作(fdisk /dev/vdc 每个人的磁盘分区名称不一样) 创建物理卷 创建卷组 创建逻辑卷 对逻辑卷进行格式化 ext4 挂载某目录 # 1.</description></item><item><title>Linux 命令集</title><link>https://yezihack.github.io/posts/linux-commands/</link><pubDate>Mon, 06 Jul 2020 18:07:38 +0800</pubDate><guid>https://yezihack.github.io/posts/linux-commands/</guid><description>文件类 查看文件大小 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP
--r 递归处理，将指定目录下的所有文件和子目录一并处理。 -y 直接保存符号连接，而非该连接所指向的文件，本参数仅在UNIX之类的系统下有效。 -v 显示指令执行过程或显示版本信息。 -j 只保存文件名称及其内容，而不存放任何目录名称。 -b 添加注释 -u 更新文件 # 压缩 # target.zip 是压缩后的文件名 # source-dir 要压缩的文件夹名 zip -r target.zip source-dir # 压缩保留软链, 只对类 unix 系统有效 # -y 保留软链 zip -ry target.zip source-dir # 压缩带注释 zip -ryb target.zip source-dir # 解压 unzip target.zip # 查看压缩文件, 不压缩 unzip -v target.</description></item><item><title>Top</title><link>https://yezihack.github.io/posts/top/</link><pubDate>Mon, 22 Jun 2020 10:21:47 +0800</pubDate><guid>https://yezihack.github.io/posts/top/</guid><description>top 是 linux 最常用的命令, 包括很多少直观的信息, 有利于我们对系统运行状态的把握.
+# 格式为物理卷 pvcreate /dev/vda1 [可以多个] pvdisplay #查看物理卷 pvs #查看物理卷列表 # 创建卷组 vgcreate vg1 /dev/vda1 # vg1 是卷组名称， /dev/vda1 是分区名称 vgdisplay # 查看卷组 vgs # 查看卷组列表 # 创建逻辑卷 lvcreate -n lv1 -L 50G vg1 # lv1 是逻辑卷名称， 50G 是转成逻辑卷大小 vg1就是卷组 lvdisplay # 查看逻辑卷信息 lvs # 查看逻辑卷列表 实战 查看你的磁盘分区信息(df -h) 查看你的磁盘信息(fdisk -l) 对指点磁盘进行分区操作(fdisk /dev/vdc 每个人的磁盘分区名称不一样) 创建物理卷 创建卷组 创建逻辑卷 对逻辑卷进行格式化 ext4 挂载某目录 # 1.</description>
+    </item>
+    
+    <item>
+      <title>Linux 命令集</title>
+      <link>https://yezihack.github.io/posts/linux-commands/</link>
+      <pubDate>Mon, 06 Jul 2020 18:07:38 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/linux-commands/</guid>
+      <description>文件类 查看文件大小 # 加 h 查看可读性的文件大小 ll -h # 查看文件夹大小 # --max-depth=1 表示查看文件夹的一层 du -h --max-depth=1 /usr 压缩 ZIP
+-r 递归处理，将指定目录下的所有文件和子目录一并处理。 -y 直接保存符号连接，而非该连接所指向的文件，本参数仅在UNIX之类的系统下有效。 -v 显示指令执行过程或显示版本信息。 -j 只保存文件名称及其内容，而不存放任何目录名称。 -b 添加注释 -u 更新文件 # 压缩 # target.zip 是压缩后的文件名 # source-dir 要压缩的文件夹名 zip -r target.zip source-dir # 压缩保留软链, 只对类 unix 系统有效 # -y 保留软链 zip -ry target.zip source-dir # 压缩带注释 zip -ryb target.zip source-dir # 解压 unzip target.zip # 查看压缩文件, 不压缩 unzip -v target.</description>
+    </item>
+    
+    <item>
+      <title>Top</title>
+      <link>https://yezihack.github.io/posts/top/</link>
+      <pubDate>Mon, 22 Jun 2020 10:21:47 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/top/</guid>
+      <description>top 是 linux 最常用的命令, 包括很多少直观的信息, 有利于我们对系统运行状态的把握.
 top 使用 top 系统自带命令,可以直接使用.
 top top 详情 a. 如图编号(1)
 top - 10:34:07 up 16 min, 1 user, load average: 0.00, 0.01, 0.05 10:34:07 当前时间 up 16 min 系统运行时间, 如 16 分钟 1 user 当前登陆用户数 load average: 0.00, 0.01, 0.05 系统负载. 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。 b. 如图编号(2)
-Tasks: 206 total, 1 running, 205 sleeping, 0 stopped, 0 zombie Tasks: 206 total 进程总数 1 running 正在运行的进程数 205 sleeping 睡眠进程数 0 stopped 停止进程数 0 zombie 僵尸进程数 c.</description></item><item><title>Systemctl使用与自定义</title><link>https://yezihack.github.io/posts/systemctl/</link><pubDate>Thu, 18 Jun 2020 19:52:12 +0800</pubDate><guid>https://yezihack.github.io/posts/systemctl/</guid><description>systemd是Linux电脑操作系统之下的一套中央化系统及设置管理程序（init），包括有守护进程、程序库以及应用软件 在Unix中常以“d”作为系统守护进程（英语：daemon，亦称后台进程）的后缀标识
+Tasks: 206 total, 1 running, 205 sleeping, 0 stopped, 0 zombie Tasks: 206 total 进程总数 1 running 正在运行的进程数 205 sleeping 睡眠进程数 0 stopped 停止进程数 0 zombie 僵尸进程数 c.</description>
+    </item>
+    
+    <item>
+      <title>Systemctl使用与自定义</title>
+      <link>https://yezihack.github.io/posts/systemctl/</link>
+      <pubDate>Thu, 18 Jun 2020 19:52:12 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/systemctl/</guid>
+      <description>systemd是Linux电脑操作系统之下的一套中央化系统及设置管理程序（init），包括有守护进程、程序库以及应用软件 在Unix中常以“d”作为系统守护进程（英语：daemon，亦称后台进程）的后缀标识
 systemctl 命令的使用 以下以 redis 为例
 启动 systemctl start redis 停止 systemctl stop redis 重启 systemctl restart redis 状态 systemctl status redis 刷新服务 systemctl daemon-reload ###　设置开机启动
 systemctl enable redis 自定义配置 新建 systemctl 文件 以 redis 服务为例
-touch /lib/systemd/system/redis.service
-vim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
-[Unit]
-Description=Redis
-After=network.target
-[Service]
-Type=forking
-ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
-ExecReload=/usr/local/bin/redis-server -s reload
-ExecStop=/usr/local/bin/redis-server -s stop
-PrivateTmp=true
-Type=simple
-KillMode=process
-Restart=on-failure
-RestartSec=3s
-[Install]
-WantedBy=multi-user.target [Unit] 表示这是基础信息
-Description 是描述 After 是在那个服务后面启动，一般是网络服务启动后启动 [Service] 表示这里是服务信息</description></item><item><title>Shell运算符</title><link>https://yezihack.github.io/posts/shell/</link><pubDate>Thu, 04 Jun 2020 11:03:14 +0800</pubDate><guid>https://yezihack.github.io/posts/shell/</guid><description>运算符 算术运算符 八种运算符号 +, -, *, /, %, =, ==, !=
-采用此表达式: `expr $a + $b` 计算加法, 其它类似
-数字判断相等: [ $a == $b ] 数字判断不相等: [ $a != $b ] 乘号比较特殊: val=`expr $a \* $b` 需要加\才能运算
-不使用expr, 可以使用$((表达式))代替
-例: a=10
-b=20
-val=`expr $a + $b`
-echo &amp;#34;a + b : $val&amp;#34; 关系运算符 关系运算符只支持数字, 不支持字符串,除非字符串是数字
-六种运算符号
--eq 判断左边等于右边
--ne 判断左边不相等右边
--gt 判断左边大于右边
--lt 判断左边小于右边
--ge 判断左边大于等于右边
--le 判断左边小于等于右边
-例: a=10
-b=20
-if [ $a -eq $b ]; then
-echo &amp;#34;a与b相等&amp;#34;
-else
-echo &amp;#34;a与b不相等&amp;#34;
-fi 布尔运算符 共三种符号: !</description></item><item><title>Supervisor进程守护工具</title><link>https://yezihack.github.io/posts/supervisor/</link><pubDate>Wed, 27 May 2020 14:46:37 +0800</pubDate><guid>https://yezihack.github.io/posts/supervisor/</guid><description>介绍 supervisor是python写的一个进程守护工具,非常实用,时时监听你的进程是否正常, 发现异常自动启动, 生产环境必备软件.
-安装 CentOS Yum安装 #!/bin/bash
-yum install -y epel-release # 依赖
-yum install -y supervisor # 安装
-systemctl enable supervisord # 开机自启动
-systemctl start supervisord # 启动supervisord服务
-systemctl status supervisord # 查看supervisord服务状态
-ps -ef|grep supervisord # 查看是否存在supervisord进程 离线安装 参考: https://segmentfault.com/a/1190000011696023 基础 supervisord 启动工具 echo_supervisord_conf 生成配置工具 supervisorctl 管理进程工具 /etc/supervisor.conf 默认配置工具路径 /etc/supervisord.d/ 配置工具目录 supervisorctl 命令使用 status 查看状态 reload 重启所有服务 update 更新 stop [进程名] start [进程名] restart [进程名] supervisor.conf配置 vim /etc/supervisor.</description></item></channel></rss>
+touch /lib/systemd/system/redis.servicevim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
+[Unit]Description=RedisAfter=network.target[Service]Type=forkingExecStart=/usr/local/bin/redis-server /etc/redis/redis.confExecReload=/usr/local/bin/redis-server -s reloadExecStop=/usr/local/bin/redis-server -s stopPrivateTmp=trueType=simpleKillMode=processRestart=on-failureRestartSec=3s[Install]WantedBy=multi-user.target [Unit] 表示这是基础信息
+Description 是描述 After 是在那个服务后面启动，一般是网络服务启动后启动 [Service] 表示这里是服务信息</description>
+    </item>
+    
+    <item>
+      <title>Shell运算符</title>
+      <link>https://yezihack.github.io/posts/shell/</link>
+      <pubDate>Thu, 04 Jun 2020 11:03:14 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/shell/</guid>
+      <description>运算符 算术运算符 八种运算符号 +, -, *, /, %, =, ==, !=采用此表达式: `expr $a + $b` 计算加法, 其它类似数字判断相等: [ $a == $b ] 数字判断不相等: [ $a != $b ] 乘号比较特殊: val=`expr $a \* $b` 需要加\才能运算不使用expr, 可以使用$((表达式))代替例: a=10b=20val=`expr $a + $b`echo &amp;#34;a + b : $val&amp;#34; 关系运算符 关系运算符只支持数字, 不支持字符串,除非字符串是数字
+六种运算符号-eq 判断左边等于右边-ne 判断左边不相等右边-gt 判断左边大于右边-lt 判断左边小于右边-ge 判断左边大于等于右边-le 判断左边小于等于右边例: a=10b=20if [ $a -eq $b ]; thenecho &amp;#34;a与b相等&amp;#34;elseecho &amp;#34;a与b不相等&amp;#34;fi 布尔运算符 共三种符号: !</description>
+    </item>
+    
+    <item>
+      <title>Supervisor进程守护工具</title>
+      <link>https://yezihack.github.io/posts/supervisor/</link>
+      <pubDate>Wed, 27 May 2020 14:46:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/supervisor/</guid>
+      <description>介绍 supervisor是python写的一个进程守护工具,非常实用,时时监听你的进程是否正常, 发现异常自动启动, 生产环境必备软件.
+安装 CentOS Yum安装 #!/bin/bashyum install -y epel-release # 依赖yum install -y supervisor # 安装systemctl enable supervisord # 开机自启动systemctl start supervisord # 启动supervisord服务systemctl status supervisord # 查看supervisord服务状态ps -ef|grep supervisord # 查看是否存在supervisord进程 离线安装 参考: https://segmentfault.com/a/1190000011696023 基础 supervisord 启动工具 echo_supervisord_conf 生成配置工具 supervisorctl 管理进程工具 /etc/supervisor.conf 默认配置工具路径 /etc/supervisord.d/ 配置工具目录 supervisorctl 命令使用 status 查看状态 reload 重启所有服务 update 更新 stop [进程名] start [进程名] restart [进程名] supervisor.conf配置 vim /etc/supervisor.</description>
+    </item>
+    
+  </channel>
+</rss>

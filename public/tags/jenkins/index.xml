@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>jenkins on</title><link>https://yezihack.github.io/tags/jenkins/</link><description>Recent content in jenkins on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 03 Feb 2021 14:47:04 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/jenkins/index.xml" rel="self" type="application/rss+xml"/><item><title>Jenkins 构建及回滚任务</title><link>https://yezihack.github.io/posts/jenkins-build-rollback/</link><pubDate>Wed, 03 Feb 2021 14:47:04 +0800</pubDate><guid>https://yezihack.github.io/posts/jenkins-build-rollback/</guid><description>以 golang 构建项目为例。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>jenkins on 空树之空</title>
+    <link>https://yezihack.github.io/tags/jenkins/</link>
+    <description>Recent content in jenkins on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 03 Feb 2021 14:47:04 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/jenkins/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jenkins 构建及回滚任务</title>
+      <link>https://yezihack.github.io/posts/jenkins-build-rollback/</link>
+      <pubDate>Wed, 03 Feb 2021 14:47:04 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/jenkins-build-rollback/</guid>
+      <description>以 golang 构建项目为例。
 新建任务 输入一个任务名称 选择：构建一个自由风格的软件项目 可选：也可以复制已创建的任务 确定提交 配置 再次编辑刚创建的任务
 描述 对你的项目进行描述，可以写如下信息。
 项目名称 部署的IP地址 部署远程的目录 日志路径 配置目录及文件名称 启动服务 停止服务 重启服务 等等 Job Notifications 参数化构建过程
@@ -7,4 +22,8 @@ GIT参数 选项参数 配置“构建” 和 “回滚” 参数。供构建时
 填写有效的 GIT 地址。并使用授权的用户帐号，保证可以访问仓库代码。
 构建 会用到以下二个选项：
 执行Shell Send files or execute commands over SSH 构建项目的SHELL 定义变量 删除或创建目录 判断用户是“构建”还是“回滚”进行区别操作 源码：
-set -x # 定义名称 program_name=go_test # 项目压缩名称 program_filename=${program_name}.tar.gz # 项目路径 target_path=&amp;#34;${WORKSPACE}/target/&amp;#34; # 备份路径 back_path=&amp;#34;${WORKSPACE}/bak/&amp;#34; if [ -f &amp;#34;${back_path}${program_filename}&amp;#34; ];then rm -f ${back_path}${program_filename} fi ls -l $back_path # 当前构建ID的路径 back_path_num=&amp;#34;${back_path}${BUILD_NUMBER}&amp;#34; # 删除前必须判断是否存在 if [ -f &amp;#34;${target_path}${program_filename}&amp;#34; ]; then rm -rf &amp;#34;${target_path}${program_filename}&amp;#34; echo &amp;#34;${target_path}${program_filename} 删除成功&amp;#34; fi # 备份路径不存在则创建 if [ !</description></item></channel></rss>
+set -x # 定义名称 program_name=go_test # 项目压缩名称 program_filename=${program_name}.tar.gz # 项目路径 target_path=&amp;#34;${WORKSPACE}/target/&amp;#34; # 备份路径 back_path=&amp;#34;${WORKSPACE}/bak/&amp;#34; if [ -f &amp;#34;${back_path}${program_filename}&amp;#34; ];then rm -f ${back_path}${program_filename} fi ls -l $back_path # 当前构建ID的路径 back_path_num=&amp;#34;${back_path}${BUILD_NUMBER}&amp;#34; # 删除前必须判断是否存在 if [ -f &amp;#34;${target_path}${program_filename}&amp;#34; ]; then rm -rf &amp;#34;${target_path}${program_filename}&amp;#34; echo &amp;#34;${target_path}${program_filename} 删除成功&amp;#34; fi # 备份路径不存在则创建 if [ !</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,6 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>istio on</title><link>https://yezihack.github.io/tags/istio/</link><description>Recent content in istio on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 12 Jun 2023 15:29:48 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/istio/index.xml" rel="self" type="application/rss+xml"/><item><title>Istio 限流实现</title><link>https://yezihack.github.io/posts/istio-ratelimit/</link><pubDate>Mon, 12 Jun 2023 15:29:48 +0800</pubDate><guid>https://yezihack.github.io/posts/istio-ratelimit/</guid><description>1. 介绍限流 限流是一种通过对系统请求进行限制和控制，避免系统过载，保证系统稳定性和安全性的技术手段。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>istio on 空树之空</title>
+    <link>https://yezihack.github.io/tags/istio/</link>
+    <description>Recent content in istio on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 12 Jun 2023 15:29:48 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/istio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Istio 限流实现</title>
+      <link>https://yezihack.github.io/posts/istio-ratelimit/</link>
+      <pubDate>Mon, 12 Jun 2023 15:29:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/istio-ratelimit/</guid>
+      <description>1. 介绍限流 限流是一种通过对系统请求进行限制和控制，避免系统过载，保证系统稳定性和安全性的技术手段。
 2. Istio 限流 首先确认需要限流的应用是否已经加载了 sidecar，如果还未安装 istio, 请参考:https://yezihack.github.io/istio-install.html 创建 app-ratelimit.yaml：
-设置流速间隔时间：token_bucket.fill_interval 设置流速令牌数量：token_bucket.max_tokens 选择哪些应用限流：workloadSelector.labels apiVersion: networking.istio.io/v1alpha3 kind: EnvoyFilter metadata: name: app-ratelimit spec: workloadSelector: labels: app: my-app # 用来选择需要进行配置的工作负载 configPatches: - applyTo: HTTP_FILTER match: listener: filterChain: filter: name: &amp;#34;envoy.filters.network.http_connection_manager&amp;#34; patch: operation: INSERT_BEFORE value: name: envoy.filters.http.local_ratelimit typed_config: &amp;#34;@type&amp;#34;: type.googleapis.com/udpa.type.v1.TypedStruct type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit value: stat_prefix: http_local_rate_limiter token_bucket: # 令牌桶算法的配置信息，用于控制每秒放行的请求数量。 max_tokens: 10 # 指定令牌桶中最多可以存储的令牌数，即最大可用令牌数 tokens_per_fill: 10 # 指定每次填充令牌桶的令牌数，即每次可用令牌数。 fill_interval: 60s # 定填充令牌桶的时间间隔，即每隔多长时间填充一次令牌桶。 filter_enabled: # 控制是否启用该过滤器的开关。 runtime_key: local_rate_limit_enabled default_value: numerator: 100 denominator: HUNDRED filter_enforced: # 制是否强制执行该过滤器的开关。 runtime_key: local_rate_limit_enforced default_value: numerator: 100 denominator: HUNDRED response_headers_to_add: - append: false header: key: x-local-rate-limit value: &amp;#39;true&amp;#39; kubectl apply -f app-ratelimit.</description></item><item><title>Istio 安装</title><link>https://yezihack.github.io/posts/istio-install/</link><pubDate>Mon, 12 Jun 2023 14:26:54 +0800</pubDate><guid>https://yezihack.github.io/posts/istio-install/</guid><description>1. Istio 介绍 Istio 是由 Google、IBM 和 Lyft 开源的微服务管理、保护和监控框架。Istio 为希腊语，意思是”起航“。
+设置流速间隔时间：token_bucket.fill_interval 设置流速令牌数量：token_bucket.max_tokens 选择哪些应用限流：workloadSelector.labels apiVersion: networking.istio.io/v1alpha3 kind: EnvoyFilter metadata: name: app-ratelimit spec: workloadSelector: labels: app: my-app # 用来选择需要进行配置的工作负载 configPatches: - applyTo: HTTP_FILTER match: listener: filterChain: filter: name: &amp;#34;envoy.filters.network.http_connection_manager&amp;#34; patch: operation: INSERT_BEFORE value: name: envoy.filters.http.local_ratelimit typed_config: &amp;#34;@type&amp;#34;: type.googleapis.com/udpa.type.v1.TypedStruct type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit value: stat_prefix: http_local_rate_limiter token_bucket: # 令牌桶算法的配置信息，用于控制每秒放行的请求数量。 max_tokens: 10 # 指定令牌桶中最多可以存储的令牌数，即最大可用令牌数 tokens_per_fill: 10 # 指定每次填充令牌桶的令牌数，即每次可用令牌数。 fill_interval: 60s # 定填充令牌桶的时间间隔，即每隔多长时间填充一次令牌桶。 filter_enabled: # 控制是否启用该过滤器的开关。 runtime_key: local_rate_limit_enabled default_value: numerator: 100 denominator: HUNDRED filter_enforced: # 制是否强制执行该过滤器的开关。 runtime_key: local_rate_limit_enforced default_value: numerator: 100 denominator: HUNDRED response_headers_to_add: - append: false header: key: x-local-rate-limit value: &amp;#39;true&amp;#39; kubectl apply -f app-ratelimit.</description>
+    </item>
+    
+    <item>
+      <title>Istio 安装</title>
+      <link>https://yezihack.github.io/posts/istio-install/</link>
+      <pubDate>Mon, 12 Jun 2023 14:26:54 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/istio-install/</guid>
+      <description>1. Istio 介绍 Istio 是由 Google、IBM 和 Lyft 开源的微服务管理、保护和监控框架。Istio 为希腊语，意思是”起航“。
 Istio 使用功能强大的 Envoy 服务代理扩展了 Kubernetes，以建立一个可编程的、可感知的应用程序网络。
 Istio 与 Kubernetes 和传统工作负载一起使用，为复杂的部署带来了标准的通用流量管理、遥测和安全性。
 2. 下载 istio 以 CentOS7 为例
@@ -9,4 +33,8 @@ Istio 与 Kubernetes 和传统工作负载一起使用，为复杂的部署带�
 2.1. 版本的选择 https://istio.io/latest/zh/docs/releases/supported-releases/
 v1.18.0 适合 k8s 1.24, 1.25, 1.26, 1.27。
 根据你的 kubernetes 版本进行下载相应的 istio 版本。
-cd /opt/src wget https://github.com/istio/istio/releases/download/1.18.0/istio-1.18.0-linux-amd64.tar.gz tar -zxvf istio-1.18.0-linux-amd64.tar.gz cd istio-1.18.0 cp istio-1.18.0/bin/istioctl /usr/local/bin # 查看版本 istioctl version # 如果显示如下，则表示你未设置 KUBECONFIG 环境变量 unable to retrieve Pods: Get &amp;#34;http://localhost:8080/api/v1/namespaces/istio-system/pods?fieldSelector=status.phase%3DRunning&amp;amp;labelSelector=app%3Distiod&amp;#34;: dial tcp [::1]:8080: connect: connection refused 1.</description></item></channel></rss>
+cd /opt/src wget https://github.com/istio/istio/releases/download/1.18.0/istio-1.18.0-linux-amd64.tar.gz tar -zxvf istio-1.18.0-linux-amd64.tar.gz cd istio-1.18.0 cp istio-1.18.0/bin/istioctl /usr/local/bin # 查看版本 istioctl version # 如果显示如下，则表示你未设置 KUBECONFIG 环境变量 unable to retrieve Pods: Get &amp;#34;http://localhost:8080/api/v1/namespaces/istio-system/pods?fieldSelector=status.phase%3DRunning&amp;amp;labelSelector=app%3Distiod&amp;#34;: dial tcp [::1]:8080: connect: connection refused 1.</description>
+    </item>
+    
+  </channel>
+</rss>

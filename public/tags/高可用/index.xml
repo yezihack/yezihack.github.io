@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>高可用 on</title><link>https://yezihack.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link><description>Recent content in 高可用 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 05 Jul 2023 11:41:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>Haproxy + Keepalived 实现 k8s 集群高可用</title><link>https://yezihack.github.io/posts/haproxy-keepalived/</link><pubDate>Wed, 05 Jul 2023 11:41:00 +0800</pubDate><guid>https://yezihack.github.io/posts/haproxy-keepalived/</guid><description>1. 什么是 Kubernetes 的高可用 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>高可用 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/</link>
+    <description>Recent content in 高可用 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 05 Jul 2023 11:41:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E9%AB%98%E5%8F%AF%E7%94%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Haproxy &#43; Keepalived 实现 k8s 集群高可用</title>
+      <link>https://yezihack.github.io/posts/haproxy-keepalived/</link>
+      <pubDate>Wed, 05 Jul 2023 11:41:00 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/haproxy-keepalived/</guid>
+      <description>1. 什么是 Kubernetes 的高可用 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
 多节点部署：使用多个节点来部署Kubernetes集群，确保即使某个节点发生故障，其他节点仍然可以继续提供服务。
 负载均衡：通过在集群前端引入负载均衡器，将流量分发到多个节点上，实现负载均衡和故障转移。这样即使某个节点发生故障，负载均衡器可以将流量重新路由到其他健康的节点上。
 自动伸缩：利用Kubernetes的自动伸缩功能，根据实际负载情况自动调整集群的节点数量，以满足应用程序的需求。这样可以在高负载时增加节点数量，保证性能，而在低负载时减少节点数量，节省资源。
@@ -17,4 +32,8 @@ VRRP 协议：Keepalived 使用 VRRP（Virtual Router Redundancy Protocol）协�
 虚拟路由器组：多个服务器通过 Keepalived 组成一个虚拟路由器组，共同提供相同的虚拟 IP 地址。其中一个服务器被选举为主服务器（Master），其他服务器为备份服务器（Backup）。
 心跳检测：主备服务器之间通过周期性的心跳消息进行通信，以检测主服务器的可用性。如果备份服务器在一定时间内没有收到主服务器的心跳消息，就会触发主备切换。
 健康检查：Keepalived 支持对服务的健康检查，通过定期检查服务的可用性和性能，及时剔除故障或不可用的服务器，保证了服务的高可用性和稳定性。
-路由表更新：当主服务器发生故障或不可用时，备份服务器中的一台将会被选举为新的主服务器，接管虚拟 IP 地址的转发功能。同时，Keepalived 会更新路由表，将虚拟 IP 地址指向新的主服务器。</description></item></channel></rss>
+路由表更新：当主服务器发生故障或不可用时，备份服务器中的一台将会被选举为新的主服务器，接管虚拟 IP 地址的转发功能。同时，Keepalived 会更新路由表，将虚拟 IP 地址指向新的主服务器。</description>
+    </item>
+    
+  </channel>
+</rss>

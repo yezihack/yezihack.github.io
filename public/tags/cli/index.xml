@@ -1,7 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>cli on</title><link>https://yezihack.github.io/tags/cli/</link><description>Recent content in cli on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 07 Jul 2020 18:54:40 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/cli/index.xml" rel="self" type="application/rss+xml"/><item><title>Cobra使用说明</title><link>https://yezihack.github.io/posts/cobra/</link><pubDate>Tue, 07 Jul 2020 18:54:40 +0800</pubDate><guid>https://yezihack.github.io/posts/cobra/</guid><description>Cobra 概念 Cobra有三个基本概念commands,arguments和flags。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>cli on 空树之空</title>
+    <link>https://yezihack.github.io/tags/cli/</link>
+    <description>Recent content in cli on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 07 Jul 2020 18:54:40 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/cli/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cobra使用说明</title>
+      <link>https://yezihack.github.io/posts/cobra/</link>
+      <pubDate>Tue, 07 Jul 2020 18:54:40 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/cobra/</guid>
+      <description>Cobra 概念 Cobra有三个基本概念commands,arguments和flags。
 commands代表行为
 arguments代表数值
 flags代表对行为的改变
 例:
-# clone是commands，URL是arguments，brae是flags
-git clone URL --bare 使用 参考 使用 go cobra创建命令行项目</description></item></channel></rss>
+# clone是commands，URL是arguments，brae是flagsgit clone URL --bare 使用 参考 使用 go cobra创建命令行项目 </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,9 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>mysql on</title><link>https://yezihack.github.io/tags/mysql/</link><description>Recent content in mysql on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 02 Sep 2020 11:02:44 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml"/><item><title>Prometheus: Grafana 监控 MySQL</title><link>https://yezihack.github.io/posts/mysqld_exporter/</link><pubDate>Wed, 02 Sep 2020 11:02:44 +0800</pubDate><guid>https://yezihack.github.io/posts/mysqld_exporter/</guid><description>mysqld_exporter 安装 下载慢，请查看软件下载列表
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>mysql on 空树之空</title>
+    <link>https://yezihack.github.io/tags/mysql/</link>
+    <description>Recent content in mysql on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 02 Sep 2020 11:02:44 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Prometheus:  Grafana 监控 MySQL</title>
+      <link>https://yezihack.github.io/posts/mysqld_exporter/</link>
+      <pubDate>Wed, 02 Sep 2020 11:02:44 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mysqld_exporter/</guid>
+      <description>mysqld_exporter 安装 下载慢，请查看软件下载列表
 https://prometheus.io/download/
 cd /usr/local/src/ wget https://github.com/prometheus/mysqld_exporter/releases/download/v0.12.1/mysqld_exporter-0.12.1.darwin-amd64.tar.gz tar -zxvf mysqld_exporter-0.12.1.darwin-amd64.tar.gz -C /usr/local/ mv /usr/local/mysqld_exporter-0.12.1.darwin-amd64 /usr/local/mysqld_exporter 创建 .my.cnf 文件
 host 主机地址 user mysql名称 password mysql密码 cat &amp;gt; /usr/local/mysqld_exporter/.my.cnf &amp;lt;&amp;lt; EOF [client] host=127.0.0.1 user=root password=root EOF 创建 systemd 服务
 cat &amp;gt; /lib/systemd/system/mysqld_exporter.service &amp;lt;&amp;lt; EOF [Unit] Description=mysqld_exporter Documentation=https://prometheus.io/ After=network.target [Service] Type=simple User=root ExecStart=/usr/local/mysqld_exporter/mysqld_exporter --config.my-cnf=/usr/local/mysqld_exporter/.my.cnf KillMode=process Restart=on-failure RestartSec=10s [Install] WantedBy=multi-user.target EOF 启动 systemctl daemon-reload systemctl start mysqld_exporter systemctl status mysqld_exporter 验证 metrics
-显示有数据则表示已经采集到数据啦。</description></item><item><title>MySQL 性能优化</title><link>https://yezihack.github.io/posts/mysql-optimize/</link><pubDate>Fri, 19 Jun 2020 20:23:17 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-optimize/</guid><description>MySQL 并发参数调整 max_connections 参数 该参数设置mysql连接最大数量. max_connections 默认151个连接.
+显示有数据则表示已经采集到数据啦。</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能优化</title>
+      <link>https://yezihack.github.io/posts/mysql-optimize/</link>
+      <pubDate>Fri, 19 Jun 2020 20:23:17 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mysql-optimize/</guid>
+      <description>MySQL 并发参数调整 max_connections 参数 该参数设置mysql连接最大数量. max_connections 默认151个连接.
 show variables like &amp;#39;max_connections&amp;#39; 服务器性能优时可以调节这个参数, 范围: 500~1000
 注 当连接过大时, 查看 Connection_errors_max_connections 参数是否大于0 , 表示连接过多, 错误连接
 show status like &amp;#39;Connection_errors_max_connections&amp;#39;; back_log 参数 积压栈的大小.
@@ -12,12 +36,22 @@ back_log默认大小: 50 + (max_connections/5), 最大可设置为900
 show variables like &amp;#39;back_log&amp;#39; table_open_cache 该参数用来控制所有SQL语句执行线程可打开表缓存的数量.
 最大数量设定: max_connections * N
 show variables like &amp;#39;table_open_cache&amp;#39; thread_cache_size 该参数可控制 mysql缓存客户服务线程的数量, 相当于mysql的线程池, 也备重用.
-show variables like &amp;#39;thread_cache_size&amp;#39; innodb_lock_wait_timeout 该参数是用来设置innoDB事务等待行锁的时间, 默认值:50ms. 如果并发要求高时: 可以设置小一点, 以避占用时间过长.</description></item><item><title>MySQL 性能分析</title><link>https://yezihack.github.io/posts/mysql-analysis/</link><pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-analysis/</guid><description>MySQL 运行的状态 重点关注以下参数
-show status like &amp;#39;Queries&amp;#39;;
-show status like &amp;#39;Threads_connected&amp;#39;;
-show status like &amp;#39;Threads_running&amp;#39;;
-show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
+show variables like &amp;#39;thread_cache_size&amp;#39; innodb_lock_wait_timeout 该参数是用来设置innoDB事务等待行锁的时间, 默认值:50ms. 如果并发要求高时: 可以设置小一点, 以避占用时间过长.</description>
+    </item>
+    
+    <item>
+      <title>MySQL 性能分析</title>
+      <link>https://yezihack.github.io/posts/mysql-analysis/</link>
+      <pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/mysql-analysis/</guid>
+      <description>MySQL 运行的状态 重点关注以下参数
+show status like &amp;#39;Queries&amp;#39;;show status like &amp;#39;Threads_connected&amp;#39;;show status like &amp;#39;Threads_running&amp;#39;;show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
 slow_query_log 开启慢查询
 mysql&amp;gt; show variables like &amp;#39;%slow_query_log%&amp;#39;; +---------------------+--------------------------------------+ | Variable_name | Value | +---------------------+--------------------------------------+ | slow_query_log | ON | | slow_query_log_file | /var/lib/mysql/7709d56792f9-slow.log | +---------------------+--------------------------------------+ 2 rows in set (0.00 sec) set global slow_query_log=1; slow_query_log_file 慢日志存放位置
 set global slow_query_log_file=&amp;#39;/data/logs/slow-mysql.log&amp;#39;; long_query_time 表示1秒的SQL就记录
-mysql&amp;gt; show variables like &amp;#39;long_query_time&amp;#39;; +-----------------+-----------+ | Variable_name | Value | +-----------------+-----------+ | long_query_time | 10.</description></item></channel></rss>
+mysql&amp;gt; show variables like &amp;#39;long_query_time&amp;#39;; +-----------------+-----------+ | Variable_name | Value | +-----------------+-----------+ | long_query_time | 10.</description>
+    </item>
+    
+  </channel>
+</rss>

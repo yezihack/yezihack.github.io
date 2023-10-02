@@ -1,28 +1,106 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>docker教程 on</title><link>https://yezihack.github.io/tags/docker%E6%95%99%E7%A8%8B/</link><description>Recent content in docker教程 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 15 Oct 2022 13:37:47 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/docker%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker笔记(七) Docker Daemon 配置</title><link>https://yezihack.github.io/posts/docker-daemon/</link><pubDate>Sat, 15 Oct 2022 13:37:47 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-daemon/</guid><description>.1. 参数说明 .1.1. daemon.json 文件位置 .1.2. graph 数据存储 .1.3. storage-driver 存储驱动 .1.4. registry-mirrors 镜像注册 .1.5. insecure-registries 无权限注册 .1.6. exec-opts .1.7. live-restore 实时还原 .1.8. log-driver 日志驱动 .1.9. log-opts 日志参数 .1.10. default-runtime 运行时 .1.11. runtimes 运行时参数设置 .2. daemon.json 配置参考 .2.1. CPU 机器使用 daemon.json .2.2. GPU 机器使用 daemon.json .3. 关于作者 云原生中 docker 有着重要的地位，我们有必要学习下 Docker 几个重要的启动参数，也适合生产。
-.1. 参数说明 .1.1. daemon.json 文件位置 JSON 文件形式默认存储位置: /etc/docker/daemon.json。 dockerd 通过 --config-file 参数指定配置文件位置。 .1.2. graph 数据存储 19.x 版本后官方建议使用：data-root 替代</description></item><item><title>Docker 安装 php 环境</title><link>https://yezihack.github.io/posts/docker-php/</link><pubDate>Tue, 06 Apr 2021 11:38:33 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-php/</guid><description>php 环境需要与 nginx 配合安装，共享 nginx 解析的目录(www)
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker教程 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/docker%E6%95%99%E7%A8%8B/</link>
+    <description>Recent content in docker教程 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 15 Oct 2022 13:37:47 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/docker%E6%95%99%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker笔记(七) Docker Daemon 配置</title>
+      <link>https://yezihack.github.io/posts/docker-daemon/</link>
+      <pubDate>Sat, 15 Oct 2022 13:37:47 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-daemon/</guid>
+      <description>.1. 参数说明 .1.1. daemon.json 文件位置 .1.2. graph 数据存储 .1.3. storage-driver 存储驱动 .1.4. registry-mirrors 镜像注册 .1.5. insecure-registries 无权限注册 .1.6. exec-opts .1.7. live-restore 实时还原 .1.8. log-driver 日志驱动 .1.9. log-opts 日志参数 .1.10. default-runtime 运行时 .1.11. runtimes 运行时参数设置 .2. daemon.json 配置参考 .2.1. CPU 机器使用 daemon.json .2.2. GPU 机器使用 daemon.json .3. 关于作者 云原生中 docker 有着重要的地位，我们有必要学习下 Docker 几个重要的启动参数，也适合生产。
+.1. 参数说明 .1.1. daemon.json 文件位置 JSON 文件形式默认存储位置: /etc/docker/daemon.json。 dockerd 通过 --config-file 参数指定配置文件位置。 .1.2. graph 数据存储 19.x 版本后官方建议使用：data-root 替代</description>
+    </item>
+    
+    <item>
+      <title>Docker 安装 php 环境</title>
+      <link>https://yezihack.github.io/posts/docker-php/</link>
+      <pubDate>Tue, 06 Apr 2021 11:38:33 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-php/</guid>
+      <description>php 环境需要与 nginx 配合安装，共享 nginx 解析的目录(www)
 基本参数 -d 后台启动 --name 定义一个别名 -v 挂载目录 --link 链接其它 docker 容器名称 安装 php 即安装 php-fpm 环境
 docker search php
 docker run --name dev-phpfpm -v /d/local/nginx/www:/www -d php:5.6-fpm /d/local/nginx/www 这里必须是 nginx 解析的目录，也就是与 nginx 共享目录。 安装 nginx ro 表示只读权限
-docker run --name dev-nginx-php -p 8080:80 -d -v /d/local/nginx/www:/usr/share/nginx/html:ro -v /d/local/nginx/conf.d:/etc/nginx/conf.d:ro --link dev-phpfpm:php nginx /d/local/nginx/www , /d/local/nginx/conf.d是宿主机的目录，可以自定义。 /usr/share/nginx/html, /etc/nginx/conf.d 是 nginx 里的固定目录，不能更改。 --link dev-phpfpm:php 是链接上面的 php 容器，dev-phpfpm是别名，php 是php容器 修改nginx配置文件 /d/local/nginx/conf.</description></item><item><title>Docker笔记(七) 安装 Redis</title><link>https://yezihack.github.io/posts/docker-redis/</link><pubDate>Tue, 23 Mar 2021 11:49:46 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-redis/</guid><description>下载镜像 docker search redis docker pull redis # 下载最新的 redis 安装脚本 #!/bin/bash ################ # DOCKER 创建 Redis 实例 # ################ name=$1 # Docker 名称 home=$2 # 安装目录 port=6379 # 端口号 host=&amp;#34;0.0.0.0&amp;#34; # 绑定HOST password=&amp;#34;123456&amp;#34; # 密码 # docker 名称必须输入 if test -z $name; then echo &amp;#34;docker name is null&amp;#34; exit 0 fi # 未设置安装目录则默认 /data/docker if test -z $home;then home=/data/docker/ fi # redis 存储目录 redis_home=&amp;#34;${home}redis/&amp;#34; # 持久化存储目录 append_home=&amp;#34;${redis_home}data/&amp;#34; # 配置存储目录 conf_home=&amp;#34;${redis_home}conf/&amp;#34; # 配置文件名 conf_filename=&amp;#34;${conf_home}redis.</description></item><item><title>Docker笔记(六) 安装 PHPMyAdmin</title><link>https://yezihack.github.io/posts/docker-phpmyadmin/</link><pubDate>Wed, 03 Feb 2021 14:47:10 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-phpmyadmin/</guid><description>开发项目涉及到 MySQL时就需要MySQL管理工具, phpmyadmin 是一款网页功能强大的免费软件。
+docker run --name dev-nginx-php -p 8080:80 -d -v /d/local/nginx/www:/usr/share/nginx/html:ro -v /d/local/nginx/conf.d:/etc/nginx/conf.d:ro --link dev-phpfpm:php nginx /d/local/nginx/www , /d/local/nginx/conf.d是宿主机的目录，可以自定义。 /usr/share/nginx/html, /etc/nginx/conf.d 是 nginx 里的固定目录，不能更改。 --link dev-phpfpm:php 是链接上面的 php 容器，dev-phpfpm是别名，php 是php容器 修改nginx配置文件 /d/local/nginx/conf.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(七) 安装 Redis</title>
+      <link>https://yezihack.github.io/posts/docker-redis/</link>
+      <pubDate>Tue, 23 Mar 2021 11:49:46 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-redis/</guid>
+      <description>下载镜像 docker search redis docker pull redis # 下载最新的 redis 安装脚本 #!/bin/bash ################ # DOCKER 创建 Redis 实例 # ################ name=$1 # Docker 名称 home=$2 # 安装目录 port=6379 # 端口号 host=&amp;#34;0.0.0.0&amp;#34; # 绑定HOST password=&amp;#34;123456&amp;#34; # 密码 # docker 名称必须输入 if test -z $name; then echo &amp;#34;docker name is null&amp;#34; exit 0 fi # 未设置安装目录则默认 /data/docker if test -z $home;then home=/data/docker/ fi # redis 存储目录 redis_home=&amp;#34;${home}redis/&amp;#34; # 持久化存储目录 append_home=&amp;#34;${redis_home}data/&amp;#34; # 配置存储目录 conf_home=&amp;#34;${redis_home}conf/&amp;#34; # 配置文件名 conf_filename=&amp;#34;${conf_home}redis.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(六) 安装 PHPMyAdmin</title>
+      <link>https://yezihack.github.io/posts/docker-phpmyadmin/</link>
+      <pubDate>Wed, 03 Feb 2021 14:47:10 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-phpmyadmin/</guid>
+      <description>开发项目涉及到 MySQL时就需要MySQL管理工具, phpmyadmin 是一款网页功能强大的免费软件。
 安装 MySQL 命令方式：
 docker run -itd --name dev_mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 mysql docker-compose.yml 方式：
 version: &amp;#39;3&amp;#39; services: mysql: image: &amp;#34;mysql&amp;#34; restart: always container_name: &amp;#34;mysqld&amp;#34; environment: MYSQL_ROOT_PASSWORD: &amp;#34;123456&amp;#34; ports: - &amp;#34;3306:3306&amp;#34; 安装 phpmyadmin 管理 MySQL 的软件
-修改 MySQL 配置 docker exec -it &amp;lt;dockerID&amp;gt; /bin/bash # 进入容器 mysql -u root -p # 进入 mysql # 将root账号（可替换成其他）的host修改为% update mysql.user set host = &amp;#39;%&amp;#39; where user = &amp;#39;root&amp;#39;; # 查看修改结果 select host, user from user; # 刷新加密方式 flush privileges; 安装 phpmyadmin 命令行方式：</description></item><item><title>Docker笔记(五) 镜像管理</title><link>https://yezihack.github.io/posts/docker-image/</link><pubDate>Thu, 17 Dec 2020 13:12:31 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-image/</guid><description>镜像是 Docker 三大核心概念中最重要的 Docker 三大核心:
+修改 MySQL 配置 docker exec -it &amp;lt;dockerID&amp;gt; /bin/bash # 进入容器 mysql -u root -p # 进入 mysql # 将root账号（可替换成其他）的host修改为% update mysql.user set host = &amp;#39;%&amp;#39; where user = &amp;#39;root&amp;#39;; # 查看修改结果 select host, user from user; # 刷新加密方式 flush privileges; 安装 phpmyadmin 命令行方式：</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(五) 镜像管理</title>
+      <link>https://yezihack.github.io/posts/docker-image/</link>
+      <pubDate>Thu, 17 Dec 2020 13:12:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-image/</guid>
+      <description>镜像是 Docker 三大核心概念中最重要的 Docker 三大核心:
 镜像 容器 仓库 镜像介绍 Docker 运行容器前需要本地存在对应的镜像, 如果镜像不存在, Docker 会尝试远程仓库里拉取. 默认为 Docker Hub 仓库.用户也可以自定义镜像仓库.
 获取镜像 docker pull ubuntu:18.04
 如果不指定TAG标签, 则拉取 latest标签, 如上面使用tag: 18.04 镜像文件一般由若干层(layer)组成, 每一层由唯一的ID标记 : 63ca9dsd732a1 (实际完整ID包括 256比特, 64个十六进制字符组成) 当不同镜像包括相同的层, 本地仅存储一份内容. 减少存储空间. 以上ubuntu:18.04 相当于 docker pull registry.hub.docker.com/ubuntu:18.04. 默认注册服务器为 Docker Hub. 有时需要代理服务来加速Docker镜像获取过程. 可能在docker 服务启时配置中增加--registry-mirror=proxy_URL, 如国内: https://registry.docker-cn.com 查看镜像 列出本地镜像
 docker images
--&amp;gt; # docker images REPOSITORY TAG IMAGE ID CREATED SIZE mysql latest ab2f358b8612 5 days ago 545MB redis 5.</description></item><item><title>Docker笔记(四) 容器管理</title><link>https://yezihack.github.io/posts/docker-container/</link><pubDate>Thu, 05 Nov 2020 15:28:01 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-container/</guid><description>.1. 容器管理 .1.1. 容器运行 .1.2. 查看容器 .1.3. 查看容器日志 .1.4. 容器删除 .1.5. 查看容器系统资源信息 .1.6. 容器内部命令 .1.7. 复制文件相互 .2. 导入导出容器 .2.1. 导出容器 .2.2. 导入容器 .3. 重启启动 .3.1. 系统开机启动 .3.2. 容器开机启动 .4. 多容器管理 .4.1. Docker Compose .4.2. docker-compose 安装 .4.2.1. 启动/停止 .4.2.2. 操作指定文件yml的容器 .5. 参考 Docker 倡导的理念是: “一个容器一个进程”
+-&amp;gt; # docker images REPOSITORY TAG IMAGE ID CREATED SIZE mysql latest ab2f358b8612 5 days ago 545MB redis 5.</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(四) 容器管理</title>
+      <link>https://yezihack.github.io/posts/docker-container/</link>
+      <pubDate>Thu, 05 Nov 2020 15:28:01 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-container/</guid>
+      <description>.1. 容器管理 .1.1. 容器运行 .1.2. 查看容器 .1.3. 查看容器日志 .1.4. 容器删除 .1.5. 查看容器系统资源信息 .1.6. 容器内部命令 .1.7. 复制文件相互 .2. 导入导出容器 .2.1. 导出容器 .2.2. 导入容器 .3. 重启启动 .3.1. 系统开机启动 .3.2. 容器开机启动 .4. 多容器管理 .4.1. Docker Compose .4.2. docker-compose 安装 .4.2.1. 启动/停止 .4.2.2. 操作指定文件yml的容器 .5. 参考 Docker 倡导的理念是: “一个容器一个进程”
 容器是镜像运行的一个实例
 它们的区别是镜像是一个静态只读文件, 而容器是一个运行时可写的文件层.
 .1. 容器管理 dockerID 是由128位组成, 前16位保证唯一. docker ps --no-trunc
 .1.1. 容器运行 基本命令: docker run
-例docker run --name db --env MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mariadb</description></item><item><title>Docker笔记(三) 基础知识</title><link>https://yezihack.github.io/posts/docker-base/</link><pubDate>Wed, 04 Nov 2020 15:20:11 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-base/</guid><description>.1. Docker 三大基础组件 .2. Docker 指令 Docker 三大基础组件 三个重要的概念
+例docker run --name db --env MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mariadb</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(三) 基础知识</title>
+      <link>https://yezihack.github.io/posts/docker-base/</link>
+      <pubDate>Wed, 04 Nov 2020 15:20:11 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-base/</guid>
+      <description>.1. Docker 三大基础组件 .2. Docker 指令 Docker 三大基础组件 三个重要的概念
 仓库(Repository) 镜像(Image) 容器(Container) 实例命令:　docker run --name db --env MYSQL_ROOT_PASSWORD=sgfoot.com -d mariadb
 先在本机查找有没有 mariadb 镜像, 如果没有,就到 docker 的仓库查找 mariadb 镜像, 然后下载到本机 基本 mariadb 镜像创建容器 db, 提供 mysql 服务 然后通过 docker ps 查看正在运行的容器. Docker 指令 基本命令格式如下: docker + command(如run, ps) + 一系列参数(args...) 如: docker run --name db --env MYSQL_ROOT_PASSWORD=sgfoot.com -d mariadb
 命令帮助 docker command --help
 如: docker run --help
-命令分四大类 系统资源设置和全局信息获取: docker info, docker system df Docker 仓库查询, 下载操作:docker search, docker pull Docker 镜像查询,创建,删除操作: docker images, docker build, docker rmi Docker 容器查询,创建,开启,停止,删除,详情操作:docker ps, docker run, docker start, docker stop, docker rm, docker inspect Docker 调试: docker logs(日志), docker stats(运行状态) 其它: 删除所有停止运行的容器 docker rm $(docker ps -a -q) (危险操作)</description></item><item><title>Docker笔记(七) 命令</title><link>https://yezihack.github.io/posts/docker-command/</link><pubDate>Tue, 03 Nov 2020 19:49:09 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-command/</guid><description>前面教程介绍过 docker 是 c/s 模式, 通过 client 命令 与 server 端进行交互, docker 有着强大的命令系统, 我们需要系统学习下.
+命令分四大类 系统资源设置和全局信息获取: docker info, docker system df Docker 仓库查询, 下载操作:docker search, docker pull Docker 镜像查询,创建,删除操作: docker images, docker build, docker rmi Docker 容器查询,创建,开启,停止,删除,详情操作:docker ps, docker run, docker start, docker stop, docker rm, docker inspect Docker 调试: docker logs(日志), docker stats(运行状态) 其它: 删除所有停止运行的容器 docker rm $(docker ps -a -q) (危险操作)</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(七) 命令</title>
+      <link>https://yezihack.github.io/posts/docker-command/</link>
+      <pubDate>Tue, 03 Nov 2020 19:49:09 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-command/</guid>
+      <description>前面教程介绍过 docker 是 c/s 模式, 通过 client 命令 与 server 端进行交互, docker 有着强大的命令系统, 我们需要系统学习下.
 基础的命令 查看版本 docker version
 查看 docker 信息 会显示多少镜像,容器, 运行中,暂停中, 停止的容器数量, cpu, memory, system等信息
 docker info
@@ -33,8 +111,26 @@ docker run -it
 docker ps -a 查看所有容器,包括运行中,停止和暂停的容器
 启动指定ID的容器 docker start ID 支持3位数操作.
 停止容器 docker stop ID
-暂停容器 docker pause ID</description></item><item><title>Docker笔记(二) 安装</title><link>https://yezihack.github.io/posts/docker-install/</link><pubDate>Thu, 15 Oct 2020 17:12:16 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-install/</guid><description>适合于 CentOS 系统
-docker 一键安装 curl -sSL https://cdn.jsdelivr.net/gh/yezihack/assets/sh/docker-install.sh |sudo sh #!/bin/bash ################ # CentOS 一键安装 # From: sgfoot.com ################# # 卸载旧版本 sudo yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine # 设置仓库 sudo yum install -y yum-utils \ device-mapper-persistent-data \ lvm2 # 使用阿里源地址 sudo yum-config-manager \ --add-repo \ http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo # 安装 Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io -y # 启动 systemctl start docker # 测试一下 sudo docker run hello-world echo &amp;#34;安装完毕&amp;#34; docker-compose 安装 docker-compose 是负责 docker 编排使用的</description></item><item><title>Docker笔记(一) 原理</title><link>https://yezihack.github.io/posts/docker-theory/</link><pubDate>Wed, 14 Oct 2020 18:11:18 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-theory/</guid><description>
+暂停容器 docker pause ID</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(二) 安装</title>
+      <link>https://yezihack.github.io/posts/docker-install/</link>
+      <pubDate>Thu, 15 Oct 2020 17:12:16 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-install/</guid>
+      <description>适合于 CentOS 系统
+docker 一键安装 curl -sSL https://cdn.jsdelivr.net/gh/yezihack/assets/sh/docker-install.sh |sudo sh #!/bin/bash ################ # CentOS 一键安装 # From: sgfoot.com ################# # 卸载旧版本 sudo yum remove docker \ docker-client \ docker-client-latest \ docker-common \ docker-latest \ docker-latest-logrotate \ docker-logrotate \ docker-engine # 设置仓库 sudo yum install -y yum-utils \ device-mapper-persistent-data \ lvm2 # 使用阿里源地址 sudo yum-config-manager \ --add-repo \ http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo # 安装 Docker Engine sudo yum install docker-ce docker-ce-cli containerd.io -y # 启动 systemctl start docker # 测试一下 sudo docker run hello-world echo &amp;#34;安装完毕&amp;#34; docker-compose 安装 docker-compose 是负责 docker 编排使用的</description>
+    </item>
+    
+    <item>
+      <title>Docker笔记(一) 原理</title>
+      <link>https://yezihack.github.io/posts/docker-theory/</link>
+      <pubDate>Wed, 14 Oct 2020 18:11:18 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/docker-theory/</guid>
+      <description>
 什么是docker Docker 是 dotCloud 公司开源的一款产品，2013年开源(基于golang开发)。
 Docker 英文意思是“搬运工&amp;quot;, 是一种容器化技术，将您的运行软件封到一个沙盒里，随意搬运的应用容器引擎。
 容器技术是所有云应用的基石，也把互联网升到到下一代。足以说明 docker 的强大之处。
@@ -43,4 +139,8 @@ Google 自2004年开始使用容器技术，对Docker的贡献之大，开源了
 Docker 架构 采用 c/s 模式体系架构， Docker 客户端与 Docker Daemon 守护进程通信。
 Docker Daemon: 是Docker服务端的守护进程， 用来监听 Docker API 的请求和管理 Docker 对象，比如镜像、容器、网络和 Volume。 Docker Client: docker client 是我们和 Docker 进行交互的最主要的方式方法 Docker Registry：用来存储 Docker 镜像的仓库 Images：镜像，镜像是一个只读模板 Containers：容器，容器是一个镜像的可运行的实例,容器可以拥有自己的 root 文件系统、自己的网络配置、自己的进程空间，甚至自己的用户 ID 空间 底层技术支持：Namespaces（做隔离）、CGroups（做资源限制）、UnionFS（镜像和容器的分层） Docker 核心技术 Docker 的基础是 Linux 容器(LXC) 等技术
 三大底层技术实现 Docker 的关键技术
-Namespaces 解决了进程，网络及文件系统的隔离 命名空间（namespaces）是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法 CGroups 解决了CPU,内存等资源隔离 Namespaces 并不能够为我们提供物理资源上的隔离。比如CPU，内存等。这样会导致多个Docker抢占物理资源。 Control Groups（简称 CGroups）就是能够隔离宿主机器上的物理资源，例如 CPU、内存、磁盘 I/O 和网络带宽。 UnionFS 解决了镜像隔离 Union File System，联合文件系统 将多个不同位置的目录联合挂载到同一个目录，将相同的部分合并</description></item></channel></rss>
+Namespaces 解决了进程，网络及文件系统的隔离 命名空间（namespaces）是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法 CGroups 解决了CPU,内存等资源隔离 Namespaces 并不能够为我们提供物理资源上的隔离。比如CPU，内存等。这样会导致多个Docker抢占物理资源。 Control Groups（简称 CGroups）就是能够隔离宿主机器上的物理资源，例如 CPU、内存、磁盘 I/O 和网络带宽。 UnionFS 解决了镜像隔离 Union File System，联合文件系统 将多个不同位置的目录联合挂载到同一个目录，将相同的部分合并 </description>
+    </item>
+    
+  </channel>
+</rss>

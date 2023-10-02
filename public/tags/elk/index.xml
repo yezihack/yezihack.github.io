@@ -1,9 +1,33 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>elk on</title><link>https://yezihack.github.io/tags/elk/</link><description>Recent content in elk on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 15 Sep 2020 12:00:27 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/elk/index.xml" rel="self" type="application/rss+xml"/><item><title>Elasticsearch 入门(七) Docker 安装 Es, Kibana,Head和IK分词器(es7.14.1)</title><link>https://yezihack.github.io/posts/es-install-docker/</link><pubDate>Tue, 15 Sep 2020 12:00:27 +0800</pubDate><guid>https://yezihack.github.io/posts/es-install-docker/</guid><description>docker 的优点，就是简化所有的安装流程。移植性好，安装快捷。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>elk on 空树之空</title>
+    <link>https://yezihack.github.io/tags/elk/</link>
+    <description>Recent content in elk on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 15 Sep 2020 12:00:27 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/elk/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Elasticsearch 入门(七) Docker 安装 Es, Kibana,Head和IK分词器(es7.14.1)</title>
+      <link>https://yezihack.github.io/posts/es-install-docker/</link>
+      <pubDate>Tue, 15 Sep 2020 12:00:27 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-install-docker/</guid>
+      <description>docker 的优点，就是简化所有的安装流程。移植性好，安装快捷。
 在安装之前，Elasticsearch 与 Kibana 需要注意版本一致。
 当前IK分词器也需要一致。见 github release
 dockerhub es dockerhub kibana github ik analysis Docker 创建网络栈 后面创建 elaticsearch, kibana 需要用到。
 docker network create es-network Elasticsearch 安装 docker pull elasticsearch:7.14.1 docker run -d --name elasticsearch --net es-network -p 9200:9200 -p 9300:9300 -e &amp;#34;discovery.type=single-node&amp;#34; elasticsearch:7.14.1 --net es-network 使用刚创建的网络栈 -e &amp;quot;discovery.type=single-node&amp;quot; 设置配置参数为单结点集群 --name elasticsearch 设置容器名称 -p 9200:9200 设置端口映射，前为宿主机端口，后为容器里的端口。 -d 后台运行模式 elasticsearch:7.14.1 镜像名称，通过docker images 查看，若没有会自动下载 查看日志，发现一处警告： docker logs elasticsearch
-{ &amp;#34;type&amp;#34;:&amp;#34;deprecation.elasticsearch&amp;#34;, &amp;#34;timestamp&amp;#34;:&amp;#34;2021-09-15T03:55:39,835Z&amp;#34;, &amp;#34;level&amp;#34;:&amp;#34;DEPRECATION&amp;#34;, &amp;#34;component&amp;#34;:&amp;#34;o.</description></item><item><title>Filebeat 学习(一) 原理&amp;安装</title><link>https://yezihack.github.io/posts/filebeat-info/</link><pubDate>Sun, 26 Jul 2020 16:14:31 +0800</pubDate><guid>https://yezihack.github.io/posts/filebeat-info/</guid><description>Filebeat是用于转发和集中日志数据的轻量级传送程序。作为服务器上的代理安装，Filebeat监视您指定的日志文件或位置，收集日志事件，并将它们转发到Elasticsearch或 Logstash进行索引。
+{ &amp;#34;type&amp;#34;:&amp;#34;deprecation.elasticsearch&amp;#34;, &amp;#34;timestamp&amp;#34;:&amp;#34;2021-09-15T03:55:39,835Z&amp;#34;, &amp;#34;level&amp;#34;:&amp;#34;DEPRECATION&amp;#34;, &amp;#34;component&amp;#34;:&amp;#34;o.</description>
+    </item>
+    
+    <item>
+      <title>Filebeat 学习(一) 原理&amp;安装</title>
+      <link>https://yezihack.github.io/posts/filebeat-info/</link>
+      <pubDate>Sun, 26 Jul 2020 16:14:31 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/filebeat-info/</guid>
+      <description>Filebeat是用于转发和集中日志数据的轻量级传送程序。作为服务器上的代理安装，Filebeat监视您指定的日志文件或位置，收集日志事件，并将它们转发到Elasticsearch或 Logstash进行索引。
 架构 工作原理是启动 filebeat 时, 它将启动一个或多个输入, 这些输入将在日志数据指定位置中查找, 对于 filebeat 所找到的每个日志, filebeat 都会启动收集器, 每个收割机都读取单个日志以获取新内容，并将新日志数据发送到libbeat，libbeat将聚集事件，并将聚集的数据发送到为Filebeat配置的输出。
 配置输入源, 可以是日志(log), 也可以是标准输入(stdin), 可以配置多个输入(input) 为每个日志启一个(Harvester) 收集器, 将不停的读取数据 数据卷轴, 将数据不断的输出到其它终端 终端, 如 es, kafaka, redis 原理 Filebeat由两个主要组件组成：prospector 和 harvester
 harvester 收集器
@@ -14,59 +38,66 @@ prospector 负责管理 harvester 并找到所有要读取的文件来源
 filebeat 目前支持两种 prospector 类型: stdin 和 log
 Filebeat 如何保持文件的读取状态
 Filebeat 保存每个文件的状态并经常将状态刷新到磁盘上的注册文件中。 注册文件位于 /usr/local/filebeat/data/registry/filebeat/data.json 该状态用于记住harvester正在读取的最后偏移量，并确保发送所有日志行。 如果输出（例如Elasticsearch或Logstash）无法访问，Filebeat会跟踪最后发送的行，并在输出再次可用时继续读取文件 安装 官方下载 https://www.elastic.co/cn/downloads/beats/filebeat, 一般国内都很慢, 推荐使用国内镜像下载. https://mirrors.huaweicloud.com/filebeat/ 找到对应的版本.
-我这里使用是 7.8.0 版本</description></item><item><title>Filebeat 学习(二) 配置</title><link>https://yezihack.github.io/posts/filebeat-config/</link><pubDate>Sat, 25 Jul 2020 17:33:29 +0800</pubDate><guid>https://yezihack.github.io/posts/filebeat-config/</guid><description>基于 filebeat 7.8.0
+我这里使用是 7.8.0 版本</description>
+    </item>
+    
+    <item>
+      <title>Filebeat 学习(二) 配置</title>
+      <link>https://yezihack.github.io/posts/filebeat-config/</link>
+      <pubDate>Sat, 25 Jul 2020 17:33:29 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/filebeat-config/</guid>
+      <description>基于 filebeat 7.8.0
 7filebeat 监听文件的变化, 进行记录文件位移, 从而实现不断读取数据,并收割数据并输送到指定终端或服务
 配置 配置文件需要注意,分顶格写, - 表示数组, 缩进采用2个空格方式
 输出控制台 监听文件夹下的所有*.log文件, 并自定义字段, tags标识
-cd /usr/local/filebeat vim test.yml # 输入配置 filebeat.inputs: - type: log # 定义输入的类型, 可以是 stdin, log, tcp, udp, json enabled: true # 启动 paths: # 文件路径, 可以是多个路径 - /data/logs/tmp/*.log # 配置要监听读取的文件路径, *表示通配符 tags: [&amp;#34;sgfoot&amp;#34;] # 自定义标签, 可以设置多个 fields: # 自定义字段, 默认在 fields 节点下, 可以通过 fields_under_root = true 设置为跟节点 www: sgfoot # 设置字段, key =&amp;gt; value fields_under_root: false # true 为根目录, false 是在 fields 节点下.</description></item><item><title>Elasticsearch 入门(六) cerebro 集群管理工具</title><link>https://yezihack.github.io/posts/es-cerebro/</link><pubDate>Wed, 22 Jul 2020 15:32:52 +0800</pubDate><guid>https://yezihack.github.io/posts/es-cerebro/</guid><description>之前介绍过head, hd 软件, 两种都不如今天的主角(cerebro), 也推荐使用. 言归正传. 开始吧.
+cd /usr/local/filebeat vim test.yml # 输入配置 filebeat.inputs: - type: log # 定义输入的类型, 可以是 stdin, log, tcp, udp, json enabled: true # 启动 paths: # 文件路径, 可以是多个路径 - /data/logs/tmp/*.log # 配置要监听读取的文件路径, *表示通配符 tags: [&amp;#34;sgfoot&amp;#34;] # 自定义标签, 可以设置多个 fields: # 自定义字段, 默认在 fields 节点下, 可以通过 fields_under_root = true 设置为跟节点 www: sgfoot # 设置字段, key =&amp;gt; value fields_under_root: false # true 为根目录, false 是在 fields 节点下.</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(六) cerebro 集群管理工具</title>
+      <link>https://yezihack.github.io/posts/es-cerebro/</link>
+      <pubDate>Wed, 22 Jul 2020 15:32:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-cerebro/</guid>
+      <description>之前介绍过head, hd 软件, 两种都不如今天的主角(cerebro), 也推荐使用. 言归正传. 开始吧.
 介绍 源码: https://github.com/lmenezes/cerebro
 下载二进制包: https://github.com/lmenezes/cerebro/releases
 集群名称 节点数 索引数 分片数 文档数 磁盘剩余量 节点名称,实心的星为主节点(即master节点), 空心的星为副节点(cluster节点) master 节点才有权限修改集群的状态 实线的方块代表主分片 虚线的方块代表副本分片 图片最上面有一条为黄色的线. 表示服务的健康状态. 在elasticsearch里有三种颜色
-green 绿色为健康状态 所有的主分片和副本分片都已分配。你的集群是 100% 可用的。 yellow 黄色为亚健康状态 所有的主分片已经分片了，但至少还有一个副本是缺失的。不会有数据丢失，所以搜索结果依然是完整的。不过，你的高可用性在某种程度上被弱化。如果 更多的 分片消失，你就会丢数据了。把 yellow 想象成一个需要及时调查的警告。 red 红色为非健康状态 至少一个主分片（以及它的全部副本）都在缺失中。这意味着你在缺少数据：搜索只能返回部分数据，而分配到这个分片上的写入请求会返回一个异常。 安装 # 下载二进制包
-cd /usr/local
-wget https://github.com/lmenezes/cerebro/releases/download/v0.9.2/cerebro-0.9.2.zip
-unzip cerebro-0.9.2.zip 修改配置文件 vim conf/application.conf
-# 大约70行. 去掉 # 可以配置多个.
-hosts = [
-{
-host = &amp;#34;http://127.0.0.1:9200&amp;#34; # 设置 elasticsearch 地址
-name = &amp;#34;Localhost cluster&amp;#34; # 显示名称
-# headers-whitelist = [ &amp;#34;x-proxy-user&amp;#34;, &amp;#34;x-proxy-roles&amp;#34;, &amp;#34;X-Forwarded-For&amp;#34; ]
-}
-# Example of host with authentication
-#{
-# host = &amp;#34;http://some-authenticated-host:9200&amp;#34;
-# name = &amp;#34;Secured Cluster&amp;#34;
-# auth = {
-# username = &amp;#34;username&amp;#34;
-# password = &amp;#34;secret-password&amp;#34;
-# }
-#}
-] 启动 bin/cerebro
-or nohup bin/cerebro &amp;amp;</description></item><item><title>Elasticsearch 入门(五) HD 可视化界面</title><link>https://yezihack.github.io/posts/es-hd/</link><pubDate>Wed, 22 Jul 2020 11:33:08 +0800</pubDate><guid>https://yezihack.github.io/posts/es-hd/</guid><description>效果 图表格式显示, 展示比较丰富 可以自定义elasticsearch 的地址, 并显示服务的健康状态 安装使用 下载地址
+green 绿色为健康状态 所有的主分片和副本分片都已分配。你的集群是 100% 可用的。 yellow 黄色为亚健康状态 所有的主分片已经分片了，但至少还有一个副本是缺失的。不会有数据丢失，所以搜索结果依然是完整的。不过，你的高可用性在某种程度上被弱化。如果 更多的 分片消失，你就会丢数据了。把 yellow 想象成一个需要及时调查的警告。 red 红色为非健康状态 至少一个主分片（以及它的全部副本）都在缺失中。这意味着你在缺少数据：搜索只能返回部分数据，而分配到这个分片上的写入请求会返回一个异常。 安装 # 下载二进制包cd /usr/localwget https://github.com/lmenezes/cerebro/releases/download/v0.9.2/cerebro-0.9.2.zipunzip cerebro-0.9.2.zip 修改配置文件 vim conf/application.conf# 大约70行. 去掉 # 可以配置多个.hosts = [{host = &amp;#34;http://127.0.0.1:9200&amp;#34; # 设置 elasticsearch 地址name = &amp;#34;Localhost cluster&amp;#34; # 显示名称# headers-whitelist = [ &amp;#34;x-proxy-user&amp;#34;, &amp;#34;x-proxy-roles&amp;#34;, &amp;#34;X-Forwarded-For&amp;#34; ]}# Example of host with authentication#{# host = &amp;#34;http://some-authenticated-host:9200&amp;#34;# name = &amp;#34;Secured Cluster&amp;#34;# auth = {# username = &amp;#34;username&amp;#34;# password = &amp;#34;secret-password&amp;#34;# }#}] 启动 bin/cerebroor nohup bin/cerebro &amp;amp; </description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(五) HD 可视化界面</title>
+      <link>https://yezihack.github.io/posts/es-hd/</link>
+      <pubDate>Wed, 22 Jul 2020 11:33:08 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-hd/</guid>
+      <description>效果 图表格式显示, 展示比较丰富 可以自定义elasticsearch 的地址, 并显示服务的健康状态 安装使用 下载地址
 wget https://github.com/360EntSecGroup-Skylar/ElasticHD/releases/tag/1.4 linux &amp;amp; maxOS
-Step1: Download the corresponding elasticHD version，unzip xxx_elasticHd_xxx.zip
-Step2: chmod 0777 ElasticHD
-Step3: exec elastichd ./ElasticHD -p 127.0.0.1:9800
-# 指定127.0.0.1地址与 9800 端口. window
-Step1: Download the corresponding elasticHD version，Double click zip package to unzip
-Step2: exec elastichd ./ElasticHD -p 127.0.0.1:9800 # 指定127.0.0.1地址与 9800 端口. nginx 代理 vim hd.conf upstream hd_server { server 127.0.0.1:9800 weight=1 max_fails=3 fail_timeout=60; } server { listen 80; server_name hd.</description></item><item><title>Elasticsearch 入门(三) Head 助手安装</title><link>https://yezihack.github.io/posts/es-head/</link><pubDate>Thu, 16 Jul 2020 19:38:51 +0800</pubDate><guid>https://yezihack.github.io/posts/es-head/</guid><description>下载 elasticsearch-head cd /usr/local
-git clone https://github.com/mobz/elasticsearch-head 安装 npm 国内的 npm 很慢, 推荐使用 taobao 的镜像
+Step1: Download the corresponding elasticHD version，unzip xxx_elasticHd_xxx.zipStep2: chmod 0777 ElasticHDStep3: exec elastichd ./ElasticHD -p 127.0.0.1:9800# 指定127.0.0.1地址与 9800 端口. window
+Step1: Download the corresponding elasticHD version，Double click zip package to unzipStep2: exec elastichd ./ElasticHD -p 127.0.0.1:9800 # 指定127.0.0.1地址与 9800 端口. nginx 代理 vim hd.conf upstream hd_server { server 127.0.0.1:9800 weight=1 max_fails=3 fail_timeout=60; } server { listen 80; server_name hd.</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(三) Head 助手安装</title>
+      <link>https://yezihack.github.io/posts/es-head/</link>
+      <pubDate>Thu, 16 Jul 2020 19:38:51 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-head/</guid>
+      <description>下载 elasticsearch-head cd /usr/localgit clone https://github.com/mobz/elasticsearch-head 安装 npm 国内的 npm 很慢, 推荐使用 taobao 的镜像
 使用 npm 别名方式
-# 默认 bash
-vim ~/.bashrc
-# 如果你使用的是 zsh 的话
-vim ~/.zshrc
-# 最后一行添加
-alias cnpm=&amp;#34;npm --registry=https://registry.npm.taobao.org \
---cache=$HOME/.npm/.cache/cnpm \
---disturl=https://npm.taobao.org/dist \
---userconfig=$HOME/.cnpmrc&amp;#34;
-# 验证一下
-cnpm -v 修改 Gruntfile.js 修改 elasticsearch-head 对外提供服务的配置
-cd /usr/local/elasticsearch-head vim Gruntfile.js # 大约96行, connect.server.options 节点 修改连接 es 服务的配置 cd /usr/local/elasticsearch-head
-vim _site/app.js
-# 大约 4374 行 修改 elasticsearch.yml 文件 使用 head 助手需要 es 允许跨域访问</description></item><item><title>Elasticsearch 入门(一) 介绍</title><link>https://yezihack.github.io/posts/es-info/</link><pubDate>Thu, 16 Jul 2020 14:22:17 +0800</pubDate><guid>https://yezihack.github.io/posts/es-info/</guid><description>Elasticsearch 是什么 Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全文搜索引擎.
+# 默认 bashvim ~/.bashrc# 如果你使用的是 zsh 的话vim ~/.zshrc# 最后一行添加alias cnpm=&amp;#34;npm --registry=https://registry.npm.taobao.org \--cache=$HOME/.npm/.cache/cnpm \--disturl=https://npm.taobao.org/dist \--userconfig=$HOME/.cnpmrc&amp;#34;# 验证一下cnpm -v 修改 Gruntfile.js 修改 elasticsearch-head 对外提供服务的配置
+cd /usr/local/elasticsearch-head vim Gruntfile.js # 大约96行, connect.server.options 节点 修改连接 es 服务的配置 cd /usr/local/elasticsearch-headvim _site/app.js# 大约 4374 行 修改 elasticsearch.yml 文件 使用 head 助手需要 es 允许跨域访问</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(一) 介绍</title>
+      <link>https://yezihack.github.io/posts/es-info/</link>
+      <pubDate>Thu, 16 Jul 2020 14:22:17 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-info/</guid>
+      <description>Elasticsearch 是什么 Elasticsearch(ES) 是一个 Lucene 构建的开源,分布式,RESTful 接口全文搜索引擎.
 还是一个分布式文档数据库, 其中每个字段均是被索引的数据且可被搜索,它能够扩展至数以百计的服务器存储以及处理PB级的数据.它可以在很短的时间内存储, 搜索和分析大量的数据.
 Elasticsearch就是为高可用和可扩展(水平扩展)而生
 优点 横向可扩展性: 只需要增加一台服务器, 调整一点儿配置,启动一下Elasticsearch进程就可以并入集群. 分片机制提供更好的分布性: 同一个索引分成多个分片(sharding), 这点类似于HDFS的块机制,分而治之的方式可提升处理效率. 高可用:提供复制(replica)机制,一个分片可以设置多个复制,使得某台服务器在宕机的情况下,集群仍可以照常运行,并会把服务器宕机丢失的数据信息复制恢复到其它可用节点上. 使用简单:解压即可使用. 无需安装(bin/elasticsearch). 相关产品 Beats 它是一个代理, 将不同类型的数据发送到Elasticsearch中.
@@ -74,33 +105,30 @@ Filebeat: 主要用于转发和集中日志数据。 Metricbeat: 定期收集操
 正排索引: 文档ID到文档内容和单词的关联
 倒排索引: 单词到文档ID的关系
 例如, 假设我们有两个文档, 每个文档的内容如下:
-我是一名程序员 我是一名高级程序员 为了创建倒排索引, 我们首先将每个文档的content域拆分成单独的词(称词条),创建一个包含所有不重复词条的排序列表，然后列出每个词条出现在哪个文档。结果如下所示：</description></item><item><title>Elasticsearch 入门(四) 查询</title><link>https://yezihack.github.io/posts/es-search/</link><pubDate>Wed, 15 Jul 2020 19:52:52 +0800</pubDate><guid>https://yezihack.github.io/posts/es-search/</guid><description>概要 Elasticsearch对外提供的API遵循REST原则
+我是一名程序员 我是一名高级程序员 为了创建倒排索引, 我们首先将每个文档的content域拆分成单独的词(称词条),创建一个包含所有不重复词条的排序列表，然后列出每个词条出现在哪个文档。结果如下所示：</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(四) 查询</title>
+      <link>https://yezihack.github.io/posts/es-search/</link>
+      <pubDate>Wed, 15 Jul 2020 19:52:52 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-search/</guid>
+      <description>概要 Elasticsearch对外提供的API遵循REST原则
 GET POST PUT DELETE 简介 _index 索引, 文档在哪儿存放 _type 类型, 7.x以后都使用 _doc类型 _id 文档唯一标识, 不指定则自动生成. 一个文档的 _index 、 _type 和 _id 唯一标识一个文档
 基本RESTful操作 新增记录 create 二种操作. PUT, POST
 PUT方法, /{_index}/_create/{id} 如果文档存在,操作失败
 还可以使用 /{_index}/_doc/{id}?op_type=create
-# 创建一个文档, 如果文档存在,操作失败
-# 使用_create
-PUT /student/_create/1
-{
-&amp;#34;name&amp;#34;: &amp;#34;张三&amp;#34;,
-&amp;#34;age&amp;#34;:19,
-&amp;#34;sex&amp;#34;:1
-}
-# 使用 _doc指定操作类型
-PUT /student/_doc/3?op_type=create
-{
-&amp;#34;name&amp;#34;: &amp;#34;张三丰&amp;#34;,
-&amp;#34;age&amp;#34;:600,
-&amp;#34;sex&amp;#34;:1
-}
-# 自动生成ID
-PUT /student/_doc/
-{
-&amp;#34;name&amp;#34;: &amp;#34;张三元&amp;#34;,
-&amp;#34;age&amp;#34;:600,
-&amp;#34;sex&amp;#34;:1
-} POST方法 {index}/_doc/{id} 如果文档不存在则创建新文档, 文档存在则旧文档删除, 新的文档被索引, 版本信息+1</description></item><item><title>Elasticsearch 入门(二) 安装</title><link>https://yezihack.github.io/posts/es-install/</link><pubDate>Thu, 11 Jun 2020 14:36:27 +0800</pubDate><guid>https://yezihack.github.io/posts/es-install/</guid><description>[TOC]
+# 创建一个文档, 如果文档存在,操作失败# 使用_createPUT /student/_create/1{&amp;#34;name&amp;#34;: &amp;#34;张三&amp;#34;,&amp;#34;age&amp;#34;:19,&amp;#34;sex&amp;#34;:1}# 使用 _doc指定操作类型PUT /student/_doc/3?op_type=create{&amp;#34;name&amp;#34;: &amp;#34;张三丰&amp;#34;,&amp;#34;age&amp;#34;:600,&amp;#34;sex&amp;#34;:1}# 自动生成IDPUT /student/_doc/{&amp;#34;name&amp;#34;: &amp;#34;张三元&amp;#34;,&amp;#34;age&amp;#34;:600,&amp;#34;sex&amp;#34;:1} POST方法 {index}/_doc/{id} 如果文档不存在则创建新文档, 文档存在则旧文档删除, 新的文档被索引, 版本信息+1</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch 入门(二) 安装</title>
+      <link>https://yezihack.github.io/posts/es-install/</link>
+      <pubDate>Thu, 11 Jun 2020 14:36:27 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/es-install/</guid>
+      <description>[TOC]
 基于es 7.x版本
 安装 1. 安装jdk1.8 浏览不同的es版本对java版本的要求: https://www.elastic.co/cn/support/matrix#matrix_jvm
 elasticsearch 7以后自带 java jdk, 无需以下安装操作.
@@ -111,4 +139,8 @@ apt-get -y install java-1.8.0-openjdk-devel.x86_64 安装完后查看java版本
 java -version 2. 下载es v7.6.2 https://www.elastic.co/cn/downloads/elasticsearch 3. linux/win环境安装 目录概述
 bin 执行文件目录 bin/elasticsearch.bat 双击安装(window) bin/elasticsearch (linux) 加个 -d 参数的话表示后台静默运行 config 配置目录 elasticsearch.yml es配置文件 jvm.options jdk配置文件 -Xms1g 表示使用1G内存 log4j2.properties 日志配置文件 data 数据目录 lib jar包目录 logs日志目录 modules 模块目录 plugins 插件目录 后台启动
 ./bin/elasticsearch -d -p /var/elasticsearch/es.pid 启动ElaticSearch
-window: 双击bin/elasticsearch.bat 文件, 差不多需要1~2分钟, 注意屏幕不动, 敲个回车.</description></item></channel></rss>
+window: 双击bin/elasticsearch.bat 文件, 差不多需要1~2分钟, 注意屏幕不动, 敲个回车.</description>
+    </item>
+    
+  </channel>
+</rss>

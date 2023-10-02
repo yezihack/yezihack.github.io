@@ -1,8 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>window10 on</title><link>https://yezihack.github.io/tags/window10/</link><description>Recent content in window10 on</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 13 Nov 2022 08:27:37 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/window10/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows 找不到文件 C: Program Files/Windowsapps...launcherrsxruntime.exe，请确定文件名是否正确后，再试一次</title><link>https://yezihack.github.io/posts/windows-repair/</link><pubDate>Sun, 13 Nov 2022 08:27:37 +0800</pubDate><guid>https://yezihack.github.io/posts/windows-repair/</guid><description>.1. 错误提示 突然有一天，当你重启电脑后，系统就弹出以下错误弹窗，提示某某文件找不到。如果你没有解决，每次重启电脑 都会弹出此窗，非常讨厌，今天我们来解决此问题。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>window10 on 空树之空</title>
+    <link>https://yezihack.github.io/tags/window10/</link>
+    <description>Recent content in window10 on 空树之空</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 13 Nov 2022 08:27:37 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/window10/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Windows 找不到文件 C: Program Files/Windowsapps...launcherrsxruntime.exe，请确定文件名是否正确后，再试一次</title>
+      <link>https://yezihack.github.io/posts/windows-repair/</link>
+      <pubDate>Sun, 13 Nov 2022 08:27:37 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/windows-repair/</guid>
+      <description>.1. 错误提示 突然有一天，当你重启电脑后，系统就弹出以下错误弹窗，提示某某文件找不到。如果你没有解决，每次重启电脑 都会弹出此窗，非常讨厌，今天我们来解决此问题。
 提示：Windows 找不到文件: &amp;ldquo;C:\Program File&amp;quot; 请确定文件名是否正确后，再试一次。
 .2. 解决方法 打开你的 cmd，使用 win + R 或者开始-&amp;gt; 运行 -&amp;gt; 输入：cmd 注意：使用 administrator 权限打开 CMD 再输入以下代码即可。 sfc /scannow DISM /Online /Cleanup-Image /CheckHealth # 如果执行失败后，重启后再执行此命令 DISM /Online /Cleanup-Image /ScanHealth # 如果执行失败后，重启后再执行此命令 DISM /Online /Cleanup-Image /RestoreHealth 最后重启电脑，以后就不再弹窗啦。一切都安静了。
 .3. 参考 https://learn.microsoft.com/en-us/answers/questions/663590/windows-error.html https://learn.microsoft.com/zh-cn/windows-hardware/manufacture/desktop/repair-a-windows-image?source=recommendations&amp;view=windows-11 .4. 关于作者 我的博客：https://yezihack.github.io
-欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description></item><item><title>Python Window10 安装</title><link>https://yezihack.github.io/posts/python-window-install/</link><pubDate>Mon, 27 Jul 2020 11:14:29 +0800</pubDate><guid>https://yezihack.github.io/posts/python-window-install/</guid><description>window 10环境下安装 python3.8 版本. 采用国内镜像, 国内官方下载实在太慢, 无法忍受.
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description>
+    </item>
+    
+    <item>
+      <title>Python Window10 安装</title>
+      <link>https://yezihack.github.io/posts/python-window-install/</link>
+      <pubDate>Mon, 27 Jul 2020 11:14:29 +0800</pubDate>
+      
+      <guid>https://yezihack.github.io/posts/python-window-install/</guid>
+      <description>window 10环境下安装 python3.8 版本. 采用国内镜像, 国内官方下载实在太慢, 无法忍受.
 下载安装 推荐华为镜像下载.
 https://mirrors.huaweicloud.com/python/3.8.0/
 选择 window 64 位
@@ -14,4 +38,8 @@ python 安装的目录
 window 10 找到 C:\Users\&amp;lt;yourname&amp;gt;\AppData\Roaming\pip 也许你找不到这个目录, &amp;lt;yourname&amp;gt;是你的计算机名称, AppData 是一个隐藏目录, 点击输入栏输入AppData进入, 然后找到Roaming, 如果没有找到pip目录,请新建一个pip目录, 然后在pip目录下新建一个pip.ini文件, 填下以下内容即可.
 [global] index-url = https://mirrors.huaweicloud.com/repository/pypi/simple trusted-host = mirrors.huaweicloud.com timeout = 120 更新 pip 打开你的cmd工具, 输入 python -m pip install --upgrade pip即可更新
 划线部分显示采用了刚才配置的源信息.说明没有走官网的源.这样非常快的更新完了. 如果你的界面没有动, 回车一下即可.(window常见的毛病)
-如果镜像不好用,可以临时指定镜像, 如安装 requests 库</description></item></channel></rss>
+如果镜像不好用,可以临时指定镜像, 如安装 requests 库</description>
+    </item>
+    
+  </channel>
+</rss>
