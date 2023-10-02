@@ -15,10 +15,15 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: '0.110.0'
+          # hugo-version: '0.110.0'
+          hugo-version: 'latest'
 
       - name: Build
-        run: hugo --minify --config config.toml
+        run: |
+          hostname
+          ls -l 
+          pwd
+          hugo --minify --config config.toml
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
