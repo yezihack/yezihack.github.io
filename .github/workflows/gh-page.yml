@@ -18,7 +18,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public # default: public
           publish_branch: gh-pages ## default: gh-pages
-          destination_dir: / # 目标目录
+          # destination_dir: / # 目标目录
           force_orphan: true # 允许您仅使用最新提交创建发布分支
           # cname: github.com
           allow_empty_commit: true # ⭐️ 允许空提交
