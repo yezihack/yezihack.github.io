@@ -1,36 +1,36 @@
-# This is a basic workflow to help you get started with Actions
-name: Github-Pages-Poison
+name: GitHub Pages
 
-on: # 触发条件
-  push: # push 
-    branches:  # 分支名称
-      - blog-poison
+on:
+  push:
+    branches:
+      - blog-poison  # Set a branch to deploy
+  pull_request:
+
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      # - uses: actions/checkout@v2
-        # with:
-        #   submodules: true  # Fetch Hugo themes (true OR recursive)
-        #   fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+      - uses: actions/checkout@v3
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.117.0'
           # extended: true
 
       - name: Build
         run: hugo --minify
 
-      - name: copy file # 复制CNAME文件，用于绑定域名
-        run: |
-          cp README.md ./public
-
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
+        if: github.ref == 'refs/heads/pages-poison'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          publish_branch: pages-poison
-          force_orphan: true
+          # publish_branch: gh-pages
+          # force_orphan: true
