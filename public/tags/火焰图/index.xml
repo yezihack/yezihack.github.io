@@ -1,26 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>火焰图 on 空树之空</title>
-    <link>https://yezihack.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/</link>
-    <description>Recent content in 火焰图 on 空树之空</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 05 Jun 2020 19:16:31 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E7%81%AB%E7%84%B0%E5%9B%BE/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>pprof火焰图性能分析利器之入门</title>
-      <link>https://yezihack.github.io/posts/pprof/</link>
-      <pubDate>Fri, 05 Jun 2020 19:16:31 +0800</pubDate>
-      
-      <guid>https://yezihack.github.io/posts/pprof/</guid>
-      <description>前言 如果你的应用是一直运行的，比如 web 应用，那么可以使用 net/http/pprof 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
-可以先看下pprof入门
-go1.10自带 go tool pprof工具
-go version 查看golang版本
-安装 引用包_ &amp;quot;net/http/pprof&amp;quot;
-内置包的路径: net\http\pprof\pprof.go
-const (PProfPort = 6060 // 端口)func PprofServer() {runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪go func() {err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil)if err != nil {zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;)}}()}func main() {PprofServer()select{}} 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description>
-    </item>
-    
-  </channel>
-</rss>

@@ -1,24 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>指纹 on 空树之空</title>
-    <link>https://yezihack.github.io/tags/%E6%8C%87%E7%BA%B9/</link>
-    <description>Recent content in 指纹 on 空树之空</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Wed, 05 Aug 2020 15:34:32 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E6%8C%87%E7%BA%B9/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Go 字符串指纹</title>
-      <link>https://yezihack.github.io/posts/go-fingerprint/</link>
-      <pubDate>Wed, 05 Aug 2020 15:34:32 +0800</pubDate>
-      
-      <guid>https://yezihack.github.io/posts/go-fingerprint/</guid>
-      <description>写项目时,有时我们需要缓存, 缓存就会需要唯一的key. 常规是对字符串求md5指纹. 在golang里我们也可以使用, 目前可以计算一个字符串的crc32, md5, sha1的指纹.
-md5 : 一种被广泛使用的密码散列函数，可以产bai生出一个128位（du16字节）的散列值（hash value），用于确保信息传输完整一zhi致。MD5由美国密码学家罗纳德·李维斯特（Ronald Linn Rivest）设计，于1992年公开，用以取代MD4算法。
-sha1: SHA1是由NISTNSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为160bit的散列值，因此抗穷举(brute-force)性更好。SHA-1基于MD5，MD5又基于MD4。
-crc32: 本身是“冗余校验码”的意思，CRC32则表示会产生一个32bit（8位十六进制数）的校验值。由于CRC32产生校验值时源数据块的每一个bit（位）都参与了计算，所以数据块中即使只有一位发生了变化，也会得到不同的CRC32值。
-golang 实现 md5 // md5值 func Md5Str(s string) string { hash := md5.Sum([]byte(s)) return hex.EncodeToString(hash[:]) } sha1 // 散列值 func Sha1Str(s string) string { r := sha1.Sum([]byte(s)) return hex.EncodeToString(r[:]) } crc32 // String hashes a string to a unique hashcode.// https://github.com/hashicorp/terraform/blob/master/helper/hashcode/hashcode.go// crc32 returns a uint32, but for our use we need// and non negative integer.</description>
-    </item>
-    
-  </channel>
-</rss>

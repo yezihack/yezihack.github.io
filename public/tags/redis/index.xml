@@ -1,39 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>redis on 空树之空</title>
-    <link>https://yezihack.github.io/tags/redis/</link>
-    <description>Recent content in redis on 空树之空</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 14 Jul 2020 17:11:29 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Redis 配置</title>
-      <link>https://yezihack.github.io/posts/redis-config/</link>
-      <pubDate>Tue, 14 Jul 2020 17:11:29 +0800</pubDate>
-      
-      <guid>https://yezihack.github.io/posts/redis-config/</guid>
-      <description>配置文件目录 以上是常见的redis存放目录
-vim /etc/redis.confvim /etc/redis/6379.conf 启动配置 # 后台运行: yes 是, no 不是daemonize yes # 提供服务的端口port 6379# 对外提供的ip地址bind 127.0.0.1 # 只允许本地连接,如果没有其它服务访问, 推荐这种.bind 10.11.12.9 # 只允许局域网连接, 还有其它服务访问, [推荐]bind 0.0.0.0 # 允许任意连接 # 设置客户端连接后进行任何其他指定前需要使用的密码。requirepass mypass 限制配置 内存设置 默认redis没有内存上限, 如果超时物理内存就会实例挂掉. 所以勿必设置内存大小, 然后配合淘汰策略使用.
-# 连接数限制 如果设置 maxclients 0，表示不作限制。# 注意 2g 和 2gb 是有区别的. 见下面, 大小写不区分.maxclients 1024 maxmemory 2gb 设置完后可以在: info memory看到
-maxmemory:2147483648maxmemory_human:2.00G 配置内存大小参考 # 1k =&amp;gt; 1000 bytes# 1kb =&amp;gt; 1024 bytes# 1m =&amp;gt; 1000000 bytes# 1mb =&amp;gt; 1024*1024 bytes# 1g =&amp;gt; 1000000000 bytes# 1gb =&amp;gt; 1024*1024*1024 bytes 淘汰策略设置 # volatile-lru -&amp;gt; 利用LRU算法移除设置过过期时间的key (LRU:最近使用 Least Recently Used )# allkeys-lru -&amp;gt; 利用LRU算法移除任何key# volatile-random -&amp;gt; 移除设置过过期时间的随机key# allkeys-&amp;gt;random -&amp;gt; remove a random key, any key# volatile-ttl -&amp;gt; 移除即将过期的key(minor TTL)# noeviction -&amp;gt; 不移除任何可以，只是返回一个写错误 maxmemory-policy volatile-lru 快照配置 # save 900 1 900秒内至少有1个key被改变# save 300 10 300秒内至少有300个key被改变# save 60 10000 60秒内至少有10000个key被改变save 900 1save 300 10save 60 10000# 存储至本地数据库时（持久化到rdb文件）是否压缩数据，默认为yesrdbcompression yes# 本地持久化数据库文件名，默认值为dump.</description>
-    </item>
-    
-    <item>
-      <title>Redis 性能分析</title>
-      <link>https://yezihack.github.io/posts/optimize-redis/</link>
-      <pubDate>Tue, 30 Jun 2020 16:17:44 +0800</pubDate>
-      
-      <guid>https://yezihack.github.io/posts/optimize-redis/</guid>
-      <description>查看 Clients 属性 127.0.0.1:6379&amp;gt;info clients # Clientsconnected_clients:1 # 已连接客户端的数量（不包括通过从属服务器连接的客户端）client_recent_max_input_buffer:2 # 当前连接的客户端当中，最长的输出列表client_recent_max_output_buffer:0 # 当前连接的客户端当中，最大输入缓存blocked_clients:0 # 正在等待阻塞命令（BLPOP、BRPOP、BRPOPLPUSH）的客户端的数量 查看 Memeory 属性 127.0.0.1:6379&amp;gt;info memory used_memory_human:1.92G # 用户数据所占用的内存，就是你缓存的数据的大小。used_memory_rss_human:30.73M # 常驻内存, 与top占用内存一致used_memory_peak_human:1.93G # 内存使用峰值total_system_memory_human:1.78G # 整个系统的内存mem_fragmentation_ratio:0.02 # 内存碎片比率. used_memory_rss/used_memory求的值. 如果小于1时,需要优化内存碎片. mem_fragmentation_ratio 查看内存碎片比率,
-小于&amp;lt;1时,Redis实例可能会把部分数据交换到硬盘上，内存交换会严重影响Redis的性能，所以应该增加可用物理内存 大于&amp;gt;1时, 说明碎片占用 更多的内存, 需要整理, 在1~1.5 之间比较健康. 重启Redis服务；也能达到碎片整理目的
-查看是否开启自动碎片整理: config get activedefrag
-设置自动碎片整理: config set activedefrag yes
-直接手动整理碎片: memory purge
-redis.conf配置设置自动整理碎片
-redis 4.0
-# Enabled active defragmentation# 碎片整理总开关# activedefrag yes# Minimum amount of fragmentation waste to start active defrag# 当碎片达到 100mb 时，开启内存碎片整理active-defrag-ignore-bytes 100mb# Minimum percentage of fragmentation to start active defrag# 当碎片超过 10% 时，开启内存碎片整理active-defrag-threshold-lower 10# Maximum percentage of fragmentation at which we use maximum effort# #内存碎片超过 100%，则尽最大努力整理active-defrag-threshold-upper 100# Minimal effort for defrag in CPU percentage# 内存自动整理占用资源最小百分比active-defrag-cycle-min 25# Maximal effort for defrag in CPU percentage# 内存自动整理占用资源最大百分比active-defrag-cycle-max 75 查看 Stats 属性 只列出部分属性.</description>
-    </item>
-    
-  </channel>
-</rss>

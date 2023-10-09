@@ -1,21 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>chan on 空树之空</title>
-    <link>https://yezihack.github.io/tags/chan/</link>
-    <description>Recent content in chan on 空树之空</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 05 Jun 2020 10:59:18 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/chan/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>golang select用法</title>
-      <link>https://yezihack.github.io/posts/select/</link>
-      <pubDate>Fri, 05 Jun 2020 10:59:18 +0800</pubDate>
-      
-      <guid>https://yezihack.github.io/posts/select/</guid>
-      <description>select 用于chan通道专用的控制结构
-ch := make(chan bool)select {case c &amp;lt;- ch:fmt.Println(&amp;#34;hello world&amp;#34;)default:return} 使用误区 39行, return 会一直阻塞? 希望大神解释下? 答: return相当于返回,不再继续,将永远阻塞,直到主程序退出.一般用于结束这个goroutine才加上return,否则不要轻易使用. 如果return 换成break或continue就不会阻塞 package mainimport (&amp;#34;fmt&amp;#34;&amp;#34;github.com/gin-gonic/gin&amp;#34;&amp;#34;log&amp;#34;&amp;#34;math/rand&amp;#34;&amp;#34;sync&amp;#34;)type Cache struct {ch chan int}var (_cache *Cache_once sync.Once)func NewCache() *Cache {_once.Do(func() {_cache = &amp;amp;Cache{ch: make(chan int, 10),}_cache.monitor()})return _cache}func (c *Cache) Push(x int) {c.</description>
-    </item>
-    
-  </channel>
-</rss>
