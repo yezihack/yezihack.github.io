@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>kubernetes on 空树之空</title><link>https://yezihack.github.io/tags/kubernetes/</link><description>Recent content in kubernetes on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 07 Feb 2023 18:07:36 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>K8s 跨 Node 机器 Pod 网络异常</title><link>https://yezihack.github.io/posts/k8s-bug-pod-network/</link><pubDate>Tue, 07 Feb 2023 18:07:36 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-bug-pod-network/</guid><description>背景 在 k8s 里部署了应用需要通过 ingress 提供外部调用. ingressController Pod 应用部署在 A 机器上, 应用部署在 B 机器上.
+通过自定义域名调用应用,则需要经过自定义域名配置的 host 的 kube-proxy 到 IngressController Pod 机器,再由 Ingress 负载找到应用的 Service 负载的 endpoint.
+最终请求到应用的 Pod.
+环境 k8s: 1.19 docker: 19.10 linux: CentOS7.6 分析思路 先确定 host:port 端口是否通达？ 再确认 ingress 是否可以访问到 service IP ingress 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description></item><item><title>云运维笔记(7) kubernetes 错误收集</title><link>https://yezihack.github.io/posts/k8s-error/</link><pubDate>Wed, 07 Dec 2022 11:31:00 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-error/</guid><description>.1. 为什么 Kubernetes 众多组件汇集于一身，插件也是多如牛毛，在运维中或日常安装中难免会遇到各种各样的错误，有些错误并不好排查，让人火急火燎搜索一翻，半天已经过去。在此收集日常使用 kubernetes 遇到的问题。
+.2. Ingress-nginx .2.1. Internal error occurred: failed calling webhook &amp;ldquo;validate.nginx.ingress.kubernetes.io&amp;rdquo; .2.1.1. 详细错误信息 Error from server (InternalError): error when creating &amp;#34;ingress.yaml&amp;#34;: Internal error occurred: failed calling webhook &amp;#34;validate.nginx.ingress.kubernetes.io&amp;#34;: Post &amp;#34;https://ingress-nginx-controller-admission.ingress-nginx.svc:443/networking/v1beta1/ingresses?timeout=10s&amp;#34;: context deadline exceeded .2.1.2. 解决方法 删除验证
+# 查看 kubectl get validatingwebhookconfigurations # 删除 kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission .3. 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description></item><item><title>云运维笔记(5) Kubernetes GPU 支持与驱动安装</title><link>https://yezihack.github.io/posts/k8s-gpu/</link><pubDate>Wed, 23 Nov 2022 08:42:25 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-gpu/</guid><description>.1. 安装 GPU 驱动 .1.1. 查看 GPU 硬件 .1.2. 检查自带 GPU 驱动 .1.3. 官方下载 GPU 驱动 .1.4. 安装 GPU 驱动 .1.5. 安装失败 .1.5.1. ERROR: An NVIDIA kernel module &amp;rsquo;nvidia-uvm&amp;rsquo; appears to already be loaded in your kernel .1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel .1.6. 重装内核 .1.7. 再次安装 GPU 驱动包 .1.7.1. 安装 .run 文件 .1.7.2. 安装 .rpm 文件 .2. 安装 nvidia-container-runtime .2.1. 作用 .</description></item><item><title>云运维笔记(3) k8s 安装 dashboard 配置 ingress</title><link>https://yezihack.github.io/posts/k8s-dashboard-ingress/</link><pubDate>Tue, 08 Nov 2022 16:47:30 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-dashboard-ingress/</guid><description>.1. 回顾 .2. 下载对应的版本 .3. 生成自签名的证书 .4. 生成 secret .5. 修改 dashboard.yaml 文件 .6. 部署 Dashboard .7. 创建 token .7.1. 创建 admin token .7.2. 创建某空间的 token .8. 配置 ingress-nginx .9. dashboard 登陆使用 .10. 参考 .11. 关于作者 .1. 回顾 之前写过一篇 kuberntes-dashboard 的文章，介绍如何使用 nodeport 方式部署与访问。
+参考：第十一章 Kubernetes Dashboard
+本次介绍使用 ingress 域名方式访问 dashboard。
+采用 tls 方式配置 ingress-nginx 访问 dashboard。 .2. 下载对应的版本 访问 github 仓库：https://github.com/kubernetes/dashboard/
+如何安装合适自己 kuberntes 版本的 Dashboard 的呢？官方发布 release 时，每个版本都有测试，当前版本支持哪些范围的 kubernetes 版本。还特意列出不完全兼容的版本信息。</description></item><item><title>Harbor 安装（TLS）</title><link>https://yezihack.github.io/posts/harbor-install/</link><pubDate>Sat, 01 Jan 2022 23:00:33 +0800</pubDate><guid>https://yezihack.github.io/posts/harbor-install/</guid><description>.1. 前提准备 .2. 安装 Docker 和 Docker-Compose .3. 离线安装之非安全模式 .3.1. 下载安装软件 .3.2. 编辑配置文件 .3.3. 运行安装脚本 .3.4. 查看验证 .3.5. 登陆 Harbor 管理页面 .3.6. Docker 配置 .3.7. Docker 登陆 harbor .3.8. 测试上传镜像 .4. 生成自签名 .4.1. 生成证书颁发机构证书 .4.2. 生成服务器证书 .5. 离线安装之安全模式 .5.1. 下载安装软件 .5.2. 向 Harbor 提供证书 .5.3. 编辑配置文件 .5.4. 运行安装脚本 .5.5. Docker 客户端使用证书 .5.6. Docker 登陆测试 .6. 参考 .7. 关于作者 .1. 前提准备 harbor 2.4.1 版本 基于 CentOS 7 假设我们的 IP 是：192.168.100.8 自定义域名: harbor.</description></item><item><title>第十二章 Minikube 安装</title><link>https://yezihack.github.io/posts/k8s-minikube/</link><pubDate>Tue, 28 Dec 2021 17:39:06 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-minikube/</guid><description>Minikube 安装 仅用于开产使用，生产不能使用。 以下仅以 macOS 系统演示
+1.1 Docker 安装 官方下载，直接安装即可。
+https://docs.docker.com/desktop/mac/install/
+使用国内镜像源，推荐阿里云的。
+参考：https://yezihack.github.io/docker-install.html#docker-加速
+1.2 Kubectl 安装 Kubernetes 命令行工具，kubectl，使得你可以对 Kubernetes 集群运行命令。 你可以使用 kubectl 来部署应用、监测和管理集群资源以及查看日志。
+官方下载，有详细的安装流程。支持：windows, linux, macOS
+参考：https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-macos/
+# Apple Silicon M1 cpu curl -LO &amp;#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/arm64/kubectl&amp;#34; # Intel cpu curl -LO &amp;#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/darwin/amd64/kubectl&amp;#34; 添加权限，加入 PATH 目录
+# 添加执行权限 chmod +x ./kubectl # 移动到path目录，全局可访问 sudo mv ./kubectl /usr/local/bin/kubectl sudo chown root: /usr/local/bin/kubectl # 查看版本 kubectl version --client 查看配置，了解更多 kubectl 命令</description></item><item><title>Kubernetes 总纲及脑图</title><link>https://yezihack.github.io/posts/k8s-mindmap/</link><pubDate>Tue, 09 Nov 2021 18:42:18 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-mindmap/</guid><description>kubernetes 导航目录 第一章 kubernetes 介绍 第二章 Kubernetes 安装 第三章 Kubernetes 资源管理 第四章 Kubernetes 实战操作 第五章 Kubernetes Pod 介绍 第六章 Kubernetes Pod 控制器 第七章 Kubernetes Service 介绍 第八章 Kubernetes Ingress 介绍 第九章 Kubernetes 数据存储 第十章 Kubernetes 权限认证 第十一章 Kubernetes Dashboard 脑图 kubernetes 涉及知识点比较，难以一次全记住，将以上的关于kubernetes 讲解的知识点汇总成脑图，方便查阅，随时复习。
+若下图不方便查看，直接查看原链接轻点，脑图
+关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~</description></item><item><title>第十一章 Kubernetes Dashboard</title><link>https://yezihack.github.io/posts/k8s-dashboard/</link><pubDate>Thu, 28 Oct 2021 18:18:16 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-dashboard/</guid><description>本章节主要介绍 kubernetes 的 Dashboard。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+下载yaml，并运行Dashboard # 下载yaml [root@master ~]# wget https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml # 修改kubernetes-dashboard的Service类型 kind: Service apiVersion: v1 metadata: labels: k8s-app: kubernetes-dashboard name: kubernetes-dashboard namespace: kubernetes-dashboard spec: type: NodePort # 新增 ports: - port: 443 targetPort: 8443 nodePort: 30009 # 新增 selector: k8s-app: kubernetes-dashboard # 部署 [root@master ~]# kubectl create -f recommended.yaml # 查看namespace下的kubernetes-dashboard下的资源 [root@master ~]# kubectl get pod,svc -n kubernetes-dashboard NAME READY STATUS RESTARTS AGE pod/dashboard-metrics-scraper-c79c65bb7-zwfvw 1/1 Running 0 111s pod/kubernetes-dashboard-56484d4c5-z95z5 1/1 Running 0 111s NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE service/dashboard-metrics-scraper ClusterIP 10.</description></item><item><title>第十章 Kubernetes 权限认证</title><link>https://yezihack.github.io/posts/k8s-permission/</link><pubDate>Thu, 28 Oct 2021 18:18:07 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-permission/</guid><description>本章节主要介绍Kubernetes的安全认证机制。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+访问控制概述 ​ Kubernetes作为一个分布式集群的管理工具，保证集群的安全性是其一个重要的任务。所谓的安全性其实就是保证对Kubernetes的各种客户端进行认证和鉴权操作。
+客户端
+在Kubernetes集群中，客户端通常有两类：
+User Account：一般是独立于kubernetes之外的其他服务管理的用户账号。
+Service Account：kubernetes管理的账号，用于为Pod中的服务进程在访问Kubernetes时提供身份标识。
+认证、授权与准入控制
+ApiServer是访问及管理资源对象的唯一入口。任何一个请求访问ApiServer，都要经过下面三个流程：
+Authentication（认证）：身份鉴别，只有正确的账号才能够通过认证 Authorization（授权）： 判断用户是否有权限对访问的资源执行特定的动作 Admission Control（准入控制）：用于补充授权机制以实现更加精细的访问控制功能。 认证管理 Kubernetes集群安全的最关键点在于如何识别并认证客户端身份，它提供了3种客户端身份认证方式：
+HTTP Base认证：通过用户名+密码的方式认证
+这种认证方式是把“用户名:密码”用BASE64算法进行编码后的字符串放在HTTP请求中的Header Authorization域里发送给服务端。服务端收到后进行解码，获取用户名及密码，然后进行用户身份认证的过程。 HTTP Token认证：通过一个Token来识别合法用户
+这种认证方式是用一个很长的难以被模仿的字符串&amp;ndash;Token来表明客户身份的一种方式。每个Token对应一个用户名，当客户端发起API调用请求时，需要在HTTP Header里放入Token，API Server接到Token后会跟服务器中保存的token进行比对，然后进行用户身份认证的过程。 HTTPS证书认证：基于CA根证书签名的双向数字证书认证方式
+这种认证方式是安全性最高的一种方式，但是同时也是操作起来最麻烦的一种方式。 HTTPS认证大体分为3个过程：
+证书申请和下发
+HTTPS通信双方的服务器向CA机构申请证书，CA机构下发根证书、服务端证书及私钥给申请者 客户端和服务端的双向认证
+1&amp;gt; 客户端向服务器端发起请求，服务端下发自己的证书给客户端， 客户端接收到证书后，通过私钥解密证书，在证书中获得服务端的公钥， 客户端利用服务器端的公钥认证证书中的信息，如果一致，则认可这个服务器 2&amp;gt; 客户端发送自己的证书给服务器端，服务端接收到证书后，通过私钥解密证书， 在证书中获得客户端的公钥，并用该公钥认证证书信息，确认客户端是否合法 服务器端和客户端进行通信
+服务器端和客户端协商好加密方案后，客户端会产生一个随机的秘钥并加密，然后发送到服务器端。 服务器端接收这个秘钥后，双方接下来通信的所有内容都通过该随机秘钥加密 注意: Kubernetes允许同时配置多种认证方式，只要其中任意一个方式认证通过即可
+授权管理 ​ 授权发生在认证成功之后，通过认证就可以知道请求用户是谁， 然后Kubernetes会根据事先定义的授权策略来决定用户是否有权限访问，这个过程就称为授权。
+​ 每个发送到ApiServer的请求都带上了用户和资源的信息：比如发送请求的用户、请求的路径、请求的动作等，授权就是根据这些信息和授权策略进行比较，如果符合策略，则认为授权通过，否则会返回错误。
+API Server目前支持以下几种授权策略：
+AlwaysDeny：表示拒绝所有请求，一般用于测试
+AlwaysAllow：允许接收所有请求，相当于集群不需要授权流程（Kubernetes默认的策略）
+ABAC：基于属性的访问控制，表示使用用户配置的授权规则对用户请求进行匹配和控制
+Webhook：通过调用外部REST服务对用户进行授权
+Node：是一种专用模式，用于对kubelet发出的请求进行访问控制
+RBAC：基于角色的访问控制（kubeadm安装方式下的默认选项）
+RBAC(Role-Based Access Control) 基于角色的访问控制，主要是在描述一件事情：给哪些对象授予了哪些权限
+其中涉及到了下面几个概念：
+对象：User、Groups、ServiceAccount 角色：代表着一组定义在资源上的可操作动作(权限)的集合 绑定：将定义好的角色跟用户绑定在一起 RBAC引入了4个顶级资源对象：</description></item><item><title>第九章 Kubernetes 数据存储</title><link>https://yezihack.github.io/posts/k8s-storage/</link><pubDate>Thu, 28 Oct 2021 18:08:54 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-storage/</guid><description>本章节主要介绍kubernetes的数据存储。
+在前面已经提到，容器的生命周期可能很短，会被频繁地创建和销毁。那么容器在销毁时，保存在容器中的数据也会被清除。这种结果对用户来说，在某些情况下是不乐意看到的。为了持久化保存容器的数据，kubernetes引入了Volume的概念。
+​ Volume是Pod中能够被多个容器访问的共享目录，它被定义在Pod上，然后被一个Pod里的多个容器挂载到具体的文件目录下，kubernetes通过Volume实现同一个Pod中不同容器之间的数据共享以及数据的持久化存储。Volume的生命容器不与Pod中单个容器的生命周期相关，当容器终止或者重启时，Volume中的数据也不会丢失。
+kubernetes的Volume支持多种类型，比较常见的有下面几个：
+简单存储：EmptyDir、HostPath、NFS 高级存储：PV、PVC 配置存储：ConfigMap、Secret 基本存储 EmptyDir ​ EmptyDir是最基础的Volume类型，一个EmptyDir就是Host上的一个空目录。
+​ EmptyDir是在Pod被分配到Node时创建的，它的初始内容为空，并且无须指定宿主机上对应的目录文件，因为kubernetes会自动分配一个目录，当Pod销毁时， EmptyDir中的数据也会被永久删除。 EmptyDir用途如下：
+临时空间，例如用于某些应用程序运行时所需的临时目录，且无须永久保留
+一个容器需要从另一个容器中获取数据的目录（多容器共享目录）
+接下来，通过一个容器之间文件共享的案例来使用一下EmptyDir。
+​ 在一个Pod中准备两个容器nginx和busybox，然后声明一个Volume分别挂在到两个容器的目录中，然后nginx容器负责向Volume中写日志，busybox中通过命令将日志内容读到控制台。
+创建一个volume-emptydir.yaml
+apiVersion: v1 kind: Pod metadata: name: volume-emptydir namespace: dev spec: containers: - name: nginx image: nginx:1.14-alpine ports: - containerPort: 80 volumeMounts: # 将logs-volume挂在到nginx容器中，对应的目录为 /var/log/nginx - name: logs-volume mountPath: /var/log/nginx - name: busybox image: busybox:1.30 command: [&amp;#34;/bin/sh&amp;#34;,&amp;#34;-c&amp;#34;,&amp;#34;tail -f /logs/access.log&amp;#34;] # 初始命令，动态读取指定文件中内容 volumeMounts: # 将logs-volume 挂在到busybox容器中，对应的目录为 /logs - name: logs-volume mountPath: /logs volumes: # 声明volume， name为logs-volume，类型为emptyDir - name: logs-volume emptyDir: {} # 创建Pod [root@master ~]# kubectl create -f volume-emptydir.</description></item><item><title>第八章 Kubernetes Ingress 介绍</title><link>https://yezihack.github.io/posts/k8s-ingress/</link><pubDate>Thu, 28 Oct 2021 17:58:04 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-ingress/</guid><description>本章节主要介绍kubernetes的流量负载组件：Ingress。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+在前面课程中已经提到，Service对集群之外暴露服务的主要方式有两种：NotePort和LoadBalancer，但是这两种方式，都有一定的缺点：
+NodePort方式的缺点是会占用很多集群机器的端口，那么当集群服务变多的时候，这个缺点就愈发明显 LB方式的缺点是每个service需要一个LB，浪费、麻烦，并且需要kubernetes之外设备的支持 ​ 基于这种现状，kubernetes提供了Ingress资源对象，Ingress只需要一个NodePort或者一个LB就可以满足暴露多个Service的需求。工作机制大致如下图表示：
+​ 实际上，Ingress相当于一个7层的负载均衡器，是kubernetes对反向代理的一个抽象，它的工作原理类似于Nginx，可以理解成在Ingress里建立诸多映射规则，Ingress Controller通过监听这些配置规则并转化成Nginx的反向代理配置 , 然后对外部提供服务。在这里有两个核心概念：
+ingress：kubernetes中的一个对象，作用是定义请求如何转发到service的规则 ingress controller：具体实现反向代理及负载均衡的程序，对ingress定义的规则进行解析，根据配置的规则来实现请求转发，实现方式有很多，比如Nginx, Contour, Haproxy等等 Ingress（以Nginx为例）的工作原理如下：
+用户编写Ingress规则，说明哪个域名对应kubernetes集群中的哪个Service Ingress控制器动态感知Ingress服务规则的变化，然后生成一段对应的Nginx反向代理配置 Ingress控制器会将生成的Nginx配置写入到一个运行着的Nginx服务中，并动态更新 到此为止，其实真正在工作的就是一个Nginx了，内部配置了用户定义的请求转发规则 Ingress使用 环境准备 搭建ingress环境
+# 创建文件夹 [root@master ~]# mkdir ingress-controller [root@master ~]# cd ingress-controller/ # 获取ingress-nginx，本次案例使用的是0.30版本 [root@master ingress-controller]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml [root@master ingress-controller]# wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/baremetal/service-nodeport.yaml # 修改mandatory.yaml文件中的仓库 # 修改quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.30.0 # 为quay-mirror.qiniu.com/kubernetes-ingress-controller/nginx-ingress-controller:0.30.0 # 创建ingress-nginx [root@master ingress-controller]# kubectl apply -f ./ # 查看ingress-nginx [root@master ingress-controller]# kubectl get pod -n ingress-nginx NAME READY STATUS RESTARTS AGE pod/nginx-ingress-controller-fbf967dd5-4qpbp 1/1 Running 0 12h # 查看service [root@master ingress-controller]# kubectl get svc -n ingress-nginx NAME TYPE CLUSTER-IP EXTERNAL-IP PORT(S) AGE ingress-nginx NodePort 10.</description></item><item><title>第七章 Kubernetes Service 介绍</title><link>https://yezihack.github.io/posts/k8s-service/</link><pubDate>Thu, 28 Oct 2021 17:54:44 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-service/</guid><description>本章节主要介绍kubernetes的流量负载组件：Service。
+Service介绍 ​ 在kubernetes中，pod是应用程序的载体，我们可以通过pod的ip来访问应用程序，但是pod的ip地址不是固定的，这也就意味着不方便直接采用pod的ip对服务进行访问。
+​ 为了解决这个问题，kubernetes提供了Service资源，Service会对提供同一个服务的多个pod进行聚合，并且提供一个统一的入口地址。通过访问Service的入口地址就能访问到后面的pod服务。
+​ Service在很多情况下只是一个概念，真正起作用的其实是kube-proxy服务进程，每个Node节点上都运行着一个kube-proxy服务进程。当创建Service的时候会通过api-server向etcd写入创建的service的信息，而kube-proxy会基于监听的机制发现这种Service的变动，然后它会将最新的Service信息转换成对应的访问规则。
+# 10.97.97.97:80 是service提供的访问入口 # 当访问这个入口的时候，可以发现后面有三个pod的服务在等待调用， # kube-proxy会基于rr（轮询）的策略，将请求分发到其中一个pod上去 # 这个规则会同时在集群内的所有节点上都生成，所以在任何一个节点上访问都可以。 [root@node1 ~]# ipvsadm -Ln IP Virtual Server version 1.2.1 (size=4096) Prot LocalAddress:Port Scheduler Flags -&amp;gt; RemoteAddress:Port Forward Weight ActiveConn InActConn TCP 10.97.97.97:80 rr -&amp;gt; 10.244.1.39:80 Masq 1 0 0 -&amp;gt; 10.244.1.40:80 Masq 1 0 0 -&amp;gt; 10.244.2.33:80 Masq 1 0 0 kube-proxy目前支持三种工作模式:
+userspace 模式
+​ userspace模式下，kube-proxy会为每一个Service创建一个监听端口，发向Cluster IP的请求被Iptables规则重定向到kube-proxy监听的端口上，kube-proxy根据LB算法选择一个提供服务的Pod并和其建立链接，以将请求转发到Pod上。 ​ 该模式下，kube-proxy充当了一个四层负责均衡器的角色。由于kube-proxy运行在userspace中，在进行转发处理时会增加内核和用户空间之间的数据拷贝，虽然比较稳定，但是效率比较低。
+iptables 模式
+​ iptables模式下，kube-proxy为service后端的每个Pod创建对应的iptables规则，直接将发向Cluster IP的请求重定向到一个Pod IP。 ​ 该模式下kube-proxy不承担四层负责均衡器的角色，只负责创建iptables规则。该模式的优点是较userspace模式效率更高，但不能提供灵活的LB策略，当后端Pod不可用时也无法进行重试。</description></item><item><title>第六章 Kubernetes Pod 控制器</title><link>https://yezihack.github.io/posts/k8s-pod-controller/</link><pubDate>Thu, 28 Oct 2021 17:45:21 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-pod-controller/</guid><description>本章节主要介绍各种Pod控制器的详细使用。
+Pod控制器介绍 Pod是kubernetes的最小管理单元，在kubernetes中，按照pod的创建方式可以将其分为两类：
+自主式pod：kubernetes直接创建出来的Pod，这种pod删除后就没有了，也不会重建
+控制器创建的pod：kubernetes通过控制器创建的pod，这种pod删除了之后还会自动重建
+什么是Pod控制器
+Pod控制器是管理pod的中间层，使用Pod控制器之后，只需要告诉Pod控制器，想要多少个什么样的Pod就可以了，它会创建出满足条件的Pod并确保每一个Pod资源处于用户期望的目标状态。如果Pod资源在运行中出现故障，它会基于指定策略重新编排Pod。
+在kubernetes中，有很多类型的pod控制器，每种都有自己的适合的场景，常见的有下面这些：
+ReplicationController：比较原始的pod控制器，已经被废弃，由ReplicaSet替代
+ReplicaSet：保证副本数量一直维持在期望值，并支持pod数量扩缩容，镜像版本升级
+Deployment：通过控制ReplicaSet来控制Pod，并支持滚动升级、回退版本
+Horizontal Pod Autoscaler：可以根据集群负载自动水平调整Pod的数量，实现削峰填谷
+DaemonSet：在集群中的指定Node上运行且仅运行一个副本，一般用于守护进程类的任务
+Job：它创建出来的pod只要完成任务就立即退出，不需要重启或重建，用于执行一次性任务
+Cronjob：它创建的Pod负责周期性任务控制，不需要持续后台运行
+StatefulSet：管理有状态应用
+ReplicaSet(RS) ReplicaSet的主要作用是保证一定数量的pod正常运行，它会持续监听这些Pod的运行状态，一旦Pod发生故障，就会重启或重建。同时它还支持对pod数量的扩缩容和镜像版本的升降级。
+ReplicaSet的资源清单文件：
+apiVersion: apps/v1 # 版本号 kind: ReplicaSet # 类型 metadata: # 元数据 name: # rs名称 namespace: # 所属命名空间 labels: #标签 controller: rs spec: # 详情描述 replicas: 3 # 副本数量 selector: # 选择器，通过它指定该控制器管理哪些pod matchLabels: # Labels匹配规则 app: nginx-pod matchExpressions: # Expressions匹配规则 - {key: app, operator: In, values: [nginx-pod]} template: # 模板，当副本数量不足时，会根据下面的模板创建pod副本 metadata: labels: app: nginx-pod spec: containers: - name: nginx image: nginx:1.</description></item><item><title>第五章 Kubernetes Pod 介绍</title><link>https://yezihack.github.io/posts/k8s-pod/</link><pubDate>Thu, 28 Oct 2021 16:37:55 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-pod/</guid><description>本章节将详细介绍Pod资源的各种配置（yaml）和原理。
+Pod结构 每个Pod中都可以包含一个或者多个容器，这些容器可以分为两类：
+用户程序所在的容器，数量可多可少
+Pause容器，这是每个Pod都会有的一个根容器，它的作用有两个：
+可以以它为依据，评估整个Pod的健康状态
+可以在根容器上设置Ip地址，其它容器都此Ip（Pod IP），以实现Pod内部的网路通信
+这里是Pod内部的通讯，Pod的之间的通讯采用虚拟二层网络技术来实现，我们当前环境用的是Flannel
+Pod定义 下面是Pod的资源清单：
+apiVersion: v1 #必选，版本号，例如v1 kind: Pod #必选，资源类型，例如 Pod metadata: #必选，元数据 name: string #必选，Pod名称 namespace: string #Pod所属的命名空间,默认为&amp;#34;default&amp;#34; labels: #自定义标签列表 - name: string spec: #必选，Pod中容器的详细定义 containers: #必选，Pod中容器列表 - name: string #必选，容器名称 image: string #必选，容器的镜像名称 imagePullPolicy: [ Always|Never|IfNotPresent ] #获取镜像的策略 command: [string] #容器的启动命令列表，如不指定，使用打包时使用的启动命令 args: [string] #容器的启动命令参数列表 workingDir: string #容器的工作目录 volumeMounts: #挂载到容器内部的存储卷配置 - name: string #引用pod定义的共享存储卷的名称，需用volumes[]部分定义的的卷名 mountPath: string #存储卷在容器内mount的绝对路径，应少于512字符 readOnly: boolean #是否为只读模式 ports: #需要暴露的端口库号列表 - name: string #端口的名称 containerPort: int #容器需要监听的端口号 hostPort: int #容器所在主机需要监听的端口号，默认与Container相同 protocol: string #端口协议，支持TCP和UDP，默认TCP env: #容器运行前需设置的环境变量列表 - name: string #环境变量名称 value: string #环境变量的值 resources: #资源限制和请求的设置 limits: #资源限制的设置 cpu: string #Cpu的限制，单位为core数，将用于docker run --cpu-shares参数 memory: string #内存限制，单位可以为Mib/Gib，将用于docker run --memory参数 requests: #资源请求的设置 cpu: string #Cpu请求，容器启动的初始可用数量 memory: string #内存请求,容器启动的初始可用数量 lifecycle: #生命周期钩子 postStart: #容器启动后立即执行此钩子,如果执行失败,会根据重启策略进行重启 preStop: #容器终止前执行此钩子,无论结果如何,容器都会终止 livenessProbe: #对Pod内各容器健康检查的设置，当探测无响应几次后将自动重启该容器 exec: #对Pod容器内检查方式设置为exec方式 command: [string] #exec方式需要制定的命令或脚本 httpGet: #对Pod内个容器健康检查方法设置为HttpGet，需要制定Path、port path: string port: number host: string scheme: string HttpHeaders: - name: string value: string tcpSocket: #对Pod内个容器健康检查方式设置为tcpSocket方式 port: number initialDelaySeconds: 0 #容器启动完成后首次探测的时间，单位为秒 timeoutSeconds: 0 #对容器健康检查探测等待响应的超时时间，单位秒，默认1秒 periodSeconds: 0 #对容器监控检查的定期探测时间设置，单位秒，默认10秒一次 successThreshold: 0 failureThreshold: 0 securityContext: privileged: false restartPolicy: [Always | Never | OnFailure] #Pod的重启策略 nodeName: &amp;lt;string&amp;gt; #设置NodeName表示将该Pod调度到指定到名称的node节点上 nodeSelector: obeject #设置NodeSelector表示将该Pod调度到包含这个label的node上 imagePullSecrets: #Pull镜像时使用的secret名称，以key：secretkey格式指定 - name: string hostNetwork: false #是否使用主机网络模式，默认为false，如果设置为true，表示使用宿主机网络 volumes: #在该pod上定义共享存储卷列表 - name: string #共享存储卷名称 （volumes类型有很多种） emptyDir: {} #类型为emtyDir的存储卷，与Pod同生命周期的一个临时目录。为空值 hostPath: string #类型为hostPath的存储卷，表示挂载Pod所在宿主机的目录 path: string #Pod所在宿主机的目录，将被用于同期中mount的目录 secret: #类型为secret的存储卷，挂载集群与定义的secret对象到容器内部 scretname: string items: - key: string path: string configMap: #类型为configMap的存储卷，挂载预定义的configMap对象到容器内部 name: string items: - key: string path: string #小提示： # 在这里，可通过一个命令来查看每种资源的可配置项 # kubectl explain 资源类型 查看某种资源可以配置的一级属性 # kubectl explain 资源类型.</description></item><item><title>第四章 Kubernetes 实战操作</title><link>https://yezihack.github.io/posts/k8s-operation/</link><pubDate>Thu, 28 Oct 2021 16:33:37 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-operation/</guid><description>本章节将介绍如何在kubernetes集群中部署一个nginx服务，并且能够对其进行访问。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+Namespace Namespace是kubernetes系统中的一种非常重要资源，它的主要作用是用来实现多套环境的资源隔离或者多租户的资源隔离。
+默认情况下，kubernetes集群中的所有的Pod都是可以相互访问的。但是在实际中，可能不想让两个Pod之间进行互相的访问，那此时就可以将两个Pod划分到不同的namespace下。kubernetes通过将集群内部的资源分配到不同的Namespace中，可以形成逻辑上的&amp;quot;组&amp;quot;，以方便不同的组的资源进行隔离使用和管理。
+可以通过kubernetes的授权机制，将不同的namespace交给不同租户进行管理，这样就实现了多租户的资源隔离。此时还能结合kubernetes的资源配额机制，限定不同租户能占用的资源，例如CPU使用量、内存使用量等等，来实现租户可用资源的管理。
+kubernetes在集群启动之后，会默认创建几个namespace
+[root@master ~]# kubectl get namespace NAME STATUS AGE default Active 45h # 所有未指定Namespace的对象都会被分配在default命名空间 kube-node-lease Active 45h # 集群节点之间的心跳维护，v1.13开始引入 kube-public Active 45h # 此命名空间下的资源可以被所有人访问（包括未认证用户） kube-system Active 45h # 所有由Kubernetes系统创建的资源都处于这个命名空间 下面来看namespace资源的具体操作：
+查看
+# 1 查看所有的ns 命令：kubectl get ns [root@master ~]# kubectl get ns NAME STATUS AGE default Active 45h kube-node-lease Active 45h kube-public Active 45h kube-system Active 45h # 2 查看指定的ns 命令：kubectl get ns ns名称 [root@master ~]# kubectl get ns default NAME STATUS AGE default Active 45h # 3 指定输出格式 命令：kubectl get ns ns名称 -o 格式参数 # kubernetes支持的格式有很多，比较常见的是wide、json、yaml [root@master ~]# kubectl get ns default -o yaml apiVersion: v1 kind: Namespace metadata: creationTimestamp: &amp;#34;2020-04-05T04:44:16Z&amp;#34; name: default resourceVersion: &amp;#34;151&amp;#34; selfLink: /api/v1/namespaces/default uid: 7405f73a-e486-43d4-9db6-145f1409f090 spec: finalizers: - kubernetes status: phase: Active # 4 查看ns详情 命令：kubectl describe ns ns名称 [root@master ~]# kubectl describe ns default Name: default Labels: &amp;lt;none&amp;gt; Annotations: &amp;lt;none&amp;gt; Status: Active # Active 命名空间正在使用中 Terminating 正在删除命名空间 # ResourceQuota 针对namespace做的资源限制 # LimitRange针对namespace中的每个组件做的资源限制 No resource quota.</description></item><item><title>第三章 Kubernetes 资源管理</title><link>https://yezihack.github.io/posts/k8s-resource/</link><pubDate>Thu, 28 Oct 2021 16:19:54 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-resource/</guid><description>本章节主要介绍yaml语法和kubernetes的资源管理方式
+资源管理介绍 在kubernetes中，所有的内容都抽象为资源，用户需要通过操作资源来管理kubernetes。
+kubernetes的本质上就是一个集群系统，用户可以在集群中部署各种服务，所谓的部署服务，其实就是在kubernetes集群中运行一个个的容器，并将指定的程序跑在容器中。
+kubernetes的最小管理单元是pod而不是容器，所以只能将容器放在Pod中，而kubernetes一般也不会直接管理Pod，而是通过Pod控制器来管理Pod的。
+Pod可以提供服务之后，就要考虑如何访问Pod中服务，kubernetes提供了Service资源实现这个功能。
+当然，如果Pod中程序的数据需要持久化，kubernetes还提供了各种存储系统。
+学习kubernetes的核心，就是学习如何对集群上的Pod、Pod控制器、Service、存储等各种资源进行操作
+YAML语言介绍 YAML是一个类似 XML、JSON 的标记性语言。它强调以数据为中心，并不是以标识语言为重点。因而YAML本身的定义比较简单，号称&amp;quot;一种人性化的数据格式语言&amp;quot;。
+&amp;lt;heima&amp;gt; &amp;lt;age&amp;gt;15&amp;lt;/age&amp;gt; &amp;lt;address&amp;gt;Beijing&amp;lt;/address&amp;gt; &amp;lt;/heima&amp;gt; heima: age: 15 address: Beijing YAML的语法比较简单，主要有下面几个：
+大小写敏感 使用缩进表示层级关系 缩进不允许使用tab，只允许空格( 低版本限制 ) 缩进的空格数不重要，只要相同层级的元素左对齐即可 &amp;lsquo;#&amp;lsquo;表示注释 YAML支持以下几种数据类型：
+纯量：单个的、不可再分的值 对象：键值对的集合，又称为映射（mapping）/ 哈希（hash） / 字典（dictionary） 数组：一组按次序排列的值，又称为序列（sequence） / 列表（list） # 纯量, 就是指的一个简单的值，字符串、布尔值、整数、浮点数、Null、时间、日期 # 1 布尔类型 c1: true (或者True) # 2 整型 c2: 234 # 3 浮点型 c3: 3.14 # 4 null类型 c4: ~ # 使用~表示null # 5 日期类型 c5: 2018-02-17 # 日期必须使用ISO 8601格式，即yyyy-MM-dd # 6 时间类型 c6: 2018-02-17T15:02:31+08:00 # 时间使用ISO 8601格式，时间和日期之间使用T连接，最后使用+代表时区 # 7 字符串类型 c7: heima # 简单写法，直接写值 , 如果字符串中间有特殊字符，必须使用双引号或者单引号包裹 c8: line1 line2 # 字符串过多的情况可以拆成多行，每一行会被转化成一个空格 # 对象 # 形式一(推荐): heima: age: 15 address: Beijing # 形式二(了解): heima: {age: 15,address: Beijing} # 数组 # 形式一(推荐): address: - 顺义 - 昌平 # 形式二(了解): address: [顺义,昌平] 小提示：</description></item><item><title>第二章 Kubernetes 安装</title><link>https://yezihack.github.io/posts/k8s-install/</link><pubDate>Thu, 28 Oct 2021 15:24:42 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-install/</guid><description>kubectl 安装 kind 安装 创建一个集群 查看集群 删除集群 kubernetes 安装比较复杂，用于学习可以搭建单机集群安装。 推荐使用 linux 系统安装实验。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+kubernetes有多种部署方式，目前主流的方式有kind、kubeadm、minikube、二进制包
+kind: 一个基于 Docker 安装的 kubernetes 工具（推荐） minikube：一个用于快速搭建单节点 kubernetes 的工具 kubeadm：一个用于快速搭建 kubernetes 集群的工具 二进制包 ：从官网下载每个组件的二进制包，依次去安装，此方式对于理解 kubernetes 组件更加有效 kubectl 安装 参考: https://kubernetes.io/zh/docs/tasks/tools/install-kubectl-linux/
+kubectl 是 kubernetes 运行命令工具，用于部署应用、监测和管理集群资源以及查看日志。
+# 下载安装 curl -LO &amp;#34;https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl&amp;#34; # 添加权限，复制到/bin下，方便全局使用 chmod +x kubectl mkdir -p ~/.local/bin/kubectl mv ./kubectl ~/.local/bin/kubectl # 验证安装是否成功 kubectl version --client kind 安装 官网：https://kind.sigs.k8s.io/
+下载二进制包，无须其它依赖
+https://github.com/kubernetes-sigs/kind/releases</description></item><item><title>第一章 kubernetes 介绍</title><link>https://yezihack.github.io/posts/k8s-intro/</link><pubDate>Thu, 28 Oct 2021 14:57:31 +0800</pubDate><guid>https://yezihack.github.io/posts/k8s-intro/</guid><description>应用部署方式演变 kubernetes简介 kubernetes组件 kubernetes概念 参考 本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
+找不到目录, 传送门：Kubernetes 总纲及脑图
+应用部署方式演变 在部署应用程序的方式上，主要经历了三个时代：
+传统部署：互联网早期，会直接将应用程序部署在物理机上
+优点：简单，不需要其它技术的参与
+缺点：不能为应用程序定义资源使用边界，很难合理地分配计算资源，而且程序之间容易产生影响
+虚拟化部署：可以在一台物理机上运行多个虚拟机，每个虚拟机都是独立的一个环境
+优点：程序环境不会相互产生影响，提供了一定程度的安全性
+缺点：增加了操作系统，浪费了部分资源
+容器化部署：与虚拟化类似，但是共享了操作系统
+优点：
+可以保证每个容器拥有自己的文件系统、CPU、内存、进程空间等
+运行应用程序所需要的资源都被容器包装，并和底层基础架构解耦
+容器化的应用程序可以跨云服务商、跨Linux操作系统发行版进行部署
+容器化部署方式给带来很多的便利，但是也会出现一些问题，比如说：
+一个容器故障停机了，怎么样让另外一个容器立刻启动去替补停机的容器 当并发访问量变大的时候，怎么样做到横向扩展容器数量 这些容器管理的问题统称为容器编排问题，为了解决这些容器编排问题，就产生了一些容器编排的软件：
+Swarm：Docker自己的容器编排工具 Mesos：Apache的一个资源统一管控的工具，需要和Marathon结合使用 Kubernetes：Google开源的的容器编排工具 kubernetes简介 ​
+kubernetes，是一个全新的基于容器技术的分布式架构领先方案，是谷歌严格保密十几年的秘密武器 Borg 系统的一个开源版本，于2014年9月发布第一个版本，2015年7月发布第一个正式版本。
+kubernetes的本质是一组服务器集群，它可以在集群的每个节点上运行特定的程序，来对节点中的容器进行管理。目的是实现资源管理的自动化，主要提供了如下的主要功能：
+自我修复：一旦某一个容器崩溃，能够在1秒中左右迅速启动新的容器 弹性伸缩：可以根据需要，自动对集群中正在运行的容器数量进行调整 服务发现：服务可以通过自动发现的形式找到它所依赖的服务 负载均衡：如果一个服务起动了多个容器，能够自动实现请求的负载均衡 版本回退：如果发现新发布的程序版本有问题，可以立即回退到原来的版本 存储编排：可以根据容器自身的需求自动创建存储卷 kubernetes组件 一个kubernetes集群主要是由 控制节点(master)、工作节点(node) 构成，每个节点上都会安装不同的组件。
+master：集群的控制平面，负责集群的决策 ( 管理 )
+ApiServer : 资源操作的唯一入口，接收用户输入的命令，提供认证、授权、API注册和发现等机制
+Scheduler : 负责集群资源调度，按照预定的调度策略将Pod调度到相应的node节点上
+ControllerManager : 负责维护集群的状态，比如程序部署安排、故障检测、自动扩展、滚动更新等
+Etcd：负责存储集群中各种资源对象的信息
+node：集群的数据平面，负责为容器提供运行环境 ( 干活 )
+Kubelet : 负责维护容器的生命周期，即通过控制docker，来创建、更新、销毁容器
+KubeProxy : 负责提供集群内部的服务发现和负载均衡</description></item></channel></rss>

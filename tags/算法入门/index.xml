@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>算法入门 on 空树之空</title><link>https://yezihack.github.io/tags/%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8/</link><description>Recent content in 算法入门 on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 17 Jan 2022 22:47:10 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E7%AE%97%E6%B3%95%E5%85%A5%E9%97%A8/index.xml" rel="self" type="application/rss+xml"/><item><title>算法入门(一) 基础概念</title><link>https://yezihack.github.io/posts/algo-01/</link><pubDate>Mon, 17 Jan 2022 22:47:10 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-01/</guid><description>.1. 数据结构与算法 .2. 基本概念与术语 .2.1. 数据 .2.2. 数据元素 .2.3. 数据项 .2.4. 数据对象 .2.5. 总结 .3. 逻辑结构与物理结构 .3.1. 逻辑结构 .3.2. 物理结构 .3.3. 总结 .4. 算法 .4.1. 算法的特征 .4.2. 算法设计的要求 .4.3. 算法时间复杂度 .4.4. 最坏情况与平均情况 .4.5. 空间复杂度 .5. 参考 .6. 关于作者 .1. 数据结构与算法 什么是数据结构：是相互之间存在一种或多种特定关系的数据元素的集合。
+什么是算法：是解决特定问题求解步骤的描述。
+.2. 基本概念与术语 .2.1. 数据 是描述客观事物的符号，是计算机可以操作的对象。
+符号必须满足以下两个条件：
+可以输入到计算机中。 能被计算机程序处理。 例：整型，字符串等。
+.2.2. 数据元素 是组成数据的，有一定意义的基本单位，在计算机中通常作为整体处理。也称为记录。
+例：人，动物，狗，虎等。
+.2.3. 数据项 一个数据元素可以由若干个数据项组成。
+数据项是数据不可分割的最小单位。
+.2.4. 数据对象 是性质相同的数据元素的集合，是数据的子集。
+.2.5. 总结 三种之间的关系：数据 &amp;gt; 数据元素 &amp;gt; 数据项</description></item></channel></rss>

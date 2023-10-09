@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>七大原则 on 空树之空</title><link>https://yezihack.github.io/tags/%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/</link><description>Recent content in 七大原则 on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 19 Aug 2020 13:00:55 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E4%B8%83%E5%A4%A7%E5%8E%9F%E5%88%99/index.xml" rel="self" type="application/rss+xml"/><item><title>设计模式-七大原则(二)</title><link>https://yezihack.github.io/posts/gof-seven-principle/</link><pubDate>Wed, 19 Aug 2020 13:00:55 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-seven-principle/</guid><description>用最少的语言记住更多的东西
+本文提纲 设计模式的目的 高内聚，低耦合
+可重用性 可扩展性 可阅读性 可靠性 1. 单一职责原则(SRP) 单一职责原则提出了一个编写程序的标准，用”职责“或”变化原因“来衡量接口或类设计得是否优良。
+Single Responsibility Principle
+一个类(方法)只描述一件事, 应该有且仅有一个原因引起的变更。
+There should never be more than one reason for a class to change（一个类的变化不应该有一个以上的原因引起）
+单一职责原则好处
+类的复杂性降低，实现什么职责都有清晰明确的定义 可读性提高，复杂性降低，那当然可读性提高了。 可维护性提高，可读性提高，那当然更容易维护了。 变更引起的风险降低。变更是必不可少的，如果接口单一职责做得好，一个接口修改只对相应的实现类有影响，对其它接口无影响，这对系统的扩展性，维护性都有非常大的帮助。 2. 开闭原则(OCP) Open Closed Principle
+3W原则： What 是什么，Why为什么，How怎么做。
+对修改关闭，对扩展开放
+3. 接口隔离原则(ISP) Interface Segregation Principle
+定义单一接口，不要建立臃肿庞大的接口。
+客户端不应该依赖它不需要的接口 类间的依赖关系应该建立在最小接口上 接口隔离原则拆分接口时，首先必须满足单一职责原则
+接口要高内聚 少使用public方法，接口对外承诺越少，对系统开发越有利，变更的风险也就越少，同时也有利于降低成本。 定制服务 就是单独为一个个体提供优良的服务。 只提供访问者需要的方法。 接口设计 是有限度的 接口的设计粒度越小，系统越灵活 一个接口只服务于一个子模块或业务逻辑。 接口隔离原则与单一职责原则的区别
+接口隔离原则要求接口中的方法尽量少，专门的接口。
+单一职责原则注重的是职责，是业务逻辑上的划分。
+4. 里氏替换原则(LSP) Liskov Substitution Principle</description></item></channel></rss>

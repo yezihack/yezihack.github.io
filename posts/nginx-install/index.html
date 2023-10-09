@@ -1,0 +1,130 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.14549c76bbc96f0af1574b0259efd70e52908cd36fb4d14ed3d290a1b6479eae.js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/favicon.png><title itemprop=name>空树之空 - Nginx 源码安装</title><meta property="og:title" content="空树之空 - Nginx 源码安装"><meta name=twitter:title content="空树之空 - Nginx 源码安装"><meta itemprop=name content="空树之空 - Nginx 源码安装"><meta name=application-name content="空树之空 - Nginx 源码安装"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/posts/nginx-install/><link rel=canonical href=https://yezihack.github.io/posts/nginx-install/ itemprop=url><meta name=url content="https://yezihack.github.io/posts/nginx-install/"><meta name=twitter:url content="https://yezihack.github.io/posts/nginx-install/"><meta property="og:url" content="https://yezihack.github.io/posts/nginx-install/"><meta property="og:updated_time" content="3003-03-03T334:45:23+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="3003-03-03T334:45:23+0800"><meta property="article:published_time" content="3003-03-03T334:45:23+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Nginx 源码安装","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2023-03-03","description":"","wordCount":"330","mainEntityOfPage":"True","dateModified":"2023-03-03","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":""}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.aa949ea27ee9836d60d6ea4c073fd0885f51948c7eea0247da6b1aff4bc25c44.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#FAF9F6;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#268bd2;--date-color:#515151;--table-border-color:#E5E5E5;--table-stripe-color:#F9F9F9;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#eee;--bkg-color:#121212;--post-title-color:#DBE2E9;--list-color:#9d9d9d;--link-color:#268bd2;--date-color:#9a9a9a;--table-border-color:#515151;--table-stripe-color:#202020;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/brand_image.jpg alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>空树之空</h1></a></h1><p class=lead>《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes（K8s）、DevOps、GitOps、运维和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。By <a href=https://github.com/yezihack target=_blank>@yezihack</a></p></div><nav><ul class=sidebar-nav><li class=heading><a href=/about/>About</a></li><li class=heading><a href=/posts/>Posts</a></li><li class=sub-heading>Recent</li><li class=bullet><a href=https://yezihack.github.io/posts/haproxy-keepalived/>Haproxy + Keepalived 实现 k8s 集群高可用</a></li><li class=bullet><a href=https://yezihack.github.io/posts/istio-ratelimit/>Istio 限流实现</a></li><li class=bullet><a href=https://yezihack.github.io/posts/istio-install/>Istio 安装</a></li><li class=bullet><a href=https://yezihack.github.io/posts/etcd-v3.2/>云运维笔记(10) Etcd V3.2 集群二进制搭建</a></li><li class=bullet><a href=https://yezihack.github.io/posts/etcd-v3.4/>云运维笔记(11) Etcd V3.4 集群二进制搭建</a></li><li class=heading><a href=/tags/>Tags</a></li></ul></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io//posts/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><a target=_blank class=social title=Email href=mailto://freeit@126.com><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 485.211 485.211"><path fill="currentcolor" d="M301.393 241.631 464.866 424.56H20.332l163.474-182.928 58.801 51.443 58.786-51.444zM462.174 60.651H23.027l219.579 192.142L462.174 60.651zM324.225 221.67l160.986 180.151V80.792L324.225 221.67zM0 80.792v321.029L160.972 221.64.0 80.792z"/></svg></a><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/lukeorth/poison>poison</a><br>&copy; 2023 空树之空. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/posts/nginx-install/>Nginx 源码安装</a></h1><time datetime=2023-03-03T15:34:45+0800 class=post-date>March 3, 2023</time><ul class=tags><li class=tag-linux><a href=https://yezihack.github.io/tags/linux>linux</a></li><li class=tag-nginx><a href=https://yezihack.github.io/tags/nginx>nginx</a></li></ul></div><h2 id=源码安装-nginx>源码安装 nginx</h2><h3 id=下载>下载</h3><p><a href=http://nginx.org/en/download.html target=_blank>http://nginx.org/en/download.html</a></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>wget http://nginx.org/download/nginx-1.23.3.tar.gz
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>tar -zxvf nginx-1.23.3.tar.gz
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cd nginx-1.23.3
+</span></span></code></pre></div><h3 id=修改源码版本>修改源码版本</h3><blockquote><p>修改 nginx 默认的版本名称,如 nginx/1.23.3, 可任意修改为: sgfoot/100.0.0</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>vim src/core/nginx.h <span style=color:#75715e># 大约在14行左右</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define nginx_version      1023003</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define NGINX_VERSION      &#34;1.23.3&#34; # 版本号修改</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#define NGINX_VER          &#34;nginx/&#34; NGINX_VERSION # 软件名称修改</span>
+</span></span></code></pre></div><h2 id=安装>安装</h2><ul><li>使用自定义用户和用户组,更加安全</li></ul><p>开启模块:</p><ul><li><code>with-http_ssl_module</code> SSL模块</li><li><code>with-http_stub_status_module</code> 统计功能模块,分析 nginx 性能</li><li><code>with-http_realip_module</code> 获取真实IP模块</li><li><code>with-threads</code> 线程池模块,提高nginx性能</li><li><code>with-http_gzip_static_module</code> 开启压缩功能</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 添加用户和组</span>
+</span></span><span style=display:flex><span>groupadd www
+</span></span><span style=display:flex><span>useradd -g www www
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 配置</span>
+</span></span><span style=display:flex><span>./configure <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--user<span style=color:#f92672>=</span>www <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--group<span style=color:#f92672>=</span>www <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--prefix<span style=color:#f92672>=</span>/usr/local/nginx <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_ssl_module <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_stub_status_module <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_realip_module <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-threads <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--with-http_gzip_static_module
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 编译</span>
+</span></span><span style=display:flex><span>make
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安装</span>
+</span></span><span style=display:flex><span>make install
+</span></span></code></pre></div><h2 id=验证>验证</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>-&gt; <span style=color:#75715e># /usr/local/nginx/sbin/nginx -V        </span>
+</span></span><span style=display:flex><span>nginx version: fox/10.230.30
+</span></span><span style=display:flex><span>built by gcc 4.8.5 <span style=color:#ae81ff>20150623</span> <span style=color:#f92672>(</span>Red Hat 4.8.5-44<span style=color:#f92672>)</span> <span style=color:#f92672>(</span>GCC<span style=color:#f92672>)</span> 
+</span></span><span style=display:flex><span>built with OpenSSL 1.0.2k-fips  <span style=color:#ae81ff>26</span> Jan <span style=color:#ae81ff>2017</span>
+</span></span><span style=display:flex><span>TLS SNI support enabled
+</span></span><span style=display:flex><span>configure arguments: --user<span style=color:#f92672>=</span>www --group<span style=color:#f92672>=</span>www --prefix<span style=color:#f92672>=</span>/usr/local/nginx --with-http_ssl_module --with-http_stub_status_module --with-http_realip_module --with-threads
+</span></span></code></pre></div><h2 id=加入-systemd>加入 systemd</h2><p>创建 systemd 文件</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>
+</span></span><span style=display:flex><span>cat &gt; /usr/lib/systemd/system/nginx.service <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[Unit]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Description=The NGINX HTTP and reverse proxy server
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>After=syslog.target network.target remote-fs.target nss-lookup.target
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[Service]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>User=root
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Group=root
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>Type=forking
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>PIDFile=/var/run/nginx.pid
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>ExecStartPre=/usr/local/nginx/sbin/nginx -t
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>ExecStart=/usr/local/nginx/sbin/nginx -c /usr/local/nginx/conf/nginx.conf
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>ExecReload=/usr/local/nginx/sbin/nginx -s reload
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>ExecStop=/bin/kill -s QUIT \$MAINPID
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>PrivateTmp=true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>ReRestart=always
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>RestartSec=3s
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[Install]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>WantedBy=multi-user.target
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><p>命令使用</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 刷新 systemd</span>
+</span></span><span style=display:flex><span>systemctl daemon-reload
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启动 nginx</span>
+</span></span><span style=display:flex><span>systemctl start nginx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 停止 </span>
+</span></span><span style=display:flex><span>systemctl stop nginx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重启</span>
+</span></span><span style=display:flex><span>systemctl restart nginx
+</span></span></code></pre></div><h2 id=推荐配置>推荐配置</h2><ul><li><code>worker_processes</code> 设置CPU核数, lscpu Core(s) 可以查看,最多设置8个进程数.</li><li></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>user  www www;
+worker_processes 8;
+worker_cpu_affinity 10000000 01000000 00100000 00010000 00001000 00000100 00000010 00000001
+worker_rlimit_nofile 51200;
+
+error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+pid        logs/nginx.pid;
+
+
+events {
+    use epoll;
+    worker_connections  1024; # 是每个worker进程允许的最多连接数，
+    multi_accept on;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    charset utf-8; 
+
+    log_format  main  &#39;$remote_addr - $remote_user [$time_local] &#34;$request&#34; &#39;
+                      &#39;$status $body_bytes_sent &#34;$http_referer&#34; &#39;
+                      &#39;&#34;$http_user_agent&#34; &#34;$http_x_forwarded_for&#34;&#39;;
+
+    #access_log  logs/access.log  main;
+
+    sendfile       on; # 加速文件传输效率
+    tcp_nopush     on; # 减小了额外开销，提高网络效率
+    tcp_nodelay    on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+    client_max_body_size 100m;         #主要是这个参数，限制了上传文件大大小
+
+    # 开启压缩
+    gzip  on;
+    gzip_min_length  1k;
+    gzip_buffers     4 16k;
+    gzip_http_version 1.1;
+    gzip_comp_level 9;
+    gzip_types       text/plain application/x-javascript text/css application/xml text/javascript application/x-httpd-php;
+    gzip_vary on;
+
+    include conf.d/*.conf;
+}
+</code></pre><p>conf.d 文件夹配置实例:</p><pre tabindex=0><code class=language-conf data-lang=conf>server {
+   listen       8000;
+   server_name  test.cc;
+
+   location / {
+        return 200;
+   }
+}
+</code></pre><h2 id=参考>参考</h2><ul><li><a href=https://www.cnblogs.com/you-men/p/12827547.html target=_blank>Nginx常用模块及案例</a></li><li><a href=https://docshome.gitbook.io/nginx-docs/he-xin-gong-neng/http target=_blank>Nginx 中文文档</a></li></ul><h2 id=关于作者>关于作者</h2><p>我的博客：<a href=https://yezihack.github.io target=_blank>https://yezihack.github.io</a></p><p>欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim alt=空树之空></p><hr><div class=footer><a class=previous-post href="https://yezihack.github.io/posts/k8s-bug-pod-network/?ref=footer"><span style=font-weight:700>« Previous</span><br>K8s 跨 Node 机器 Pod 网络异常</a><div class=next-post><a href="https://yezihack.github.io/posts/etcd-v3.4/?ref=footer"><span style=font-weight:700>Next »</span><br>云运维笔记(11) Etcd V3.4 集群二进制搭建</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#源码安装-nginx>源码安装 nginx</a><ul><li><a href=#下载>下载</a></li><li><a href=#修改源码版本>修改源码版本</a></li></ul></li><li><a href=#安装>安装</a></li><li><a href=#验证>验证</a></li><li><a href=#加入-systemd>加入 systemd</a></li><li><a href=#推荐配置>推荐配置</a></li><li><a href=#参考>参考</a></li><li><a href=#关于作者>关于作者</a></li></ul></nav></div></div></div></body></html>

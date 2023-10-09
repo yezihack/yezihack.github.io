@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>issue on 空树之空</title><link>https://yezihack.github.io/tags/issue/</link><description>Recent content in issue on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 26 Aug 2020 11:00:28 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/issue/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker 问题集</title><link>https://yezihack.github.io/posts/docker-issue/</link><pubDate>Wed, 26 Aug 2020 11:00:28 +0800</pubDate><guid>https://yezihack.github.io/posts/docker-issue/</guid><description>Docker映射端口时仅有IPv6无法到IPv4解决方法 启动 docker 某服务，只显示 ipv6 的端口信息。ipv4 无端口信息，导致外部无法通过 ipv4 访问服务，报 Connection refused 错误
+解决方法
+在服务器上禁用 ipv6
+vim /etc/default/grub 在第6行中增加 ipv6.disable=1
+GRUB_CMDLINE_LINUX=&amp;#34;ipv6.disable=1 crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&amp;#34; 重新配置grub并重启服务器
+grub2-mkconfig -o /boot/grub2/grub.cfg reboot WARNING: bridge-nf-call-iptables is disabled WARNING: bridge-nf-call-iptables is disabled WARNING: bridge-nf-call-ip6tables is disabled 解决方法
+vim /etc/sysctl.conf # 添加以下二行内容 net.bridge.bridge-nf-call-ip6tables = 1 net.bridge.bridge-nf-call-iptables = 1 # 然后使其生效 sysctl -p /etc/sysctl.conf # 验证 docker info docker 磁盘不足 第一步： 查看服务的磁盘情况
+df -h
+第二步：查看 docker 使用的磁盘路径</description></item></channel></rss>
