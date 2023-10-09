@@ -3,7 +3,7 @@ name: GitHub Pages
 on:
   push:
     branches:
-      - main  # Set a branch to deploy
+      - blog-poison  # Set a branch to deploy
   pull_request:
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: ${{ github.ref == 'refs/heads/blog-poison' }}
         with:
           #  Note that the GITHUB_TOKEN is NOT a personal access token. A GitHub Actions runner automatically creates a
           #  GITHUB_TOKEN secret to authenticate in your workflow. So, you can start to deploy immediately without any
