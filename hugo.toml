@@ -18,7 +18,8 @@ name = "百里江山"
 [params]
     title = "空树之空"
     brand = "空树之空"
-    brand_image = "/images/brand_image.jpg"
+    # brand_image = "/images/brand_image.jpg"
+    brand_image = "/images/head.jpg"
     # og_image = ""                             # path to social icon - front matter: image takes precedent, then og_image, then brand_url
     # publisher_icon = ""                       # path to publisher icon - defaults to favicon, used in schema
     # favicon = ""                              # path to favicon
