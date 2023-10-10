@@ -6,7 +6,7 @@ paginate = 10
 pluralizelisttitles = false
 # disqusShortname = 'poison'
 # disqus_url = 'https://yezihack.github.io/'
-uglyURLs = true
+# uglyURLs = true
 
 [Author]
 name = "百里江山"
@@ -30,7 +30,7 @@ name = "百里江山"
     menu = [
         {Name = "About", URL = "/about/", HasChildren = false},
         {Name = "Posts", URL = "/posts/", Pre = "Recent", HasChildren = true, Limit = 5},
-        {Name = "Tags", URL = "/tags/", HasChildren = false},
+        {Name = "Tags", URL = "/tags/", HasChildren = false},        
     ]
 
     # github_url = "https://github.com/yezihack"
