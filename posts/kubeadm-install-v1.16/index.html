@@ -1,0 +1,439 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.14549c76bbc96f0af1574b0259efd70e52908cd36fb4d14ed3d290a1b6479eae.js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/favicon.png><title itemprop=name>空树之空 - 云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16</title><meta property="og:title" content="空树之空 - 云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16"><meta name=twitter:title content="空树之空 - 云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16"><meta itemprop=name content="空树之空 - 云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16"><meta name=application-name content="空树之空 - 云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/posts/kubeadm-install-v1.16/><link rel=canonical href=https://yezihack.github.io/posts/kubeadm-install-v1.16/ itemprop=url><meta name=url content="https://yezihack.github.io/posts/kubeadm-install-v1.16/"><meta name=twitter:url content="https://yezihack.github.io/posts/kubeadm-install-v1.16/"><meta property="og:url" content="https://yezihack.github.io/posts/kubeadm-install-v1.16/"><meta property="og:updated_time" content="4008-04-10T840:28:22+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="4008-04-10T840:28:22+0800"><meta property="article:published_time" content="4008-04-10T840:28:22+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16","author":{"@type":"Person","name":""},"datePublished":"2022-08-04","description":"","wordCount":"1812","mainEntityOfPage":"True","dateModified":"2022-08-04","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":""}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.aa949ea27ee9836d60d6ea4c073fd0885f51948c7eea0247da6b1aff4bc25c44.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#FAF9F6;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#268bd2;--date-color:#515151;--table-border-color:#E5E5E5;--table-stripe-color:#F9F9F9;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#eee;--bkg-color:#121212;--post-title-color:#DBE2E9;--list-color:#9d9d9d;--link-color:#268bd2;--date-color:#9a9a9a;--table-border-color:#515151;--table-stripe-color:#202020;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/head.jpg alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>空树之空</h1></a></h1><p class=lead>《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><ul class=sidebar-nav><li class=heading><a href=/about/>About</a></li><li class=heading><a href=/posts/>Posts</a></li><li class=sub-heading>Recent</li><li class=bullet><a href=https://yezihack.github.io/posts/haproxy-keepalived/>Haproxy + Keepalived 实现 k8s 集群高可用</a></li><li class=bullet><a href=https://yezihack.github.io/posts/istio-ratelimit/>Istio 限流实现</a></li><li class=bullet><a href=https://yezihack.github.io/posts/istio-install/>Istio 安装</a></li><li class=bullet><a href=https://yezihack.github.io/posts/etcd-v3.2/>云运维笔记(10) Etcd V3.2 集群二进制搭建</a></li><li class=bullet><a href=https://yezihack.github.io/posts/etcd-v3.4/>云运维笔记(11) Etcd V3.4 集群二进制搭建</a></li><li class=heading><a href=/tags/>Tags</a></li></ul></nav><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io//posts/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><p class=footnote><br>&copy; 2023 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/posts/kubeadm-install-v1.16/>云运维笔记(2) Kubeadm etcd 堆叠式安装 k8s 1.16</a></h1><time datetime=2022-08-04T10:40:28+0800 class=post-date>August 4, 2022</time><ul class=tags><li class=tag-linux><a href=https://yezihack.github.io/tags/linux>linux</a></li><li class=tag-教程><a href=https://yezihack.github.io/tags/%E6%95%99%E7%A8%8B>教程</a></li><li class=tag-云运维笔记><a href=https://yezihack.github.io/tags/%E4%BA%91%E8%BF%90%E7%BB%B4%E7%AC%94%E8%AE%B0>云运维笔记</a></li><li class=tag-kubeadm><a href=https://yezihack.github.io/tags/kubeadm>kubeadm</a></li><li class=tag-k8s><a href=https://yezihack.github.io/tags/k8s>k8s</a></li></ul></div><h2 id=1-kubeadm-高可用集群>.1. Kubeadm 高可用集群</h2><p>本次安装 Kubernetes 采用官方推荐的 kubeadm 安装方式。</p><p>利用 kubeadm 创建高可用集群，使用 kubeadm 设置一个高可用的 Kubernetes 集群的两种不同方式：</p><ul><li>使用具有堆叠的控制平面节点。这种方法所需基础设施较少。etcd 成员和控制平面节点位于同一位置。</li><li>使用外部集群。这种方法所需基础设施较多。控制平面的节点和 etcd 成员是分开的。</li></ul><p>本次教程采用 etcd 堆叠式高可用集群，即将 etcd 与控制平面的节点在同一个位置。</p><h2 id=2-安装前的准备>.2. 安装前的准备</h2><h3 id=21-安装要求>.2.1. 安装要求</h3><p>在开始安装 kubernetes 集群机器之前需要满足以下几上条件：</p><table><thead><tr><th>序列</th><th>名称</th><th>参考值</th><th>命令</th></tr></thead><tbody><tr><td>1</td><td>系统</td><td>Linux</td><td>uname -s</td></tr><tr><td>2</td><td>内存</td><td>>= 2 GB</td><td>free -hm</td></tr><tr><td>3</td><td>CPU</td><td>>= 2 核</td><td>cat /proc/cpuinfo |grep &ldquo;processor&rdquo;|wc -l</td></tr><tr><td>4</td><td>硬盘</td><td>>= 20 GB</td><td>df -h</td></tr><tr><td>5</td><td>交换分区</td><td>必须禁用</td><td>swapoff / vim /etc/fstab</td></tr><tr><td>6</td><td>网络</td><td>集群中所有机器之间网络互通</td><td>ping</td></tr><tr><td>7</td><td>主机名</td><td>集群中所有机器不重复</td><td>hostname</td></tr><tr><td>8</td><td>MAC地址</td><td>集群中所有机器不重复</td><td>cat /sys/class/net/ens33/address</td></tr><tr><td>9</td><td>product_uuid</td><td>集群中所有机器不重复</td><td>cat /sys/class/dmi/id/product_uuid</td></tr></tbody></table><h3 id=22-集群规划>.2.2. 集群规划</h3><ul><li>master 表示 Kubernetes 控制面板节点</li><li>etcd01~etcd03 表示 etcd 集群节点</li><li>node 表示 Kubernetes 工作节点</li></ul><table><thead><tr><th>序列</th><th>IP</th><th>HOSTNAME</th><th>角色</th></tr></thead><tbody><tr><td>1</td><td>192.168.9.10</td><td>kube-10</td><td>master01</td></tr><tr><td>2</td><td>192.168.9.11</td><td>kube-11</td><td>master02</td></tr><tr><td>3</td><td>192.168.9.12</td><td>kube-12</td><td>master03</td></tr><tr><td>4</td><td>192.168.9.13</td><td>kube-13</td><td>node</td></tr><tr><td>5</td><td>192.168.9.14</td><td>kube-14</td><td>node</td></tr></tbody></table><h3 id=23-版本选择>.2.3. 版本选择</h3><table><thead><tr><th>序列</th><th>软件名称</th><th>版本号</th></tr></thead><tbody><tr><td>1</td><td>kubeadm</td><td>1.16.11</td></tr><tr><td>2</td><td>kubectl</td><td>1.16.11</td></tr><tr><td>3</td><td>kubelet</td><td>1.16.11</td></tr><tr><td>4</td><td>docker</td><td>19.03.5</td></tr></tbody></table><h3 id=24-设置ip>.2.4. 设置IP</h3><ul><li>克隆出五台机器，分别设置不同的IP值</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>$ vim /etc/sysconfig/network-scripts/ifcfg-ens33
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>TYPE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Ethernet&#34;</span>
+</span></span><span style=display:flex><span>PROXY_METHOD<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;none&#34;</span>
+</span></span><span style=display:flex><span>BROWSER_ONLY<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;no&#34;</span>
+</span></span><span style=display:flex><span>BOOTPROTO<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;static&#34;</span>
+</span></span><span style=display:flex><span>DEFROUTE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;yes&#34;</span>
+</span></span><span style=display:flex><span>IPV4_FAILURE_FATAL<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;no&#34;</span>
+</span></span><span style=display:flex><span>IPV6INIT<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;yes&#34;</span>
+</span></span><span style=display:flex><span>IPV6_AUTOCONF<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;yes&#34;</span>
+</span></span><span style=display:flex><span>IPV6_DEFROUTE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;yes&#34;</span>
+</span></span><span style=display:flex><span>IPV6_FAILURE_FATAL<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;no&#34;</span>
+</span></span><span style=display:flex><span>IPV6_ADDR_GEN_MODE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;stable-privacy&#34;</span>
+</span></span><span style=display:flex><span>NAME<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ens33&#34;</span>
+</span></span><span style=display:flex><span>UUID<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;7ce873a8-d5f8-471a-8c7a-0100bcc84e77&#34;</span>
+</span></span><span style=display:flex><span>DEVICE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;ens33&#34;</span>
+</span></span><span style=display:flex><span>ONBOOT<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;yes&#34;</span>
+</span></span><span style=display:flex><span>IPADDR<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;192.168.9.*&#34;</span> <span style=color:#75715e># 修改集群规划里的IP值</span>
+</span></span><span style=display:flex><span>GATEWAY<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;192.168.9.2&#34;</span>
+</span></span><span style=display:flex><span>NETMASK<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;255.255.255.0&#34;</span>
+</span></span></code></pre></div><h3 id=25-设置-hostname>.2.5. 设置 HOSTNAME</h3><ul><li>对五台机器，分别设置不同的 Hostname</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>hostnamectl set-hostname kube-10
+</span></span><span style=display:flex><span>hostnamectl set-hostname kube-11
+</span></span><span style=display:flex><span>hostnamectl set-hostname kube-12
+</span></span><span style=display:flex><span>hostnamectl set-hostname kube-13
+</span></span><span style=display:flex><span>hostnamectl set-hostname kube-14
+</span></span></code></pre></div><h3 id=26-关闭防火墙>.2.6. 关闭防火墙</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>systemctl stop firewalld <span style=color:#f92672>&amp;&amp;</span> systemctl disable firewalld
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>systemctl status firewalld
+</span></span></code></pre></div><h3 id=27-关闭-selinux>.2.7. 关闭 selinux</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>sed -i <span style=color:#e6db74>&#39;s/enforcing/disabled/&#39;</span> /etc/selinux/config <span style=color:#75715e># 永久</span>
+</span></span><span style=display:flex><span>setenforce <span style=color:#ae81ff>0</span> <span style=color:#75715e># 临时</span>
+</span></span><span style=display:flex><span>getenforce <span style=color:#75715e># 查看</span>
+</span></span></code></pre></div><h3 id=28-关闭-swap>.2.8. 关闭 swap</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>swapoff -a <span style=color:#75715e># 临时 </span>
+</span></span><span style=display:flex><span>sed -ri <span style=color:#e6db74>&#39;s/.*swap.*/#&amp;/&#39;</span> /etc/fstab <span style=color:#75715e># 永久</span>
+</span></span><span style=display:flex><span>swapon -v <span style=color:#75715e># 检查</span>
+</span></span></code></pre></div><h3 id=29-添加-host>.2.9. 添加 HOST</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat &gt;&gt; /etc/hosts <span style=color:#e6db74>&lt;&lt; EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>192.168.9.10 kube-10
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>192.168.9.11 kube-11
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>192.168.9.12 kube-12
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>192.168.9.13 kube-13
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>192.168.9.14 kube-14
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=210-时间同步>.2.10. 时间同步</h3><p>采用 chrony 软件同步时间。</p><p>Chrony是NTP（Network Time Protocol，网络时间协议，服务器时间同步的一种协议）的另一种实现，与ntpd不同，它可以更快且更准确地同步系统时钟，最大程度的减少时间和频率误差。</p><h4 id=2101-chrony-安装>.2.10.1. chrony 安装</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 安装</span>
+</span></span><span style=display:flex><span>yum install chrony -y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 管理</span>
+</span></span><span style=display:flex><span>systemctl start chronyd      <span style=color:#75715e>#启动</span>
+</span></span><span style=display:flex><span>systemctl status chronyd    <span style=color:#75715e>#查看</span>
+</span></span><span style=display:flex><span>systemctl restart chronyd   <span style=color:#75715e>#重启</span>
+</span></span><span style=display:flex><span>systemctl stop chronyd      <span style=color:#75715e>#停止</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>systemctl enable chronyd 　　  <span style=color:#75715e>#设置开机启动</span>
+</span></span></code></pre></div><h4 id=2102-修改为中国时区>.2.10.2. 修改为中国时区</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>timedatectl set-timezone Asia/Shanghai
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置完时区后，强制同步下系统时钟：</span>
+</span></span><span style=display:flex><span>chronyc -a makestep
+</span></span></code></pre></div><h4 id=2103-修改配置>.2.10.3. 修改配置</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>vim /etc/chrony.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 注释默认的同步地址</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#server 0.centos.pool.ntp.org iburst</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#server 1.centos.pool.ntp.org iburst</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#server 2.centos.pool.ntp.org iburst</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#server 3.centos.pool.ntp.org iburst</span>
+</span></span><span style=display:flex><span>server 192.168.9.10 iburst <span style=color:#75715e># 添加这一行，表示与本机同步时间，其它机器都填写这个地址。</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Allow NTP client access from local network.</span>
+</span></span><span style=display:flex><span>allow 192.168.9.0/24   <span style=color:#75715e>#允许哪些服务器到这台服务器来同步时间</span>
+</span></span></code></pre></div><p>重启：<code>systemctl restart chronyd</code></p><p>国内常用同步服务器地址：</p><ul><li>ntp1.aliyun.com</li></ul><h4 id=2104-同步时间>.2.10.4. 同步时间</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看当前系统时区</span>
+</span></span><span style=display:flex><span>timedatectl
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 命令行模式查看时间同步源 　　</span>
+</span></span><span style=display:flex><span>chronyc sources -v
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看时间同步源状态： </span>
+</span></span><span style=display:flex><span>chronyc sourcestats -v
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 校准时间服务器</span>
+</span></span><span style=display:flex><span>chronyc tracking
+</span></span></code></pre></div><h4 id=2105-加入防火墙>.2.10.5. 加入防火墙</h4><blockquote><p>如果开启了防火墙，需要设置白名单</p></blockquote><ul><li>开放 323/udp，123/udp端口，或直接关闭防火墙</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>firewall-cmd --add-service<span style=color:#f92672>=</span>ntp --permanent
+</span></span><span style=display:flex><span>firewall-cmd --reload
+</span></span></code></pre></div><h2 id=3-kubernetes-设置的参数>.3. Kubernetes 设置的参数</h2><h3 id=31-br_netfilter-模块>.3.1. br_netfilter 模块</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/modules-load.d/k8s.conf
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>br_netfilter
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=32-桥接的ipv4流量传递到iptables的链>.3.2. 桥接的IPv4流量传递到iptables的链</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat &gt; /etc/sysctl.d/k8s.conf <span style=color:#e6db74>&lt;&lt; EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>net.ipv4.ip_forward = 1 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>net.bridge.bridge-nf-call-iptables = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 生效</span>
+</span></span><span style=display:flex><span>sysctl --system
+</span></span></code></pre></div><h3 id=33-加载-ipvs>.3.3. 加载 IPVS</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/sysconfig/modules/ipvs.modules
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>ipvs_modules=&#34;ip_vs ip_vs_rr ip_vs_wrr ip_vs_sh nf_conntrack&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>for kernel_module in \${ipvs_modules}; do
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  /sbin/modinfo -F filename \${kernel_module} &gt; /dev/null 2&gt;&amp;1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  if [ \$? -eq 0 ]; then
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    /sbin/modprobe \${kernel_module}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  fi
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>done
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置权限</span>
+</span></span><span style=display:flex><span>chmod <span style=color:#ae81ff>755</span> /etc/sysconfig/modules/ipvs.modules
+</span></span><span style=display:flex><span>sh /etc/sysconfig/modules/ipvs.modules
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证</span>
+</span></span><span style=display:flex><span>lsmod | grep ip_vs 
+</span></span></code></pre></div><h2 id=4-docker-部署>.4. Docker 部署</h2><h3 id=41-设置-docker-镜像源>.4.1. 设置 Docker 镜像源</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 下载 docker 官方源</span>
+</span></span><span style=display:flex><span>wget -O /etc/yum.repos.d/docker-ce.repo https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 替换成清华大学镜像源</span>
+</span></span><span style=display:flex><span>sudo sed -i <span style=color:#e6db74>&#39;s+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+&#39;</span> /etc/yum.repos.d/docker-ce.repo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 快速建立缓存</span>
+</span></span><span style=display:flex><span>yum makecache fast
+</span></span></code></pre></div><h3 id=42-列出-docker-所有的版本>.4.2. 列出 Docker 所有的版本</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>yum search docker-ce --showduplicates|sort -r
+</span></span></code></pre></div><h3 id=43-安装-docker>.4.3. 安装 docker</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>yum -y install docker-ce-19.03.5 docker-ce-cli-19.03.5 containerd.io-19.03.5
+</span></span></code></pre></div><h3 id=44-设置-daemonjson>.4.4. 设置 daemon.json</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 创建目录</span>
+</span></span><span style=display:flex><span>mkdir -p /etc/docker
+</span></span><span style=display:flex><span>mkdir -p /data/docker.data
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建文件</span>
+</span></span><span style=display:flex><span>touch /etc/docker/daemon.json
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置 daemon.json</span>
+</span></span><span style=display:flex><span>cat &gt; /etc/docker/daemon.json <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>{
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;data-root&#34;: &#34;/data/docker.data&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;storage-driver&#34;: &#34;overlay2&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;log-driver&#34;: &#34;json-file&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;log-opts&#34;: {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;max-size&#34;: &#34;100m&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;max-file&#34;: &#34;10&#34; 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  },
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;bip&#34;: &#34;172.9.10.1/24&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;exec-opts&#34;: [&#34;native.cgroupdriver=systemd&#34;],
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;live-restore&#34;: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><p>参数说明：</p><ul><li>data-root 数据存储目录</li><li>storage-driver 存储驱动</li><li>log-driver 采用 json 格式</li><li>log-opts 设置docker日志切割<ul><li>max-size 日志大小</li><li>max-file 最大文件日志数量</li></ul></li><li>bip docker 的IP段设置</li><li>exec-opts 运行时执行的选项</li><li>live-restore 在 dockerd 停止时保证已启动的 Running 容器持续运行，并在 daemon 进程启动后重新接管</li></ul><h3 id=45-启动-docker>.4.5. 启动 docker</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>systemctl start docker
+</span></span></code></pre></div><h2 id=5-kubernetes-部署>.5. Kubernetes 部署</h2><h3 id=51-设置-kubernetes-镜像源>.5.1. 设置 kubernetes 镜像源</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat &gt; /etc/yum.repos.d/kubernetes.repo <span style=color:#e6db74>&lt;&lt; EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[kubernetes]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>name=Kubernetes
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>enabled=1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>gpgcheck=0
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>repo_gpgcheck=0
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=52-安装-kubeadmkubeletkubectl>.5.2. 安装 kubeadm,kubelet,kubectl</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 搜索所有的版本</span>
+</span></span><span style=display:flex><span>yum search kubeadm --showduplicates|sort -r
+</span></span><span style=display:flex><span>yum search kubelet --showduplicates|sort -r
+</span></span><span style=display:flex><span>yum search kubectl --showduplicates|sort -r
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或指定版本</span>
+</span></span><span style=display:flex><span>yum install -y kubelet-1.16.11 kubeadm-1.16.11 kubectl-1.16.11
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开机启动</span>
+</span></span><span style=display:flex><span>systemctl enable kubelet
+</span></span></code></pre></div><h3 id=53-初使化集群>.5.3. 初使化集群</h3><p>初使化为两种方式，一种是直接命令式，一种是配置文件式。</p><p>命令式初使化：</p><ul><li>apiserver-advertise-address 控制面板地址</li><li>image-repository 镜像源地址，默认 k8s.gcr.io，使用：<code>kubeadm config images list</code> 查看所需镜像版本。</li><li>service-cidr Service 网络IP段设置</li><li>pod-network-cidr Pod IP段设置</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 在 master01 节点上操作</span>
+</span></span><span style=display:flex><span>kubeadm init <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--apiserver-advertise-address<span style=color:#f92672>=</span>192.168.9.10 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--image-repository registry.aliyuncs.com/google_containers <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--kubernetes-version v1.16.11 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--service-cidr<span style=color:#f92672>=</span>10.96.0.0/12 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--pod-network-cidr<span style=color:#f92672>=</span>10.244.0.0/16 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>--upload-certs
+</span></span></code></pre></div><p>配置文件式初使化：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 生成配置</span>
+</span></span><span style=display:flex><span>kubeadm config print init-defaults  &gt; kubeadm-config.yaml 
+</span></span></code></pre></div><ul><li>修改 kubeadm-config.yaml</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>kubeadm.k8s.io/v1beta2</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>bootstrapTokens</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>groups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>system:bootstrappers:kubeadm:default-node-token</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>token</span>: <span style=color:#ae81ff>abcdef.0123456789abcdef</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ttl</span>: <span style=color:#ae81ff>24h0m0s</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>usages</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>signing</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>authentication</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>InitConfiguration</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>localAPIEndpoint</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>advertiseAddress</span>: <span style=color:#ae81ff>192.168.9.10</span> <span style=color:#75715e># 主控制面板的地址</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>bindPort</span>: <span style=color:#ae81ff>6443</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>nodeRegistration</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>criSocket</span>: <span style=color:#ae81ff>/var/run/dockershim.sock</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-10</span> <span style=color:#75715e># 主控制面板名称</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>taints</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>effect</span>: <span style=color:#ae81ff>NoSchedule</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>key</span>: <span style=color:#ae81ff>node-role.kubernetes.io/master</span>
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span><span style=color:#f92672>apiServer</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>timeoutForControlPlane</span>: <span style=color:#ae81ff>4m0s</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>kubeadm.k8s.io/v1beta2</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>certificatesDir</span>: <span style=color:#ae81ff>/etc/kubernetes/pki</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>clusterName</span>: <span style=color:#ae81ff>kubernetes</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>controllerManager</span>: {}
+</span></span><span style=display:flex><span><span style=color:#f92672>dns</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>type</span>: <span style=color:#ae81ff>CoreDNS</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>etcd</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>local</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>dataDir</span>: <span style=color:#ae81ff>/var/lib/etcd</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>imageRepository</span>: <span style=color:#ae81ff>registry.aliyuncs.com/google_containers</span> <span style=color:#75715e># 换成国内源</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterConfiguration</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kubernetesVersion</span>: <span style=color:#ae81ff>v1.16.11</span> <span style=color:#75715e># 版本号</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>networking</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>dnsDomain</span>: <span style=color:#ae81ff>cluster.local</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>serviceSubnet</span>: <span style=color:#ae81ff>10.96.0.0</span><span style=color:#ae81ff>/12</span> <span style=color:#75715e># 指定 Service 网络</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSubnet</span>: <span style=color:#ae81ff>10.244.0.0</span><span style=color:#ae81ff>/16</span> <span style=color:#75715e># 指定 pod 网络，与 docker bip 相对应</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>scheduler</span>: {}
+</span></span></code></pre></div><ul><li>dry-run模式验证语法</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubeadm init --config kubeadm-config.yaml --dry-run
+</span></span></code></pre></div><ul><li>预先拉取镜像</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubeadm config images pull --config kubeadm-config.yaml
+</span></span></code></pre></div><ul><li>初始化集群</li></ul><blockquote><p>&ndash;upload-certs 将证书保存到 kube-system 名称空间下名为 extension-apiserver-authentication 的 configmap 中，这样其他控制平面加入的话只要加上 &ndash;control-plane &ndash;certificate-key 并带上相应的key就可以拿到证书并下载到本地。</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 初使化</span>
+</span></span><span style=display:flex><span>kubeadm init --config kubeadm-config.yaml --upload-certs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或使用命令</span>
+</span></span><span style=display:flex><span>sudo kubeadm init <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span> --apiserver-advertise-address 192.168.9.10 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span> --image-repository registry.aliyuncs.com/google_containers <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span> --kubernetes-version<span style=color:#f92672>=</span>v1.16.11 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span> --service-cidr<span style=color:#f92672>=</span>10.96.0.0/12 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span> --pod-network-cidr<span style=color:#f92672>=</span>10.244.0.0/16 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span> --upload-certs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 拷贝 kubeconfig 文件到 HOME 目录</span>
+</span></span><span style=display:flex><span>mkdir -p $HOME/.kube
+</span></span><span style=display:flex><span>sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style=display:flex><span>sudo chown <span style=color:#66d9ef>$(</span>id -u<span style=color:#66d9ef>)</span>:<span style=color:#66d9ef>$(</span>id -g<span style=color:#66d9ef>)</span> $HOME/.kube/config
+</span></span></code></pre></div><h3 id=54-查看-kubeadm-配置>.5.4. 查看 kubeadm 配置</h3><p>需要观察</p><ul><li>podSubnet: 10.244.0.0/16</li><li>serviceSubnet: 10.96.0.0/12</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>-&gt; <span style=color:#75715e># k -n kube-system get cm kubeadm-config -oyaml</span>
+</span></span><span style=display:flex><span>apiVersion: v1
+</span></span><span style=display:flex><span>data:
+</span></span><span style=display:flex><span>  ClusterConfiguration: |
+</span></span><span style=display:flex><span>    apiServer:
+</span></span><span style=display:flex><span>      extraArgs:
+</span></span><span style=display:flex><span>        authorization-mode: Node,RBAC
+</span></span><span style=display:flex><span>      timeoutForControlPlane: 4m0s
+</span></span><span style=display:flex><span>    apiVersion: kubeadm.k8s.io/v1beta2
+</span></span><span style=display:flex><span>    certificatesDir: /etc/kubernetes/pki
+</span></span><span style=display:flex><span>    clusterName: kubernetes
+</span></span><span style=display:flex><span>    controllerManager: <span style=color:#f92672>{}</span>
+</span></span><span style=display:flex><span>    dns:
+</span></span><span style=display:flex><span>      type: CoreDNS
+</span></span><span style=display:flex><span>    etcd:
+</span></span><span style=display:flex><span>      local:
+</span></span><span style=display:flex><span>        dataDir: /var/lib/etcd
+</span></span><span style=display:flex><span>    imageRepository: registry.aliyuncs.com/google_containers
+</span></span><span style=display:flex><span>    kind: ClusterConfiguration
+</span></span><span style=display:flex><span>    kubernetesVersion: v1.16.11
+</span></span><span style=display:flex><span>    networking:
+</span></span><span style=display:flex><span>      dnsDomain: cluster.local
+</span></span><span style=display:flex><span>      podSubnet: 10.244.0.0/16
+</span></span><span style=display:flex><span>      serviceSubnet: 10.96.0.0/12
+</span></span><span style=display:flex><span>    scheduler: <span style=color:#f92672>{}</span>
+</span></span><span style=display:flex><span>  ClusterStatus: |
+</span></span><span style=display:flex><span>    apiEndpoints:
+</span></span><span style=display:flex><span>      kube-10:
+</span></span><span style=display:flex><span>        advertiseAddress: 192.168.9.10
+</span></span><span style=display:flex><span>        bindPort: <span style=color:#ae81ff>6443</span>
+</span></span><span style=display:flex><span>    apiVersion: kubeadm.k8s.io/v1beta2
+</span></span><span style=display:flex><span>    kind: ClusterStatus
+</span></span><span style=display:flex><span>kind: ConfigMap
+</span></span><span style=display:flex><span>metadata:
+</span></span><span style=display:flex><span>  creationTimestamp: <span style=color:#e6db74>&#34;2022-08-16T02:34:01Z&#34;</span>
+</span></span><span style=display:flex><span>  name: kubeadm-config
+</span></span><span style=display:flex><span>  namespace: kube-system
+</span></span><span style=display:flex><span>  resourceVersion: <span style=color:#e6db74>&#34;155&#34;</span>
+</span></span><span style=display:flex><span>  selfLink: /api/v1/namespaces/kube-system/configmaps/kubeadm-config
+</span></span><span style=display:flex><span>  uid: b50bc7ad-a754-4251-a446-f5b958d47409
+</span></span></code></pre></div><h3 id=55-其它-master-加入集群>.5.5. 其它 master 加入集群</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 生成 certificate key</span>
+</span></span><span style=display:flex><span>kubeadm init phase upload-certs --upload-certs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>upload-certs<span style=color:#f92672>]</span> Using certificate key:
+</span></span><span style=display:flex><span>21ba109e0681f3e1bc5350e35817d795cb33164345ac978ae36c6f6e4420d6a7
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 生成 node 加入集群的命令</span>
+</span></span><span style=display:flex><span>kubeadm token create --print-join-command
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>kubeadm join 192.168.9.10:6443 --token 63am4r.17s8430em0sngs6z     --discovery-token-ca-cert-hash sha256:87df00d45f3a503b806083c1eefbaaae770611ddd7d3eaa46c10ae743ff277bf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 拼接其它控制面板， 将以上两个命名合并。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># --control-plane --certificate-key 一定要加入，表示 master 加入</span>
+</span></span><span style=display:flex><span>kubeadm join 192.168.9.10:6443 --token 63am4r.17s8430em0sngs6z <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --discovery-token-ca-cert-hash sha256:87df00d45f3a503b806083c1eefbaaae770611ddd7d3eaa46c10ae743ff277bf <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --control-plane --certificate-key 21ba109e0681f3e1bc5350e35817d795cb33164345ac978ae36c6f6e4420d6a7
+</span></span></code></pre></div><p>加入集群失败：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>error execution phase preflight: 
+</span></span><span style=display:flex><span>One or more conditions <span style=color:#66d9ef>for</span> hosting a new control plane instance is not satisfied.
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>unable to add a new control plane instance a cluster that doesn<span style=color:#960050;background-color:#1e0010>&#39;</span>t have a stable controlPlaneEndpoint address
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Please ensure that:
+</span></span><span style=display:flex><span>* The cluster has a stable controlPlaneEndpoint address.
+</span></span><span style=display:flex><span>* The certificates that must be shared among control plane instances are provided.
+</span></span></code></pre></div><p>需要修改 kubeadm-config:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 添加 controlPlaneEndpoint </span>
+</span></span><span style=display:flex><span>kubectl -n kube-system edit cm kubeadm-config
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 添加</span>
+</span></span><span style=display:flex><span>imageRepository: registry.aliyuncs.com/google_containers
+</span></span><span style=display:flex><span>kind: ClusterConfiguration
+</span></span><span style=display:flex><span>kubernetesVersion: v1.16.11
+</span></span><span style=display:flex><span>controlPlaneEndpoint: 192.168.9.10:6443 <span style=color:#75715e># 新增项</span>
+</span></span></code></pre></div><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220805161637 alt=kubeadm-install-20220805161637></p><h3 id=56-其它工作节点加入集群>.5.6. 其它工作节点加入集群</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubeadm token create --print-join-command
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>kubeadm join 192.168.9.10:6443 --token pje2rc.utnrzkvvbuecolm2     --discovery-token-ca-cert-hash sha256:87df00d45f3a503b806083c1eefbaaae770611ddd7d3eaa46c10ae743ff277bf
+</span></span></code></pre></div><h3 id=57-查看集群状态>.5.7. 查看集群状态</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>-&gt; <span style=color:#75715e># k get no</span>
+</span></span><span style=display:flex><span>NAME      STATUS     ROLES    AGE     VERSION
+</span></span><span style=display:flex><span>kube-10   NotReady   master   4h59m   v1.16.11
+</span></span><span style=display:flex><span>kube-11   NotReady   master   3m26s   v1.16.11
+</span></span><span style=display:flex><span>kube-12   NotReady   master   2m38s   v1.16.11
+</span></span><span style=display:flex><span>kube-13   NotReady   &lt;none&gt;   6s      v1.16.11
+</span></span><span style=display:flex><span>kube-14   NotReady   &lt;none&gt;   3s      v1.16.11
+</span></span></code></pre></div><h3 id=58-去掉污点>.5.8. 去掉污点</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 去掉污点</span>
+</span></span><span style=display:flex><span>kubectl taint nodes --all node-role.kubernetes.io/master-
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 添加污点</span>
+</span></span><span style=display:flex><span>kubectl taint nodes k8s node-role.kubernetes.io/master<span style=color:#f92672>=</span>true:NoSchedule
+</span></span></code></pre></div><h3 id=59-集群重置>.5.9. 集群重置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>sudo kubeadm reset -f
+</span></span><span style=display:flex><span>sudo systemctl stop docker <span style=color:#f92672>&amp;&amp;</span> sudo systemctl stop kubelet
+</span></span><span style=display:flex><span>sudo rm -rf /etc/kubernetes/
+</span></span><span style=display:flex><span>sudo rm -rf .kube/
+</span></span><span style=display:flex><span>sudo rm -rf /var/lib/kubelet/
+</span></span><span style=display:flex><span>sudo rm -rf /var/lib/cni/
+</span></span><span style=display:flex><span>sudo rm -rf /etc/cni/
+</span></span><span style=display:flex><span>sudo rm -rf /var/lib/etcd/
+</span></span></code></pre></div><h3 id=510-docker-重置>.5.10. Docker 重置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>yum install -y bridge-utils
+</span></span><span style=display:flex><span>ifconfig docker0 down
+</span></span><span style=display:flex><span>ifconfig flannel.1 down
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>brctl show
+</span></span><span style=display:flex><span>brctl delbr docker0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>ip link delete cni0
+</span></span><span style=display:flex><span>ip link delete flannel.1
+</span></span></code></pre></div><h2 id=6-flannel-网络插件部署>.6. Flannel 网络插件部署</h2><blockquote><p>pod 与 pod 通信需要网络插件，通过 k8s 提供的 CNI 接口安装 flannel 插件</p></blockquote><h3 id=61-下载-yaml-文件>.6.1. 下载 YAML 文件</h3><p>flannel 有众多版本，需要查看官方文档是否适合当前版本。</p><p>需要查看当前 k8s 支持的 api-versions : <code>k api-versions</code></p><p>本次采用 flannel v0.14.0 版本</p><ul><li><a href=https://github.com/flannel-io/flannel/blob/v0.13.1-rc2/Documentation/kubernetes.md target=_blank>https://github.com/flannel-io/flannel/blob/v0.13.1-rc2/Documentation/kubernetes.md</a></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>wget https://raw.githubusercontent.com/flannel-io/flannel/v0.13.1-rc2/Documentation/kube-flannel.yml
+</span></span></code></pre></div><h3 id=62-修改-kube-flannelyml>.6.2. 修改 kube-flannel.yml</h3><ul><li>查看当前集群中的 pod 网络段设置</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>-&gt; <span style=color:#75715e># kubectl -n kube-system get cm kubeadm-config -oyaml</span>
+</span></span><span style=display:flex><span>apiVersion: v1
+</span></span><span style=display:flex><span>kind: ConfigMap
+</span></span><span style=display:flex><span>data:
+</span></span><span style=display:flex><span>....
+</span></span><span style=display:flex><span>      podSubnet: 10.244.0.0/16
+</span></span><span style=display:flex><span>      serviceSubnet: 10.96.0.0/12
+</span></span><span style=display:flex><span> ....
+</span></span></code></pre></div><ul><li>自定义 network，大约84行</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>  <span style=color:#f92672>net-conf.json</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    {   
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;Network&#34;: &#34;10.244.0.0/16&#34;, # 修改与之前设置的 pod IP网络段一致
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      &#34;Backend&#34;: {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        &#34;Type&#34;: &#34;vxlan&#34;  # 采用兼容模式
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    }</span>    
+</span></span></code></pre></div><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220805173058 alt=kubeadm-install-20220805173058></p><h3 id=63-部署异常>.6.3. 部署异常</h3><h4 id=631-networkpluginnotready-messagedocker-network-plugin-is-not-ready-cni-config-uninitialized>.6.3.1. NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>Aug <span style=color:#ae81ff>16</span> 12:56:03 kube-10 kubelet<span style=color:#f92672>[</span>6291<span style=color:#f92672>]</span>: W0816 12:56:03.260171    <span style=color:#ae81ff>6291</span> cni.go:171<span style=color:#f92672>]</span> Error loading CNI config list file /etc/cni/net.d/10-flannel.conflist: error parsing configuration list: invalid character <span style=color:#e6db74>&#39;t&#39;</span> looking <span style=color:#66d9ef>for</span> beginning of object key string
+</span></span><span style=display:flex><span>Aug <span style=color:#ae81ff>16</span> 12:56:03 kube-10 kubelet<span style=color:#f92672>[</span>6291<span style=color:#f92672>]</span>: W0816 12:56:03.260216    <span style=color:#ae81ff>6291</span> cni.go:237<span style=color:#f92672>]</span> Unable to update cni config: no valid networks found in /etc/cni/net.d
+</span></span><span style=display:flex><span>Aug <span style=color:#ae81ff>16</span> 12:56:04 kube-10 kubelet<span style=color:#f92672>[</span>6291<span style=color:#f92672>]</span>: E0816 12:56:04.660240    <span style=color:#ae81ff>6291</span> kubelet.go:2187<span style=color:#f92672>]</span> Container runtime network not ready: NetworkReady<span style=color:#f92672>=</span>false reason:NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
+</span></span></code></pre></div><p>解决方法：修改/var/lib/kubelet/kubeadm-flags.env文件，删除参数 &ndash;network-plugin=cni</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat /var/lib/kubelet/kubeadm-flags.env
+</span></span><span style=display:flex><span>KUBELET_KUBEADM_ARGS<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;--cgroup-driver=systemd --network-plugin=cni --pod-infra-container-image=registry.aliyuncs.com/google_containers/pause:3.1&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重启 kubelet</span>
+</span></span><span style=display:flex><span>systemctl restart kubelet
+</span></span></code></pre></div><p>查看集群状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>-&gt; <span style=color:#75715e># k get no</span>
+</span></span><span style=display:flex><span>NAME      STATUS   ROLES    AGE   VERSION
+</span></span><span style=display:flex><span>kube-10   Ready    master   64m   v1.16.11
+</span></span></code></pre></div><h2 id=7-ingress-组件>.7. Ingress 组件</h2><h3 id=71-基本原理>.7.1. 基本原理</h3><p>Ingress也是Kubernetes API的标准资源类型之一，它其实就是一组基于DNS名称（host）或URL路径把请求转发到指定的Service资源的规则。用于将集群外部的请求流量转发到集群内部完成的服务发布。我们需要明白的是，Ingress资源自身不能进行“流量穿透”，仅仅是一组规则的集合，这些集合规则还需要其他功能的辅助，比如监听某套接字，然后根据这些规则的匹配进行路由转发，这些能够为Ingress资源监听套接字并将流量转发的组件就是Ingress Controller。</p><p>Ingress 其实就是从 Kuberenets 集群外部访问集群的一个入口，将外部的请求转发到集群内不同的 Service 上，其实就相当于 nginx、haproxy 等负载均衡代理服务器。</p><p>Ingress Controller 可以理解为一个监听器，通过不断地监听 kube-apiserver，实时的感知后端 Service、Pod 的变化，当得到这些信息变化后，Ingress Controller 再结合 Ingress 的配置，更新反向代理负载均衡器，达到服务发现的作用。</p><p>Ingress Controller 有很多开源实现，比如 traefik、nginx-controller、Kubernetes Ingress Controller for Kong、HAProxy Ingress controller等等。</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220809153332 alt=Ingress原理图></p><h3 id=72-常见的部署与暴露方式>.7.2. 常见的部署与暴露方式</h3><h4 id=721-deploymentloadbalancer-模式的-service>.7.2.1. Deployment+LoadBalancer 模式的 Service</h4><p>如果要把ingress部署在公有云，那用这种方式比较合适。用Deployment部署ingress-controller，创建一个type为LoadBalancer的service关联这组pod。大部分公有云，都会为LoadBalancer的service自动创建一个负载均衡器，通常还绑定了公网地址。只要把域名解析指向该地址，就实现了集群服务的对外暴露。</p><h4 id=722-deploymentnodeport-模式的-service>.7.2.2. Deployment+NodePort 模式的 Service</h4><p>同样用deployment模式部署ingress-controller，并创建对应的服务，但是type为NodePort。这样，ingress就会暴露在集群节点ip的特定端口上。由于nodeport暴露的端口是随机端口，一般会在前面再搭建一套负载均衡器来转发请求。该方式一般用于宿主机是相对固定的环境ip地址不变的场景。
+NodePort方式暴露ingress虽然简单方便，但是NodePort多了一层NAT，在请求量级很大时可能对性能会有一定影响</p><h4 id=723-daemonsethostnetworknodeselector-模式>.7.2.3. DaemonSet+HostNetwork+nodeSelector 模式</h4><p>用DaemonSet结合nodeselector来部署ingress-controller到特定的node上，然后使用HostNetwork直接把该pod与宿主机node的网络打通，直接使用宿主机的80/433端口就能访问服务。这时，ingress-controller所在的node机器就很类似传统架构的边缘节点，比如机房入口的nginx服务器。该方式整个请求链路最简单，性能相对NodePort模式更好。缺点是由于直接利用宿主机节点的网络和端口，一个node只能部署一个ingress-controller pod。比较适合大并发的生产环境使用。</p><h3 id=73-ingress-nginx-部署>.7.3. Ingress-nginx 部署</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mv deploy.yaml ingress-nginx.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>k apply -f ingress-nginx.yaml --dry-run
+</span></span><span style=display:flex><span>k apply -f ingress-nginx.yaml
+</span></span></code></pre></div><p>修改 ingress-nginx.yaml 配置</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>selector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app.kubernetes.io/name</span>: <span style=color:#ae81ff>ingress-nginx</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app.kubernetes.io/instance</span>: <span style=color:#ae81ff>ingress-nginx</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app.kubernetes.io/component</span>: <span style=color:#ae81ff>controller</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>revisionHistoryLimit</span>: <span style=color:#ae81ff>10</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>minReadySeconds</span>: <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app.kubernetes.io/name</span>: <span style=color:#ae81ff>ingress-nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app.kubernetes.io/instance</span>: <span style=color:#ae81ff>ingress-nginx</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>app.kubernetes.io/component</span>: <span style=color:#ae81ff>controller</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>dnsPolicy</span>: <span style=color:#ae81ff>ClusterFirst</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>hostNetwork</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>      <span style=color:#ae81ff>....</span>
+</span></span></code></pre></div><h3 id=74-ingress-测试>.7.4. Ingress 测试</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 部署</span>
+</span></span><span style=display:flex><span>k apply -f https://raw.githubusercontent.com/yezihack/kube-box/master/mainfest/kube-ingress-podanti.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 po</span>
+</span></span><span style=display:flex><span>k -n default get po 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置 host</span>
+</span></span><span style=display:flex><span>vim /etc/hosts
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>192.168.9.10 kube-box.io
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试 kube-box</span>
+</span></span><span style=display:flex><span>curl kube-box.io/
+</span></span><span style=display:flex><span>curl kube-box.io/kube-box/ping
+</span></span></code></pre></div><h3 id=75-部署异常>.7.5. 部署异常</h3><p>(1). MountVolume.SetUp failed for volume &ldquo;webhook-cert&rdquo; : secret &ldquo;ingress-nginx-admission&rdquo; not found</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>Warning  FailedMount  7m11s <span style=color:#f92672>(</span>x3 over 14m<span style=color:#f92672>)</span>       kubelet, kube-14   Unable to attach or mount volumes: unmounted volumes<span style=color:#f92672>=[</span>webhook-cert<span style=color:#f92672>]</span>, unattached volumes<span style=color:#f92672>=[</span>ingress-nginx-token-8jf2j webhook-cert<span style=color:#f92672>]</span>: timed out waiting <span style=color:#66d9ef>for</span> the condition
+</span></span><span style=display:flex><span>  Normal   Scheduled    &lt;invalid&gt;                 default-scheduler  Successfully assigned ingress-nginx/ingress-nginx-controller-f8d756996-4lbtn to kube-14
+</span></span><span style=display:flex><span>  Warning  FailedMount  &lt;invalid&gt; <span style=color:#f92672>(</span>x23 over 18m<span style=color:#f92672>)</span>  kubelet, kube-14   MountVolume.SetUp failed <span style=color:#66d9ef>for</span> volume <span style=color:#e6db74>&#34;webhook-cert&#34;</span> : secret <span style=color:#e6db74>&#34;ingress-nginx-admission&#34;</span> not found
+</span></span><span style=display:flex><span>  Warning  FailedMount  &lt;invalid&gt; <span style=color:#f92672>(</span>x15 over 16m<span style=color:#f92672>)</span>  kubelet, kube-14   Unable to attach or mount volumes: unmounted volumes<span style=color:#f92672>=[</span>webhook-cert<span style=color:#f92672>]</span>, unattached volumes<span style=color:#f92672>=[</span>webhook-cert ingress-nginx-token-8jf2j<span style=color:#f92672>]</span>: timed out waiting <span style=color:#66d9ef>for</span> the condition
+</span></span></code></pre></div><ul><li>解决：</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看 secret </span>
+</span></span><span style=display:flex><span>-&gt; <span style=color:#75715e># k -n ingress-nginx get secret</span>
+</span></span><span style=display:flex><span>NAME                                  TYPE                                  DATA   AGE
+</span></span><span style=display:flex><span>default-token-6gdsm                   kubernetes.io/service-account-token   <span style=color:#ae81ff>3</span>      51m
+</span></span><span style=display:flex><span>ingress-nginx-admission-token-crdmf   kubernetes.io/service-account-token   <span style=color:#ae81ff>3</span>      51m
+</span></span><span style=display:flex><span>ingress-nginx-token-8jf2j             kubernetes.io/service-account-token   <span style=color:#ae81ff>3</span>      51m
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 没有找到 secret &#34;ingress-nginx-admission&#34; not found，实际上是ingress-nginx-admission-token-crdmf 这个名称，所以需要改名为：ingress-nginx-admission</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>k -n ingress-nginx get secret ingress-nginx-admission-token-crdmf -o yaml &gt; ingress-nginx-admission.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>k appply -f ingress-nginx-admission.yaml --dry-run
+</span></span><span style=display:flex><span>k appply -f ingress-nginx-admission.yaml
+</span></span></code></pre></div><p>(2). Internal error occurred: failed calling webhook &ldquo;validate.nginx.ingress.kubernetes.io&rdquo;</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>Internal error occurred: failed calling webhook <span style=color:#e6db74>&#34;validate.nginx.ingress.kubernetes.io&#34;</span>: Post 
+</span></span><span style=display:flex><span>https://ingress-nginx-controller-admission.kube-system.svc:443/networking/v1beta1/ingresses?
+</span></span><span style=display:flex><span>timeout<span style=color:#f92672>=</span>10s: dial tcp 192.168.9.10:6443: connect: connection refused
+</span></span></code></pre></div><ul><li>原因分析:</li></ul><p>我刚开始使用yaml的方式创建nginx-ingress，之后删除了它创建的命名空间以及 clusterrole and clusterrolebinding ，但是没有删除ValidatingWebhookConfiguration ingress-nginx-admission，这个ingress-nginx-admission是在yaml文件中安装的。当我再次使用helm安装nginx-ingress之后，创建自定义的ingress就会报这个错误。</p><ul><li>解决:</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 使用下面的命令查看 webhook</span>
+</span></span><span style=display:flex><span>kubectl get validatingwebhookconfigurations ingress-nginx-admission
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除ingress-nginx-admission</span>
+</span></span><span style=display:flex><span>kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+</span></span></code></pre></div><h2 id=8-集群监控>.8. 集群监控</h2><h3 id=81-metrics-server>.8.1. metrics-server</h3><p>Metrics Server 是 Kubernetes 集群核心监控数据的聚合器，Metrics Server 从 Kubelet 收集资源指标，并通过 Merics API 在 Kubernetes APIServer 中提供给缩放资源对象 HPA 使用。也可以通过 Metrics API 提供的 Kubectl top 查看 Pod 资源占用情况，从而实现对资源的自动缩放。</p><p>主要功能：主要是基于 Kubernetes 集群的 CPU、内存的水平自动缩放。</p><h4 id=811-安装>.8.1.1. 安装</h4><p>安装前需要查看对应的版本，如当前 k8s 1.16 选择为：v0.3.6</p><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220815151235 alt=kubeadm-install-20220815151235></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 下载YAML</span>
+</span></span><span style=display:flex><span>wget -O /opt/deploy/metrics-server.yaml https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.6/components.yaml
+</span></span></code></pre></div><p>修改几个关键代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>containers:
+</span></span><span style=display:flex><span>      - name: metrics-server
+</span></span><span style=display:flex><span>        image: registry.cn-hangzhou.aliyuncs.com/google_containers/metrics-server-amd64:v0.3.6 <span style=color:#75715e># 在境内请修改为国内</span>
+</span></span><span style=display:flex><span>        imagePullPolicy: IfNotPresent
+</span></span><span style=display:flex><span>        args:
+</span></span><span style=display:flex><span>          - --cert-dir<span style=color:#f92672>=</span>/tmp
+</span></span><span style=display:flex><span>          - --secure-port<span style=color:#f92672>=</span><span style=color:#ae81ff>4443</span>
+</span></span><span style=display:flex><span>          - --kubelet-insecure-tls <span style=color:#75715e># 新增</span>
+</span></span><span style=display:flex><span>          - --kubelet-preferred-address-types<span style=color:#f92672>=</span>InternalIP <span style=color:#75715e># 新增</span>
+</span></span><span style=display:flex><span>          <span style=color:#75715e># - --kubelet-preferred-address-types=InternalIP,Hostname,InternalDNS,ExternalDNS,ExternalIP</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>kubectl apply -f /opt/deploy/metrics-server.yaml
+</span></span></code></pre></div><h2 id=9-参考>.9. 参考</h2><ul><li><a href=https://www.linuxprobe.com/centos7-chrony-time.html target=_blank>详解：Linux Chrony 设置服务器集群同步时间</a></li><li><a href=https://huangzhongde.cn/istio/ target=_blank>Istio实战指南</a></li><li><a href=https://medium.com/@cminion/quicknote-kubernetes-networking-issues-78f1e0d06e12 target=_blank>QuickNote: Kubernetes — Networking Issues</a></li><li><a href=https://www.cxymm.net/article/mayi_xiaochaun/121402679 target=_blank>k8s coredns显示0/1 Running问题排查</a></li><li><a href=https://segmentfault.com/a/1190000020738509 target=_blank>使用kubeadm安装kubernetes1.16</a></li></ul><h2 id=10-关于作者>.10. 关于作者</h2><p>我的博客：<a href=https://yezihack.github.io target=_blank>https://yezihack.github.io</a></p><p>欢迎关注我的微信公众号【空树之空】，共同学习，一起进步~
+<img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim alt=空树之空></p><hr><div class=footer><a class=previous-post href="https://yezihack.github.io/posts/centos-install/?ref=footer"><span style=font-weight:700>« Previous</span><br>云运维笔记(1) CentOS7 安装</a><div class=next-post><a href="https://yezihack.github.io/posts/docker-daemon/?ref=footer"><span style=font-weight:700>Next »</span><br>Docker笔记(七) Docker Daemon 配置</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#1-kubeadm-高可用集群>.1. Kubeadm 高可用集群</a></li><li><a href=#2-安装前的准备>.2. 安装前的准备</a><ul><li><a href=#21-安装要求>.2.1. 安装要求</a></li><li><a href=#22-集群规划>.2.2. 集群规划</a></li><li><a href=#23-版本选择>.2.3. 版本选择</a></li><li><a href=#24-设置ip>.2.4. 设置IP</a></li><li><a href=#25-设置-hostname>.2.5. 设置 HOSTNAME</a></li><li><a href=#26-关闭防火墙>.2.6. 关闭防火墙</a></li><li><a href=#27-关闭-selinux>.2.7. 关闭 selinux</a></li><li><a href=#28-关闭-swap>.2.8. 关闭 swap</a></li><li><a href=#29-添加-host>.2.9. 添加 HOST</a></li><li><a href=#210-时间同步>.2.10. 时间同步</a></li></ul></li><li><a href=#3-kubernetes-设置的参数>.3. Kubernetes 设置的参数</a><ul><li><a href=#31-br_netfilter-模块>.3.1. br_netfilter 模块</a></li><li><a href=#32-桥接的ipv4流量传递到iptables的链>.3.2. 桥接的IPv4流量传递到iptables的链</a></li><li><a href=#33-加载-ipvs>.3.3. 加载 IPVS</a></li></ul></li><li><a href=#4-docker-部署>.4. Docker 部署</a><ul><li><a href=#41-设置-docker-镜像源>.4.1. 设置 Docker 镜像源</a></li><li><a href=#42-列出-docker-所有的版本>.4.2. 列出 Docker 所有的版本</a></li><li><a href=#43-安装-docker>.4.3. 安装 docker</a></li><li><a href=#44-设置-daemonjson>.4.4. 设置 daemon.json</a></li><li><a href=#45-启动-docker>.4.5. 启动 docker</a></li></ul></li><li><a href=#5-kubernetes-部署>.5. Kubernetes 部署</a><ul><li><a href=#51-设置-kubernetes-镜像源>.5.1. 设置 kubernetes 镜像源</a></li><li><a href=#52-安装-kubeadmkubeletkubectl>.5.2. 安装 kubeadm,kubelet,kubectl</a></li><li><a href=#53-初使化集群>.5.3. 初使化集群</a></li><li><a href=#54-查看-kubeadm-配置>.5.4. 查看 kubeadm 配置</a></li><li><a href=#55-其它-master-加入集群>.5.5. 其它 master 加入集群</a></li><li><a href=#56-其它工作节点加入集群>.5.6. 其它工作节点加入集群</a></li><li><a href=#57-查看集群状态>.5.7. 查看集群状态</a></li><li><a href=#58-去掉污点>.5.8. 去掉污点</a></li><li><a href=#59-集群重置>.5.9. 集群重置</a></li><li><a href=#510-docker-重置>.5.10. Docker 重置</a></li></ul></li><li><a href=#6-flannel-网络插件部署>.6. Flannel 网络插件部署</a><ul><li><a href=#61-下载-yaml-文件>.6.1. 下载 YAML 文件</a></li><li><a href=#62-修改-kube-flannelyml>.6.2. 修改 kube-flannel.yml</a></li><li><a href=#63-部署异常>.6.3. 部署异常</a></li></ul></li><li><a href=#7-ingress-组件>.7. Ingress 组件</a><ul><li><a href=#71-基本原理>.7.1. 基本原理</a></li><li><a href=#72-常见的部署与暴露方式>.7.2. 常见的部署与暴露方式</a></li><li><a href=#73-ingress-nginx-部署>.7.3. Ingress-nginx 部署</a></li><li><a href=#74-ingress-测试>.7.4. Ingress 测试</a></li><li><a href=#75-部署异常>.7.5. 部署异常</a></li></ul></li><li><a href=#8-集群监控>.8. 集群监控</a><ul><li><a href=#81-metrics-server>.8.1. metrics-server</a></li></ul></li><li><a href=#9-参考>.9. 参考</a></li><li><a href=#10-关于作者>.10. 关于作者</a></li></ul></nav></div></div></div></body></html>
