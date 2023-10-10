@@ -33,12 +33,12 @@ name = "百里江山"
         {Name = "Tags", URL = "/tags/", HasChildren = false},
     ]
 
-    github_url = "https://github.com/yezihack"
+    # github_url = "https://github.com/yezihack"
     # linkedin_url = "https://linkedin.com"
     # twitter_url = "https://twitter.com"
     # discord_url = "https://discord.com"
     # youtube_url = "https://youtube.com"
-    email_url = "mailto://freeit@126.com"
+    # email_url = "mailto://freeit@126.com"
 
     # Adds an RSS icon to the end of the socials which links to {{ .Site.BaseURL }}/index.xml
     rss_icon = true
