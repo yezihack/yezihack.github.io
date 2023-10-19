@@ -1,5 +1,5 @@
 ---
-title: "Vmware  Workstation 虚拟机共享宿主机文件夹"
+title: "Vmware 虚拟机共享宿主机文件夹"
 date: 2023-10-19T17:37:26+08:00
 lastmod: 2023-10-19T17:37:26+08:00
 draft: false
@@ -11,7 +11,7 @@ toc: true
 reward: true
 ---
 
-## 设置共享目录
+## 1. 设置共享目录
 
 > 前提：必须关闭虚拟机，再点击设置
 
@@ -19,7 +19,7 @@ reward: true
 
 ![20231019194613](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20231019194613.png)
 
-## 使用共享目录
+## 2. 使用共享目录
 
 ```sh
 # 安装 open-vm-tools
@@ -32,4 +32,12 @@ vmhgfs-fuse /mnt/hgfs/
 mkdir /opt/vm-share
 
 ln -s /mnt/hgfs/vm-share/ /opt/vm-share
+```
+
+## 设置开机启动
+
+```sh
+cat >> /etc/rc.local <<EOF
+vmhgfs-fuse /mnt/hgfs/
+EOF
 ```
