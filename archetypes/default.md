@@ -1,6 +1,13 @@
 ---
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
-draft: true
+lastmod: {{ .Date }}
+draft: false
+tags: [""]
+categories: [""]
+author: "百里"
+comment: false
+toc: true
+reward: true
 ---
 
