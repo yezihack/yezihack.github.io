@@ -17,7 +17,8 @@ set -x # 定义名称 program_name=go_test # 项目压缩名称 program_filename
 适用于 window, linux 环境, 本人没 macOSX
 你将学到:
 如何设置 go mod 代理 如何设置 go env GOPRIVATE 变量 如何在代码里引用自建的 gitlab 依赖代码 设置 go mod 代理 linux, window 设置
-go env -w GO111MODULE=on go env -w GOPROXY=https://goproxy.io,direct 实践 假定私有 gitlab 仓库地址为: http://mygit.sgfoot.com/ (注意只支持http, 不支持https)
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.io,direct 实践 假定私有 gitlab 仓库地址为: http://mygit.sgfoot.com/ (注意只支持http, 不支持https)
 创建一个 gitlab 依赖代码 仓库地址HTTP: http://mygit.sgfoot.com/common.git 仓库地址SSH: git@mygit.</description></item><item><title>Go 实践教程-gRPC-流实例(八)</title><link>https://yezihack.github.io/posts/tutorial-grpc-stream-simple/</link><pubDate>Wed, 21 Oct 2020 14:20:48 +0800</pubDate><guid>https://yezihack.github.io/posts/tutorial-grpc-stream-simple/</guid><description>你将会学到
 一个完整的gRPC流实例，包括单向流与双向流的操作 如何实现gRPC流服务端代码 如何实现gRPC流客户端代码 准备 新建一个文件夹 go-grpc-simple-stream 在go-grpc-simple文件夹下建立三个目录: client, proto,server 使用 go mod 管理代码 在 go-grpc-simple-stream 目录下执行 go mod init go-grpc-simple-stream 编写 proto 文件 在 go-grpc-simple-stream/proto 目录下新建 hello.proto 文件
 syntax = &amp;#34;proto3&amp;#34;; package hello; service HelloService { // 定义一个服务端推送客户的单向流 rpc ServerToClient(StreamRequest) returns (stream StreamResponse){}; //　定义一个客户端推送服务端的单向流 rpc ClientToServer(stream StreamRequest) returns (StreamResponse){}; // 定义一个服务端与客户端的双向流 rpc AllStream(stream StreamRequest) returns (stream StreamResponse){}; } // stream 请求结构 message StreamRequest { string data = 1; } // stream 响应结构 message StreamResponse { string data = 1; } 生成 pb go 代码 在 go-grpc-simple-stream/proto 目录下新建 gen.</description></item><item><title>Go 实践教程-gRPC-简单实例(七)</title><link>https://yezihack.github.io/posts/tutorial-grpc-simple/</link><pubDate>Wed, 21 Oct 2020 14:20:39 +0800</pubDate><guid>https://yezihack.github.io/posts/tutorial-grpc-simple/</guid><description>你将会学到
@@ -50,7 +51,10 @@ https://www.jetbrains.com/go/
 http://idea.medeming.com/jetbrains/
 设置 Go Modules
 File -&amp;gt; Settings -&amp;gt; Go -&amp;gt; Go Modules
-![image-20200916200143415](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916200144.png?imageslim) 将 `GOPROXY=https://goproxy.cn,direct` 填写到 Environment 处。 用于 Go GET 加速下载依赖包。![image-20200916170456456](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916170457.png?imageslim) 第一个 Go 程序 新建项目
+![image-20200916200143415](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916200144.png?imageslim)
+将 `GOPROXY=https://goproxy.cn,direct` 填写到 Environment 处。
+用于 Go GET 加速下载依赖包。![image-20200916170456456](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916170457.png?imageslim)
+第一个 Go 程序 新建项目
 File -&amp;gt; New -&amp;gt; Project
 新建 Go 文件
 右击 awesomeProject -&amp;gt; New -&amp;gt; Go -&amp;gt; 选择&amp;quot;Simple Application&amp;quot;</description></item><item><title>Go 实践教程-安装及环境配置(二)</title><link>https://yezihack.github.io/posts/tutorial-golang-install/</link><pubDate>Fri, 11 Sep 2020 18:10:11 +0800</pubDate><guid>https://yezihack.github.io/posts/tutorial-golang-install/</guid><description>本教程基于 Go1.11版本展开， 也就是官方提供 Go Module 功能。
@@ -69,47 +73,184 @@ window设置方法
 md5 : 一种被广泛使用的密码散列函数，可以产bai生出一个128位（du16字节）的散列值（hash value），用于确保信息传输完整一zhi致。MD5由美国密码学家罗纳德·李维斯特（Ronald Linn Rivest）设计，于1992年公开，用以取代MD4算法。
 sha1: SHA1是由NISTNSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为160bit的散列值，因此抗穷举(brute-force)性更好。SHA-1基于MD5，MD5又基于MD4。
 crc32: 本身是“冗余校验码”的意思，CRC32则表示会产生一个32bit（8位十六进制数）的校验值。由于CRC32产生校验值时源数据块的每一个bit（位）都参与了计算，所以数据块中即使只有一位发生了变化，也会得到不同的CRC32值。
-golang 实现 md5 // md5值 func Md5Str(s string) string { hash := md5.Sum([]byte(s)) return hex.EncodeToString(hash[:]) } sha1 // 散列值 func Sha1Str(s string) string { r := sha1.Sum([]byte(s)) return hex.EncodeToString(r[:]) } crc32 // String hashes a string to a unique hashcode. // https://github.com/hashicorp/terraform/blob/master/helper/hashcode/hashcode.go // crc32 returns a uint32, but for our use we need // and non negative integer.</description></item><item><title>Cobra使用说明</title><link>https://yezihack.github.io/posts/cobra/</link><pubDate>Tue, 07 Jul 2020 18:54:40 +0800</pubDate><guid>https://yezihack.github.io/posts/cobra/</guid><description>Cobra 概念 Cobra有三个基本概念commands,arguments和flags。
+golang 实现 md5 // md5值 func Md5Str(s string) string { hash := md5.Sum([]byte(s)) return hex.EncodeToString(hash[:]) } sha1 // 散列值 func Sha1Str(s string) string { r := sha1.Sum([]byte(s)) return hex.EncodeToString(r[:]) } crc32 // String hashes a string to a unique hashcode.
+// https://github.com/hashicorp/terraform/blob/master/helper/hashcode/hashcode.go
+// crc32 returns a uint32, but for our use we need
+// and non negative integer.</description></item><item><title>Cobra使用说明</title><link>https://yezihack.github.io/posts/cobra/</link><pubDate>Tue, 07 Jul 2020 18:54:40 +0800</pubDate><guid>https://yezihack.github.io/posts/cobra/</guid><description>Cobra 概念 Cobra有三个基本概念commands,arguments和flags。
 commands代表行为
 arguments代表数值
 flags代表对行为的改变
 例:
-# clone是commands，URL是arguments，brae是flags git clone URL --bare 使用 参考 使用 go cobra创建命令行项目</description></item><item><title>zerolog 占大量内存剖析</title><link>https://yezihack.github.io/posts/optimize-zerolog/</link><pubDate>Wed, 01 Jul 2020 19:06:01 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-zerolog/</guid><description>分析过程 使用 pprof top分析 可见 json.Marshal占第一内存. 为什么呢? 我们进一步分析
+# clone是commands，URL是arguments，brae是flags
+git clone URL --bare 使用 参考 使用 go cobra创建命令行项目</description></item><item><title>zerolog 占大量内存剖析</title><link>https://yezihack.github.io/posts/optimize-zerolog/</link><pubDate>Wed, 01 Jul 2020 19:06:01 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-zerolog/</guid><description>分析过程 使用 pprof top分析 可见 json.Marshal占第一内存. 为什么呢? 我们进一步分析
 使用 tree 分析 查看到 zerolog AppendInterface 方法占用 73.32%的内存量. 而 zerolog 是一个很优秀的日志库, 比 zap 还优秀. 为什么呢?我们需要查看源码
 822.70MB 73.32% | github.com/rs/zerolog/internal/json.Encoder.AppendInterface 分析源码 找到 github.com/rs/zerolog/internal/json.Encoder.AppendInterface` 366 行
-// AppendInterface marshals the input interface to a string and // appends the encoded string to the input byte slice. func (e Encoder) AppendInterface(dst []byte, i interface{}) []byte { marshaled, err := json.Marshal(i) if err != nil { return e.</description></item><item><title>Url Values Opimize</title><link>https://yezihack.github.io/posts/optimize-url-values/</link><pubDate>Wed, 01 Jul 2020 17:58:24 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-url-values/</guid><description/></item><item><title>Golang 单元测试/性能测试</title><link>https://yezihack.github.io/posts/golang-test/</link><pubDate>Tue, 30 Jun 2020 14:23:04 +0800</pubDate><guid>https://yezihack.github.io/posts/golang-test/</guid><description>参考 Go 单元测试/性能测试
+// AppendInterface marshals the input interface to a string and
+// appends the encoded string to the input byte slice.
+func (e Encoder) AppendInterface(dst []byte, i interface{}) []byte {
+marshaled, err := json.Marshal(i)
+if err != nil {
+return e.</description></item><item><title>Url Values Opimize</title><link>https://yezihack.github.io/posts/optimize-url-values/</link><pubDate>Wed, 01 Jul 2020 17:58:24 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-url-values/</guid><description/></item><item><title>Golang 单元测试/性能测试</title><link>https://yezihack.github.io/posts/golang-test/</link><pubDate>Tue, 30 Jun 2020 14:23:04 +0800</pubDate><guid>https://yezihack.github.io/posts/golang-test/</guid><description>参考 Go 单元测试/性能测试
 性能测试 go test -test.bench=. -test.benchmem 指定方法 go test -test.bench=MyFunc -test.benchmem cpu 性能分析 go test -test.bench=MyFunc -test.cpuprofile cpu.out 内存分析 go test -test.bench=MyFunc -test.memprofile mem.out goroutine 阻塞分析 go test -test.bench=MyFunc -test.blockprofile block.out ###　指定几个cpu分析
-go test -test.bench=MyFunc -test.benchmem -test.cpu 1,2,4</description></item><item><title>Optimize Http Response Body</title><link>https://yezihack.github.io/posts/optimize-http-response-body/</link><pubDate>Tue, 30 Jun 2020 11:34:21 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-http-response-body/</guid><description/></item><item><title>io.ReadAll优化</title><link>https://yezihack.github.io/posts/optimize-make_slice/</link><pubDate>Tue, 30 Jun 2020 11:05:28 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-make_slice/</guid><description>解析方案 // 替换 ioutil.ReadAll func ReadAll(data io.ReadCloser) (body []byte) { buffer := bytes.NewBuffer(make([]byte, 0, 65536)) io.Copy(buffer, data) temp := buffer.Bytes() length := len(temp) if cap(temp) &amp;gt; (length + length/10) { body = make([]byte, length) copy(body, temp) } else { body = temp } return } 参考 [golang]内存不断增长bytes.makeSlice
+go test -test.bench=MyFunc -test.benchmem -test.cpu 1,2,4</description></item><item><title>Optimize Http Response Body</title><link>https://yezihack.github.io/posts/optimize-http-response-body/</link><pubDate>Tue, 30 Jun 2020 11:34:21 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-http-response-body/</guid><description/></item><item><title>io.ReadAll优化</title><link>https://yezihack.github.io/posts/optimize-make_slice/</link><pubDate>Tue, 30 Jun 2020 11:05:28 +0800</pubDate><guid>https://yezihack.github.io/posts/optimize-make_slice/</guid><description>解析方案 // 替换 ioutil.ReadAll
+func ReadAll(data io.ReadCloser) (body []byte) {
+buffer := bytes.NewBuffer(make([]byte, 0, 65536))
+io.Copy(buffer, data)
+temp := buffer.Bytes()
+length := len(temp)
+if cap(temp) &amp;gt; (length + length/10) {
+body = make([]byte, length)
+copy(body, temp)
+} else {
+body = temp
+}
+return
+} 参考 [golang]内存不断增长bytes.makeSlice
 Golang Slices And The Case Of The Missing Memory</description></item><item><title>Goland 提高效率的技巧</title><link>https://yezihack.github.io/posts/goland-tips/</link><pubDate>Wed, 17 Jun 2020 11:31:17 +0800</pubDate><guid>https://yezihack.github.io/posts/goland-tips/</guid><description> 工欲善其事, 必先利其器
 添加 Go MOD File-&amp;gt;Settings-&amp;gt;Go-&amp;gt;Go Modules
 填写 goproxy: GOPROXY=https://goproxy.cn,direct 结构体添加 tags File-&amp;gt;Settings-&amp;gt;Editor-&amp;gt;Live Templates -&amp;gt; Go
 复制一个 tag 新建一个 &amp;ldquo;gorm&amp;rdquo; 使用 保存时并格式代码 File-&amp;gt;Settings-&amp;gt;Tools-&amp;gt;File Watchers
 选择 go fmt</description></item><item><title>Gin_validator</title><link>https://yezihack.github.io/posts/gin_validator/</link><pubDate>Mon, 15 Jun 2020 18:35:49 +0800</pubDate><guid>https://yezihack.github.io/posts/gin_validator/</guid><description>gin 自带验证器 参考文档: https://godoc.org/gopkg.in/go-playground/validator.v8#hdr-Baked_In_Validators_and_Tags
 gin 是个优秀的web框架, 集大成于一身. 对于参数的验证可以进行过滤. gin是引用了 go-playground框架, 今天我们来学习一下如何使用验证器.</description></item><item><title>golang http句柄泄露</title><link>https://yezihack.github.io/posts/curl/</link><pubDate>Thu, 11 Jun 2020 14:36:27 +0800</pubDate><guid>https://yezihack.github.io/posts/curl/</guid><description>前言 平时我们做Web开发, 经常会遇到需要请求网络资源,使用http请求, 如下面代码,注释处如果没有打开话,会导致句柄泄露, 最终报: dial tcp 127.0.0.1:80: socket: too many open files 这是为什么呢? 在linux中万物皆文件, 网络请求也相当于打开一个文件.如果打开文件忘记关闭的话, 没有及时回收资源, linux有文件打开上限,可以使用ulimit -n 查看最大支持文件打开数.
-如下代码会导致句柄泄露 cli := &amp;amp;http.Client{} req, err := http.NewRequest(http.MethodGet, &amp;#34;http://www.google.com&amp;#34;, nil) if err != nil { return } resp, err := cli.Do(req) if err != nil { return } // 必须关闭, 如果我们没有写关闭resp.Body打开的句柄,就会导致句柄泄露 // defer resp.Body.Close() // data, err := ioutil.ReadAll(resp.Body) if err != nil { return } fmt.Println(string(data)) return 分析 可以使用并发工具请求你的代码, 如使用Jmeter, 然后使用lsof -p 18001 |wc -l , 18001就你程序的进程ID, 可以查看当前程序打开文件数.</description></item><item><title>pprof火焰图分析利器之压测</title><link>https://yezihack.github.io/posts/benchmark/</link><pubDate>Tue, 09 Jun 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/benchmark/</guid><description>Benchmark 新建测试文件 util.go文件
-func GetMd5V(s string) string { h := md5.New() h.Write([]byte(s)) return hex.EncodeToString(h.Sum(nil)) } func SumMd5(s string) string { data := []byte(s) return fmt.Sprintf(&amp;#34;%x&amp;#34;, md5.Sum(data)) } 以_test结尾的文件, 如util_test.go
-func BenchmarkSumMd5(b *testing.B) { for i := 0; i &amp;lt; b.N; i++ { SumMd5(&amp;#34;1&amp;#34;) } } func BenchmarkGetMd5V(b *testing.B) { for i := 0; i &amp;lt; b.N; i++ { GetMd5V(&amp;#34;1&amp;#34;) } } 运行Benchmark函数 go test -bench=&amp;#34;.&amp;#34; -benchmem 输出结果 BenchmarkSumMd5-8 1719777 847 ns/op 64 B/op 3 allocs/op BenchmarkGetMd5V-8 1861362 644 ns/op 184 B/op 5 allocs/op PASS ok openapi/app/util 4.</description></item><item><title>pprof火焰图性能分析利器之入门</title><link>https://yezihack.github.io/posts/pprof/</link><pubDate>Fri, 05 Jun 2020 19:16:31 +0800</pubDate><guid>https://yezihack.github.io/posts/pprof/</guid><description>前言 如果你的应用是一直运行的，比如 web 应用，那么可以使用 net/http/pprof 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
+如下代码会导致句柄泄露 cli := &amp;amp;http.Client{}
+req, err := http.NewRequest(http.MethodGet, &amp;#34;http://www.google.com&amp;#34;, nil)
+if err != nil {
+return
+}
+resp, err := cli.Do(req)
+if err != nil {
+return
+}
+// 必须关闭, 如果我们没有写关闭resp.Body打开的句柄,就会导致句柄泄露
+// defer resp.Body.Close() // data, err := ioutil.ReadAll(resp.Body)
+if err != nil {
+return
+}
+fmt.Println(string(data))
+return 分析 可以使用并发工具请求你的代码, 如使用Jmeter, 然后使用lsof -p 18001 |wc -l , 18001就你程序的进程ID, 可以查看当前程序打开文件数.</description></item><item><title>pprof火焰图分析利器之压测</title><link>https://yezihack.github.io/posts/benchmark/</link><pubDate>Tue, 09 Jun 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/benchmark/</guid><description>Benchmark 新建测试文件 util.go文件
+func GetMd5V(s string) string {
+h := md5.New()
+h.Write([]byte(s))
+return hex.EncodeToString(h.Sum(nil))
+}
+func SumMd5(s string) string {
+data := []byte(s)
+return fmt.Sprintf(&amp;#34;%x&amp;#34;, md5.Sum(data))
+} 以_test结尾的文件, 如util_test.go
+func BenchmarkSumMd5(b *testing.B) {
+for i := 0; i &amp;lt; b.N; i++ {
+SumMd5(&amp;#34;1&amp;#34;)
+}
+}
+func BenchmarkGetMd5V(b *testing.B) {
+for i := 0; i &amp;lt; b.N; i++ {
+GetMd5V(&amp;#34;1&amp;#34;)
+}
+} 运行Benchmark函数 go test -bench=&amp;#34;.&amp;#34; -benchmem 输出结果 BenchmarkSumMd5-8 1719777 847 ns/op 64 B/op 3 allocs/op
+BenchmarkGetMd5V-8 1861362 644 ns/op 184 B/op 5 allocs/op
+PASS
+ok openapi/app/util 4.</description></item><item><title>pprof火焰图性能分析利器之入门</title><link>https://yezihack.github.io/posts/pprof/</link><pubDate>Fri, 05 Jun 2020 19:16:31 +0800</pubDate><guid>https://yezihack.github.io/posts/pprof/</guid><description>前言 如果你的应用是一直运行的，比如 web 应用，那么可以使用 net/http/pprof 库，它能够在提供 HTTP 服务进行分析。而非一直运行的程序可以使用 runtime/pprof 库
 可以先看下pprof入门
 go1.10自带 go tool pprof工具
 go version 查看golang版本
 安装 引用包_ &amp;quot;net/http/pprof&amp;quot;
 内置包的路径: net\http\pprof\pprof.go
-const ( PProfPort = 6060 // 端口 ) func PprofServer() { runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪 runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪 go func() { err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil) if err != nil { zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;) } }() } func main() { PprofServer() select{} } 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description></item><item><title>golang select用法</title><link>https://yezihack.github.io/posts/select/</link><pubDate>Fri, 05 Jun 2020 10:59:18 +0800</pubDate><guid>https://yezihack.github.io/posts/select/</guid><description>select 用于chan通道专用的控制结构
-ch := make(chan bool) select { case c &amp;lt;- ch: fmt.Println(&amp;#34;hello world&amp;#34;) default: return } 使用误区 39行, return 会一直阻塞? 希望大神解释下? 答: return相当于返回,不再继续,将永远阻塞,直到主程序退出.一般用于结束这个goroutine才加上return,否则不要轻易使用. 如果return 换成break或continue就不会阻塞 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;github.com/gin-gonic/gin&amp;#34; &amp;#34;log&amp;#34; &amp;#34;math/rand&amp;#34; &amp;#34;sync&amp;#34; ) type Cache struct { ch chan int } var ( _cache *Cache _once sync.Once ) func NewCache() *Cache { _once.Do(func() { _cache = &amp;amp;Cache{ ch: make(chan int, 10), } _cache.monitor() }) return _cache } func (c *Cache) Push(x int) { c.</description></item><item><title>Go Package优秀的包</title><link>https://yezihack.github.io/posts/go-package/</link><pubDate>Wed, 13 May 2020 14:40:23 +0800</pubDate><guid>https://yezihack.github.io/posts/go-package/</guid><description> Go 资源汇总 文件 微服务 缓存 日志&amp;amp;调试 池 WEB框架 测试框架 配置 唯一ID 网络 工具包 Go 资源汇总 收集的资源大而全，提供更多选择，更大视野。
+const (
+PProfPort = 6060 // 端口
+)
+func PprofServer() {
+runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪
+runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪
+go func() {
+err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil)
+if err != nil {
+zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;)
+}
+}()
+}
+func main() {
+PprofServer()
+select{}
+} 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description></item><item><title>golang select用法</title><link>https://yezihack.github.io/posts/select/</link><pubDate>Fri, 05 Jun 2020 10:59:18 +0800</pubDate><guid>https://yezihack.github.io/posts/select/</guid><description>select 用于chan通道专用的控制结构
+ch := make(chan bool)
+select {
+case c &amp;lt;- ch:
+fmt.Println(&amp;#34;hello world&amp;#34;)
+default:
+return
+} 使用误区 39行, return 会一直阻塞? 希望大神解释下? 答: return相当于返回,不再继续,将永远阻塞,直到主程序退出.一般用于结束这个goroutine才加上return,否则不要轻易使用. 如果return 换成break或continue就不会阻塞 package main
+import (
+&amp;#34;fmt&amp;#34;
+&amp;#34;github.com/gin-gonic/gin&amp;#34;
+&amp;#34;log&amp;#34;
+&amp;#34;math/rand&amp;#34;
+&amp;#34;sync&amp;#34;
+)
+type Cache struct {
+ch chan int
+}
+var (
+_cache *Cache
+_once sync.Once
+)
+func NewCache() *Cache {
+_once.Do(func() {
+_cache = &amp;amp;Cache{
+ch: make(chan int, 10),
+}
+_cache.monitor()
+})
+return _cache
+}
+func (c *Cache) Push(x int) {
+c.</description></item><item><title>Go Package优秀的包</title><link>https://yezihack.github.io/posts/go-package/</link><pubDate>Wed, 13 May 2020 14:40:23 +0800</pubDate><guid>https://yezihack.github.io/posts/go-package/</guid><description> Go 资源汇总 文件 微服务 缓存 日志&amp;amp;调试 池 WEB框架 测试框架 配置 唯一ID 网络 工具包 Go 资源汇总 收集的资源大而全，提供更多选择，更大视野。
 Github 描述 go-awesome Go 语言优秀资源整理 Golang Go 资料包 awesome-go-cn Go 资源列表 文件 pkg 文档 描述 fsnotify 用法 监听文件修改进而自动重新加载 微服务 pkg 文档 描述 ratelimit 漏桶率限制算法 Jaeger 分布式追踪系统 hystrix-go 流量控制,熔断,容错,隔离功能 缓存 pkg 文档 描述 cache2go go 进程内缓存 golang-lru 实现LRU缓存策略 日志&amp;amp;调试 pkg 文档 描述 errors 错误处理 zerolog 零拷贝日志 池 pkg 文档 描述 grpool 轻量级协程池 ants 协程池 WEB框架 pkg 文档 描述 gin web 高效框架 测试框架 pkg 文档 描述 goConvey 单元测试框架, 自带 Web 界面 配置 pkg 文档 描述 ini ini 配置文件 gjson 用法 用于读取 JSON 串 sjson 用法 用于设置 JSON 串 唯一ID pkg 文档 描述 uuid uuid 码 sonyflake sony 雪花算法 xid 全局唯一ID生成器 20个字符长度 网络 pkg 文档 描述 ping go ping 包 工具包 pkg 文档 描述 cron 用法 定时器 by linux crontab endless 优雅重启 go 程序 com 工具包 cast 全类型转换 gopass 交互模式输入密码 cobra 命令行框架, spf13大神出品 go-humanize 各种数字的人性化转换</description></item><item><title>Golang学习资源收集</title><link>https://yezihack.github.io/posts/golang-study/</link><pubDate>Fri, 08 May 2020 14:43:48 +0800</pubDate><guid>https://yezihack.github.io/posts/golang-study/</guid><description>Golang 系列进阶文章 Golang 系列文章 来源: 飞雪无情 Go包管理 Go开发工具 Go Doc 文档 Go 数组 Go 切片 Go Map Go 类型 Go 函数方法 Go 接口 Go 嵌入类型 Go 标志符可见性 Go goroutine Go 并发资源竞争 Go 通道 Go 并发示例-Runner Go 并发示例-Pool Go 读写锁 Go log 日志 Go Writer 和 Reader Go Context Go 单元测试 Go 基准测试 Go 调试 Go 反射 Go Struct Tag Go unsafe 包之内存布局 Go unsafe Pointer Go 后记 Golang 每日一库 Golang 每日一库 来源 darjun flag go-flags go-homedir go-ini cobra viper fsnotify cast log logrus godotenv carbon email dig gojsonq message-bus watermill wire mergo copier jennifer go-cmp buntdb gjson sjson jj govaluate validator gopsutil gentleman plot go-app zap zerolog nutsdb sqlc</description></item><item><title>Goz学习笔记</title><link>https://yezihack.github.io/posts/goz/</link><pubDate>Tue, 28 Apr 2020 20:33:51 +0800</pubDate><guid>https://yezihack.github.io/posts/goz/</guid><description>分析 项目四个Go文件, 每个文件仅描述一件事, 思路非常清淅, 故此学习并总结一下里面的精华.
 定义Options结构体接受外部定义的配置 定义入口文件, 整个项目的入口, 并返回一个下一层处理的结构体 定义逻辑结构体, 下一层结构体担负着处理逻辑的任务,并返回处理结构的结构体. 定义收尾结构体, 将上一层的处理的结果进行进一步分析,最终展现给用户 入口文件 Goz.go 只初使化了Request结构体. 可以定义初使配置Options, 整个项目所需的配置都在Options结构里 options.go#L6 // NewClient new request object func NewClient(opts ...Options) *Request { req := &amp;amp;Request{} if len(opts) &amp;gt; 0 { req.opts = opts[0] } return req } 配置文件 Options.go 定义了整个项目需要的外部参数 变量首字母都大写 options.go#L6 // Options object type Options struct { BaseURI string Timeout float32 timeout time.Duration Query interface{} Headers map[string]interface{} Cookies interface{} FormParams map[string]interface{} JSON interface{} Proxy string } 核心处理文件 Request.</description></item><item><title>Golang持续集成服务之Travis教程</title><link>https://yezihack.github.io/posts/golang-travis/</link><pubDate>Fri, 24 Apr 2020 20:19:39 +0800</pubDate><guid>https://yezihack.github.io/posts/golang-travis/</guid><description>为什么使用集成服务呢 我们向github提交代码时, 我们得保证我们的代码是能运行的, 我们会写测试用例, 保证我们的代码功能能正常使用.常见大神们的开源项目都一个绿色图标&amp;quot;build|passing 表示构建OK
 如何使用Travis服务呢 打开这个网站 https://travis-ci.org/ 点击登陆, 使用github登陆.目前似也只支持github
-1. 添加仓库 2. 开启集成 3. 项目根目录添加.travis.yml文件 cd ~/github_webhook touch .travis.yml 4. 编写.travis.yml文件 language: go 表示当前仓库是go语言 go - 1.14 表示使用golang版本 sudo:required 表示需要root权限 os 表示使用运行环境, linux, osx是苹果系统 install 安装需要集成的必要软件 script 代表运行的脚本 以下是个测试空命令文件, 可以拿测试.看看能不能运行
-language: go go: - 1.14 sudo: required os: - linux - osx install: - echo &amp;#34;install&amp;#34; script: - echo &amp;#34;script&amp;#34; 以下是一个正式的集成测试文件
-language: go go: - 1.14 sudo: required os: - linux - osx install: - echo &amp;#34;install&amp;#34; - go get -u github.</description></item><item><title>github-webhook工具实现github自动构建</title><link>https://yezihack.github.io/posts/github-webhook/</link><pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate><guid>https://yezihack.github.io/posts/github-webhook/</guid><description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建 github-webhook 文档 更多详情文档 https://github.com/yezihack/github-webhook 使用github-webhook 源码: https://github.com/yezihack/github-webhook 别忘记点个小星星哦.
+1. 添加仓库 2. 开启集成 3. 项目根目录添加.travis.yml文件 cd ~/github_webhook
+touch .travis.yml 4. 编写.travis.yml文件 language: go 表示当前仓库是go语言 go - 1.14 表示使用golang版本 sudo:required 表示需要root权限 os 表示使用运行环境, linux, osx是苹果系统 install 安装需要集成的必要软件 script 代表运行的脚本 以下是个测试空命令文件, 可以拿测试.看看能不能运行
+language: go
+go:
+- 1.14
+sudo: required
+os:
+- linux
+- osx
+install:
+- echo &amp;#34;install&amp;#34;
+script:
+- echo &amp;#34;script&amp;#34; 以下是一个正式的集成测试文件
+language: go
+go:
+- 1.14
+sudo: required
+os:
+- linux
+- osx
+install:
+- echo &amp;#34;install&amp;#34;
+- go get -u github.</description></item><item><title>github-webhook工具实现github自动构建</title><link>https://yezihack.github.io/posts/github-webhook/</link><pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate><guid>https://yezihack.github.io/posts/github-webhook/</guid><description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建 github-webhook 文档 更多详情文档 https://github.com/yezihack/github-webhook 使用github-webhook 源码: https://github.com/yezihack/github-webhook 别忘记点个小星星哦.
 1. 下载github-webhook工具 https://github.com/yezihack/github-webhook/releases
 github release下载太慢, 试试这个
 wget https://cdn.jsdelivr.net/gh/yezihack/assets/github-webhook1.4.1.linux-amd64.tar.gz 2. 运行github-webhook 安装
-tar -zxvf github-webhook1.4.1.linux-amd64.tar.gz cp github-webhook /usr/bin/ chmod u+x /usr/bin/github-webhook 运行
-默认端口: 2020 有效访问地址: http://ip:2020/web-hook -b 是shell脚本路径参数 -s 是github webhook设置的密码 # 非后台运行 github-webhook -b [shell脚本路径] -s [github webhook设置的密码] # 后台运行 nohup github-webhook -b [shell脚本路径] -s [github webhook设置的密码] &amp;amp; # 定向日志输出 nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe &amp;gt;&amp;gt; ~/logs/webhook.</description></item><item><title>Go命令行下星号代替输入内容</title><link>https://yezihack.github.io/posts/gopass/</link><pubDate>Fri, 17 Apr 2020 19:34:16 +0800</pubDate><guid>https://yezihack.github.io/posts/gopass/</guid><description>(图片来自网络,有侵权,联系我删除)
+tar -zxvf github-webhook1.4.1.linux-amd64.tar.gz
+cp github-webhook /usr/bin/
+chmod u+x /usr/bin/github-webhook 运行
+默认端口: 2020 有效访问地址: http://ip:2020/web-hook -b 是shell脚本路径参数 -s 是github webhook设置的密码 # 非后台运行
+github-webhook -b [shell脚本路径] -s [github webhook设置的密码]
+# 后台运行
+nohup github-webhook -b [shell脚本路径] -s [github webhook设置的密码] &amp;amp; # 定向日志输出
+nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe &amp;gt;&amp;gt; ~/logs/webhook.</description></item><item><title>Go命令行下星号代替输入内容</title><link>https://yezihack.github.io/posts/gopass/</link><pubDate>Fri, 17 Apr 2020 19:34:16 +0800</pubDate><guid>https://yezihack.github.io/posts/gopass/</guid><description>(图片来自网络,有侵权,联系我删除)
 当我们做命令行工具时, 遇到用户需要输入密码时, 常规处理是当字符串显示输入,这样并不是很好.应该像mysqld工具一样,输入密码时,以星号代替.对敏感数据进行脱敏处理.
 今天要介绍一个golang这方面的包github.com/howeyc/gopass
-代码实例使用 1. 当输入密码时,不显示任何信息 func GetPasswd() { fmt.Printf(&amp;#34;1.请输入密码:&amp;#34;) pass, err := gopass.GetPasswd() if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 2. 当输入密码时,以星号*代替你输入的字符 func GetPasswdMasked() { fmt.Printf(&amp;#34;2.请输入密码:&amp;#34;) pass, err := gopass.GetPasswdMasked() if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 3.你输入密码时,以星号*代替你输入的字符 func GetPasswdPrompt() { pass, err := gopass.GetPasswdPrompt(&amp;#34;3.请输入密码:&amp;#34;, true, os.Stdin, os.Stdout) if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 效果 1.</description></item><item><title>算法第6天:跳水板</title><link>https://yezihack.github.io/posts/algo-6-day/</link><pubDate>Tue, 14 Apr 2020 21:22:39 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-6-day/</guid><description>leetcode: 16.11 https://leetcode-cn.com/problems/diving-board-lcci
+代码实例使用 1. 当输入密码时,不显示任何信息 func GetPasswd() { fmt.Printf(&amp;#34;1.请输入密码:&amp;#34;) pass, err := gopass.GetPasswd() if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 2. 当输入密码时,以星号*代替你输入的字符 func GetPasswdMasked() { fmt.Printf(&amp;#34;2.请输入密码:&amp;#34;) pass, err := gopass.GetPasswdMasked() if err != nil { log.Fatalln(err) return } fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass)) } 3.你输入密码时,以星号*代替你输入的字符 func GetPasswdPrompt() {
+pass, err := gopass.GetPasswdPrompt(&amp;#34;3.请输入密码:&amp;#34;, true, os.Stdin, os.Stdout)
+if err != nil {
+log.Fatalln(err)
+return
+}
+fmt.Println(&amp;#34;您输入的密码是:&amp;#34;, string(pass))
+} 效果 1.</description></item><item><title>算法第6天:跳水板</title><link>https://yezihack.github.io/posts/algo-6-day/</link><pubDate>Tue, 14 Apr 2020 21:22:39 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-6-day/</guid><description>leetcode: 16.11 https://leetcode-cn.com/problems/diving-board-lcci
 题目 你正在使用一堆木板建造跳水板。有两种类型的木板，其中长度较短的木板长度为shorter，长度较长的木板长度为longer。你必须正好使用k块木板。编写一个方法，生成跳水板所有可能的长度。
 返回的长度需要从小到大排列。
 思路 题目的意思就是求一个k的组合, 利用给出的长短木板进行组合.
@@ -121,19 +262,93 @@ tar -zxvf github-webhook1.4.1.linux-amd64.tar.gz cp github-webhook /usr/bin/ chm
 示例: 输入: [-2,1,-3,4,-1,2,1,-5,4], 输出: 6 解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
 解题思路 共三种思路: 暴力求解;贪心算法,动态规划
 暴力求解 数组每一种组合都查看一遍, 每个组合都与保存当前最大值的变量比较一下.
-//暴力求解 //Time:O(n^2), space:O(1) func MaxSubArray(nums []int) int { count := len(nums) if count == 0 { return 0 } max := 0 for i := 0; i &amp;lt; count; i++ { sum := 0 for j := i; j &amp;lt; count; j++ { sum += nums[j] //累加操作 if sum &amp;gt; max { //如果大于max则替换掉.</description></item><item><title>算法第4天:LRU缓存机制</title><link>https://yezihack.github.io/posts/algo-4-day/</link><pubDate>Mon, 24 Feb 2020 15:16:54 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-4-day/</guid><description>leetcode 146. LRU缓存机制 middle
+//暴力求解
+//Time:O(n^2), space:O(1)
+func MaxSubArray(nums []int) int {
+count := len(nums)
+if count == 0 {
+return 0
+}
+max := 0
+for i := 0; i &amp;lt; count; i++ {
+sum := 0
+for j := i; j &amp;lt; count; j++ {
+sum += nums[j] //累加操作
+if sum &amp;gt; max { //如果大于max则替换掉.</description></item><item><title>算法第4天:LRU缓存机制</title><link>https://yezihack.github.io/posts/algo-4-day/</link><pubDate>Mon, 24 Feb 2020 15:16:54 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-4-day/</guid><description>leetcode 146. LRU缓存机制 middle
 题目 运用你所掌握的数据结构，设计和实现一个 LRU (最近最少使用) 缓存机制。它应该支持以下操作： 获取数据 get 和 写入数据 put 。 获取数据 get(key) - 如果密钥 (key) 存在于缓存中，则获取密钥的值（总是正数），否则返回 -1。 写入数据 put(key, value) - 如果密钥不存在，则写入其数据值。当缓存容量达到上限时，它应该在写入新数据之前删除最近最少使用的数据值，从而为新的数据值留出空间。
 进阶: 你是否可以在 O(1) 时间复杂度内完成这两种操作？ 解题方法 采用hash+double-linked实现LRU缓存算法机制. 先独立写个双链表, 然后引用双链表和hash实现LRU
 双链表 有些多除的方法,主要为了调试使用.
-type Linkeder interface { AddHead(key, value int) *LinkedNode //插入头位置 Append(key, value int) *LinkedNode //追求到尾部 RemoveNode(node *LinkedNode) bool //删除指定位置的节点 RemoveTail() *LinkedNode //删除尾部的节点 Reverse() *LinkedNode //反转链表 Print() string //打印链表 PrintLink(head *LinkedNode) string } type LinkedNode struct { key int //key value int //value next *LinkedNode //next pointer prev *LinkedNode //prev pointer } type Linked struct { length int //链表长度 head *LinkedNode //链表头部节点 tail *LinkedNode //链表尾部节点 } func NewLinked() Linkeder { return &amp;amp;Linked{} } //插入头部操作.</description></item><item><title>算法第3天:最长公共前缀</title><link>https://yezihack.github.io/posts/algo-3-day/</link><pubDate>Mon, 24 Feb 2020 15:16:51 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-3-day/</guid><description>leetcode 14. 最长公共前缀 simple
+type Linkeder interface {
+AddHead(key, value int) *LinkedNode //插入头位置
+Append(key, value int) *LinkedNode //追求到尾部
+RemoveNode(node *LinkedNode) bool //删除指定位置的节点
+RemoveTail() *LinkedNode //删除尾部的节点
+Reverse() *LinkedNode //反转链表
+Print() string //打印链表
+PrintLink(head *LinkedNode) string
+}
+type LinkedNode struct {
+key int //key
+value int //value
+next *LinkedNode //next pointer
+prev *LinkedNode //prev pointer
+}
+type Linked struct {
+length int //链表长度
+head *LinkedNode //链表头部节点
+tail *LinkedNode //链表尾部节点
+}
+func NewLinked() Linkeder {
+return &amp;amp;Linked{}
+}
+//插入头部操作.</description></item><item><title>算法第3天:最长公共前缀</title><link>https://yezihack.github.io/posts/algo-3-day/</link><pubDate>Mon, 24 Feb 2020 15:16:51 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-3-day/</guid><description>leetcode 14. 最长公共前缀 simple
 题目 编写一个函数来查找字符串数组中的最长公共前缀。 如果不存在公共前缀，返回空字符串 &amp;ldquo;&amp;quot;。
 输入: [&amp;ldquo;flower&amp;rdquo;,&amp;ldquo;flow&amp;rdquo;,&amp;ldquo;flight&amp;rdquo;] 输出: &amp;ldquo;fl&amp;rdquo;
 输入: [&amp;ldquo;dog&amp;rdquo;,&amp;ldquo;racecar&amp;rdquo;,&amp;ldquo;car&amp;rdquo;] 输出: &amp;quot;&amp;rdquo; 解释: 输入不存在公共前缀。
-解题思路 解法一: 挨个比较 首先要注意边界条件, 数组为空的情况 先找到数组里最短的字符串,因为题目是求最短前缀,必须先找最短的字符串 拿最短字符串与数组里每一个字符串的每一个字符进行比较. 如果不相等则截取,即获取最短前缀. 注意这里是最外层循环是最短的字符串循环, 然后里层循环是数组循环, 挨个字符串进行比较. 也就是查看所有的字符串与最短的字符串是否一致.如果出现不一致则截取返回. func LongestCommonPrefix(strs []string) string { l := len(strs) if l == 0 { //边界条件 return &amp;#34;&amp;#34; } short := strs[0] //从数组里查找到最小字符串. for i := 1; i &amp;lt; l; i++ { if len(short) &amp;gt; len(strs[i]) { //只要存在比第一个字符还短的则进行赋值操作. short = strs[i] } } //如果最短字符串长度为0则,返回空 if len(short) == 0 { //边界条件 .</description></item><item><title>算法第1天: 缺失的第一个正数</title><link>https://yezihack.github.io/posts/algo-1-day/</link><pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-1-day/</guid><description>感触 为了坚持学习算法, 每篇算法标题写上坚持多少天,以此鼓励自己坚持学下去. 会把自己理解的都写在代码处, 你在看代码时也方便, 为什么这一行这么写. 也是锻炼自己的文档水平.
+解题思路 解法一: 挨个比较 首先要注意边界条件, 数组为空的情况 先找到数组里最短的字符串,因为题目是求最短前缀,必须先找最短的字符串 拿最短字符串与数组里每一个字符串的每一个字符进行比较. 如果不相等则截取,即获取最短前缀. 注意这里是最外层循环是最短的字符串循环, 然后里层循环是数组循环, 挨个字符串进行比较. 也就是查看所有的字符串与最短的字符串是否一致.如果出现不一致则截取返回. func LongestCommonPrefix(strs []string) string {
+l := len(strs)
+if l == 0 { //边界条件
+return &amp;#34;&amp;#34;
+}
+short := strs[0]
+//从数组里查找到最小字符串.
+for i := 1; i &amp;lt; l; i++ {
+if len(short) &amp;gt; len(strs[i]) { //只要存在比第一个字符还短的则进行赋值操作.
+short = strs[i]
+}
+}
+//如果最短字符串长度为0则,返回空
+if len(short) == 0 { //边界条件 .</description></item><item><title>算法第1天: 缺失的第一个正数</title><link>https://yezihack.github.io/posts/algo-1-day/</link><pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-1-day/</guid><description>感触 为了坚持学习算法, 每篇算法标题写上坚持多少天,以此鼓励自己坚持学下去. 会把自己理解的都写在代码处, 你在看代码时也方便, 为什么这一行这么写. 也是锻炼自己的文档水平.
 题目 LeetCode:41题, 困难
-给定一个未排序的整数数组，找出其中没有出现的最小的正整数。 示例 1: 输入: [1,2,0] 输出: 3 示例 2: 输入: [3,4,-1,1] 输出: 2 示例 3: 输入: [7,8,9,11,12] 输出: 1 要求: 你的算法的时间复杂度应为O(n)，并且只能使用常数级别的空间
+给定一个未排序的整数数组，找出其中没有出现的最小的正整数。
+示例 1:
+输入: [1,2,0]
+输出: 3
+示例 2:
+输入: [3,4,-1,1]
+输出: 2
+示例 3:
+输入: [7,8,9,11,12]
+输出: 1 要求: 你的算法的时间复杂度应为O(n)，并且只能使用常数级别的空间
 解法一: 利用map+for-range实现 Time: O(n), Space:O(n)不符合题目要求
 //解法一: 利用map+for-range实现.时间复杂度O(n), 空间是常数O(n) // 4 ms 2.8 MB func FirstMissingPositive(nums []int) int { hash := make(map[int]struct{}, len(nums)) for i := 0; i &amp;lt; len(nums); i++ { hash[nums[i]] = struct{}{} } fmt.Println(hash) //1-n之间检查, 如果有缺失则是最小值. for i := 1; i &amp;lt;= len(nums); i++ { //从1循环到n, 包含n if _, ok := hash[i]; !</description></item><item><title>算法第2天: 盛最多水的容器</title><link>https://yezihack.github.io/posts/algo-2-day/</link><pubDate>Mon, 24 Feb 2020 11:21:11 +0800</pubDate><guid>https://yezihack.github.io/posts/algo-2-day/</guid><description>LeetCode:11题, 中等
 解析题目 解析题目: 将数组想象成一个矩形, 寻找这个矩形盛最多水的大小. 决定盛水高度取决于最低的那根木板.也就是数字最小的那个值, 决定盛水最多还得取决于它的长度.也就是数组的头与尾之间的距离.
 暴力求解. 对数组从小到大都查看一遍, 取最大容器的那个.
-//暴力求解 //Time:O(n^2), Space:O(1) func ContainerWithMostWater(height []int) int { if len(height) == 0 { return 0 } //暴力求解, 任何可能都不放过. maxArea := 0 //存放最大面积的变量. for i := 0; i &amp;lt; len(height); i++ { for j := i + 1; j &amp;lt; len(height); j++ { //获取最短板的那个数字,也就是最小值的数字 minHeight := height[i] if height[j] &amp;lt; minHeight { minHeight = height[j] } //获取j与i之间的差距离. distance := j - i //求面积.</description></item></channel></rss>
+//暴力求解
+//Time:O(n^2), Space:O(1)
+func ContainerWithMostWater(height []int) int {
+if len(height) == 0 {
+return 0
+}
+//暴力求解, 任何可能都不放过.
+maxArea := 0 //存放最大面积的变量.
+for i := 0; i &amp;lt; len(height); i++ {
+for j := i + 1; j &amp;lt; len(height); j++ {
+//获取最短板的那个数字,也就是最小值的数字
+minHeight := height[i]
+if height[j] &amp;lt; minHeight {
+minHeight = height[j]
+}
+//获取j与i之间的差距离.
+distance := j - i
+//求面积.</description></item></channel></rss>

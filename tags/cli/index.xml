@@ -3,4 +3,5 @@ commands代表行为
 arguments代表数值
 flags代表对行为的改变
 例:
-# clone是commands，URL是arguments，brae是flags git clone URL --bare 使用 参考 使用 go cobra创建命令行项目</description></item></channel></rss>
+# clone是commands，URL是arguments，brae是flags
+git clone URL --bare 使用 参考 使用 go cobra创建命令行项目</description></item></channel></rss>

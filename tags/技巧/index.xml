@@ -5,7 +5,10 @@ top 使用 top 系统自带命令,可以直接使用.
 top top 详情 a. 如图编号(1)
 top - 10:34:07 up 16 min, 1 user, load average: 0.00, 0.01, 0.05 10:34:07 当前时间 up 16 min 系统运行时间, 如 16 分钟 1 user 当前登陆用户数 load average: 0.00, 0.01, 0.05 系统负载. 三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。 b. 如图编号(2)
 Tasks: 206 total, 1 running, 205 sleeping, 0 stopped, 0 zombie Tasks: 206 total 进程总数 1 running 正在运行的进程数 205 sleeping 睡眠进程数 0 stopped 停止进程数 0 zombie 僵尸进程数 c.</description></item><item><title>MySQL 性能分析</title><link>https://yezihack.github.io/posts/mysql-analysis/</link><pubDate>Fri, 19 Jun 2020 19:13:48 +0800</pubDate><guid>https://yezihack.github.io/posts/mysql-analysis/</guid><description>MySQL 运行的状态 重点关注以下参数
-show status like &amp;#39;Queries&amp;#39;; show status like &amp;#39;Threads_connected&amp;#39;; show status like &amp;#39;Threads_running&amp;#39;; show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
+show status like &amp;#39;Queries&amp;#39;;
+show status like &amp;#39;Threads_connected&amp;#39;;
+show status like &amp;#39;Threads_running&amp;#39;;
+show status like &amp;#39;Connection_errors_max_connections&amp;#39;; MySQL 运行线程 show processlist 开启慢查询日志 一、参数查询
 slow_query_log 开启慢查询
 mysql&amp;gt; show variables like &amp;#39;%slow_query_log%&amp;#39;; +---------------------+--------------------------------------+ | Variable_name | Value | +---------------------+--------------------------------------+ | slow_query_log | ON | | slow_query_log_file | /var/lib/mysql/7709d56792f9-slow.log | +---------------------+--------------------------------------+ 2 rows in set (0.00 sec) set global slow_query_log=1; slow_query_log_file 慢日志存放位置
 set global slow_query_log_file=&amp;#39;/data/logs/slow-mysql.log&amp;#39;; long_query_time 表示1秒的SQL就记录

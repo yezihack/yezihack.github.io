@@ -4,5 +4,6 @@
 适用于 window, linux 环境, 本人没 macOSX
 你将学到:
 如何设置 go mod 代理 如何设置 go env GOPRIVATE 变量 如何在代码里引用自建的 gitlab 依赖代码 设置 go mod 代理 linux, window 设置
-go env -w GO111MODULE=on go env -w GOPROXY=https://goproxy.io,direct 实践 假定私有 gitlab 仓库地址为: http://mygit.sgfoot.com/ (注意只支持http, 不支持https)
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.io,direct 实践 假定私有 gitlab 仓库地址为: http://mygit.sgfoot.com/ (注意只支持http, 不支持https)
 创建一个 gitlab 依赖代码 仓库地址HTTP: http://mygit.sgfoot.com/common.git 仓库地址SSH: git@mygit.</description></item></channel></rss>

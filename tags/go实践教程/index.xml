@@ -30,7 +30,10 @@ https://www.jetbrains.com/go/
 http://idea.medeming.com/jetbrains/
 设置 Go Modules
 File -&amp;gt; Settings -&amp;gt; Go -&amp;gt; Go Modules
-![image-20200916200143415](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916200144.png?imageslim) 将 `GOPROXY=https://goproxy.cn,direct` 填写到 Environment 处。 用于 Go GET 加速下载依赖包。![image-20200916170456456](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916170457.png?imageslim) 第一个 Go 程序 新建项目
+![image-20200916200143415](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916200144.png?imageslim)
+将 `GOPROXY=https://goproxy.cn,direct` 填写到 Environment 处。
+用于 Go GET 加速下载依赖包。![image-20200916170456456](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20200916170457.png?imageslim)
+第一个 Go 程序 新建项目
 File -&amp;gt; New -&amp;gt; Project
 新建 Go 文件
 右击 awesomeProject -&amp;gt; New -&amp;gt; Go -&amp;gt; 选择&amp;quot;Simple Application&amp;quot;</description></item><item><title>Go 实践教程-安装及环境配置(二)</title><link>https://yezihack.github.io/posts/tutorial-golang-install/</link><pubDate>Fri, 11 Sep 2020 18:10:11 +0800</pubDate><guid>https://yezihack.github.io/posts/tutorial-golang-install/</guid><description>本教程基于 Go1.11版本展开， 也就是官方提供 Go Module 功能。

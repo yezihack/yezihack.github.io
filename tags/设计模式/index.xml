@@ -144,7 +144,9 @@ Software entities (modules, classes, functions, etc.) should be open for extensi
 贫血模式是目前主流的一种开发模式, 基于MVC结构的开发模式.
 MVC三层架构中
 M 表示 Model 即数据层 V 表示 View 即展示层 C 表示 Controller 即逻辑层 做为后端开发MVC有所调整
-1. Model 层 负责数据访问 2. Service层 负责业务逻辑 3. Controller层 负责暴露接口</description></item><item><title>设计模式-接口组合(八)</title><link>https://yezihack.github.io/posts/gof-interface-combination/</link><pubDate>Mon, 11 Jan 2021 20:23:10 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-interface-combination/</guid><description> 有一种非常经典的设计原则: 组合优于继承, 多用组合少用继承
+1. Model 层 负责数据访问
+2. Service层 负责业务逻辑
+3. Controller层 负责暴露接口</description></item><item><title>设计模式-接口组合(八)</title><link>https://yezihack.github.io/posts/gof-interface-combination/</link><pubDate>Mon, 11 Jan 2021 20:23:10 +0800</pubDate><guid>https://yezihack.github.io/posts/gof-interface-combination/</guid><description> 有一种非常经典的设计原则: 组合优于继承, 多用组合少用继承
 为什么少用继承 继承是面向对象的四大特性之一, 表示类之间的 is-a 关系. 支持多态特性, 可以解决代码复用问题.
 如果继承层次过深, 过复杂, 会影响到代码的可维护性, 可读性.
 如上面, 继承带来的后果就是代码变得复杂, 因为层次过深, 继承关系过于复杂, 影响到代码的可读性与可维护性.

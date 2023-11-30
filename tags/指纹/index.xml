@@ -2,4 +2,7 @@
 md5 : 一种被广泛使用的密码散列函数，可以产bai生出一个128位（du16字节）的散列值（hash value），用于确保信息传输完整一zhi致。MD5由美国密码学家罗纳德·李维斯特（Ronald Linn Rivest）设计，于1992年公开，用以取代MD4算法。
 sha1: SHA1是由NISTNSA设计为同DSA一起使用的，它对长度小于264的输入，产生长度为160bit的散列值，因此抗穷举(brute-force)性更好。SHA-1基于MD5，MD5又基于MD4。
 crc32: 本身是“冗余校验码”的意思，CRC32则表示会产生一个32bit（8位十六进制数）的校验值。由于CRC32产生校验值时源数据块的每一个bit（位）都参与了计算，所以数据块中即使只有一位发生了变化，也会得到不同的CRC32值。
-golang 实现 md5 // md5值 func Md5Str(s string) string { hash := md5.Sum([]byte(s)) return hex.EncodeToString(hash[:]) } sha1 // 散列值 func Sha1Str(s string) string { r := sha1.Sum([]byte(s)) return hex.EncodeToString(r[:]) } crc32 // String hashes a string to a unique hashcode. // https://github.com/hashicorp/terraform/blob/master/helper/hashcode/hashcode.go // crc32 returns a uint32, but for our use we need // and non negative integer.</description></item></channel></rss>
+golang 实现 md5 // md5值 func Md5Str(s string) string { hash := md5.Sum([]byte(s)) return hex.EncodeToString(hash[:]) } sha1 // 散列值 func Sha1Str(s string) string { r := sha1.Sum([]byte(s)) return hex.EncodeToString(r[:]) } crc32 // String hashes a string to a unique hashcode.
+// https://github.com/hashicorp/terraform/blob/master/helper/hashcode/hashcode.go
+// crc32 returns a uint32, but for our use we need
+// and non negative integer.</description></item></channel></rss>

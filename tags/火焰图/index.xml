@@ -4,4 +4,20 @@ go1.10自带 go tool pprof工具
 go version 查看golang版本
 安装 引用包_ &amp;quot;net/http/pprof&amp;quot;
 内置包的路径: net\http\pprof\pprof.go
-const ( PProfPort = 6060 // 端口 ) func PprofServer() { runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪 runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪 go func() { err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil) if err != nil { zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;) } }() } func main() { PprofServer() select{} } 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description></item></channel></rss>
+const (
+PProfPort = 6060 // 端口
+)
+func PprofServer() {
+runtime.SetMutexProfileFraction(1) // 开启对锁调用的跟踪
+runtime.SetBlockProfileRate(1) // 开启对阻塞操作的跟踪
+go func() {
+err := http.ListenAndServe(fmt.Sprintf(&amp;#34;:%d&amp;#34;, PProfPort), nil)
+if err != nil {
+zlog.Warn().Err(err).Msg(&amp;#34;BootPprof&amp;#34;)
+}
+}()
+}
+func main() {
+PprofServer()
+select{}
+} 浏览器查看 allocs 查看内存分配详情 block 同步原语阻塞的堆栈跟踪 cmdline 当前程序运行的参数 goroutine 所有当前goroutines的堆栈跟踪 heap 活动对象的内存分配的抽样 mutex 争用互斥锁的持有者的堆栈跟踪 profile CPU配置文件, 还可以使用go tool pprof 查看某时间段的cpu情况, 并生成火焰图 go tool pprof http://localhost:6060/debug/pprof/profile?</description></item></channel></rss>

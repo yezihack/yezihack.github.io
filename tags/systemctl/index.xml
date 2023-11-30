@@ -3,6 +3,21 @@
 systemctl 命令的使用 以下以 redis 为例
 启动 systemctl start redis 停止 systemctl stop redis 重启 systemctl restart redis 状态 systemctl status redis 刷新服务 systemctl daemon-reload ###　设置开机启动
 systemctl enable redis 自定义配置 新建 systemctl 文件 以 redis 服务为例
-touch /lib/systemd/system/redis.service vim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
-[Unit] Description=Redis After=network.target [Service] Type=forking ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf ExecReload=/usr/local/bin/redis-server -s reload ExecStop=/usr/local/bin/redis-server -s stop PrivateTmp=true Type=simple KillMode=process Restart=on-failure RestartSec=3s [Install] WantedBy=multi-user.target [Unit] 表示这是基础信息
+touch /lib/systemd/system/redis.service
+vim /lib/systemd/system/redis.service 配置文件 vim /lib/systemd/system/redis.service
+[Unit]
+Description=Redis
+After=network.target
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/redis-server /etc/redis/redis.conf
+ExecReload=/usr/local/bin/redis-server -s reload
+ExecStop=/usr/local/bin/redis-server -s stop
+PrivateTmp=true
+Type=simple
+KillMode=process
+Restart=on-failure
+RestartSec=3s
+[Install]
+WantedBy=multi-user.target [Unit] 表示这是基础信息
 Description 是描述 After 是在那个服务后面启动，一般是网络服务启动后启动 [Service] 表示这里是服务信息</description></item></channel></rss>

@@ -58,7 +58,8 @@ docker network create es-network Elasticsearch 安装 docker pull elasticsearch:
 在服务器上禁用 ipv6
 vim /etc/default/grub 在第6行中增加 ipv6.disable=1
 GRUB_CMDLINE_LINUX=&amp;#34;ipv6.disable=1 crashkernel=auto spectre_v2=retpoline rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&amp;#34; 重新配置grub并重启服务器
-grub2-mkconfig -o /boot/grub2/grub.cfg reboot WARNING: bridge-nf-call-iptables is disabled WARNING: bridge-nf-call-iptables is disabled WARNING: bridge-nf-call-ip6tables is disabled 解决方法
+grub2-mkconfig -o /boot/grub2/grub.cfg reboot WARNING: bridge-nf-call-iptables is disabled WARNING: bridge-nf-call-iptables is disabled
+WARNING: bridge-nf-call-ip6tables is disabled 解决方法
 vim /etc/sysctl.conf # 添加以下二行内容 net.bridge.bridge-nf-call-ip6tables = 1 net.bridge.bridge-nf-call-iptables = 1 # 然后使其生效 sysctl -p /etc/sysctl.conf # 验证 docker info docker 磁盘不足 第一步： 查看服务的磁盘情况
 df -h
 第二步：查看 docker 使用的磁盘路径</description></item></channel></rss>
