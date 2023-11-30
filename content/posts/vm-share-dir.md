@@ -34,7 +34,7 @@ mkdir /opt/vm-share
 ln -s /mnt/hgfs/vm-share/ /opt/vm-share
 ```
 
-## 设置开机启动
+## 3. 设置开机启动
 
 ```sh
 cat >> /etc/rc.local <<EOF

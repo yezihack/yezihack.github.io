@@ -33,9 +33,9 @@ tar -zxvf nginx-1.23.3.tar.gz
 cd nginx-1.23.3
 ```
 
-### 修改源码版本
+### 修改源码版本(可选)
 
-> 修改 nginx 默认的版本名称,如 nginx/1.23.3, 可任意修改为: sgfoot/100.0.0
+> 增加安全性，可以修改 nginx 默认的版本名称,如 nginx/1.23.3, 可任意修改为: sgfoot/100.0.0
 
 ```sh
 vim src/core/nginx.h # 大约在14行左右
@@ -56,24 +56,27 @@ vim src/core/nginx.h # 大约在14行左右
 - `with-http_realip_module` 获取真实IP模块
 - `with-threads` 线程池模块,提高nginx性能
 - `with-http_gzip_static_module` 开启压缩功能
+- `--with-http_v2_module` 用于启用 Nginx 中的 HTTP/2 功能模块，以提供更快速和高效的 Web 服务
 
 ```sh
 yum -y install gcc pcre pcre-devel zlib zlib-devel openssl openssl-devel
 
-# 添加用户和组
-groupadd www
-useradd -g www www
+# 添加用户和组， -s /sbin/nologin 不允许登陆的帐号，-M 没有/home的帐号，-g 添加到 nginx 组中
+sudo groupadd nginx
+sudo useradd -s /sbin/nologin -M -g nginx nginx
+
 
 # 配置
 ./configure \
---user=www \
---group=www \
---prefix=/usr/local/nginx \
---with-http_ssl_module \
---with-http_stub_status_module \
---with-http_realip_module \
---with-threads \
---with-http_gzip_static_module
+    --user=nginx \
+    --group=nginx \
+    --prefix=/usr/local/nginx \
+    --with-http_ssl_module \
+    --with-http_stub_status_module \
+    --with-http_realip_module \
+    --with-threads \
+    --with-http_gzip_static_module \
+    --with-http_v2_module
 
 # 编译
 make
@@ -199,12 +202,33 @@ conf.d 文件夹配置实例:
 
 ```conf
 server {
-   listen       8000;
+   listen       8000 http2;
    server_name  test.cc;
 
    location / {
         return 200;
    }
+}
+```
+
+```conf
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate /path/to/ssl_certificate.crt;;
+    ssl_certificate_key /path/to/ssl_certificate.key;
+    ssl_protocols TLSv1.2 TLSv1.3;        
+    ssl_session_cache shared:SSL:1m;
+    ssl_session_timeout  10m;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    location / {
+        return 200 "ok";
+   }
+    # 其他配置项...
+
 }
 ```
 
@@ -217,6 +241,5 @@ server {
 
 我的博客：<https://yezihack.github.io>
 
-欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。
+一日不学则面目可憎也，吾学也。
 
-![空树之空](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20210122112114.png?imageslim)
