@@ -3,7 +3,7 @@ title: "Helm Chart 模板"
 date: 2023-11-29T18:44:17+08:00
 lastmod: 2023-11-29T18:44:17+08:00
 draft: false
-tags: ["helm", "chart". "云原生"]
+tags: ["helm", "chart","云原生"]
 categories: ["云原生"]
 author: "百里"
 comment: false

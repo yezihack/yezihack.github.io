@@ -3,7 +3,7 @@ title: "Helm 入门学习"
 date: 2023-11-29T16:23:40+08:00
 lastmod: 2023-11-29T16:23:40+08:00
 draft: false
-tags: ["helm", "chart". "云原生"]
+tags: ["helm", "chart","云原生"]
 categories: ["云原生"]
 author: "百里"
 comment: false
