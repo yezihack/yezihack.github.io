@@ -1,4 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 空树之空</title><link>https://yezihack.github.io/tags/linux/</link><description>Recent content in linux on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 28 Dec 2023 23:28:45 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux Chronyd 极简教程</title><link>https://yezihack.github.io/posts/chronyd/</link><pubDate>Thu, 28 Dec 2023 23:28:45 +0800</pubDate><guid>https://yezihack.github.io/posts/chronyd/</guid><description>1. 什么是 Chrony Chrony 是一款用于时钟同步的程序，它可以通过网络协议（如 NTP、UDP）与外部时间源进行通信，从而使本地系统的时钟与参考时钟保持同步。相比其他时钟同步程序，Chrony 具有更高的精度和更好的稳定性，特别适用于在网络不稳定或移动设备上使用。
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>linux on 空树之空</title><link>https://yezihack.github.io/tags/linux/</link><description>Recent content in linux on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 29 Dec 2023 15:44:25 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux Firewalld 防火墙的极简教程</title><link>https://yezihack.github.io/posts/firewalld/</link><pubDate>Fri, 29 Dec 2023 15:44:25 +0800</pubDate><guid>https://yezihack.github.io/posts/firewalld/</guid><description>1. 什么是 Firewalld Firewalld 是一个在 Linux 系统上提供动态防火墙管理的工具。它是一个用户和管理员友好的前端，用于配置和管理 iptables 规则，并提供了一种简化的方式来管理网络连接和保护系统免受未经授权的访问。
+Firewalld 的主要特点包括：
+基于区域的防火墙：Firewalld 将网络接口划分为不同的区域，例如公共区域、内部区域和信任区域。每个区域都有其自己的安全策略和规则集。 动态更新规则：Firewalld 允许实时添加、删除和修改防火墙规则，而无需重启防火墙服务或中断网络连接。 服务和应用程序级别的访问控制：Firewalld 允许根据服务或应用程序的名称来控制网络访问权限，而不仅仅是基于端口号。 高级网络管理功能：Firewalld 支持网络地址转换（NAT）、端口转发、IPSec 和 IPv6 等高级网络功能。 兼容性和扩展性：Firewalld 可以与其他网络管理工具和服务集成，如 NetworkManager 和 SELinux。 使用 Firewalld，管理员可以轻松地配置和管理系统的防火墙设置，保护系统免受恶意网络活动和未经授权的访问。它提供了一种灵活且强大的方式来管理网络连接，并根据实际需求进行定制配置。
+需要注意的是，Firewalld 本身并不是防火墙，而是一个防火墙管理工具。
+2. 工作原理 Firewalld 的工作原理可以简要概括如下：
+区域和服务定义：Firewalld 使用预定义的区域和服务来管理网络连接和访问控制。区域定义了特定接口的安全策略，而服务定义了允许的网络服务和端口。
+运行时状态：Firewalld 在运行时维护一个状态，以跟踪网络连接和防火墙规则的变化。它监视网络接口上的数据包流量，并根据规则进行决策。
+防火墙规则集：Firewalld 根据配置文件中定义的防火墙规则集来处理传入和传出的数据包。规则可以基于源 IP、目标 IP、源端口、目标端口等条件进行匹配，并决定是允许还是拒绝数据包。
+动态更新：Firewalld 允许在运行时动态地添加、删除和修改防火墙规则，而无需重启防火墙服务或中断网络连接。这使得管理员可以实时地对网络连接进行调整和控制。
+网络地址转换（NAT）和端口转发：Firewalld 支持配置网络地址转换（NAT）和端口转发规则，以便将数据包从一个网络接口转发到另一个接口或端口。
+D-Bus 接口：Firewalld 提供了一个 D-Bus 接口，使其他应用程序和工具可以与其交互并管理防火墙设置。
+Firewalld 是通过定义防火墙规则最终交由内核的 netfilter 进行包过滤实现防火墙功能。
+3. 架构图 以下是官方给出的架构图，https://firewalld.org/documentation/architecture.html
+Firewalld 是一个复杂的系统，包含了多个组件和模块来实现其功能。以下是关于每个组件的简要介绍：
+前端组件：
+firewall-cmd：firewall-cmd 是 Firewalld 的命令行前端工具，用于管理和配置防火墙规则、区域、服务等。 firewall-config：firewall-config 是一个图形化的前端工具，提供了一个易于使用的界面来配置和管理防火墙设置。 firewall-applet：firewall-applet 是 Firewalld 的系统托盘应用程序，可以在系统托盘中显示防火墙状态，并提供快速访问配置选项的功能。 firewall-offline-cmd：firewall-offline-cmd 是一个离线命令行工具，用于在没有网络连接的情况下配置和管理防火墙规则。 核心组件：</description></item><item><title>Linux Chronyd 极简教程</title><link>https://yezihack.github.io/posts/chronyd/</link><pubDate>Thu, 28 Dec 2023 23:28:45 +0800</pubDate><guid>https://yezihack.github.io/posts/chronyd/</guid><description>1. 什么是 Chrony Chrony 是一款用于时钟同步的程序，它可以通过网络协议（如 NTP、UDP）与外部时间源进行通信，从而使本地系统的时钟与参考时钟保持同步。相比其他时钟同步程序，Chrony 具有更高的精度和更好的稳定性，特别适用于在网络不稳定或移动设备上使用。
 以下是 Chrony 的一些主要特点：
 渐进式时钟调整：Chrony 通过缓慢地调整时钟频率和偏移量来避免大幅度调整引起的系统不稳定性。 时钟纠正算法：Chrony 使用一种称为 MLE（Maximum Likelihood Estimation）的算法来计算时钟偏移量和频率误差，从而提高时钟同步的准确性和稳定性。 无需 root 权限：Chrony 可以在普通用户下运行，并且不需要 root 权限。 安全性：Chrony 支持加密和身份验证，以防止恶意攻击和数据篡改。 网络适应性：Chrony 可以根据网络延迟和时钟偏移量自适应地选择最佳的时间源。 相比 NTP 更加精准好用。推荐使用 Chrony。
 总的来说，Chrony 是一款功能强大、精度高、稳定性好、安全性高的时钟同步程序，广泛用于各种 Linux 和 Unix 系统中。
