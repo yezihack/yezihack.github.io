@@ -748,6 +748,12 @@ NodePort方式暴露ingress虽然简单方便，但是NodePort多了一层NAT，
 
 用DaemonSet结合nodeselector来部署ingress-controller到特定的node上，然后使用HostNetwork直接把该pod与宿主机node的网络打通，直接使用宿主机的80/433端口就能访问服务。这时，ingress-controller所在的node机器就很类似传统架构的边缘节点，比如机房入口的nginx服务器。该方式整个请求链路最简单，性能相对NodePort模式更好。缺点是由于直接利用宿主机节点的网络和端口，一个node只能部署一个ingress-controller pod。比较适合大并发的生产环境使用。
 
+### 版本的选择
+
+![](https://s2.loli.net/2023/12/15/wUvmWDTArykN5LF.png)
+
+可以在 <https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#changelog> 找到.
+
 ### .7.3. Ingress-nginx 部署
 
 ```sh
@@ -866,6 +872,8 @@ Metrics Server 是 Kubernetes 集群核心监控数据的聚合器，Metrics Ser
 #### .8.1.1. 安装
 
 安装前需要查看对应的版本，如当前 k8s 1.16 选择为：v0.3.6
+
+<https://github.com/kubernetes-sigs/metrics-server?tab=readme-ov-file#compatibility-matrix>
 
 ![kubeadm-install-20220815151235](https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220815151235)
 
