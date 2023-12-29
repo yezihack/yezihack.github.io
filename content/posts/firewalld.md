@@ -1,5 +1,5 @@
 ---
-title: "Firewalld 防火墙的极简教程"
+title: "Linux Firewalld 防火墙的极简教程"
 date: 2023-12-29T15:44:25+08:00
 lastmod: 2023-12-29T15:44:25+08:00
 draft: false
