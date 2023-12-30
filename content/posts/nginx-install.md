@@ -147,7 +147,7 @@ systemctl restart nginx
 - 
 
 ```conf
-user  www www;
+user  nginx nginx;
 worker_processes 8;
 worker_cpu_affinity 10000000 01000000 00100000 00010000 00001000 00000100 00000010 00000001
 worker_rlimit_nofile 51200;
@@ -175,15 +175,16 @@ http {
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"';
 
-    #access_log  logs/access.log  main;
+    access_log  logs/access.log  main;
 
-    sendfile       on; # 加速文件传输效率
+    sendfile       on;     # 加速文件传输效率
     tcp_nopush     on; # 减小了额外开销，提高网络效率
-    tcp_nodelay    on;
+    tcp_nodelay    on; # 数据包无论大小都立即发送,提高实时性和响应速度。
+    server_tokens off; # 隐藏版本号
 
     #keepalive_timeout  0;
-    keepalive_timeout  65;
-    client_max_body_size 100m;         #主要是这个参数，限制了上传文件大大小
+    keepalive_timeout  65;                  # 设置服务器保持该连接的最长时间
+    client_max_body_size 100m;         # 主要是这个参数，限制了上传文件大大小
 
     # 开启压缩
     gzip  on;
@@ -204,10 +205,92 @@ conf.d 文件夹配置实例:
 server {
    listen       8000 http2;
    server_name  test.cc;
+   server_tokens off; # 隐藏版本号
 
    location / {
         return 200;
    }
+}
+```
+
+- 浏览目录列表
+- 支持播放视频
+
+```conf
+server {
+    listen       8100;
+    listen  [::]:8100;
+    server_name  localhost sgfoot.io;
+
+    #charset koi8-r;
+    # charset utf-8;
+    charset utf-8,gbk;
+
+    access_log  /var/log/nginx/sgfoot.io.log  main;
+
+    location / {
+        root /usr/share/nginx/html;
+        index  index.html index.htm;
+        autoindex on;
+        # 使用 urlencode 模块对目录名称进行编码
+        autoindex_format html;
+        autoindex_localtime on;
+        autoindex_exact_size off;  
+    }
+            
+    location ~ \.(mp4|avi|flv|mov|wmv|mkv)$ {
+        root /usr/share/nginx/html;
+        mp4;
+        mp4_buffer_size 1024m;
+        mp4_max_buffer_size 5012m;
+    }
+    # location = /a {
+    #     return 200 "a1";
+    #     add_header Content-Type text/plain;
+    # }
+    location ~ ^/a/?$ {
+        return 404;
+        add_header Content-Type text/plain;
+    }
+    #error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
+}
+```
+
+- 浏览目录列表
+- 支持播放视频
+
+```conf
+server {
+    listen       8100;
+    listen  [::]:8100;
+    server_name  localhost;
+
+    #charset koi8-r;
+    # charset utf-8;
+    charset utf-8,gbk;
+
+    access_log  logs/nginx-8100-access.log  main;
+
+    location / {
+        add_header Content-Type text/plain;
+        return 200 "ok";
+    }
+
+    error_page  404              /404.html;
+
+    # redirect server error pages to the static page /50x.html
+    #
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   html;
+    }
 }
 ```
 

@@ -107,7 +107,7 @@ firewall-cmd --state
 通过将网络划分成不同的区域，制定出不同区域之间的访问控制策略来控制不同程序区域间传送的数据流。
 
 | 网络区名称	| 默认配置
-| ---- | ----
+| ------------ | --------
 | trusted（信任）	| 可接受所有的网络连接
 | home（家庭）	| 用于家庭网络，仅接受ssh,mdns,gp-client,samba-client,dhcpv6-client连接
 | internal（ 内部）	| 用于内部网络，仅接受ssh,mdns,gp-client,samba-client,dhcpv6-client连接
@@ -118,18 +118,45 @@ firewall-cmd --state
 | block（限制）	| 拒绝所有网络的连接
 | drop （丢弃）	| 任何接收的网络数据包都被丢弃，没有任何回复
 
-使用以下命令可以查看到所有的区域：
+### 5.1. firewalld 区域的指导
+
+1. 默认区域：默认情况下，系统中的所有接口都会被分配到默认区域。你可以通过修改默认区域的规则来控制网络流量的访问。
+   1. 如设置 public 为默认区域，则 interfaces 未分配接口时，接管所有的接口流量。
+   2. 如设置 public interfaces 接口为 eth0,则只接管 eth0 接口的流量。
+2. 活跃区域：如果某区域设置了某接口则表示这个区域正在活跃，则表示这个区域的规则是对这个接口生效的。
+   1. 如果某区域标有（active）字样则也表示活跃状态，则该区域的规则也生效。   
+3. 区域划分：你可以根据你的网络环境和需求创建自定义区域，通过将不同的接口分配给不同的区域，你可以根据需要设置不同的防火墙规则，以保护和控制这些不同部分的网络流量。
+4. 防火墙规则：每个区域都可以有自己的一组防火墙规则。
+5. 区域之间的转换：你可以在不同的区域之间移动接口。
+6. 其它
+   1. 如果非默认区域，没有标（active）字样且 interfaces 为空，该区域的规则不生效。
+   2. 如果某区域设置 Default 默认区域则规则生效。
+   3. 如果非默认区域且设置某接口，规则也对该接口生效。
+
+### 5.2. 区域管理命令
 
 ```sh
 # 查看可用的区域
 firewall-cmd --list-all-zones
 firewall-cmd --get-zones
 
-# 设置默认的区域
+# 创建区域
+firewall-cmd --permanent --new-zone=<zone>
+
+# 设置默认区域
 firewall-cmd --set-default-zone=<zone>
 
-# 分配区域给接口
-firewall-cmd --zone=<zone> --change-interface=<interface>
+# 查看活跃区域
+firewall-cmd --get-active-zones
+
+# 区域绑定接口
+firewall-cmd --zone=public --add-interface=<interface>
+
+# 区域更改接口
+firewall-cmd --zone=public --change-interface=<interface>
+
+# 区域删除接口
+firewall-cmd --zone=public --remove-interface=<interface>
 
 # 添加/删除服务
 firewall-cmd --zone=<zone> --add-service=<service>
@@ -149,16 +176,17 @@ firewall-cmd --list-all-zones
 # 要修改默认区域：
 firewall-cmd --set-default-zone=public
 
-# 查看默认区域
+# 查看 firewalld 的默认区域
+firewall-cmd --get-default-zone
+
+# 查看正在活跃的区域
+firewall-cmd --get-active-zones
+
+# 查看默认区域规则 
 firewall-cmd --list-all 
 
 # 查看指定的 zone 规则
 firewall-cmd --zone=trusted --list-all
-
-# 对某区域进行添加/删除/更改网卡
-firewall-cmd --zone=public --add-interface=eth0
-firewall-cmd --zone=public --remove-interface=eth0
-firewall-cmd --zone=public --change-interface=eth0
 
 # 查看状态
 sudo firewall-cmd --state
@@ -233,7 +261,14 @@ firewall-cmd --zone=www --add-masquerade
 > Direct 规则允许在防火墙中直接添加自定义 Iptables 规则
 
 ```sh
+# 添加
 firewall-cmd --direct  --permanent --add-rule ipv4 filter INPUT 0 -s 192.168.1.101/32 -m multiport -p tcp --dport 22 -m comment --comment ssh -j ACCEPT 
+
+# 查询
+firewall-cmd --direct --get-all-rules
+
+# 删除
+firewall-cmd --direct --remove-rule <rule>
 ```
 
 ## 8. Rich 规则使用
@@ -250,12 +285,84 @@ firewall-cmd --direct  --permanent --add-rule ipv4 filter INPUT 0 -s 192.168.1.1
 8. forward-port：forward-port 是一种特殊的 rich 规则，用于设置端口转发。可以指定源端口、目标端口和目标地址。
 9. to-port and to-addr：forward-port 规则中的 to-port 参数用于指定转发到的目标端口，而 to-addr 参数用于指定转发到的目标地址。
 
-如将上面添加的命令转换成 rich 写法，如下代码：
+### 8.1. rich 规则格式
+
+- 添加规则格式: `firewall-cmd [--zone=zone] --add-rich-rule='rule' [--timeout=timeval]`
+  - `--timeout` 默认为秒,单位:s(秒),m(分钟),h(小时)
+- 删除规则格式: `firewall-cmd [--zone=zone] --remove-rich-rule='rule'`
+- 查询规则是否存在格式:`firewall-cmd [--zone=zone] --query-rich-rule='rule'`
+  - 返回 yes: 0, no: 1
+
+### 8.2. rich 规则结构
 
 ```sh
-firewall-cmd --permanent --zone=www --add-rich-rule='rule family="ipv4" source address="any" service name="http" accept'
-firewall-cmd --permanent --zone=www --add-rich-rule='rule family="ipv4" port port="22" protocol="tcp" accept'
-firewall-cmd --permanent --zone=www --add-rich-rule='rule family="ipv4" forward-port port="80" protocol="tcp" to-port="8080" to-addr="192.168.1.100"'
+rule [family="rule family"]
+    [ source [NOT] [address="address"] [mac="mac-address"] [ipset="ipset"] ]
+    [ destination [NOT] address="address" ]
+    [ element ]
+    [ log [prefix="prefix text"] [level="log level"] [limit value="rate/duration"] ]
+    [ audit ]
+    [ action ]
+```
+
+### 8.3. 添加 rich 代码
+
+```sh
+# 允许 http 服务通行
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="any" service name="http" accept'
+
+# 允许 TCP 22 端口通行
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" port port="22" protocol="tcp" accept'
+
+# 将 TCP 80 转发到 192.168.1.100 8080 端口上
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" forward-port port="80" protocol="tcp" to-port="8080" to-addr="192.168.1.100"'
+
+# 只允许 192.168.9.20 8100 端口通行
+firewall-cmd --permanent --add-rich-rule='rule family="ipv4" source address="192.168.9.20/32" port port="8100" protocol="tcp" accept'
+
+# 只允许 192.168.9.20 telnet 服务通行
+firewall-cmd --add-rich-rule='rule family=ipv4 source address=192.168.9.20/32 service name=telnet limit value=1/m accept'
+
+# 只允许 192.168.9.20 8100 端口通行并限速一分钟内只允许一个连接
+firewall-cmd --add-rich-rule='rule family=ipv4 source address="192.168.9.20/32" port protocol="tcp" port="8100" limit value=1/m accept'
+
+# 禁止 ping 
+firewall-cmd --add-rich-rule='rule protocol value=icmp reject'
+
+# 60秒后超时自动删除规则命令,即生效时间为60秒,默认为秒,单位:s(秒),m(分钟),h(小时)
+firewall-cmd --add-rich-rule='rule protocol value="icmp" reject' --timeout=60
+
+# 使用日志功能 log, 可以在 /var/log/messages 或 /var/log/syslog 文件中查看
+firewall-cmd --add-rich-rule='rule family=ipv4 source address=192.168.1.0/24 port port="8100" log prefix="Port: 8100 Access" level="notice" accept'
+firewall-cmd --add-rich-rule='rule family=ipv4 port port="8100" protocol="tcp" log prefix="Port: 8100 Access" level="notice" accept'
+firewall-cmd --add-rich-rule='rule family=ipv4 port port="8100" protocol="tcp" limit value=1/m log prefix="Port: 8100 Access" level="notice" accept'
+
+# 限制数据包的速率
+firewall-cmd --add-rich-rule='rule family="ipv4" source address="0.0.0.0/0" port port="8100" protocol="tcp" limit value="1/m" accept'
+
+firewall-cmd --reload
+```
+
+### 8.4. 删除 rich 代码
+
+- `--add-rich-rule` 改成 `--remove-rich-rule` ,后面的命令不变
+
+例如:
+
+```sh
+# 添加
+firewall-cmd --add-rich-rule='rule protocol value=icmp reject'
+
+# 删除
+firewall-cmd --remove-rich-rule='rule protocol value=icmp reject'
+firewall-cmd --remove-rile-rule='rule family="ipv4" port port="8100" protocol="tcp" accept'
+```
+
+### 8.5. 查看 rich 规则
+
+```sh
+firewall-cmd --list-rich-rules
+firewall-cmd --list-all
 ```
 
 ## 9. Ipset 使用
@@ -345,10 +452,26 @@ sudo firewall-cmd --permanent --delete-ipset=k8s
 sudo firewall-cmd --reload
 ```
 
-## 10. 排障思路
+## 10. 常见设置
+
+### 10.1. 允许内网通行
+
+```sh
+# 允许局域网IP和端口全部通过
+firewall-cmd --permanent --zone=trusted --set-target=ACCEPT
+firewall-cmd --permanent --zone=trusted --add-source=127.0.0.1/32
+firewall-cmd --permanent --zone=trusted --add-source=192.168.9.0/24
+firewall-cmd --permanent --zone=trusted --add-port=0-65535/tcp
+```
+
+## 11. 排障思路
 
 1. 查询防火墙的状态
 2. 查看各区域的的规则设置
 3. 查看 Direct 规则
 4. 使用 `--permanent` 时，一定记得使用 `firewall-cmd --reload` 规则才会生效
 5. 找台其它机器测试添加的规则是否生效
+
+## 12. 参考
+
+- <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/configuring_complex_firewall_rules_with_the_rich-language_syntax>

@@ -53,17 +53,6 @@ DISM /Online /Cleanup-Image /RestoreHealth
 - <https://learn.microsoft.com/en-us/answers/questions/663590/windows-error.html>
 - <https://learn.microsoft.com/zh-cn/windows-hardware/manufacture/desktop/repair-a-windows-image?source=recommendations&view=windows-11>
 
-
-
-
-
-
-
-
-
-
-
-
 ## .4. 关于作者
 
 我的博客：<https://yezihack.github.io>
