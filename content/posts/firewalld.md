@@ -454,14 +454,35 @@ sudo firewall-cmd --reload
 
 ## 10. 常见设置
 
-### 10.1. 允许内网通行
+### 10.1. 更改 Backends
+
+> 常见的 firewalld 后端引擎 nftables, iptables 等。
+
+1. 从 Firewalld 0.6.0 版本开始，默认后端由 iptables 切换为了 Nftables。Nftables 是 Linux 内核中的一个新的防火墙框架，提供了更强大和灵活的防火墙规则管理功能。
+
+```sh
+# 查看防火墙版本
+firewall-cmd --version
+
+# edit
+vim /etc/firewalld/firewalld.conf
+
+FirewallBackend=nftables
+或
+FirewallBackend=iptables
+
+```
+
+### 10.2. 允许内网通行
 
 ```sh
 # 允许局域网IP和端口全部通过
-firewall-cmd --permanent --zone=trusted --set-target=ACCEPT
-firewall-cmd --permanent --zone=trusted --add-source=127.0.0.1/32
-firewall-cmd --permanent --zone=trusted --add-source=192.168.9.0/24
-firewall-cmd --permanent --zone=trusted --add-port=0-65535/tcp
+firewall-cmd --zone=trusted --set-target=ACCEPT --permanent
+firewall-cmd --zone=trusted --add-source=127.0.0.1/32 --add-source=192.168.9.0/24 --permanent
+firewall-cmd --zone=trusted --add-port=0-65535/tcp --add-port=0-65535/udp --permanent
+firewall-cmd --zone=trusted --add-masquerade --permanent
+
+firewall-cmd --reload
 ```
 
 ## 11. 排障思路
