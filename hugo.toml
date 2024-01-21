@@ -19,10 +19,11 @@ name = "百里江山"
     title = "空树之空"
     brand = "空树之空"
     # brand_image = "/images/brand_image.jpg"
-    brand_image = "/images/head.jpg"
+    # brand_image = "/images/head.jpg"
+    brand_image = "/images/logo_transparent.png"
     og_image = "/images/f1.png"                             # path to social icon - front matter: image takes precedent, then og_image, then brand_url
     publisher_icon = "/images/f1.png"                       # path to publisher icon - defaults to favicon, used in schema
-    favicon = "/images/f1.png"                              # path to favicon
+    favicon = "/images/p2.png"                              # path to favicon    
     # description = "《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes（K8s）、DevOps、GitOps、运维和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。By <a href='https://github.com/yezihack' target='_blank'>@yezihack</a>"
     description = "《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。"
     dark_mode = true

@@ -111,7 +111,19 @@ hostnamectl set-hostname kube-13
 hostnamectl set-hostname kube-14
 ```
 
-### .2.6. 关闭防火墙
+### .2.6. 添加阿里源
+
+```sh
+wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+```
+
+### .2.7. 安装基础软件
+
+```sh
+yum install net-tools git vim telnet screen tree nmap dos2unix lrzsz nc lsof wget tcpdump htop iftop iotop sysstat nethogs traceroute -y
+```
+
+### .2.8. 关闭防火墙
 
 ```sh
 systemctl stop firewalld && systemctl disable firewalld
@@ -119,7 +131,7 @@ systemctl stop firewalld && systemctl disable firewalld
 systemctl status firewalld
 ```
 
-### .2.7. 关闭 selinux
+### .2.9. 关闭 selinux
 
 ```sh
 sed -i 's/enforcing/disabled/' /etc/selinux/config # 永久
@@ -127,7 +139,7 @@ setenforce 0 # 临时
 getenforce # 查看
 ```
 
-### .2.8. 关闭 swap
+### .2.10. 关闭 swap
 
 ```sh
 swapoff -a # 临时 
@@ -135,7 +147,7 @@ sed -ri 's/.*swap.*/#&/' /etc/fstab # 永久
 swapon -v # 检查
 ```
 
-### .2.9. 添加 HOST
+### .2.11. 添加 HOST
 
 ```sh
 cat >> /etc/hosts << EOF
@@ -147,13 +159,13 @@ cat >> /etc/hosts << EOF
 EOF
 ```
 
-### .2.10. 时间同步
+### .2.12. 时间同步
 
 采用 chrony 软件同步时间。
 
 Chrony是NTP（Network Time Protocol，网络时间协议，服务器时间同步的一种协议）的另一种实现，与ntpd不同，它可以更快且更准确地同步系统时钟，最大程度的减少时间和频率误差。
 
-#### .2.10.1. chrony 安装
+#### .2.12.1. chrony 安装
 
 ```sh
 # 安装
@@ -169,7 +181,7 @@ systemctl enable chronyd 　　  #设置开机启动
 
 ```
 
-#### .2.10.2. 修改为中国时区
+#### .2.12.2. 修改为中国时区
 
 ```sh
 timedatectl set-timezone Asia/Shanghai
@@ -178,7 +190,7 @@ timedatectl set-timezone Asia/Shanghai
 chronyc -a makestep
 ```
 
-#### .2.10.3. 修改配置
+#### .2.12.3. 修改配置
 
 ```sh
 vim /etc/chrony.conf
@@ -200,7 +212,7 @@ allow 192.168.9.0/24   #允许哪些服务器到这台服务器来同步时间
 
 - ntp1.aliyun.com
 
-#### .2.10.4. 同步时间
+#### .2.12.4. 同步时间
 
 ```sh
 # 查看当前系统时区
@@ -216,7 +228,7 @@ chronyc sourcestats -v
 chronyc tracking
 ```
 
-#### .2.10.5. 加入防火墙
+#### .2.12.5. 加入防火墙
 
 > 如果开启了防火墙，需要设置白名单
 
@@ -748,13 +760,13 @@ NodePort方式暴露ingress虽然简单方便，但是NodePort多了一层NAT，
 
 用DaemonSet结合nodeselector来部署ingress-controller到特定的node上，然后使用HostNetwork直接把该pod与宿主机node的网络打通，直接使用宿主机的80/433端口就能访问服务。这时，ingress-controller所在的node机器就很类似传统架构的边缘节点，比如机房入口的nginx服务器。该方式整个请求链路最简单，性能相对NodePort模式更好。缺点是由于直接利用宿主机节点的网络和端口，一个node只能部署一个ingress-controller pod。比较适合大并发的生产环境使用。
 
-### 版本的选择
+### .7.3. 版本的选择
 
 ![](https://s2.loli.net/2023/12/15/wUvmWDTArykN5LF.png)
 
 可以在 <https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#changelog> 找到.
 
-### .7.3. Ingress-nginx 部署
+### .7.4. Ingress-nginx 部署
 
 ```sh
 wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
@@ -789,7 +801,7 @@ spec:
       ....
 ```
 
-### .7.4. Ingress 测试
+### .7.5. Ingress 测试
 
 ```sh
 # 部署
@@ -809,7 +821,7 @@ curl kube-box.io/kube-box/ping
 
 ```
 
-### .7.5. 部署异常
+### .7.6. 部署异常
 
 (1). MountVolume.SetUp failed for volume "webhook-cert" : secret "ingress-nginx-admission" not found
 

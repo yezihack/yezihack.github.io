@@ -2,7 +2,7 @@
 title: "Window Subsystem Ubuntu"
 date: 2020-03-14T22:36:14+08:00
 draft: false
-tags: ["工具", "win10", "subsystem", "ubuntu"]
+tags: ["工具", "win", "subsystem", "ubuntu", "linux"]
 categories: ["工具"]
 author: "百里"
 comment: false

@@ -496,3 +496,4 @@ firewall-cmd --reload
 ## 12. 参考
 
 - <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/configuring_complex_firewall_rules_with_the_rich-language_syntax>
+- <https://www.sbarjatiya.com/notes_wiki/index.php/CentOS_8.x_firewalld_rich_rules>

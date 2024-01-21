@@ -3,7 +3,7 @@ title: "Windows 找不到文件 C: Program Files/Windowsapps...launcherrsxruntim
 date: 2022-11-13T08:27:37+08:00
 lastmod: 2022-11-13T08:27:37+08:00
 draft: false
-tags: ["修复", "win10", "window10", "cmd"]
+tags: ["修复", "win", "window10", "cmd"]
 categories: ["windows"]
 author: "百里"
 comment: false

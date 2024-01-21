@@ -28,7 +28,9 @@ music_auto: 1
   - [.1.5. 安装失败](#15-安装失败)
     - [.1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel](#151-error-an-nvidia-kernel-module-nvidia-uvm-appears-to-already-be-loaded-in-your-kernel)
     - [.1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel](#152-error-unable-to-find-the-kernel-source-tree-for-the-currently-running-kernel)
-  - [.1.6. 重装内核](#16-重装内核)
+  - [.1.6. 重装内核：方法一](#16-重装内核方法一)
+  - [重装内核：方法二](#重装内核方法二)
+  - [设置默认内核](#设置默认内核)
   - [.1.7. 再次安装 GPU 驱动包](#17-再次安装-gpu-驱动包)
     - [.1.7.1. 安装 .run 文件](#171-安装-run-文件)
     - [.1.7.2. 安装 .rpm 文件](#172-安装-rpm-文件)
@@ -165,7 +167,7 @@ total 0
 
 当前加载运行的内核版本： 3.10.0-957.el7.x86_64，而安装列表上只有 3.10.0-1160.66.1.el7.x86_64 版本，说明存在两套不同版本的内核，而且实际目录下的内核文件也不完整。比较混乱。我们需要重新安装一套运行的内核：3.10.0-957.el7.x86_64。其它版本的内核全部卸载掉。
 
-### .1.6. 重装内核
+### .1.6. 重装内核：方法一
 
 从 CentOS 官方找到对应版本的内核安装文件：<https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/>
 
@@ -186,6 +188,12 @@ total 0
 3. [https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/kernel-tools-3.10.0-957.el7.x86_64.rpm](https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/kernel-tools-3.10.0-957.el7.x86_64.rpm)
 4. [https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/python-perf-3.10.0-957.el7.x86_64.rpm](https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/python-perf-3.10.0-957.el7.x86_64.rpm)
 5. [https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/kernel-headers-3.10.0-957.el7.x86_64.rpm](https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/kernel-headers-3.10.0-957.el7.x86_64.rpm)
+
+下载不同的内核版本：
+
+- kernel-3.10.0-1160 版本
+  - <https://buildlogs.centos.org/c7.2009.00.x86_64/kernel/20200930015011/3.10.0-1160.el7.x86_64/>
+  - <https://buildlogs.centos.org/c7.2009.u.x86_64/kernel/20230719123658/3.10.0-1160.95.1.el7.x86_64/>
 
 rpm 安装 kernel, kernel-devel, kernel-headers:
 
@@ -239,7 +247,27 @@ drwxr-xr-x  2 root root   95 Nov 22 09:33 vdso
 drwxr-xr-x  2 root root    6 Nov 21 10:52 video
 drwxr-xr-x  2 root root    6 Nov  9  2018 weak-updates
 ```
+### 重装内核：方法二
 
+```sh
+# 查看当前内核版本
+uname -r 
+3.10.0-1160.105.1.el7.x86_64
+
+# 查看Linux 内核模块的位置，如果显着红色，说明内核文件不存，需要重装
+ls -l /usr/lib/modules/ 
+
+# 搜索一下非 160.105 版本
+rpm -qa |grep kernel |grep -v 160.105
+
+# 将上面的存在版本删除掉
+rpm -qa |grep kernel |grep -v 160.105|xargs rpm -evh
+
+yum install kernel kernel-devel kernel-header
+```
+
+### 设置默认内核
+ 
 查看系统所有的内核：
 
 ```sh
