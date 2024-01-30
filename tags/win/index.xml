@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>win on 空树之空</title><link>https://yezihack.github.io/tags/win/</link><description>Recent content in win on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 21 Jan 2024 10:38:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/win/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows 子系统 Linux 系统之 WSL2 安装</title><link>https://yezihack.github.io/posts/wsl-install/</link><pubDate>Sun, 21 Jan 2024 10:38:00 +0800</pubDate><guid>https://yezihack.github.io/posts/wsl-install/</guid><description>.1. 为什么安装 WSL .2. 安装 WSL .3. 配置优化 .4. 安装基础软件 .5. 参考 .1. 为什么安装 WSL 如果你的操作系统是 windows 系列则有必须了解一下 WSL，对于开发者来说必备的工具。
+Windows Subsystem for Linux（简称WSL）是微软开发的一种允许在Windows操作系统上运行Linux二进制可执行文件（ELF格式）的兼容层。WSL将Linux内核的子系统嵌入到Windows中，使得用户可以在Windows环境中使用Linux工具、命令和应用程序。
+WSL的主要特点包括：
+全面兼容性：WSL提供了高度兼容的Linux系统调用接口，可以运行大多数基于Linux的工具和应用程序，无需进行修改或重新编译。
+轻量化和快速启动：WSL只需要很小的资源开销，并且可以在几秒钟内启动。这使得在Windows系统上使用Linux工具和应用程序变得更加便捷。
+文件系统互通：WSL可以访问Windows文件系统，并且Windows和Linux之间的文件共享也变得非常容易。用户可以在Windows和Linux之间方便地共享文件和目录。
+命令行工具：WSL支持使用各种命令行工具，如Bash、Zsh、Fish等，提供了丰富的Shell环境和命令行工具集。
+自定义配置和扩展：WSL允许用户自定义Linux发行版，并且可以通过安装各种软件包来扩展功能。用户可以选择安装适合自己需求的发行版，并根据需要进行自定义配置。
+使用WSL可以带来许多好处，例如在Windows环境中开发和运行Linux软件、使用Linux命令行工具和脚本、学习和测试Linux等。WSL目前有两个主要版本，即WSL 1和WSL 2，用户可以根据自己的需求选择适合自己的版本。
+总之，WSL为Windows用户提供了与Linux系统无缝集成的能力，使得在Windows环境下使用Linux变得更加方便和灵活。
+.2. 安装 WSL # 打开PowerShell作为管理员，执行以下命令，以启用WSL特性 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart # 然后，执行以下命令以启用虚拟机平台： dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart 更新 WSL
+https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi 将WSL 2设置为默认版本：
+wsl --set-default-version 2 安装最新的 Ubuntu 最新发行版本：
+wsl --install # 一会需要设置帐号和密码 将安装的 ubuntu 设置默认系统</description></item><item><title>Windows 找不到文件 C: Program Files/Windowsapps...launcherrsxruntime.exe，请确定文件名是否正确后，再试一次</title><link>https://yezihack.github.io/posts/windows-repair/</link><pubDate>Sun, 13 Nov 2022 08:27:37 +0800</pubDate><guid>https://yezihack.github.io/posts/windows-repair/</guid><description>.1. 错误提示 突然有一天，当你重启电脑后，系统就弹出以下错误弹窗，提示某某文件找不到。如果你没有解决，每次重启电脑 都会弹出此窗，非常讨厌，今天我们来解决此问题。
+提示：Windows 找不到文件: &amp;ldquo;C:\Program File&amp;quot; 请确定文件名是否正确后，再试一次。
+.2. 解决方法 打开你的 cmd，使用 win + R 或者开始-&amp;gt; 运行 -&amp;gt; 输入：cmd 注意：使用 administrator 权限打开 CMD 再输入以下代码即可。 sfc /scannow DISM /Online /Cleanup-Image /CheckHealth # 如果执行失败后，重启后再执行此命令 DISM /Online /Cleanup-Image /ScanHealth # 如果执行失败后，重启后再执行此命令 DISM /Online /Cleanup-Image /RestoreHealth 最后重启电脑，以后就不再弹窗啦。一切都安静了。
+.3. 参考 https://learn.microsoft.com/en-us/answers/questions/663590/windows-error.html https://learn.microsoft.com/zh-cn/windows-hardware/manufacture/desktop/repair-a-windows-image?source=recommendations&amp;view=windows-11 .4. 关于作者 我的博客：https://yezihack.github.io
+欢迎关注我的微信公众号【空树之空】，一日不学则面目可憎也，吾学也。</description></item><item><title>Window Subsystem Ubuntu</title><link>https://yezihack.github.io/posts/window-subsystem-ubuntu/</link><pubDate>Sat, 14 Mar 2020 22:36:14 +0800</pubDate><guid>https://yezihack.github.io/posts/window-subsystem-ubuntu/</guid><description>做开发的话,如果是从mac或linux转为window的用户,有很多不习惯需要一些使用linux的命令 而window虽然有powershell,还是不够尽兴,如果有一台linux系统又运行在window上,而又不是 那种笨重的虚拟机,那该多好.而win10就满足了你的需求.win10内置linux子系统,让你操作如飞的感觉.
+win10安装linux子系统 第一步: 启用或关闭Windows功能 开始-&amp;gt;设置-&amp;gt;应用-&amp;gt;找到&amp;quot;程序和功能&amp;quot;(一般在右边位置&amp;quot;)-&amp;gt;找到&amp;quot;启用或关闭Windows功能&amp;quot;
+点击弹出窗口后, 向下拉找到&amp;quot;适用于Linux的Windows子系统&amp;quot;选项. 勾选后,确定. 重新电脑.
+第二步: 安装Ubuntu子系统 在Microsoft Store搜索ubuntu,点击免费安装.
+下载完, 在开始程序中找到.点击进行初使化, 数分钟后安装完毕.
+第三步: 设置新帐号 系统会 提示你设置一个用户名,然后再设置密码即可.正常使用ubuntu. 此时你还不是root帐号.安装东西需要使用root帐号 第四步: 初使root密码 sudo passwd root #回车
+输入新密码
+确认密码
+# 切换root
+su root 更换ubuntu软件源 切换root帐号
+su root #回车
+备份一下之前的源
+cp /etc/apt/sources.list /etc/apt/sources.list.backup
+编辑sources.list
+vim /etc/apt/source.list #按ecs,一直按d按键清空源,然后再i键
+复制下面的aliyun源
+aliyun源
+# 1.阿里云源
+deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb http://mirrors.</description></item></channel></rss>
