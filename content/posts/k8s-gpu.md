@@ -20,34 +20,35 @@ music_auto: 1
 ---
 <!-- TOC -->
 
-- [.1. 安装 GPU 驱动](#1-安装-gpu-驱动)
-  - [.1.1. 查看 GPU 硬件](#11-查看-gpu-硬件)
-  - [.1.2. 检查自带 GPU 驱动](#12-检查自带-gpu-驱动)
-  - [.1.3. 官方下载 GPU 驱动](#13-官方下载-gpu-驱动)
-  - [.1.4. 安装 GPU 驱动](#14-安装-gpu-驱动)
-  - [.1.5. 安装失败](#15-安装失败)
-    - [.1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel](#151-error-an-nvidia-kernel-module-nvidia-uvm-appears-to-already-be-loaded-in-your-kernel)
-    - [.1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel](#152-error-unable-to-find-the-kernel-source-tree-for-the-currently-running-kernel)
-  - [.1.6. 重装内核：方法一](#16-重装内核方法一)
-  - [重装内核：方法二](#重装内核方法二)
-  - [设置默认内核](#设置默认内核)
-  - [.1.7. 再次安装 GPU 驱动包](#17-再次安装-gpu-驱动包)
-    - [.1.7.1. 安装 .run 文件](#171-安装-run-文件)
-    - [.1.7.2. 安装 .rpm 文件](#172-安装-rpm-文件)
-- [.2. 安装 nvidia-container-runtime](#2-安装-nvidia-container-runtime)
-  - [.2.1. 作用](#21-作用)
-  - [.2.2. 安装](#22-安装)
-- [.3. Docker 引擎设置](#3-docker-引擎设置)
-  - [.3.1. **系统插入文件**](#31-系统插入文件)
-  - [.3.2. **Daemon配置文件**](#32-daemon配置文件)
-- [.4. Kubernetes 引擎支持 GPU 设置](#4-kubernetes-引擎支持-gpu-设置)
-- [.5. 参考](#5-参考)
-- [.6. 关于作者](#6-关于作者)
+- [1. 安装 GPU 驱动](#1-安装-gpu-驱动)
+  - [1.1. 查看 GPU 硬件](#11-查看-gpu-硬件)
+  - [1.2. 检查自带 GPU 驱动](#12-检查自带-gpu-驱动)
+  - [1.3. .1.3. 官方下载 GPU 驱动](#13-13-官方下载-gpu-驱动)
+  - [1.4. 安装 GPU 驱动](#14-安装-gpu-驱动)
+  - [1.5. 安装失败](#15-安装失败)
+    - [1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel](#151-error-an-nvidia-kernel-module-nvidia-uvm-appears-to-already-be-loaded-in-your-kernel)
+    - [1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel](#152-error-unable-to-find-the-kernel-source-tree-for-the-currently-running-kernel)
+  - [1.6. 重装内核：方法一](#16-重装内核方法一)
+  - [1.7. 重装内核：方法二](#17-重装内核方法二)
+  - [1.8. 设置默认内核](#18-设置默认内核)
+  - [1.9. 再次安装 GPU 驱动包](#19-再次安装-gpu-驱动包)
+    - [1.9.1. 先卸载之前的驱动](#191-先卸载之前的驱动)
+    - [1.9.2. 安装 .run 文件](#192-安装-run-文件)
+    - [1.9.3. 安装 .rpm 文件](#193-安装-rpm-文件)
+- [2. 安装 nvidia-container-runtime](#2-安装-nvidia-container-runtime)
+  - [2.1. 作用](#21-作用)
+  - [2.2. 安装](#22-安装)
+- [3. Docker 引擎设置](#3-docker-引擎设置)
+  - [3.1. **系统插入文件**](#31-系统插入文件)
+  - [3.2. **Daemon配置文件**](#32-daemon配置文件)
+- [4. Kubernetes 引擎支持 GPU 设置](#4-kubernetes-引擎支持-gpu-设置)
+- [5. 参考](#5-参考)
+- [6. .6. 关于作者](#6-6-关于作者)
 
 <!-- /TOC -->
-## .1. 安装 GPU 驱动
+## 1. 安装 GPU 驱动
 
-### .1.1. 查看 GPU 硬件
+### 1.1. 查看 GPU 硬件
 
 ```bash
 # 安装lspci命令 
@@ -58,7 +59,7 @@ yum install -y pciutils
 lspci | grep -i nvidia
 ```
 
-### .1.2. 检查自带 GPU 驱动
+### 1.2. 检查自带 GPU 驱动
 
 系统自带的 GPU 驱动需要关闭，否则会冲突。
 
@@ -82,7 +83,7 @@ modprobe -r nouveau
 reboot
 ```
 
-### .1.3. 官方下载 GPU 驱动
+### 1.3. .1.3. 官方下载 GPU 驱动
 
 官方地址：[https://www.nvidia.cn/Download/index.aspx?lang=cn](https://www.nvidia.cn/Download/index.aspx?lang=cn)
 
@@ -98,7 +99,7 @@ reboot
 1. 如果选择 Linux 64 具体发行版本，如 RHEL7 则下载文件为 rpm 格式的。
 2. 如果选择 Linux 64 非具体发行版本，则下载文件为 .run 格式的。（推荐）
 
-### .1.4. 安装 GPU 驱动
+### 1.4. 安装 GPU 驱动
 
 1. CUDA 11.2
 2. OS: Linux 64
@@ -116,9 +117,9 @@ sh NVIDIA-Linux-x86_64-460.32.03.run -no-x-check -no-nouveau-check -no-opengl-fi
 2. `-no-nouveau-check `表示安装驱动时不检查nouveau，非必需
 3. `-no-opengl-files` 表示只安装驱动文件，不安装OpenGL文件
 
-### .1.5. 安装失败
+### 1.5. 安装失败
 
-#### .1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel
+#### 1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel
 
 错误:您的内核中似乎已经加载了NVIDIA内核模块。说明你的 nvidia 驱动已经安装过。
 
@@ -130,7 +131,7 @@ ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your
          simplest remedy is to reboot your computer. 
 ```
 
-#### .1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel
+#### 1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel
 
 错误：无法找到当前运行的内核的内核源代码树，说明你的内核有点问题。
 
@@ -167,7 +168,7 @@ total 0
 
 当前加载运行的内核版本： 3.10.0-957.el7.x86_64，而安装列表上只有 3.10.0-1160.66.1.el7.x86_64 版本，说明存在两套不同版本的内核，而且实际目录下的内核文件也不完整。比较混乱。我们需要重新安装一套运行的内核：3.10.0-957.el7.x86_64。其它版本的内核全部卸载掉。
 
-### .1.6. 重装内核：方法一
+### 1.6. 重装内核：方法一
 
 从 CentOS 官方找到对应版本的内核安装文件：<https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/>
 
@@ -247,7 +248,7 @@ drwxr-xr-x  2 root root   95 Nov 22 09:33 vdso
 drwxr-xr-x  2 root root    6 Nov 21 10:52 video
 drwxr-xr-x  2 root root    6 Nov  9  2018 weak-updates
 ```
-### 重装内核：方法二
+### 1.7. 重装内核：方法二
 
 ```sh
 # 查看当前内核版本
@@ -266,7 +267,7 @@ rpm -qa |grep kernel |grep -v 160.105|xargs rpm -evh
 yum install kernel kernel-devel kernel-header
 ```
 
-### 设置默认内核
+### 1.8. 设置默认内核
  
 查看系统所有的内核：
 
@@ -300,9 +301,16 @@ done
 reboot
 ```
 
-### .1.7. 再次安装 GPU 驱动包
+### 1.9. 再次安装 GPU 驱动包
 
-#### .1.7.1. 安装 .run 文件
+#### 1.9.1. 先卸载之前的驱动
+
+```sh
+sh NVIDIA-Linux-x86_64-460.32.03.run --uninstall
+```
+
+
+#### 1.9.2. 安装 .run 文件
 
 参数说明：
 
@@ -315,7 +323,7 @@ reboot
 sh NVIDIA-Linux-x86_64-460.32.03.run -no-x-check -no-nouveau-check -no-opengl-files
 ```
 
-#### .1.7.2. 安装 .rpm 文件
+#### 1.9.3. 安装 .rpm 文件
 
 ```bash
 i) `rpm -i nvidia-driver-local-repo-rhel7-460.106.00-1.0-1.x86_64.rpm'
@@ -324,13 +332,13 @@ iii) `yum install cuda-drivers`
 iv) `reboot`
 ```
 
-## .2. 安装 nvidia-container-runtime
+## 2. 安装 nvidia-container-runtime
 
-### .2.1. 作用
+### 2.1. 作用
 
 nvidia-container-runtime主要用于将容器runC spec作为输入，然后将nvidia-container-toolkit脚本作为一个prestart hook注入到runC spec中，将修改后的runC spec交给runC处理。
 
-### .2.2. 安装
+### 2.2. 安装
 
 ```bash
 # nvidia-container-runtime
@@ -346,11 +354,11 @@ sudo yum -y install nvidia-container-runtime
 sudo apt-get install nvidia-container-runtime
 ```
 
-## .3. Docker 引擎设置
+## 3. Docker 引擎设置
 
 让 Docker 引擎能识别 GPU 驱动。以下提供两种设置方式。
 
-### .3.1. **系统插入文件**
+### 3.1. **系统插入文件**
 
 ```bash
 sudo mkdir -p /etc/systemd/system/docker.service.d
@@ -363,7 +371,7 @@ sudo systemctl daemon-reload
 sudo systemctl restart docker
 ```
 
-### .3.2. **Daemon配置文件**
+### 3.2. **Daemon配置文件**
 
 ```bash
 sudo tee /etc/docker/daemon.json <<EOF
@@ -380,7 +388,7 @@ EOF
 sudo pkill -SIGHUP dockerd
 ```
 
-## .4. Kubernetes 引擎支持 GPU 设置
+## 4. Kubernetes 引擎支持 GPU 设置
 
 ```bash
 kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.12.3/nvidia-device-plugin.yml
@@ -449,7 +457,7 @@ spec:
             path: /var/lib/kubelet/device-plugins
 ```
 
-## .5. 参考
+## 5. 参考
 
 1. [https://support.huawei.com/enterprise/zh/doc/EDOC1100128448/4338a2ae](https://support.huawei.com/enterprise/zh/doc/EDOC1100128448/4338a2ae)
 2. [https://www.nvidia.cn/Download/index.aspx?lang=cn](https://www.nvidia.cn/Download/index.aspx?lang=cn)
@@ -474,7 +482,7 @@ spec:
 
 
 
-## .6. 关于作者
+## 6. .6. 关于作者
 
 我的博客：<https://yezihack.github.io>
 
