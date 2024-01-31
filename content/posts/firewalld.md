@@ -1,7 +1,7 @@
 ---
 title: "Linux Firewalld 极简教程"
 date: 2023-12-29T15:44:25+08:00
-lastmod: 2023-12-29T15:44:25+08:00
+lastmod: 2024-01-31T10:44:25+08:00
 draft: false
 tags: ["linux", "firewalld", "极简教程"]
 categories: ["linux"]
@@ -11,7 +11,7 @@ toc: true
 reward: true
 ---
 
-## 1. 什么是 Firewalld
+## .1. 什么是 Firewalld
 
 Firewalld 是一个在 Linux 系统上提供动态防火墙管理的工具。它是一个用户和管理员友好的前端，用于配置和管理 iptables 规则，并提供了一种简化的方式来管理网络连接和保护系统免受未经授权的访问。
 
@@ -27,7 +27,7 @@ Firewalld 的主要特点包括：
 
 需要注意的是，Firewalld 本身并不是防火墙，而是一个防火墙管理工具。
 
-## 2. 工作原理
+## .2. 工作原理
 
 Firewalld 的工作原理可以简要概括如下：
 
@@ -45,7 +45,7 @@ Firewalld 的工作原理可以简要概括如下：
 
 7. Firewalld 是通过定义防火墙规则最终交由内核的 netfilter 进行包过滤实现防火墙功能。
 
-## 3. 架构图
+## .3. 架构图
 
 以下是官方给出的架构图，<https://firewalld.org/documentation/architecture.html>
 
@@ -83,7 +83,7 @@ Firewalld 是一个复杂的系统，包含了多个组件和模块来实现其�
 
 这些组件共同协作，使 Firewalld 能够提供动态防火墙管理和配置的功能，并为系统提供强大的网络安全保护。
 
-## 4. 安装
+## .4. 安装
 
 在 CentOS7 默认使用 firewalld 作为防火墙
 
@@ -102,7 +102,7 @@ firewall-cmd --state
 
 ```
 
-## 5. Firewalld 区域管理
+## .5. Firewalld 区域管理
 
 通过将网络划分成不同的区域，制定出不同区域之间的访问控制策略来控制不同程序区域间传送的数据流。
 
@@ -118,7 +118,7 @@ firewall-cmd --state
 | block（限制）	| 拒绝所有网络的连接
 | drop （丢弃）	| 任何接收的网络数据包都被丢弃，没有任何回复
 
-### 5.1. firewalld 区域的指导
+### .5.1. firewalld 区域的指导
 
 1. 默认区域：默认情况下，系统中的所有接口都会被分配到默认区域。你可以通过修改默认区域的规则来控制网络流量的访问。
    1. 如设置 public 为默认区域，则 interfaces 未分配接口时，接管所有的接口流量。
@@ -133,7 +133,7 @@ firewall-cmd --state
    2. 如果某区域设置 Default 默认区域则规则生效。
    3. 如果非默认区域且设置某接口，规则也对该接口生效。
 
-### 5.2. 区域管理命令
+### .5.2. 区域管理命令
 
 ```sh
 # 查看可用的区域
@@ -167,7 +167,7 @@ firewall-cmd --zone=<zone> --add-port=<port>/tcp
 firewall-cmd --zone=<zone> --remove-port=<port>/tcp
 ```
 
-## 6. 基本命令
+## .6. 基本命令
 
 ```sh
 # 查看所有的区域
@@ -195,7 +195,7 @@ sudo firewall-cmd --state
 firewall-cmd --direct --get-all-rules
 ```
 
-## 7. 实战
+## .7. 实战
 
 Firewalld有规则两种状态
 
@@ -214,49 +214,49 @@ Firewalld配置文件:
 1. /etc/firewalld/{services,zones}/*.xml    优先级最高，`--permanent` 模式生效的策略会放到这里
 2. /lib/firewalld/{services,zones}/*.xml   优先级要低些，是一些默认配置，可以当做模板使用
 
-### 7.1. 新增区域
+### .7.1. 新增区域
 
 ```sh
 firewall-cmd --permanent --new-zone=www
 ```
 
-### 7.2. 设置默认区域
+### .7.2. 设置默认区域
 
 ```sh
 sudo firewall-cmd --set-default-zone=www
 ```
 
-### 7.3. 添加网络接口
+### .7.3. 添加网络接口
 
 ```sh
 firewall-cmd --permanent --zone=www --add-interface=eth0 
 ```
 
-### 7.4. 添加服务
+### .7.4. 添加服务
 
 ```sh
 firewall-cmd --permanent --zone=www --add-service=http
 ```
 
-### 7.5. 添加端口
+### .7.5. 添加端口
 
 ```sh
 firewall-cmd --permanent --zone=www --add-port=22/tcp 
 ```
 
-### 7.6. 转发端口
+### .7.6. 转发端口
 
 ```sh
 firewall-cmd --permanent --zone=www --add-forward-port=port=80:proto=tcp:toport=8080:toaddr=192.168.1.100 
 ```
 
-### 7.7. 开启网络地址伪装转换
+### .7.7. 开启网络地址伪装转换
 
 ```sh
 firewall-cmd --zone=www --add-masquerade
 ```
 
-### 7.8. 使用 direct
+### .7.8. 使用 direct
 
 > Direct 规则允许在防火墙中直接添加自定义 Iptables 规则
 
@@ -271,7 +271,7 @@ firewall-cmd --direct --get-all-rules
 firewall-cmd --direct --remove-rule <rule>
 ```
 
-## 8. Rich 规则使用
+## .8. Rich 规则使用
 
 > 使用 rich 规则可以更精确地配置 firewalld 防火墙，以满足特定的需求和安全要求。
 
@@ -285,7 +285,7 @@ firewall-cmd --direct --remove-rule <rule>
 8. forward-port：forward-port 是一种特殊的 rich 规则，用于设置端口转发。可以指定源端口、目标端口和目标地址。
 9. to-port and to-addr：forward-port 规则中的 to-port 参数用于指定转发到的目标端口，而 to-addr 参数用于指定转发到的目标地址。
 
-### 8.1. rich 规则格式
+### .8.1. rich 规则格式
 
 - 添加规则格式: `firewall-cmd [--zone=zone] --add-rich-rule='rule' [--timeout=timeval]`
   - `--timeout` 默认为秒,单位:s(秒),m(分钟),h(小时)
@@ -293,7 +293,7 @@ firewall-cmd --direct --remove-rule <rule>
 - 查询规则是否存在格式:`firewall-cmd [--zone=zone] --query-rich-rule='rule'`
   - 返回 yes: 0, no: 1
 
-### 8.2. rich 规则结构
+### .8.2. rich 规则结构
 
 ```sh
 rule [family="rule family"]
@@ -305,7 +305,7 @@ rule [family="rule family"]
     [ action ]
 ```
 
-### 8.3. 添加 rich 代码
+### .8.3. 添加 rich 代码
 
 ```sh
 # 允许 http 服务通行
@@ -329,6 +329,9 @@ firewall-cmd --add-rich-rule='rule family=ipv4 source address="192.168.9.20/32" 
 # 禁止 ping 
 firewall-cmd --add-rich-rule='rule protocol value=icmp reject'
 
+# 允许 ping 
+firewall-cmd --add-rich-rule='rule protocol value=icmp accept'
+
 # 60秒后超时自动删除规则命令,即生效时间为60秒,默认为秒,单位:s(秒),m(分钟),h(小时)
 firewall-cmd --add-rich-rule='rule protocol value="icmp" reject' --timeout=60
 
@@ -340,10 +343,16 @@ firewall-cmd --add-rich-rule='rule family=ipv4 port port="8100" protocol="tcp" l
 # 限制数据包的速率
 firewall-cmd --add-rich-rule='rule family="ipv4" source address="0.0.0.0/0" port port="8100" protocol="tcp" limit value="1/m" accept'
 
+
 firewall-cmd --reload
 ```
 
-### 8.4. 删除 rich 代码
+### .8.4. 修改 rich 代码
+
+- 先删除 rich 
+- 再添加 rich
+
+### .8.5. 删除 rich 代码
 
 - `--add-rich-rule` 改成 `--remove-rich-rule` ,后面的命令不变
 
@@ -358,18 +367,26 @@ firewall-cmd --remove-rich-rule='rule protocol value=icmp reject'
 firewall-cmd --remove-rile-rule='rule family="ipv4" port port="8100" protocol="tcp" accept'
 ```
 
-### 8.5. 查看 rich 规则
+### .8.6. rich 添加备注
+
+- firewall-cmd 本身没有备注功能，此处使用 log 允当备注功能
+
+```sh
+firewall-cmd --add-rich-rule='rule family=ipv4 source address=192.168.1.0/24 port port="8100" log prefix="ZhangSan IP Access" level="notice" accept'
+```
+
+### .8.7. 查看 rich 规则
 
 ```sh
 firewall-cmd --list-rich-rules
 firewall-cmd --list-all
 ```
 
-## 9. Ipset 使用
+## .9. Ipset 使用
 
 >  IPset 是一种高效的数据结构，用于管理大量 IP 地址的集合
 
-### 9.1. 创建 ipset
+### .9.1. 创建 ipset
 
 > 使用 `--new-ipset` 参数可以创建一个新的 IPset。例如，创建名为`k8s`的 IPset：
    
@@ -385,7 +402,7 @@ firewall-cmd --get-ipset-types
 hash:ip hash:ip,mark hash:ip,port hash:ip,port,ip hash:ip,port,net hash:mac hash:net hash:net,iface hash:net,net hash:net,port hash:net,port,net
 ```
 
-### 9.2. 添加 IP 到 IPset
+### .9.2. 添加 IP 到 IPset
 
 > 使用 `--add-entry` 参数可以将 IP 添加到 IPset 中。例如，将 IP `192.168.1.100` 添加到 `k8s`：
    
@@ -398,7 +415,7 @@ firewall-cmd --permanent --ipset=k8s --add-entry=192.168.1.103
 
 这将把 IP `192.168.1.100~192.168.1.103` 添加到名为 `k8s` 的 IPset 中。
 
-### 9.3. 删除 IPset 删除 IP
+### .9.3. 删除 IPset 删除 IP
 
 > 使用 `--remove-entry` 参数可以从 IPset 中删除指定的 IP。例如，从 `k8s` 中删除 IP `192.168.1.100`：
    
@@ -408,7 +425,7 @@ sudo firewall-cmd --permanent --ipset=k8s --remove-entry=192.168.1.100
 
 这将从名为 `k8s` 的 IPset 中删除 IP `192.168.1.100`。
 
-### 9.4. 查询 IPset
+### .9.4. 查询 IPset
 
 ```sh
 # 查询 ipset 名称
@@ -419,7 +436,7 @@ k8s
 firewall-cmd --ipset=k8s --get-entries
 ```
 
-### 9.5. 使用 IPset
+### .9.5. 使用 IPset
 
 >  创建一个规则，允许来自 `k8s` 中的 IP 访问某个服务：
    
@@ -436,7 +453,7 @@ firewall-cmd --permanent --add-rich-rule 'rule family="ipv4" source ipset="k8s" 
 
 这将允许来自 `k8s` 中的 IP 访问目标端口为 80 的 TCP 服务。
 
-### 9.6. 删除 IPset
+### .9.6. 删除 IPset
 
 > 使用 `--delete-ipset` 参数可以删除指定的 IPset。例如，删除 `k8s`：
    
@@ -452,9 +469,9 @@ sudo firewall-cmd --permanent --delete-ipset=k8s
 sudo firewall-cmd --reload
 ```
 
-## 10. 常见设置
+## .10. 常见设置
 
-### 10.1. 更改 Backends
+### .10.1. 更改 Backends
 
 > 常见的 firewalld 后端引擎 nftables, iptables 等。
 
@@ -473,7 +490,7 @@ FirewallBackend=iptables
 
 ```
 
-### 10.2. 允许内网通行
+### .10.2. 允许内网通行
 
 ```sh
 # 允许局域网IP和端口全部通过
@@ -485,7 +502,7 @@ firewall-cmd --zone=trusted --add-masquerade --permanent
 firewall-cmd --reload
 ```
 
-## 11. 排障思路
+## .11. 排障思路
 
 1. 查询防火墙的状态
 2. 查看各区域的的规则设置
@@ -493,7 +510,8 @@ firewall-cmd --reload
 4. 使用 `--permanent` 时，一定记得使用 `firewall-cmd --reload` 规则才会生效
 5. 找台其它机器测试添加的规则是否生效
 
-## 12. 参考
+## .12. 参考
 
 - <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/configuring_complex_firewall_rules_with_the_rich-language_syntax>
 - <https://www.sbarjatiya.com/notes_wiki/index.php/CentOS_8.x_firewalld_rich_rules>
+- <https://www.computernetworkingnotes.com/linux-tutorials/firewalld-rich-rules-explained-with-examples.html>
