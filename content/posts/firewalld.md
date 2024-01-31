@@ -367,9 +367,19 @@ firewall-cmd --remove-rich-rule='rule protocol value=icmp reject'
 firewall-cmd --remove-rile-rule='rule family="ipv4" port port="8100" protocol="tcp" accept'
 ```
 
-### .8.6. rich 添加备注
+### .8.6. 备注  rich 规则
 
 - firewall-cmd 本身没有备注功能，此处使用 log 允当备注功能
+- 关键代码：`log prefix`
+- 关键代码：`level` 等级,级别越高，表示日志越重要
+  1. emerg（紧急）
+  2. alert（警戒）
+  3. crit（严重）
+  4. error（错误）
+  5. warning（警告）
+  6. notice（通知）
+  7. info（信息）
+  8. debug（调试）
 
 ```sh
 firewall-cmd --add-rich-rule='rule family=ipv4 source address=192.168.1.0/24 port port="8100" log prefix="ZhangSan IP Access" level="notice" accept'
