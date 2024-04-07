@@ -22,6 +22,9 @@ helm ls -A
 
 # 查看指定命名空间下的 Release
 helm ls -n <namespace>
+
+# 查看状态
+helm status <release-name>
 ```
 
 ## 2. 部署
@@ -41,6 +44,10 @@ helm repo index - 基于包含打包chart的目录，生成索引文件
 helm repo list - 列举chart仓库
 helm repo remove - 删除一个或多个仓库
 helm repo update - 从chart仓库中更新本地可用chart的信息
+
+# 搜索
+helm search hub redis  # 搜索官网上的资源
+helm search repo redis  # 搜索本地添加的仓库资源
 ```
 
 ## 4. 升级&卸载&回滚

@@ -18,23 +18,24 @@ music_auto: 1
 # weight: 1
 # description: ""
 ---
-<!-- TOC -->
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
 
 - [1. 安装 GPU 驱动](#1-安装-gpu-驱动)
   - [1.1. 查看 GPU 硬件](#11-查看-gpu-硬件)
   - [1.2. 检查自带 GPU 驱动](#12-检查自带-gpu-驱动)
   - [1.3. .1.3. 官方下载 GPU 驱动](#13-13-官方下载-gpu-驱动)
-  - [1.4. 安装 GPU 驱动](#14-安装-gpu-驱动)
-  - [1.5. 安装失败](#15-安装失败)
-    - [1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel](#151-error-an-nvidia-kernel-module-nvidia-uvm-appears-to-already-be-loaded-in-your-kernel)
-    - [1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel](#152-error-unable-to-find-the-kernel-source-tree-for-the-currently-running-kernel)
-  - [1.6. 重装内核：方法一](#16-重装内核方法一)
-  - [1.7. 重装内核：方法二](#17-重装内核方法二)
-  - [1.8. 设置默认内核](#18-设置默认内核)
-  - [1.9. 再次安装 GPU 驱动包](#19-再次安装-gpu-驱动包)
-    - [1.9.1. 先卸载之前的驱动](#191-先卸载之前的驱动)
-    - [1.9.2. 安装 .run 文件](#192-安装-run-文件)
-    - [1.9.3. 安装 .rpm 文件](#193-安装-rpm-文件)
+  - [1.4. 卸载驱动](#14-卸载驱动)
+  - [1.5. 安装 GPU 驱动](#15-安装-gpu-驱动)
+  - [1.6. 安装失败](#16-安装失败)
+    - [1.6.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel](#161-error-an-nvidia-kernel-module-nvidia-uvm-appears-to-already-be-loaded-in-your-kernel)
+    - [1.6.2. ERROR: Unable to find the kernel source tree for the currently running kernel](#162-error-unable-to-find-the-kernel-source-tree-for-the-currently-running-kernel)
+  - [1.7. 重装内核：方法一](#17-重装内核方法一)
+  - [1.8. 重装内核：方法二](#18-重装内核方法二)
+  - [1.9. 设置默认内核](#19-设置默认内核)
+  - [1.10. 再次安装 GPU 驱动包](#110-再次安装-gpu-驱动包)
+    - [1.10.1. 先卸载之前的驱动](#1101-先卸载之前的驱动)
+    - [1.10.2. 安装 .run 文件](#1102-安装-run-文件)
+    - [1.10.3. 安装 .rpm 文件](#1103-安装-rpm-文件)
 - [2. 安装 nvidia-container-runtime](#2-安装-nvidia-container-runtime)
   - [2.1. 作用](#21-作用)
   - [2.2. 安装](#22-安装)
@@ -42,6 +43,7 @@ music_auto: 1
   - [3.1. **系统插入文件**](#31-系统插入文件)
   - [3.2. **Daemon配置文件**](#32-daemon配置文件)
 - [4. Kubernetes 引擎支持 GPU 设置](#4-kubernetes-引擎支持-gpu-设置)
+- [安装 container-runtime](#安装-container-runtime)
 - [5. 参考](#5-参考)
 - [6. .6. 关于作者](#6-6-关于作者)
 
@@ -99,7 +101,35 @@ reboot
 1. 如果选择 Linux 64 具体发行版本，如 RHEL7 则下载文件为 rpm 格式的。
 2. 如果选择 Linux 64 非具体发行版本，则下载文件为 .run 格式的。（推荐）
 
-### 1.4. 安装 GPU 驱动
+### 1.4. 卸载驱动
+
+CentOS7
+
+```sh
+# 使用安装包卸载
+sudo /path/to/NVIDIA-Linux-x86_64-xxx.xx.run --uninstall
+
+
+# 使用 yum 卸载
+sudo yum remove nvidia* -y
+sudo yum remove cuda* -y
+sudo yum remove "*nvidia*" -y
+
+# 删除文件
+sudo rm -rf /usr/local/cuda*
+sudo rm -rf /usr/lib/nvidia*
+sudo rm -rf /usr/lib64/nvidia*
+sudo rm -rf /etc/X11/xorg.conf
+
+# 刷新
+sudo yum autoremove
+sudo yum autoclean
+
+# 重启机器 
+reboot
+```
+
+### 1.5. 安装 GPU 驱动
 
 1. CUDA 11.2
 2. OS: Linux 64
@@ -117,9 +147,9 @@ sh NVIDIA-Linux-x86_64-460.32.03.run -no-x-check -no-nouveau-check -no-opengl-fi
 2. `-no-nouveau-check `表示安装驱动时不检查nouveau，非必需
 3. `-no-opengl-files` 表示只安装驱动文件，不安装OpenGL文件
 
-### 1.5. 安装失败
+### 1.6. 安装失败
 
-#### 1.5.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel
+#### 1.6.1. ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your kernel
 
 错误:您的内核中似乎已经加载了NVIDIA内核模块。说明你的 nvidia 驱动已经安装过。
 
@@ -131,7 +161,7 @@ ERROR: An NVIDIA kernel module 'nvidia-uvm' appears to already be loaded in your
          simplest remedy is to reboot your computer. 
 ```
 
-#### 1.5.2. ERROR: Unable to find the kernel source tree for the currently running kernel
+#### 1.6.2. ERROR: Unable to find the kernel source tree for the currently running kernel
 
 错误：无法找到当前运行的内核的内核源代码树，说明你的内核有点问题。
 
@@ -168,7 +198,7 @@ total 0
 
 当前加载运行的内核版本： 3.10.0-957.el7.x86_64，而安装列表上只有 3.10.0-1160.66.1.el7.x86_64 版本，说明存在两套不同版本的内核，而且实际目录下的内核文件也不完整。比较混乱。我们需要重新安装一套运行的内核：3.10.0-957.el7.x86_64。其它版本的内核全部卸载掉。
 
-### 1.6. 重装内核：方法一
+### 1.7. 重装内核：方法一
 
 从 CentOS 官方找到对应版本的内核安装文件：<https://buildlogs.centos.org/c7.1810.00.x86_64/kernel/20181030130226/3.10.0-957.el7.x86_64/>
 
@@ -248,7 +278,7 @@ drwxr-xr-x  2 root root   95 Nov 22 09:33 vdso
 drwxr-xr-x  2 root root    6 Nov 21 10:52 video
 drwxr-xr-x  2 root root    6 Nov  9  2018 weak-updates
 ```
-### 1.7. 重装内核：方法二
+### 1.8. 重装内核：方法二
 
 ```sh
 # 查看当前内核版本
@@ -267,8 +297,8 @@ rpm -qa |grep kernel |grep -v 160.105|xargs rpm -evh
 yum install kernel kernel-devel kernel-header
 ```
 
-### 1.8. 设置默认内核
- 
+### 1.9. 设置默认内核
+
 查看系统所有的内核：
 
 ```sh
@@ -301,16 +331,15 @@ done
 reboot
 ```
 
-### 1.9. 再次安装 GPU 驱动包
+### 1.10. 再次安装 GPU 驱动包
 
-#### 1.9.1. 先卸载之前的驱动
+#### 1.10.1. 先卸载之前的驱动
 
 ```sh
 sh NVIDIA-Linux-x86_64-460.32.03.run --uninstall
 ```
 
-
-#### 1.9.2. 安装 .run 文件
+#### 1.10.2. 安装 .run 文件
 
 参数说明：
 
@@ -323,7 +352,7 @@ sh NVIDIA-Linux-x86_64-460.32.03.run --uninstall
 sh NVIDIA-Linux-x86_64-460.32.03.run -no-x-check -no-nouveau-check -no-opengl-files
 ```
 
-#### 1.9.3. 安装 .rpm 文件
+#### 1.10.3. 安装 .rpm 文件
 
 ```bash
 i) `rpm -i nvidia-driver-local-repo-rhel7-460.106.00-1.0-1.x86_64.rpm'
@@ -389,6 +418,21 @@ sudo pkill -SIGHUP dockerd
 ```
 
 ## 4. Kubernetes 引擎支持 GPU 设置
+
+## 安装 container-runtime
+
+> Installing the NVIDIA Container Toolkit
+> 参考：<https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html>
+
+```sh
+# CentOS7 为例，更多点击URL
+curl -s -L https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo | \
+  sudo tee /etc/yum.repos.d/nvidia-container-toolkit.repo
+
+sudo yum-config-manager --enable nvidia-container-toolkit-experimental
+
+sudo yum install -y nvidia-container-toolkit
+```
 
 ```bash
 kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.12.3/nvidia-device-plugin.yml

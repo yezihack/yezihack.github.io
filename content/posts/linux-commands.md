@@ -13,9 +13,9 @@ reward: true
 # description = ""
 ---
 
-## 文件类
+## 1. 文件类
 
-### 查看文件大小
+### 1.1. 查看文件大小
 
 ```sh
 # 加 h 查看可读性的文件大小
@@ -25,7 +25,7 @@ ll -h
 du -h --max-depth=1 /usr
 ```
 
-### 压缩
+### 1.2. 压缩
 
 **ZIP**
 
@@ -103,42 +103,38 @@ tar -zcvf target.tar.gz test/ --exclude=test/*.log
 tar -zcvf target.tar.gz  test/ --exclude=*.git
 ```
 
+## 2. RPM
 
-
-
-
-## RPM
-
-### 安装
+### 2.1. 安装
 
 `rpm -ivh rpm软件包`
 
-###  搜索
+### 2.2. 搜索
 
 `rpm -qa 搜索的名称`
 
-### 卸载
+### 2.3. 卸载
 
 `rpm -e rpm包名(搜索后的结果名称)`
 
 
 
-## 文本处理
+## 3. 文本处理
 
-### grep 
+### 3.1. grep
 
-#### 或的关系 
+#### 3.1.1. 或的关系
 
 ```
 cat 1.txt |grep a |grep b
 ```
 
-#### 并集的关系 
+#### 3.1.2. 并集的关系
 ```
 cat 1.txt |grep -E "a" |grep -E "b"
 ```
 
-#### 搜索多个文件内容
+#### 3.1.3. 搜索多个文件内容
 
 ```sh
 # 普通搜索
@@ -153,7 +149,7 @@ grep -n -C 10 "搜索内容" *.conf
 
 
 
-### awk
+### 3.2. awk
 
 提出内存大小
 1. awk '{print $1}' 提出第1列的数据
@@ -166,9 +162,9 @@ free -m |awk '{print $3}' |sed -n '2p'
 
 
 
-## 传输
+## 4. 传输
 
-### scp
+### 4.1. scp
 
 > scp [参数] [原路径] [目标路径]
 
@@ -184,117 +180,130 @@ scp root@10.6.159.147:/opt/soft/demo.tar /opt/soft/
 scp -r root@10.6.159.147:/opt/soft/demo.tar /opt/soft/
 ```
 
+### 4.2. rsync
 
+```sh
+yum -y install rsync
 
-### rsync
+# 复制包含 src 目录本身及所有子目录
+rsync -avPW /opt/src /opt/dst
 
-### curl
+# 复制不包含 src 目录本身，只复制src下的所有子目录
+rsync -avPW /opt/src/ /opt/dst
+
+# 后台运行
+nohup rsync -avPW /opt/src /opt/dst >> output.log 2>&1 &
+
+# 远程迁移
+rsync -avPW --progress /path/to/local/directory user@remote_host:/path/to/remote/directory
+rsync -avPW --progress -p 10022 /path/to/local/directory user@remote_host:/path/to/remote/directory
+
+# 免密交互
+sshpass -p 'your_password' rsync -avz --progress -e "ssh -p 10022" /opt/ user@remote_host:/data/
+nohup sshpass -p 'your_password' rsync -avz --progress -e "ssh -p 10022" /opt/ user@remote_host:/data/ >> output.log 2>&1 &
+```
+
+### 4.3. curl
 
 POST JSON请求
 
-```
+```sh
 curl -H "Content-type:application/json" -X POST -d '{"name":"king"}' http://localhost/test
 ```
 
+## 5. 调试
 
+### 5.1. gdb
 
-## 调试
+### 5.2. pstack
 
-### gdb
+### 5.3. strace
 
-### pstack
+## 6. 查看进程及端口
 
-### strace
+### 6.1. netstat
 
-## 查看进程及端口
-
-### netstat 
-
-```sh 
+```sh
 # 查看 tcp 所有的进程
 netstat -nplt 
 ```
 
+### 6.2. lsof
 
-
-### lsof
-
-1. 列出谁在使用某个端口
+列出谁在使用某个端口
 
 ```sh
 lsof -i :80 
 ```
 
-2. 查找某个文件相关进程
+查找某个文件相关进程
 
 ```sh
 lsof /bin/bash
 ```
 
-3. 列出某个用户打开的文件信息
+列出某个用户打开的文件信息
 
 ```sh
 lsof -u root
 ```
 
-4. **列出某个程序进程所打开的文件信息**
+列出某个程序进程所打开的文件信息
 
 ```sh
 lsof -c mysql
 ```
 
-5. 列出某个用户以及某个进程所打开的文件信息
+列出某个用户以及某个进程所打开的文件信息
 
 ```sh
 lsof -u root -c mysql
 ```
 
-6. 通过某个进程显示该进程打开的文件
+通过某个进程显示该进程打开的文件
+
 ```sh
 lsof -p 11201
 ```
 
-7. 列出所有网络连接
+列出所有网络连接
+
 ```sh
 lsof -i 
 # 列出tcp 
 lsof -i tcp
 ```
 
-8. 通过端口获取当前进程ID	
+1. 通过端口获取当前进程ID
 
 ```sh
 lsof -t -i:3306
 ```
 
-9. 杀死进程
+杀死进程
 
 ```sh
 kill -9 $(lsof -t -i :3306)
 ```
 
+## 7. 监控&优化
 
+### 7.1. 工具合集
 
-## 监控&优化
-
-### 工具合集
-
-1. sysstat
-   - iostat
-   - mpstat
-   - pidstat
-   - tapestat
-   - cifsiostat
-   - sadf
+- sysstat
+- iostat
+- mpstat
+- pidstat
+- tapestat
+- cifsiostat
+- sadf
 
 ```sh
 # Linux 性能监视工具合集
 yum -y install sysstat  
 ```
 
-
-
-### free
+### 7.2. free
 
 查看内容情况
 
@@ -309,7 +318,7 @@ free -g # 显示以 kg 为单位
 echo 3 > /proc/sys/vm/drop_caches
 ```
 
-### ldd
+### 7.3. ldd
 
 查看程序依赖库
 
@@ -318,7 +327,7 @@ echo 3 > /proc/sys/vm/drop_caches
 ldd /usr/sbin/nginx
 ```
 
-## 权限管理
+## 8. 权限管理
 
 ```sh
 # 创建用户组
@@ -331,13 +340,9 @@ useradd -s /sbin/nologin bear
 usermod -s /bin/bash bear
 ```
 
+## 9. 脚本
 
-
-
-
-## 脚本
-
-### 获取当前文件名
+### 9.1. 获取当前文件名
 
 ```sh
 CUR_DIR="$PWD"
@@ -346,17 +351,13 @@ SCRIPTPATH="${CUR_DIR}/${0#*/}"
 SCRIPTPATH="${PWD}/${0#*/}"
 ```
 
-
-
-### 获取当前目录名
+### 9.2. 获取当前目录名
 
 ```sh
 SCRIPTPATH=$(cd `dirname -- $0` && pwd)
 ```
 
-
-
-### 定时删除日志
+### 9.3. 定时删除日志
 
 ```sh
 #!/bin/sh
@@ -395,25 +396,28 @@ logs_list=(
 
 # 删除方法
 function rm_file() {
-   dir_path=$1
-   expired=$2
+   dir_path=$1 # 删除的目录
+   expired=$2 # 过期时间（天）
+
+   # 判断目录是否存在
    if [ ! -d $dir_path ];then
-	echo "${dir_path},目录不存在"
-        return 10
+      echo "${dir_path},目录不存在"
+      return 10
    fi
    if [ -z $expired ];then
-	echo "过期时间不能为空"
-	return 11
+      echo "过期时间不能为空"
+      return 11
    fi 
+
    logs=$(find $dir_path -mtime +${expired} -name "*.log")
    for log in ${logs[@]};do
-	now=$(date +%F_%T)
-	if test ! -f $log;then
-		echo "${log} 文件不存在"
-		continue
-	fi 
-	echo "${log} 已删除 in ${now}"
-	rm -f $log	
+   now=$(date +%F_%T)
+   if test ! -f $log;then
+      echo "${log} 文件不存在"
+      continue
+   fi 
+   echo "${log} 已删除 in ${now}"
+   rm -f $log
    done
    return 0
 }
@@ -421,20 +425,18 @@ function rm_file() {
 
 # 执行
 for item in ${logs_list[@]};do
-	rm_file $item $day
-	if [ $? -ne 0 ];then
-		exit 0
-	fi 
+   rm_file $item $day
+   if [ $? -ne 0 ];then
+      exit 0
+   fi 
 done
 echo "successful!"
 exit 0
 ```
 
+## 10. 其它
 
-
-## 其它
-
-### 时间
+### 10.1. 时间
 
 ```sh
 #!/bin/bash

@@ -49,7 +49,7 @@ Firewalld 的工作原理可以简要概括如下：
 
 以下是官方给出的架构图，<https://firewalld.org/documentation/architecture.html>
 
-![](https://firewalld.org/documentation/firewalld-structure+nftables.png)
+![structure](https://firewalld.org/documentation/firewalld-structure+nftables.png)
 
 Firewalld 是一个复杂的系统，包含了多个组件和模块来实现其功能。以下是关于每个组件的简要介绍：
 
@@ -106,7 +106,7 @@ firewall-cmd --state
 
 通过将网络划分成不同的区域，制定出不同区域之间的访问控制策略来控制不同程序区域间传送的数据流。
 
-| 网络区名称	| 默认配置
+| 网络区名称| 默认配置
 | ------------ | --------
 | trusted（信任）	| 可接受所有的网络连接
 | home（家庭）	| 用于家庭网络，仅接受ssh,mdns,gp-client,samba-client,dhcpv6-client连接
@@ -349,7 +349,7 @@ firewall-cmd --reload
 
 ### .8.4. 修改 rich 代码
 
-- 先删除 rich 
+- 先删除 rich
 - 再添加 rich
 
 ### .8.5. 删除 rich 代码
@@ -385,6 +385,17 @@ firewall-cmd --remove-rile-rule='rule family="ipv4" port port="8100" protocol="t
 firewall-cmd --add-rich-rule='rule family=ipv4 source address=192.168.1.0/24 port port="8100" log prefix="ZhangSan IP Access" level="notice" accept'
 ```
 
+如何查看访问日志呢？
+
+```sh
+# 动态查看(推荐)
+journalctl -p notice -f |grep "ZhangSan IP Access"
+# 或者
+cat /var/log/messages | grep "ZhangSan IP Access"
+# 或者
+tail -f /var/log/messages | grep "ZhangSan IP Access"
+```
+
 ### .8.7. 查看 rich 规则
 
 ```sh
@@ -394,12 +405,12 @@ firewall-cmd --list-all
 
 ## .9. Ipset 使用
 
->  IPset 是一种高效的数据结构，用于管理大量 IP 地址的集合
+> IPset 是一种高效的数据结构，用于管理大量 IP 地址的集合
 
 ### .9.1. 创建 ipset
 
 > 使用 `--new-ipset` 参数可以创建一个新的 IPset。例如，创建名为`k8s`的 IPset：
-   
+
 ```sh
 firewall-cmd --permanent --new-ipset=k8s --type=hash:ip
 ```
@@ -415,7 +426,7 @@ hash:ip hash:ip,mark hash:ip,port hash:ip,port,ip hash:ip,port,net hash:mac hash
 ### .9.2. 添加 IP 到 IPset
 
 > 使用 `--add-entry` 参数可以将 IP 添加到 IPset 中。例如，将 IP `192.168.1.100` 添加到 `k8s`：
-   
+
 ```sh
 firewall-cmd --permanent --ipset=k8s --add-entry=192.168.1.100
 firewall-cmd --permanent --ipset=k8s --add-entry=192.168.1.101
@@ -428,7 +439,7 @@ firewall-cmd --permanent --ipset=k8s --add-entry=192.168.1.103
 ### .9.3. 删除 IPset 删除 IP
 
 > 使用 `--remove-entry` 参数可以从 IPset 中删除指定的 IP。例如，从 `k8s` 中删除 IP `192.168.1.100`：
-   
+
 ```sh
 sudo firewall-cmd --permanent --ipset=k8s --remove-entry=192.168.1.100
 ```
@@ -448,8 +459,8 @@ firewall-cmd --ipset=k8s --get-entries
 
 ### .9.5. 使用 IPset
 
->  创建一个规则，允许来自 `k8s` 中的 IP 访问某个服务：
-   
+> 创建一个规则，允许来自 `k8s` 中的 IP 访问某个服务：
+
 ```sh
 # 允许 IPset 里的 IP 通行
 firewall-cmd --permanent --add-rich-rule 'rule family="ipv4" source ipset="k8s" accept'
@@ -525,3 +536,4 @@ firewall-cmd --reload
 - <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/security_guide/configuring_complex_firewall_rules_with_the_rich-language_syntax>
 - <https://www.sbarjatiya.com/notes_wiki/index.php/CentOS_8.x_firewalld_rich_rules>
 - <https://www.computernetworkingnotes.com/linux-tutorials/firewalld-rich-rules-explained-with-examples.html>
+  
