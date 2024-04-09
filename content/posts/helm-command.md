@@ -25,6 +25,9 @@ helm ls -n <namespace>
 
 # 查看状态
 helm status <release-name>
+
+# 卸载
+helm delete <release-name>
 ```
 
 ## 2. 部署
@@ -48,6 +51,15 @@ helm repo update - 从chart仓库中更新本地可用chart的信息
 # 搜索
 helm search hub redis  # 搜索官网上的资源
 helm search repo redis  # 搜索本地添加的仓库资源
+
+# 搜索更多版本列表
+helm search repo -l metrics-server/metrics-server
+
+# 下载指定版本,CHART VERSION
+helm search repo metrics-server/metrics-server --version 3.5.0
+
+# 查看 values.yaml
+helm show values metrics-server/metrics-server --version 3.5.0
 ```
 
 ## 4. 升级&卸载&回滚

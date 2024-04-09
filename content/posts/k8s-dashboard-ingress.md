@@ -18,24 +18,8 @@ music_auto: 1
 # weight: 1
 # description: ""
 ---
-<!-- TOC -->
 
-- [.1. 回顾](#1-回顾)
-- [.2. 下载对应的版本](#2-下载对应的版本)
-- [.3. 生成自签名的证书](#3-生成自签名的证书)
-- [.4. 生成 secret](#4-生成-secret)
-- [.5. 修改 dashboard.yaml 文件](#5-修改-dashboardyaml-文件)
-- [.6. 部署 Dashboard](#6-部署-dashboard)
-- [.7. 创建 token](#7-创建-token)
-  - [.7.1. 创建 admin token](#71-创建-admin-token)
-  - [.7.2. 创建某空间的 token](#72-创建某空间的-token)
-- [.8. 配置 ingress-nginx](#8-配置-ingress-nginx)
-- [.9. dashboard 登陆使用](#9-dashboard-登陆使用)
-- [.10. 参考](#10-参考)
-- [.11. 关于作者](#11-关于作者)
-
-<!-- /TOC -->
-## .1. 回顾
+## 1. 回顾
 
 之前写过一篇 kuberntes-dashboard 的文章，介绍如何使用 nodeport 方式部署与访问。
 
@@ -45,7 +29,7 @@ music_auto: 1
 
 - 采用 tls 方式配置 ingress-nginx 访问 dashboard。
 
-## .2. 下载对应的版本
+## 2. 下载对应的版本
 
 访问 github 仓库：<https://github.com/kubernetes/dashboard/>
 
@@ -57,18 +41,18 @@ music_auto: 1
 
 本次安装使用的 kubernetes 版本为：1.20
 
-找到适合的 dashboard 版本：<https://github.com/kubernetes/dashboard/releases/tag/v2.4.0>
+找到适合的 dashboard 版本：<https://github.com/kubernetes/dashboard/releases/tag/v20>
 
 ```sh
 # 下载 YAML 
-wget -O dashboard.yaml https://raw.githubusercontent.com/kubernetes/dashboard/v2.4.0/aio/deploy/recommended.yaml
+wget -O dashboard.yaml https://raw.githubusercontent.com/kubernetes/dashboard/v20/aio/deploy/recommended.yaml
 
 # YAML 里含有的镜像：
-kubernetesui/dashboard:v2.4.0
-kubernetesui/metrics-scraper:v1.0.7
+kubernetesui/dashboard:v20
+kubernetesui/metrics-scraper:v17
 ```
 
-## .3. 生成自签名的证书
+## 3. 生成自签名的证书
 
 > 如果是公网证书则跳过
 
@@ -96,7 +80,7 @@ openssl req -newkey rsa:2048 -nodes -keyout dash.k8s.io.key -x509 -days 3650 -ou
 openssl x509 -noout -text -in dash.k8s.io.crt
 ```
 
-## .4. 生成 secret
+## 4. 生成 secret
 
 crt 和 key 文件修改 dashboard.yaml 需要使用到：
 
@@ -112,7 +96,7 @@ kubectl create ns kubernetes-dashboard
 kubectl create secret tls kubernetes-dashboard-certs --cert=dash.k8s.io.crt --key=dash.k8s.io.key -n kubernetes-dashboard
 ```
 
-## .5. 修改 dashboard.yaml 文件
+## 5. 修改 dashboard.yaml 文件
 
 - 注释掉 dashboard.yaml 自动生成的证书。
 - 使用自签名的证书。
@@ -158,7 +142,7 @@ spec:
     spec:
       containers:
         - name: kubernetes-dashboard
-          image: kubernetesui/dashboard:v2.4.0          
+          image: kubernetesui/dashboard:v20          
           imagePullPolicy: Always
           resources: {}
           ports:
@@ -192,19 +176,46 @@ metadata:
 type: kubernetes.io/tls
 ```
 
-## .6. 部署 Dashboard
+## 6. 部署 Dashboard
 
 ```sh
 kubectl apply -f dashboard.yaml
 ```
 
-## .7. 创建 token
+## 7. 创建 token
 
 dashboard 不是输入用户名和密码方式登陆，而是采用 token 和 kubeconfig 两种方式登陆。
 
 本次介绍使用 token 方式登陆，可以赋予不同权限给 Token，从而实现权限控制。
 
-### .7.1. 创建 admin token
+### 7.1. 将 cluster-admin 权限授权给 kubernetes-dashboard
+
+> 将集群内的最高权限角色 cluster-admin 分配给 kubernetes-dashboard 命名空间里的 kubernetes-dashboard 服务账户
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: dashboardcrbinding
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+```
+
+或者使用 kubectl
+
+```sh
+kubectl create clusterrolebinding dashboardcrbinding \
+  --clusterrole=cluster-admin \
+  --serviceaccount=kubernetes-dashboard:kubernetes-dashboard
+```
+
+### 7.2. 创建 admin token
 
 本 token 具体超级权限，可以访问整个集群，分享权限时，慎重操作。
 
@@ -218,7 +229,6 @@ kind: ServiceAccount
 metadata:
   name: admin-user
   namespace: kubernetes-dashboard
-
 ---
 # 将 clustrole 与 serviceAccount 进行绑定
 apiVersion: rbac.authorization.k8s.io/v1
@@ -233,17 +243,15 @@ subjects:
 - kind: ServiceAccount
   name: admin-user
   namespace: kubernetes-dashboard
----
-
 ```
 
 查看 token 字符串：
 
 ```sh
-kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
+kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get serviceaccount admin-user -o jsonpath="{.secrets[0].name}")
 ```
 
-### .7.2. 创建某空间的 token
+### 7.3. 创建单个空间的 token
 
 假设我们需要给某用户授权 general 命名空间下的权限:
 
@@ -305,9 +313,88 @@ roleRef:
 
 ```sh
 kubectl -n general describe secret $(kubectl -n general get secret | grep general-user | awk '{print $1}')
+# 或
+kubectl -n general describe secret $(kubectl -n general get serviceaccount admin-user -o jsonpath="{.secrets[0].name}")
 ```
 
-## .8. 配置 ingress-nginx
+### 7.4. 创建多个空间的 token
+
+```yaml
+
+# 创建 serviceAccount 帐号名称
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: view-all-service-account
+  namespace: namespace1
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: namespace1
+  name: view-all-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log", "pods/exec"] # 可以操作的对象，如 pods
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"] # 如何操作，具有的权限
+- apiGroups: ["extensions", "apps"] 
+  resources: ["deployments", "configmaps", "services", "statefulsets", "ingresses"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: namespace2
+  name: view-all-role
+rules:
+- apiGroups: ["*"] # "*" 表示所有 API 组
+  resources: ["*"] # "*" 表示所有资源
+  verbs: ["*"] # "*" 表示所有操作
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: view-all-binding
+  namespace: namespace1
+subjects:
+- kind: ServiceAccount
+  name: view-all-service-account
+  namespace: namespace1
+roleRef:
+  kind: Role
+  name: view-all-role
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: view-all-binding
+  namespace: namespace2
+subjects:
+- kind: ServiceAccount
+  name: view-all-service-account
+  namespace: namespace1
+roleRef:
+  kind: Role
+  name: view-all-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# 测试用例 
+# k create ns namespace1
+# k create ns namespace2
+# kubectl -n namespace1 run test-nginx --image=nginx --restart=Always
+# kubectl -n namespace2 run test-nginx --image=nginx --restart=Always
+
+# 获取 token
+
+# SECRET_NAME=$(kubectl get serviceaccount view-all-service-account -n namespace1 -o jsonpath="{.secrets[0].name}")
+# kubectl get secret $SECRET_NAME -n namespace1 -o jsonpath="{.data.token}" | base64 --decode
+
+# 获取 token
+# kubectl -n namespace1 describe secret $(kubectl -n namespace1 get serviceaccount view-all-service-account -o jsonpath="{.secrets[0].name}")
+```
+
+## 8. 配置 ingress-nginx
 
 需要配置自定义的域名：dash.k8s.io，使用 ingress-nginx:
 
@@ -357,7 +444,7 @@ proxy_pass http://upstream_balancer;
 proxy_pass https://upstream_balancer;
 ```
 
-## .9. dashboard 登陆使用
+## 9. dashboard 登陆使用
 
 请求地址：<https://dash.k8s.io:8884/#/login>
 
@@ -365,12 +452,11 @@ proxy_pass https://upstream_balancer;
 
 ![k8s-dashboard-ingress-20221108212346](https://cdn.jsdelivr.net/gh/yezihack/assets/b/k8s-dashboard-ingress-20221108212346)
 
-## .10. 参考
+## 10. 参考
 
 1. [为kubernetes dashboard访问用户添加权限控制](https://www.qikqiak.com/post/add-authorization-for-kubernetes-dashboard/)
 
-
-## .11. 关于作者
+## 11. 关于作者
 
 我的博客：<https://yezihack.github.io>
 
