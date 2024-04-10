@@ -1,7 +1,7 @@
 ---
 title: "Docker笔记(五) 镜像管理"
 date: 2020-12-17T13:12:31+08:00
-lastmod: 2020-12-17T13:12:31+08:00
+lastmod: 2024-04-10T14:20:31+08:00
 draft: false
 tags: ["docker", "docker教程", "教程"]
 categories: ["docker"]
@@ -27,11 +27,12 @@ music_auto: 1
 > 3. 仓库
 >
 
-## 镜像介绍
+## 1. 镜像介绍
 
-Docker 运行容器前需要本地存在对应的镜像, 如果镜像不存在, Docker 会尝试远程仓库里拉取. 默认为 Docker Hub 仓库.用户也可以自定义镜像仓库. 
+Docker 运行容器前需要本地存在对应的镜像, 如果镜像不存在, Docker 会尝试远程仓库里拉取. 默认为 Docker Hub 仓库.用户也可以自定义镜像仓库.
 
-### 获取镜像
+### 1.1. 获取镜像
+
 `docker pull ubuntu:18.04`
 
 1. 如果不指定TAG标签, 则拉取 `latest`标签, 如上面使用tag: 18.04
@@ -40,8 +41,9 @@ Docker 运行容器前需要本地存在对应的镜像, 如果镜像不存在, 
 4. 以上`ubuntu:18.04` 相当于 `docker pull registry.hub.docker.com/ubuntu:18.04`. 默认注册服务器为 Docker Hub.
 5. 有时需要代理服务来加速Docker镜像获取过程. 可能在docker 服务启时配置中增加`--registry-mirror=proxy_URL`, 如国内: `https://registry.docker-cn.com`
 
-### 查看镜像
-**列出本地镜像**
+### 1.2. 查看镜像
+
+列出本地镜像
 
 `docker images`
 
@@ -53,7 +55,7 @@ redis                 5.0.0     1babb1dde7e1   2 years ago   94.9MB
 quay.io/coreos/etcd   v3.3.9    58c02f00d03b   2 years ago   39.2MB
 ```
 
-**使用Tag命令添加镜像标签**
+使用Tag命令添加镜像标签
 
 `docker tag mysql:latest mysqld:latest`
 
@@ -68,7 +70,7 @@ redis                 5.0.0     1babb1dde7e1   2 years ago   94.9MB
 quay.io/coreos/etcd   v3.3.9    58c02f00d03b   2 years ago   39.2MB
 ```
 
-**使用 inspect 命令查看镜像详细信息**
+使用 inspect 命令查看镜像详细信息
 
 `docker inspect mysqld`
 
@@ -88,9 +90,9 @@ quay.io/coreos/etcd   v3.3.9    58c02f00d03b   2 years ago   39.2MB
 
 可以查看制作者, 适应架构, 各层的数字摘要
 
-**history 命令查看镜像历史**
+history 命令查看镜像历史
 
-可以打印出此镜像创建过程, 每一层使用的命令. 
+可以打印出此镜像创建过程, 每一层使用的命令
 
 `docker history mysqld` 缩写版本命令行.
 
@@ -121,7 +123,7 @@ ab2f358b8612   5 days ago   /bin/sh -c #(nop)  CMD ["mysqld"]               0B
 <missing>      6 days ago   /bin/sh -c #(nop) ADD file:3a7bff4e139bcacc5…   69.2MB
 ```
 
-### 查找镜像
+### 1.3. 查找镜像
 
 `docker search nginx`
 
@@ -137,15 +139,24 @@ bitnami/nginx                      Bitnami nginx Docker Image                   
 
 ```
 
-
-
 1. 镜像名字
-2.  描述
+2. 描述
 3. 收藏数（表示该镜像的受欢迎程度）
 4. 是否官方创建
 5. 是否自动创建
 
-### 删除镜像
+### 1.4. 下载镜像
+
+```sh
+# 默认下载当前系统架构的镜像,存储时必须含有又架构的镜像
+docker pull mysql
+
+# 下载指定架构的镜像
+docker pull --platform=linux/amd64 mysql
+docker pull --platform=linux/arm64 mysql
+```
+
+### 1.5. 删除镜像
 
 `docker rmi mysqld:latest`
 
@@ -171,7 +182,7 @@ Untagged: mysql:latest
 Untagged: mysql@sha256:365e891b22abd3336d65baefc475b4a9a1e29a01a7b6b5be04367fcc9f373bb7
 ```
 
-### 清理镜像
+### 1.6. 清理镜像
 
 `docker images prune`
 
@@ -181,9 +192,9 @@ Untagged: mysql@sha256:365e891b22abd3336d65baefc475b4a9a1e29a01a7b6b5be04367fcc9
 1. `-a` 删除所有无用的镜像,不光是临时镜像
 2. `-f` 强制删除镜像, 不进行确认.
 
-## 创建镜像
+## 2. 创建镜像
 
-### 基本已有镜像
+### 2.1. 基本已有镜像
 
 先运行已有的镜像, 然后修改后,跟据ID保存
 
@@ -204,7 +215,7 @@ root@4a6858ac4c0c:/data# exit
 3. `-c, --change=[]` 提交的时候执行dockerfile指令
 4. `-p` 提交时暂停容器运行.
 
-### 基于Dockefile创建
+### 2.2. 基于Dockefile创建
 
 > 最常见的方式,也是推荐方式.
 
@@ -259,11 +270,9 @@ docker run -it -d --name top 6aab809b415d
 docker logs -f top
 ```
 
+## 3. 导入与导出镜像
 
-
-## 导入与导出镜像
-
-> 使用 docker images 查看镜像列表. 
+> 使用 docker images 查看镜像列表.
 
 测试镜像信息
 
@@ -272,7 +281,7 @@ REPOSITORY              TAG       IMAGE ID       CREATED         SIZE
 test/top                latest    f2b97b51ecab   4 seconds ago   65.6MB
 ```
 
-### 导出镜像
+### 3.1. 导出镜像
 
 > 如果需要跨操作系统, 请使用 `-o` 方式
 
@@ -282,7 +291,7 @@ docker save -o top_v1.tar f2b97b51ecab
 docker save f2b97b51ecab > top_v1.1.tar
 ```
 
-### 导入镜像
+### 3.2. 导入镜像
 
 > 如果需要跨操作系统, 请使用 `-i` 方式
 
@@ -300,15 +309,14 @@ docker load < top_v1.tar
 docker import top_v1.tar sgfoot/top:v1
 ```
 
-## 上传镜像
+## 4. 上传镜像
 
 1. 先登陆 `docker login`
 
 2. 再 push `docker push top:1.0`
 
-   ```sh 
-   # 可以先添加新的标签
-   docker tag top:1.0 sgfoot/top:1.0
-   docker push sgfoot/top:1.0
-   ```
-
+```sh
+# 可以先添加新的标签
+docker tag top:1.0 sgfoot/top:1.0
+docker push sgfoot/top:1.0
+```
