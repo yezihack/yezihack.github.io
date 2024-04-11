@@ -1,7 +1,7 @@
 ---
 title: "云运维笔记(1) CentOS7 安装"
 date: 2022-08-03T16:54:31+08:00
-lastmod: 2022-08-03T16:54:31+08:00
+lastmod: 2024-04-11T09:49:31+08:00
 draft: false
 tags: ["linux", "教程", "云运维笔记"]
 categories: ["云运维笔记"]
@@ -20,19 +20,20 @@ music_auto: 1
 ---
 <!-- TOC -->
 
-- [.1. 准备 CentOS7 镜像](#1-准备-centos7-镜像)
-- [.2. Vmware Workstation 安装 CentOS7](#2-vmware-workstation-安装-centos7)
-- [.3. 配置虚拟机网络](#3-配置虚拟机网络)
-- [.4. 配置 CentOS 网络](#4-配置-centos-网络)
-- [.5. 更改 CentOS7 Yum源](#5-更改-centos7-yum源)
-- [.6. 安装常用的软件](#6-安装常用的软件)
-- [.7. 安装 Oh-my-zsh](#7-安装-oh-my-zsh)
-- [.8. 克隆系统](#8-克隆系统)
-- [.9. 关于作者](#9-关于作者)
+- [1. .1. 准备 CentOS7 镜像](#1-1-准备-centos7-镜像)
+- [2. .2. Vmware Workstation 安装 CentOS7](#2-2-vmware-workstation-安装-centos7)
+- [3. .3. 配置虚拟机网络](#3-3-配置虚拟机网络)
+- [4. .4. 配置 CentOS 网络](#4-4-配置-centos-网络)
+- [5. .5. 更改 CentOS7 Yum源](#5-5-更改-centos7-yum源)
+- [6. .6. 安装常用的软件](#6-6-安装常用的软件)
+- [7. .7. 安装 Oh-my-zsh](#7-7-安装-oh-my-zsh)
+- [8. .8. 克隆系统](#8-8-克隆系统)
+- [9. 解决克隆 UUID 一致的问题](#9-解决克隆-uuid-一致的问题)
+- [10. .9. 关于作者](#10-9-关于作者)
 
 <!-- /TOC -->
 
-## .1. 准备 CentOS7 镜像
+## 1. .1. 准备 CentOS7 镜像
 
 使用清华大学开源镜像站下载 CentOS7: <https://mirrors.tuna.tsinghua.edu.cn/centos/7/isos/x86_64/>
 
@@ -45,7 +46,7 @@ music_auto: 1
 
 本次安装教程使用[精简版](https://mirrors.tuna.tsinghua.edu.cn/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso)镜像。因为无须图形界面，也无须自带太多的软件。
 
-## .2. Vmware Workstation 安装 CentOS7
+## 2. .2. Vmware Workstation 安装 CentOS7
 
 操作相对比较简单，下一步即可。
 
@@ -59,7 +60,7 @@ music_auto: 1
 
 ![centos-install-20220803171630](https://cdn.jsdelivr.net/gh/yezihack/assets/b/centos-install-20220803171630)
 
-## .3. 配置虚拟机网络
+## 3. .3. 配置虚拟机网络
 
 - 网络规划：192.168.9.0/24
 - 虚拟机采用 NAT 模式连接宿主机网络
@@ -81,7 +82,7 @@ NAT 设置：
 
 最后应用设置 -> 确认 -> 完成设置。
 
-## .4. 配置 CentOS 网络
+## 4. .4. 配置 CentOS 网络
 
 采用固定 IP 模式设置。
 
@@ -92,6 +93,8 @@ NAT 设置：
 - NETMASK="255.255.255.0" 设置子网掩码，即上一步设置的子网掩码
 
 所有配置如下：
+
+获取一个随机的uuid: `uuidgen`
 
 ```sh
 $ cat /etc/sysconfig/network-scripts/ifcfg-ens33 
@@ -107,7 +110,7 @@ IPV6_DEFROUTE="yes"
 IPV6_FAILURE_FATAL="no"
 IPV6_ADDR_GEN_MODE="stable-privacy"
 NAME="ens33"
-UUID="7ce873a8-d5f8-471a-8c7a-***********"
+UUID="7ce873a8-d5f8-471a-8c7a-***********" # 改一下，防止一致
 DEVICE="ens33"
 ONBOOT="yes"
 IPADDR="192.168.9.10"
@@ -125,7 +128,7 @@ nameserver 223.5.5.5
 
 使用 XSHELL 连接更加方便操作。
 
-## .5. 更改 CentOS7 Yum源
+## 5. .5. 更改 CentOS7 Yum源
 
 更改为国内 YUM 源，安装一些必要软件并更新系统软件。
 
@@ -144,15 +147,18 @@ yum -y install epel-release
 yum clean all && yum makecache
 # 更新
 yum -y update
+
+# 更改名称
+hostnamectl set-hostname kube30
 ```
 
-## .6. 安装常用的软件
+## 6. .6. 安装常用的软件
 
 ```sh
 yum -y install net-tools git vim telnet screen tree nmap dos2unix lrzsz nc lsof wget tcpdump htop iftop iotop sysstat nethogs ipvsadm chrony  ipvsadm bridge-utils
 ```
 
-## .7. 安装 Oh-my-zsh
+## 7. .7. 安装 Oh-my-zsh
 
 ```sh
 curl -sSL https://gitee.com/sgfoot/library/raw/master/oh-my-zsh/install.sh |bash
@@ -164,7 +170,7 @@ curl -sSL https://gitee.com/sgfoot/library/raw/master/oh-my-zsh/install.sh |bash
 chsh -s /bin/zsh
 ```
 
-## .8. 克隆系统
+## 8. .8. 克隆系统
 
 后续安装 Kubernetes，需要多台虚拟机，所以我们可以克隆系统，达到一劳永逸的效果。
 
@@ -172,7 +178,18 @@ chsh -s /bin/zsh
 
 ![centos-install-20220804103004](https://cdn.jsdelivr.net/gh/yezihack/assets/b/centos-install-20220804103004)
 
-## .9. 关于作者
+## 9. 解决克隆 UUID 一致的问题
+
+```sh
+# 机器 ID
+sudo truncate -s 0 /etc/machine-id && sudo systemd-machine-id-setup
+
+# 网卡UUID更新
+sudo sed -i "s/^UUID=.*/UUID=$(uuidgen)/" /etc/sysconfig/network-scripts/ifcfg-ens33
+systemctl restart network
+```
+
+## 10. .9. 关于作者
 
 我的博客：<https://yezihack.github.io>
 
