@@ -18,9 +18,73 @@ music_auto: 1
 # weight: 1
 # description: ""
 ---
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
 
+- [1. .1. Kubeadm 高可用集群](#1-1-kubeadm-高可用集群)
+- [2. .2. 安装前的准备](#2-2-安装前的准备)
+  - [2.1. .2.1. 安装要求](#21-21-安装要求)
+  - [2.2. .2.2. 集群规划](#22-22-集群规划)
+  - [2.3. .2.3. 版本选择](#23-23-版本选择)
+  - [2.4. .2.4. 设置IP](#24-24-设置ip)
+  - [2.5. .2.5. 设置 HOSTNAME](#25-25-设置-hostname)
+  - [2.6. .2.6. 添加阿里源](#26-26-添加阿里源)
+  - [2.7. .2.7. 安装基础软件](#27-27-安装基础软件)
+  - [2.8. .2.8. 关闭防火墙](#28-28-关闭防火墙)
+  - [2.9. .2.9. 关闭 selinux](#29-29-关闭-selinux)
+  - [2.10. .2.10. 关闭 swap](#210-210-关闭-swap)
+  - [2.11. .2.11. 添加 HOST](#211-211-添加-host)
+  - [2.12. .2.12. 时间同步](#212-212-时间同步)
+    - [2.12.1. .2.12.1. chrony 安装](#2121-2121-chrony-安装)
+    - [2.12.2. .2.12.2. 修改为中国时区](#2122-2122-修改为中国时区)
+    - [2.12.3. .2.12.3. 修改配置](#2123-2123-修改配置)
+    - [2.12.4. .2.12.4. 同步时间](#2124-2124-同步时间)
+    - [2.12.5. .2.12.5. 加入防火墙](#2125-2125-加入防火墙)
+- [3. .3. Kubernetes 设置的参数](#3-3-kubernetes-设置的参数)
+  - [3.1. .3.1. br\_netfilter 模块](#31-31-br_netfilter-模块)
+  - [3.2. .3.2. 桥接的IPv4流量传递到iptables的链](#32-32-桥接的ipv4流量传递到iptables的链)
+  - [3.3. .3.3. 加载 IPVS](#33-33-加载-ipvs)
+- [4. .4. Docker 部署](#4-4-docker-部署)
+  - [4.1. .4.1. 设置 Docker 镜像源](#41-41-设置-docker-镜像源)
+  - [4.2. .4.2. 列出 Docker 所有的版本](#42-42-列出-docker-所有的版本)
+  - [4.3. .4.3. 安装 docker](#43-43-安装-docker)
+  - [4.4. .4.4. 设置 daemon.json](#44-44-设置-daemonjson)
+  - [4.5. .4.5. 启动 docker](#45-45-启动-docker)
+- [5. .5. Kubernetes 部署](#5-5-kubernetes-部署)
+  - [5.1. .5.1. 设置 kubernetes 镜像源](#51-51-设置-kubernetes-镜像源)
+  - [5.2. .5.2. 安装 kubeadm,kubelet,kubectl](#52-52-安装-kubeadmkubeletkubectl)
+  - [5.3. .5.3. 初使化集群](#53-53-初使化集群)
+  - [5.4. .5.4. 查看 kubeadm 配置](#54-54-查看-kubeadm-配置)
+  - [5.5. .5.5. 其它 master 加入集群](#55-55-其它-master-加入集群)
+  - [5.6. .5.6. 其它工作节点加入集群](#56-56-其它工作节点加入集群)
+  - [5.7. .5.7. 查看集群状态](#57-57-查看集群状态)
+  - [5.8. .5.8. 去掉污点](#58-58-去掉污点)
+  - [5.9. .5.9. 集群重置](#59-59-集群重置)
+  - [5.10. .5.10. Docker 重置](#510-510-docker-重置)
+- [6. .6. Flannel 网络插件部署](#6-6-flannel-网络插件部署)
+  - [6.1. .6.1. 下载 YAML 文件](#61-61-下载-yaml-文件)
+  - [6.2. .6.2. 修改 kube-flannel.yml](#62-62-修改-kube-flannelyml)
+  - [6.3. .6.3. 部署异常](#63-63-部署异常)
+    - [6.3.1. .6.3.1. NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized](#631-631-networkpluginnotready-messagedocker-network-plugin-is-not-ready-cni-config-uninitialized)
+- [7. kube-proxy 设置 ipvs](#7-kube-proxy-设置-ipvs)
+- [8. .7. Ingress 组件](#8-7-ingress-组件)
+  - [8.1. .7.1. 基本原理](#81-71-基本原理)
+  - [8.2. .7.2. 常见的部署与暴露方式](#82-72-常见的部署与暴露方式)
+    - [8.2.1. .7.2.1. Deployment+LoadBalancer 模式的 Service](#821-721-deploymentloadbalancer-模式的-service)
+    - [8.2.2. .7.2.2. Deployment+NodePort 模式的 Service](#822-722-deploymentnodeport-模式的-service)
+    - [8.2.3. .7.2.3. DaemonSet+HostNetwork+nodeSelector 模式](#823-723-daemonsethostnetworknodeselector-模式)
+  - [8.3. .7.3. 版本的选择](#83-73-版本的选择)
+  - [8.4. .7.4. Ingress-nginx 部署](#84-74-ingress-nginx-部署)
+  - [8.5. .7.5. Ingress 测试](#85-75-ingress-测试)
+  - [8.6. .7.6. 部署异常](#86-76-部署异常)
+- [9. .8. 集群监控](#9-8-集群监控)
+  - [9.1. .8.1. metrics-server](#91-81-metrics-server)
+    - [9.1.1. .8.1.1. 安装](#911-811-安装)
+- [10. .9. 参考](#10-9-参考)
+- [11. .10. 关于作者](#11-10-关于作者)
 
-## .1. Kubeadm 高可用集群
+<!-- /TOC -->
+
+## 1. .1. Kubeadm 高可用集群
 
 本次安装 Kubernetes 采用官方推荐的 kubeadm 安装方式。
 
@@ -31,9 +95,9 @@ music_auto: 1
 
 本次教程采用 etcd 堆叠式高可用集群，即将 etcd 与控制平面的节点在同一个位置。
 
-## .2. 安装前的准备
+## 2. .2. 安装前的准备
 
-### .2.1. 安装要求
+### 2.1. .2.1. 安装要求
 
 在开始安装 kubernetes 集群机器之前需要满足以下几上条件：
 
@@ -49,7 +113,7 @@ music_auto: 1
 | 8 | MAC地址 | 集群中所有机器不重复 | cat /sys/class/net/ens33/address |
 | 9  | product_uuid | 集群中所有机器不重复 | cat /sys/class/dmi/id/product_uuid |
 
-### .2.2. 集群规划
+### 2.2. .2.2. 集群规划
 
 - master 表示 Kubernetes 控制面板节点
 - etcd01~etcd03 表示 etcd 集群节点
@@ -63,7 +127,7 @@ music_auto: 1
 | 4 | 192.168.9.13 | kube-13| node|
 | 5 | 192.168.9.14 | kube-14| node|
 
-### .2.3. 版本选择
+### 2.3. .2.3. 版本选择
 
 | 序列 | 软件名称 | 版本号 |
 | --- | --- | --- |
@@ -72,7 +136,7 @@ music_auto: 1
 | 3 | kubelet | 1.16.11|
 | 4 | docker | 19.03.5|
 
-### .2.4. 设置IP
+### 2.4. .2.4. 设置IP
 
 - 克隆出五台机器，分别设置不同的IP值
 
@@ -99,7 +163,7 @@ GATEWAY="192.168.9.2"
 NETMASK="255.255.255.0"
 ```
 
-### .2.5. 设置 HOSTNAME
+### 2.5. .2.5. 设置 HOSTNAME
 
 - 对五台机器，分别设置不同的 Hostname
 
@@ -111,19 +175,19 @@ hostnamectl set-hostname kube-13
 hostnamectl set-hostname kube-14
 ```
 
-### .2.6. 添加阿里源
+### 2.6. .2.6. 添加阿里源
 
 ```sh
 wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
 ```
 
-### .2.7. 安装基础软件
+### 2.7. .2.7. 安装基础软件
 
 ```sh
 yum install net-tools git vim telnet screen tree nmap dos2unix lrzsz nc lsof wget tcpdump htop iftop iotop sysstat nethogs traceroute -y
 ```
 
-### .2.8. 关闭防火墙
+### 2.8. .2.8. 关闭防火墙
 
 ```sh
 systemctl stop firewalld && systemctl disable firewalld
@@ -131,7 +195,7 @@ systemctl stop firewalld && systemctl disable firewalld
 systemctl status firewalld
 ```
 
-### .2.9. 关闭 selinux
+### 2.9. .2.9. 关闭 selinux
 
 ```sh
 sed -i 's/enforcing/disabled/' /etc/selinux/config # 永久
@@ -139,7 +203,7 @@ setenforce 0 # 临时
 getenforce # 查看
 ```
 
-### .2.10. 关闭 swap
+### 2.10. .2.10. 关闭 swap
 
 ```sh
 swapoff -a # 临时 
@@ -147,7 +211,7 @@ sed -ri 's/.*swap.*/#&/' /etc/fstab # 永久
 swapon -v # 检查
 ```
 
-### .2.11. 添加 HOST
+### 2.11. .2.11. 添加 HOST
 
 ```sh
 cat >> /etc/hosts << EOF
@@ -159,13 +223,13 @@ cat >> /etc/hosts << EOF
 EOF
 ```
 
-### .2.12. 时间同步
+### 2.12. .2.12. 时间同步
 
 采用 chrony 软件同步时间。
 
 Chrony是NTP（Network Time Protocol，网络时间协议，服务器时间同步的一种协议）的另一种实现，与ntpd不同，它可以更快且更准确地同步系统时钟，最大程度的减少时间和频率误差。
 
-#### .2.12.1. chrony 安装
+#### 2.12.1. .2.12.1. chrony 安装
 
 ```sh
 # 安装
@@ -181,7 +245,7 @@ systemctl enable chronyd 　　  #设置开机启动
 
 ```
 
-#### .2.12.2. 修改为中国时区
+#### 2.12.2. .2.12.2. 修改为中国时区
 
 ```sh
 timedatectl set-timezone Asia/Shanghai
@@ -190,7 +254,7 @@ timedatectl set-timezone Asia/Shanghai
 chronyc -a makestep
 ```
 
-#### .2.12.3. 修改配置
+#### 2.12.3. .2.12.3. 修改配置
 
 ```sh
 vim /etc/chrony.conf
@@ -212,7 +276,7 @@ allow 192.168.9.0/24   #允许哪些服务器到这台服务器来同步时间
 
 - ntp1.aliyun.com
 
-#### .2.12.4. 同步时间
+#### 2.12.4. .2.12.4. 同步时间
 
 ```sh
 # 查看当前系统时区
@@ -228,7 +292,7 @@ chronyc sourcestats -v
 chronyc tracking
 ```
 
-#### .2.12.5. 加入防火墙
+#### 2.12.5. .2.12.5. 加入防火墙
 
 > 如果开启了防火墙，需要设置白名单
 
@@ -239,9 +303,9 @@ firewall-cmd --add-service=ntp --permanent
 firewall-cmd --reload
 ```
 
-## .3. Kubernetes 设置的参数
+## 3. .3. Kubernetes 设置的参数
 
-### .3.1. br_netfilter 模块
+### 3.1. .3.1. br_netfilter 模块
 
 ```sh
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
@@ -249,7 +313,7 @@ br_netfilter
 EOF
 ```
 
-### .3.2. 桥接的IPv4流量传递到iptables的链
+### 3.2. .3.2. 桥接的IPv4流量传递到iptables的链
 
 ```sh
 cat > /etc/sysctl.d/k8s.conf << EOF
@@ -262,7 +326,7 @@ EOF
 sysctl --system
 ```
 
-### .3.3. 加载 IPVS
+### 3.3. .3.3. 加载 IPVS
 
 ```sh
 cat <<EOF | sudo tee /etc/sysconfig/modules/ipvs.modules
@@ -284,9 +348,9 @@ sh /etc/sysconfig/modules/ipvs.modules
 lsmod | grep ip_vs 
 ```
 
-## .4. Docker 部署
+## 4. .4. Docker 部署
 
-### .4.1. 设置 Docker 镜像源
+### 4.1. .4.1. 设置 Docker 镜像源
 
 ```sh
 # 下载 docker 官方源
@@ -299,19 +363,19 @@ sudo sed -i 's+download.docker.com+mirrors.tuna.tsinghua.edu.cn/docker-ce+' /etc
 yum makecache fast
 ```
 
-### .4.2. 列出 Docker 所有的版本
+### 4.2. .4.2. 列出 Docker 所有的版本
 
 ```sh
 yum search docker-ce --showduplicates|sort -r
 ```
 
-### .4.3. 安装 docker
+### 4.3. .4.3. 安装 docker
 
 ```sh
 yum -y install docker-ce-19.03.5 docker-ce-cli-19.03.5 containerd.io-19.03.5
 ```
 
-### .4.4. 设置 daemon.json
+### 4.4. .4.4. 设置 daemon.json
 
 ```sh
 # 创建目录
@@ -348,15 +412,15 @@ EOF
 - exec-opts 运行时执行的选项
 - live-restore 在 dockerd 停止时保证已启动的 Running 容器持续运行，并在 daemon 进程启动后重新接管
 
-### .4.5. 启动 docker
+### 4.5. .4.5. 启动 docker
 
 ```sh
 systemctl start docker
 ```
 
-## .5. Kubernetes 部署
+## 5. .5. Kubernetes 部署
 
-### .5.1. 设置 kubernetes 镜像源
+### 5.1. .5.1. 设置 kubernetes 镜像源
 
 ```sh
 cat > /etc/yum.repos.d/kubernetes.repo << EOF
@@ -371,7 +435,7 @@ https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg
 EOF
 ```
 
-### .5.2. 安装 kubeadm,kubelet,kubectl
+### 5.2. .5.2. 安装 kubeadm,kubelet,kubectl
 
 ```sh
 # 搜索所有的版本
@@ -386,7 +450,7 @@ yum install -y kubelet-1.16.11 kubeadm-1.16.11 kubectl-1.16.11
 systemctl enable kubelet
 ```
 
-### .5.3. 初使化集群
+### 5.3. .5.3. 初使化集群
 
 初使化为两种方式，一种是直接命令式，一种是配置文件式。
 
@@ -495,7 +559,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 ```
 
-### .5.4. 查看 kubeadm 配置
+### 5.4. .5.4. 查看 kubeadm 配置
 
 需要观察
 
@@ -545,7 +609,7 @@ metadata:
   uid: b50bc7ad-a754-4251-a446-f5b958d47409
 ```
 
-### .5.5. 其它 master 加入集群
+### 5.5. .5.5. 其它 master 加入集群
 
 ```sh
 # 生成 certificate key
@@ -597,7 +661,7 @@ controlPlaneEndpoint: 192.168.9.10:6443 # 新增项
 
 ![kubeadm-install-20220805161637](https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220805161637)
 
-### .5.6. 其它工作节点加入集群
+### 5.6. .5.6. 其它工作节点加入集群
 
 ```sh
 kubeadm token create --print-join-command
@@ -605,7 +669,7 @@ kubeadm token create --print-join-command
 kubeadm join 192.168.9.10:6443 --token pje2rc.utnrzkvvbuecolm2     --discovery-token-ca-cert-hash sha256:87df00d45f3a503b806083c1eefbaaae770611ddd7d3eaa46c10ae743ff277bf
 ```
 
-### .5.7. 查看集群状态
+### 5.7. .5.7. 查看集群状态
 
 ```sh
 -> # k get no
@@ -617,7 +681,7 @@ kube-13   NotReady   <none>   6s      v1.16.11
 kube-14   NotReady   <none>   3s      v1.16.11
 ```
 
-### .5.8. 去掉污点
+### 5.8. .5.8. 去掉污点
 
 ```sh
 # 去掉污点
@@ -627,7 +691,7 @@ kubectl taint nodes --all node-role.kubernetes.io/master-
 kubectl taint nodes k8s node-role.kubernetes.io/master=true:NoSchedule
 ```
 
-### .5.9. 集群重置
+### 5.9. .5.9. 集群重置
 
 ```sh
 sudo kubeadm reset -f
@@ -640,7 +704,7 @@ sudo rm -rf /etc/cni/
 sudo rm -rf /var/lib/etcd/
 ```
 
-### .5.10. Docker 重置
+### 5.10. .5.10. Docker 重置
 
 ```sh
 yum install -y bridge-utils
@@ -655,11 +719,11 @@ ip link delete flannel.1
 
 ```
 
-## .6. Flannel 网络插件部署
+## 6. .6. Flannel 网络插件部署
 
 > pod 与 pod 通信需要网络插件，通过 k8s 提供的 CNI 接口安装 flannel 插件
 
-### .6.1. 下载 YAML 文件
+### 6.1. .6.1. 下载 YAML 文件
 
 flannel 有众多版本，需要查看官方文档是否适合当前版本。
 
@@ -673,7 +737,7 @@ flannel 有众多版本，需要查看官方文档是否适合当前版本。
 wget https://raw.githubusercontent.com/flannel-io/flannel/v0.13.1-rc2/Documentation/kube-flannel.yml
 ```
 
-### .6.2. 修改 kube-flannel.yml
+### 6.2. .6.2. 修改 kube-flannel.yml
 
 - 查看当前集群中的 pod 网络段设置
 
@@ -703,9 +767,9 @@ data:
 
 ![kubeadm-install-20220805173058](https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220805173058)
 
-### .6.3. 部署异常
+### 6.3. .6.3. 部署异常
 
-#### .6.3.1. NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
+#### 6.3.1. .6.3.1. NetworkPluginNotReady message:docker: network plugin is not ready: cni config uninitialized
 
 ```sh
 Aug 16 12:56:03 kube-10 kubelet[6291]: W0816 12:56:03.260171    6291 cni.go:171] Error loading CNI config list file /etc/cni/net.d/10-flannel.conflist: error parsing configuration list: invalid character 't' looking for beginning of object key string
@@ -731,9 +795,29 @@ NAME      STATUS   ROLES    AGE   VERSION
 kube-10   Ready    master   64m   v1.16.11
 ```
 
-## .7. Ingress 组件
+## 7. kube-proxy 设置 ipvs
 
-### .7.1. 基本原理
+```sh
+kubectl edit cm kube-proxy -n kube-system
+
+kind: KubeProxyConfiguration
+metricsBindAddress: ""
+mode: "ipvs" # 修改成 ipvs
+nodePortAddresses: null
+oomScoreAdj: null
+
+# 重启kube-proxy
+kubectl -n kube-system get po |grep kube-proxy|awk '{print $1}'|xargs kubectl -n kube-system delete po
+
+# 验证
+kubectl -n kube-system logs kube-proxy-f8b7g
+
+I0417 08:33:53.054605       1 server_others.go:258] Using ipvs Proxier.
+```
+
+## 8. .7. Ingress 组件
+
+### 8.1. .7.1. 基本原理
 
 Ingress也是Kubernetes API的标准资源类型之一，它其实就是一组基于DNS名称（host）或URL路径把请求转发到指定的Service资源的规则。用于将集群外部的请求流量转发到集群内部完成的服务发布。我们需要明白的是，Ingress资源自身不能进行“流量穿透”，仅仅是一组规则的集合，这些集合规则还需要其他功能的辅助，比如监听某套接字，然后根据这些规则的匹配进行路由转发，这些能够为Ingress资源监听套接字并将流量转发的组件就是Ingress Controller。
 
@@ -745,28 +829,28 @@ Ingress Controller 有很多开源实现，比如 traefik、nginx-controller、K
 
 ![Ingress原理图](https://cdn.jsdelivr.net/gh/yezihack/assets/b/kubeadm-install-20220809153332)
 
-### .7.2. 常见的部署与暴露方式
+### 8.2. .7.2. 常见的部署与暴露方式
 
-#### .7.2.1. Deployment+LoadBalancer 模式的 Service
+#### 8.2.1. .7.2.1. Deployment+LoadBalancer 模式的 Service
 
 如果要把ingress部署在公有云，那用这种方式比较合适。用Deployment部署ingress-controller，创建一个type为LoadBalancer的service关联这组pod。大部分公有云，都会为LoadBalancer的service自动创建一个负载均衡器，通常还绑定了公网地址。只要把域名解析指向该地址，就实现了集群服务的对外暴露。
 
-#### .7.2.2. Deployment+NodePort 模式的 Service
+#### 8.2.2. .7.2.2. Deployment+NodePort 模式的 Service
 
 同样用deployment模式部署ingress-controller，并创建对应的服务，但是type为NodePort。这样，ingress就会暴露在集群节点ip的特定端口上。由于nodeport暴露的端口是随机端口，一般会在前面再搭建一套负载均衡器来转发请求。该方式一般用于宿主机是相对固定的环境ip地址不变的场景。
 NodePort方式暴露ingress虽然简单方便，但是NodePort多了一层NAT，在请求量级很大时可能对性能会有一定影响
 
-#### .7.2.3. DaemonSet+HostNetwork+nodeSelector 模式
+#### 8.2.3. .7.2.3. DaemonSet+HostNetwork+nodeSelector 模式
 
 用DaemonSet结合nodeselector来部署ingress-controller到特定的node上，然后使用HostNetwork直接把该pod与宿主机node的网络打通，直接使用宿主机的80/433端口就能访问服务。这时，ingress-controller所在的node机器就很类似传统架构的边缘节点，比如机房入口的nginx服务器。该方式整个请求链路最简单，性能相对NodePort模式更好。缺点是由于直接利用宿主机节点的网络和端口，一个node只能部署一个ingress-controller pod。比较适合大并发的生产环境使用。
 
-### .7.3. 版本的选择
+### 8.3. .7.3. 版本的选择
 
 ![](https://s2.loli.net/2023/12/15/wUvmWDTArykN5LF.png)
 
 可以在 <https://github.com/kubernetes/ingress-nginx?tab=readme-ov-file#changelog> 找到.
 
-### .7.4. Ingress-nginx 部署
+### 8.4. .7.4. Ingress-nginx 部署
 
 ```sh
 wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-0.32.0/deploy/static/provider/baremetal/deploy.yaml
@@ -801,7 +885,7 @@ spec:
       ....
 ```
 
-### .7.5. Ingress 测试
+### 8.5. .7.5. Ingress 测试
 
 ```sh
 # 部署
@@ -821,7 +905,7 @@ curl kube-box.io/kube-box/ping
 
 ```
 
-### .7.6. 部署异常
+### 8.6. .7.6. 部署异常
 
 (1). MountVolume.SetUp failed for volume "webhook-cert" : secret "ingress-nginx-admission" not found
 
@@ -873,15 +957,15 @@ kubectl get validatingwebhookconfigurations ingress-nginx-admission
 kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 ```
 
-## .8. 集群监控
+## 9. .8. 集群监控
 
-### .8.1. metrics-server
+### 9.1. .8.1. metrics-server
 
 Metrics Server 是 Kubernetes 集群核心监控数据的聚合器，Metrics Server 从 Kubelet 收集资源指标，并通过 Merics API 在 Kubernetes APIServer 中提供给缩放资源对象 HPA 使用。也可以通过 Metrics API 提供的 Kubectl top 查看 Pod 资源占用情况，从而实现对资源的自动缩放。
 
 主要功能：主要是基于 Kubernetes 集群的 CPU、内存的水平自动缩放。
 
-#### .8.1.1. 安装
+#### 9.1.1. .8.1.1. 安装
 
 安装前需要查看对应的版本，如当前 k8s 1.16 选择为：v0.3.6
 
@@ -913,7 +997,7 @@ containers:
 kubectl apply -f /opt/deploy/metrics-server.yaml
 ```
 
-## .9. 参考
+## 10. .9. 参考
 
 - [详解：Linux Chrony 设置服务器集群同步时间](https://www.linuxprobe.com/centos7-chrony-time.html)
 - [Istio实战指南](https://huangzhongde.cn/istio/)
@@ -921,7 +1005,7 @@ kubectl apply -f /opt/deploy/metrics-server.yaml
 - [k8s coredns显示0/1 Running问题排查](https://www.cxymm.net/article/mayi_xiaochaun/121402679)
 - [使用kubeadm安装kubernetes1.16](https://segmentfault.com/a/1190000020738509)
 
-## .10. 关于作者
+## 11. .10. 关于作者
 
 我的博客：<https://yezihack.github.io>
 

@@ -10,12 +10,31 @@ comment: false
 toc: true
 reward: true
 ---
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
 
-## MySQL 介绍
+- [1. MySQL 介绍](#1-mysql-介绍)
+- [2. 常用 MySQL 命令](#2-常用-mysql-命令)
+- [3. 环境变量](#3-环境变量)
+  - [3.1. 可自定义的环境变量](#31-可自定义的环境变量)
+    - [3.1.1. 只读环境变量](#311-只读环境变量)
+- [4. 快速部署单实例](#4-快速部署单实例)
+- [5. 主从群集](#5-主从群集)
+  - [5.1. 步骤 1：创建复制主服务器](#51-步骤-1创建复制主服务器)
+  - [5.2. 步骤 2：创建复制从属](#52-步骤-2创建复制从属)
+  - [5.3. docker-compose 部署](#53-docker-compose-部署)
+  - [5.4. 主从常用命令](#54-主从常用命令)
+- [6. mysql 权限问题](#6-mysql-权限问题)
+- [7. 参考文档](#7-参考文档)
+
+<!-- /TOC -->
+
+> 基于 bitnami/mysql 的文档
+
+## 1. MySQL 介绍
 
 MySQL是一个快速、可靠、可扩展且易于使用的开源关系数据库系统。专为处理任务关键型重载生产应用而设计。
 
-## 常用 MySQL 命令
+## 2. 常用 MySQL 命令
 
 ```sh
 # 查看 MySQL 版本信息
@@ -52,11 +71,35 @@ GRANT ALL PRIVILEGES ON test.* TO 'deployer'@'%';
 
 # 刷新权限
 FLUSH PRIVILEGES;
+
+# 创建一个数据库
+CREATE DATABASE `mydb` CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+use mydb;
+
+# 创建表
+CREATE TABLE users (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  age INT NOT NULL,
+  PRIMARY KEY (id)
+);
+show tables;
+
+# 插入数据
+INSERT INTO users (name, age) VALUES
+('Alice', 30),
+('Bob', 25),
+('Charlie', 35),
+('Daisy', 28),
+('Edward', 40);
+
+select * from users;
 ```
 
-## 环境变量
+## 3. 环境变量
 
-### 可自定义的环境变量
+### 3.1. 可自定义的环境变量
 
 | Name  | Description    | Default Value |
 |---------|---------------|------------|
@@ -94,7 +137,7 @@ FLUSH PRIVILEGES;
 | `MYSQL_ENABLE_SLOW_QUERY`       | Whether to enable slow query logs.                                                                                        | `0`           |
 | `MYSQL_LONG_QUERY_TIME`         | How much time, in seconds, defines a slow query.                                                                          | `10.0`        |
 
-#### 只读环境变量
+#### 3.1.1. 只读环境变量
 
 | Name                          | Description                                                | Value                         |
 |-------------------------------|------------------------------------------------------------|-------------------------------|
@@ -117,7 +160,7 @@ FLUSH PRIVILEGES;
 | `MYSQL_DEFAULT_CHARACTER_SET` | Default MySQL character set.                               | `utf8mb4`                     |
 | `MYSQL_DEFAULT_BIND_ADDRESS`  | Default MySQL bind address.                                | `0.0.0.0`                     |
 
-## 快速部署单实例
+## 4. 快速部署单实例
 
 > 查看更多版本的 mysql: <https://hub.docker.com/r/bitnami/mysql/tags>
 
@@ -196,7 +239,7 @@ services:
 
 运行: `docker-compose up -d`
 
-## 主从群集
+## 5. 主从群集
 
 使用以下环境变量，可以使用 Bitnami MySQL Docker 映像轻松设置零停机 MySQL 主从复制集群：
 
@@ -211,7 +254,7 @@ services:
 
 在复制集群中，可以有一个主节点和零个或多个从节点。启用复制后，主节点处于读写模式，而从节点处于只读模式。为了获得最佳性能，建议将读取限制为从站。
 
-### 步骤 1：创建复制主服务器
+### 5.1. 步骤 1：创建复制主服务器
 
 第一步是启动MySQL master
 
@@ -227,7 +270,7 @@ docker run -d --name mysql-master \
   bitnami/mysql:8.0.36
 ```
 
-步骤 2：创建复制从属
+### 5.2. 步骤 2：创建复制从属
 
 ```sh
 docker run -d --name mysql-slave --link mysql-master:master \
@@ -239,9 +282,80 @@ docker run -d --name mysql-slave --link mysql-master:master \
   bitnami/mysql:8.0.36
 ```
 
+### 5.3. docker-compose 部署
 
+- 将上面二个部署合并一个YAML,使用 docker-compose 部署
 
-## 参考文档
+```sh
+cat > mysql-master-slave.yaml <<EOF
+version: '3'
+
+services:
+  mysql-master:
+    image: 'bitnami/mysql:5.7.43-debian-11-r73'
+    ports:
+      - '3306'
+    volumes:
+      - /path/to/mysql-persistence:/bitnami/mysql/data
+    environment:
+      - MYSQL_REPLICATION_MODE=master
+      - MYSQL_REPLICATION_USER=repl_user
+      - MYSQL_REPLICATION_PASSWORD=repl_password
+      - MYSQL_ROOT_PASSWORD=master_root_password
+      - MYSQL_USER=my_user
+      - MYSQL_PASSWORD=my_password
+      - MYSQL_DATABASE=my_database
+  mysql-slave:
+    image: 'bitnami/mysql:5.7.43-debian-11-r73'
+    ports:
+      - '3306'
+    depends_on:
+      - mysql-master
+    environment:
+      - MYSQL_REPLICATION_MODE=slave
+      - MYSQL_REPLICATION_USER=repl_user
+      - MYSQL_REPLICATION_PASSWORD=repl_password
+      - MYSQL_MASTER_HOST=mysql-master
+      - MYSQL_MASTER_PORT_NUMBER=3306
+      - MYSQL_MASTER_ROOT_PASSWORD=master_root_password
+EOF
+
+# 启动服务：
+docker-compose -f mysql-master-slave.yaml  up --detach --scale mysql-master=1 --scale mysql-slave=3
+
+# 停止 
+docker-compose -f mysql-master-slave.yaml down -v
+
+```
+
+### 5.4. 主从常用命令
+
+```sh
+# 查看主库的状态，获取当前binlog日志的文件名称和位置点
+show master status;
+
+-- 开始进行主从复制
+start slave;
+
+-- 查看主从复制的状态
+show slave status \G;
+```
+
+## 6. mysql 权限问题
+
+```sh
+
+mkdir data
+
+chown -R 1000:1000 data
+
+ls -lnd data
+
+drwxr-xr-x 2 1000 1000 4096 Aug 27 15:54 data
+
+docker run -v "$PWD/data":/var/lib/mysql --user 1000:1000 --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.7
+```
+
+## 7. 参考文档
 
 - <https://github.com/bitnami/containers/tree/main/bitnami/mysql>
-
