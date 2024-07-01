@@ -1,7 +1,7 @@
 ---
 title: "Docker笔记(二) 安装"
 date: 2020-10-15T17:12:16+08:00
-lastmod: 2020-10-15T17:12:16+08:00
+lastmod: 2024-07-01T17:16:16+08:00
 draft: false
 tags: ["docker", "docker教程", "教程"]
 categories: ["docker"]
@@ -95,4 +95,15 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 EOF
 sudo systemctl daemon-reload
 sudo systemctl restart docker
+```
+
+注意：以上于2024.07.01已无效。
+
+目前有效设置加速方式：
+
+```json
+"registry-mirrors": [
+  "https://docker.m.daocloud.io",
+  "https://docker.1panel.live"
+]
 ```

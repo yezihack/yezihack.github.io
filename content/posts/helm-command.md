@@ -108,11 +108,18 @@ helm create my-release
 # 本地渲染模板并显示输出,有错误的YAML也可以显示出来,方便调试
 helm template [NAME]
 
+# 能查看到更加详细的代码与错误显示
+helm template ./mysql --debug
+
 # 查看渲染什么，有错误也会输入
 helm install foo ./mychart --debug --dry-run --disable-openapi-validation
 
 # 有错误会报错
 helm install foo ./mychart --debug --dry-run
+
+# lint 检查Helm chart是否有任何语法或逻辑错误
+helm lint ./mychart
+helm lint .
 
 ```
 

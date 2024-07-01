@@ -49,6 +49,26 @@ SHOW GLOBAL VARIABLES LIKE 'bind_address';
 
 # MySQL服务器监听的TCP/IP端口号
 SHOW GLOBAL VARIABLES LIKE 'port';
+
+# 查看
+ show global variables like '%messages%';
+
+# 查看模式
+SELECT @@sql_mode;
+
+-- 设置全局sql_mode
+SET GLOBAL sql_mode = 'modes';
+
+-- 设置当前连接的sql_mode
+SET SESSION sql_mode = 'modes';
+-- 或者
+SET sql_mode = 'modes';
+```
+
+## 动态设置变量
+
+```sh
+SET GLOBAL sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 ```
 
 ## 2. 库操作
@@ -232,6 +252,11 @@ GRANT ALL PRIVILEGES ON 库名2.* TO '用户名'@'%';
 
 # 刷新权限使其生效
 FLUSH PRIVILEGES;
+
+# 限制并发(MAX_USER_CONNECTIONS)，PROCESS, REPLICATION CLIENT
+
+CREATE USER 'exporter'@'localhost' IDENTIFIED BY 'XXXXXXXX' WITH MAX_USER_CONNECTIONS 3;
+GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO 'exporter'@'localhost';
 ```
 
 ## 8. 主从集群
