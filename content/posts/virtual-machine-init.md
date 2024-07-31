@@ -11,7 +11,7 @@ toc: true
 reward: true
 ---
 
-## 网络配置
+## 1. 网络配置
 
 ```sh
 cat /etc/sysconfig/network-scripts/ifcfg-ens33 
@@ -55,7 +55,7 @@ PING www.a.shifen.com (220.181.38.148) 56(84) bytes of data.
 64 bytes from 220.181.38.148 (220.181.38.148): icmp_seq=3 ttl=128 time=7.84 ms
 ```
 
-## 更换源
+## 2. 更换源
 
 ```sh
 mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
@@ -65,7 +65,7 @@ curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-
 yum clean all && yum makecache
 ```
 
-## 安装常用工具
+## 3. 安装常用工具
 
 ```sh
 curl -sSL https://gitee.com/sgfoot/library/raw/master/oh-my-zsh/install.sh |bash
@@ -75,7 +75,7 @@ yum install net-tools git vim telnet screen tree nmap dos2unix lrzsz nc lsof wge
 yum install -y epel-release
 ```
 
-## 时间同步
+## 4. 时间同步
 
 ```sh
 # 安装
@@ -132,13 +132,13 @@ chronyc sources -v
 chronyc sourcestats -v
 ```
 
-## 共享目录
+## 5. 共享目录
 
 ```sh
 yum install -y open-vm-tools
 ```
 
-## 参考
+## 6. 参考
 
 - [windows安装vmware.centos7工作流程](https://www.jianshu.com/p/4cbb6d402bcc)
 - [VMware Workstation Pro 15安装CentOS7](https://www.jianshu.com/p/abeb59e3cf61)

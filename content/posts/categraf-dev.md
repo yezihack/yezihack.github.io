@@ -115,14 +115,14 @@ make
 
 - 插件开发需要遵循 Categraf 的插件规范，包括插件的配置文件、数据采集逻辑等
 
-以 version 为 例，开发一个简单的插件，实现获取当前版本号的功能
+以 linux-exec 为 例，开发一个简单的插件，实现 linux 命令执行
 
 #### 4.2.1. 配置文件
 
 ```sh
-mkdir -p conf/input.version
+mkdir -p conf/linux-exec
 
-touch conf/input.version/version.toml
+touch conf/linux-exec/linux-exec.toml
 ```
 
 ```toml
@@ -132,24 +132,19 @@ interval = 15
 # 获取 linux 内核版本
 [[instances]]
 labels = { query_type="system" }
-field="kernel"
-query_command="uname -r"
-
-# 获取 linux 架构
-[[instances]]
-labels = { query_type="system" }
-field="arch"
-query_command="uname -m"
+field="hostname"
+query_command="hostname"
 ```
 
 #### 4.2.2. 代码逻辑
 
 ```sh
-touch inputs/version/version.go
+touch inputs/linux-exec/linux-exec.go
 ```
 
 ```golang
-package version
+package linux-exec
+
 
 import (
   "log"
@@ -161,29 +156,29 @@ import (
 )
 
 //  插件名称，与配置文件中的 input. 开头一致
-const inputName = "version"
+const inputName = "linux-exec"
 
 // 定义结构体，用于解析配置文件
-type Version struct {
+type LinuxExec struct {
   config.PluginConfig
   Instances []*Instance `toml:"instances"`
 }
 
 func init() {
   inputs.Add(inputName, func() inputs.Input {
-    return &Version{}
+    return &LinuxExec{}
   })
 }
 
-func (pt *Version) Clone() inputs.Input {
-  return &Version{}
+func (pt *LinuxExec) Clone() inputs.Input {
+  return &LinuxExec{}
 }
 
-func (pt *Version) Name() string {
+func (pt *LinuxExec) Name() string {
   return inputName
 }
 
-func (pt *Version) GetInstances() []inputs.Instance {
+func (pt *LinuxExec) GetInstances() []inputs.Instance {
   ret := make([]inputs.Instance, len(pt.Instances))
   for i := 0; i < len(pt.Instances); i++ {
     ret[i] = pt.Instances[i]
@@ -201,26 +196,26 @@ type Instance struct {
 // 逻辑处理
 func (ins *Instance) Gather(slist *types.SampleList) {
   if ins.Field == "" {
-    log.Println("E!", "missing field for version_query")
+    log.Println("E!", "missing field for linux_exec_query")
     return
   }
   if ins.QueryCommand == "" {
-    log.Println("E!", "missing query_command for version_query")
+    log.Println("E!", "missing query_command for linux_exec")
     return
   }
   result, err := exec.Command("sh", "-c", ins.QueryCommand).Output()
   if err != nil {
-    log.Println("E!", "failed to run query_command for version_query:", err)
+    log.Println("E!", "failed to run query_command for linux_exec:", err)
     return
   }
-  // 生成 metrics 查询名称，即 inputName+ins.Field, 如 version_query_go
+  // 生成 metrics 查询名称，即 inputName+ins.Field, 如 linux_exec_hostname
   fields := map[string]interface{}{
     ins.Field: 1,
   }
   // 制作 tags
   tags := map[string]string{
     "name":    ins.Field,
-    "version": string(result),
+    "linux_exec": string(result),
   }
   // 将数据推入 slist
   slist.PushSamples(inputName, fields, tags)
@@ -236,7 +231,7 @@ vim agent/metrics_agent.go
 ```golang
 import (
   // ...
-  _ "flashcat.cloud/categraf/inputs/version"
+  _ "flashcat.cloud/categraf/inputs/linux-exec"
   // ...
 )
 ```
@@ -248,7 +243,7 @@ import (
 make
 
 # 测试 
--> # ./categraf -debug -test -inputs version                          
+-> # ./categraf -debug -test -inputs linux-exec                          
 2024/07/25 10:49:59 I! tracing disabled
 2024/07/25 10:49:59 main.go:128: I! runner.binarydir: /opt/src/categraf
 2024/07/25 10:49:59 main.go:129: I! runner.hostname: sgfoot
@@ -259,13 +254,11 @@ make
 2024/07/25 10:49:59 prometheus_agent.go:19: I! prometheus scraping disabled!
 2024/07/25 10:49:59 ibex_agent.go:19: I! ibex agent disabled!
 2024/07/25 10:49:59 agent.go:39: I! agent starting
-2024/07/25 10:49:59 metrics_agent.go:272: I! input: local.version started
+2024/07/25 10:49:59 metrics_agent.go:272: I! input: local.linux-exec started
 2024/07/25 10:49:59 agent.go:47: I! [*agent.MetricsAgent] started
 2024/07/25 10:49:59 agent.go:50: I! agent started
-2024/07/25 10:49:59 metrics_reader.go:54: D! local.version : before gather once
-10:49:59 version_arch agent_hostname=sgfoot name=arch query_type=system version=x86_64
- 1
-10:49:59 version_kernel agent_hostname=sgfoot name=kernel query_type=system version=3.10.0-1160.114.2.el7.x86_64
+2024/07/25 10:49:59 metrics_reader.go:54: D! local.linux-exec : before gather once
+10:49:59 linux_exec_hostname agent_hostname=sgfoot name=hostname query_type=system linux_exec=sgfoot
  1
 
 # 打包 categraf
@@ -352,11 +345,9 @@ url = "http://127.0.0.1:9090/api/v1/write" # 这是 prometheus 的 write API 地
 - <http://127.0.0.1:9090/graph>
 
 ```sh
-version_arch
-version_arch{agent_hostname="192.168.1.100", name="arch", query_type="system", version="x86_64 "}
+linux_exec_hostname
+linux_exec_hostname{agent_hostname="192.168.1.100", name="hostname", query_type="system", linux_exec="sgfoot"}
 
-version_kernel
-version_kernel{agent_hostname="192.168.1.100", name="kernel", query_type="system", version="3.10.0-1160.114.2.el7.x86_64 "}
 ```
 
 ## 6. 参考
