@@ -446,4 +446,15 @@ helm upgrade --install elastic-cluster elastic/elasticsearch -n elasticsearch -f
 
 ```sh
 kubectl -n elasticsearch get pods
+
+kubectl -n elasticsearch exec -it xxx /bin/bash
+
+# 集群的健康状况信息
+curl -X GET -u "elastic:$ELASTIC_PASSWORD" 'http://localhost:9200/_cluster/health?pretty'
+# 请求集群健康状况信息
+curl -X GET -u "elastic:$ELASTIC_PASSWORD" 'http://localhost:9200/_cat/health?v'
+#求所有节点信息。
+curl -X GET -u "elastic:$ELASTIC_PASSWORD" 'http://localhost:9200/_cat/nodes?v'
+# 请求所有索引信息。
+curl -X GET -u "elastic:$ELASTIC_PASSWORD" 'http://localhost:9200/_cat/indices?v'
 ```
