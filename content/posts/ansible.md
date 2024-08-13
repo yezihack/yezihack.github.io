@@ -3,12 +3,12 @@ title: "Ansible 极简教程"
 date: 2024-03-16T17:40:13+08:00
 lastmod: 2024-03-16T17:40:13+08:00
 draft: true
-tags: ["linux", "工具", "ansible"]
-categories: ["工具"]
+tags: ["linux", "工具", "ansible", "devops"]
+categories: ["devops"]
 author: "百里"
 comment: false
-toc: true
-reward: true
+toc: false
+reward: false
 # 音乐开关，true/false
 music: false
 # 只支持163的音乐，在生成外链播放器获取ID
@@ -70,6 +70,23 @@ ansible first -m ping
 ```
 
 ## ansible-playbook
+
+shell & command 的区别
+
+在Ansible playbook中，有两个常用的模块可以用于在远程主机上执行命令：`shell`模块和`command`模块。这两个模块之间的区别如下：
+
+1. `shell`模块：
+   - `shell`模块在远程主机上执行命令，并使用类似于shell的方式进行解释和处理。
+   - 可以使用通配符、管道和变量替换等shell特性。
+   - 适用于需要在远程主机上执行复杂的命令或脚本的情况。
+   - shell模块会启动一个新的shell进程执行命令，这可能会导致一些性能开销。
+2. `command`模块：
+   - `command`模块在远程主机上执行命令，但不使用shell解释命令。
+   - 不支持shell特性，例如通配符、管道和变量替换等。
+   - 适用于简单的命令，不需要shell的功能。
+   - command模块直接执行指定的命令，因此性能上相对较高。
+
+总结起来，`shell`模块适用于需要在远程主机上执行复杂的shell命令和脚本，而`command`模块适用于简单的命令。根据您的需求，选择适合的模块来执行命令。
 
 ### 配置YAML
 

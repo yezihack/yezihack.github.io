@@ -3,8 +3,8 @@ title: "Haproxy + Keepalived 实现 k8s 集群高可用"
 date: 2023-07-05T11:41:00+08:00
 lastmod: 2023-07-05T11:41:00+08:00
 draft: false
-tags: ["linux", "高可用"]
-categories: ["云运维笔记"]
+tags: ["k8s", "云原生", "kubernetes", "keepalived", "haproxy", "云运维笔记", "linux"]
+categories: ["kubernetes"]
 author: "百里"
 comment: false
 toc: true
@@ -19,7 +19,29 @@ music_auto: 1
 # description: ""
 ---
 
-## 1. 什么是 Kubernetes 的高可用
+## 1. 目录
+
+<!-- TOC tocDepth:2..3 chapterDepth:2..6 -->
+
+- [1. 目录](#1-目录)
+- [2. 什么是 Kubernetes 的高可用](#2-什么是-kubernetes-的高可用)
+- [3. Haproxy + Keepalived 优缺点](#3-haproxy--keepalived-优缺点)
+  - [3.1. Haproxy](#31-haproxy)
+  - [3.2. Keepalived](#32-keepalived)
+- [4. 架构图](#4-架构图)
+- [5. Haproxy](#5-haproxy)
+  - [5.1. 底层原理](#51-底层原理)
+  - [5.2. VRRP 底层原理](#52-vrrp-底层原理)
+  - [5.4. 安装(二进制方式)](#54-安装二进制方式)
+- [6. KeepAlived](#6-keepalived)
+  - [6.1. 底层原理](#61-底层原理)
+  - [6.3. 安装](#63-安装)
+- [7. 参考](#7-参考)
+- [8. 关于作者](#8-关于作者)
+
+<!-- /TOC -->
+
+## 2. 什么是 Kubernetes 的高可用
 
 高可用性是指系统或应用程序在面对故障或异常情况时能够保持持续运行和提供服务的能力。在构建高可用的Kubernetes集群时，可以采取以下一些高级方法和策略：
 
@@ -39,11 +61,11 @@ music_auto: 1
 
 通过采取这些高级方法和策略，可以有效地提高Kubernetes集群的可用性和稳定性，确保应用程序在运行时不会出现服务中断。
 
-## 2. Haproxy + Keepalived 优缺点
+## 3. Haproxy + Keepalived 优缺点
 
 Haproxy和Keepalived是常用的组合，用于实现负载均衡和高可用性的解决方案。下面是它们的优缺点：
 
-### 2.1. Haproxy
+### 3.1. Haproxy
 
 **Haproxy的优点：**
 
@@ -57,7 +79,7 @@ Haproxy和Keepalived是常用的组合，用于实现负载均衡和高可用性
 - 单点故障：Haproxy本身是单点，如果Haproxy节点发生故障，可能会导致服务中断。
 - 配置复杂：Haproxy的配置相对复杂，需要一定的学习和经验来正确配置和管理。
   
-### 2.2. Keepalived
+### 3.2. Keepalived
 
 **Keepalived 的优点：**
 
@@ -70,11 +92,13 @@ Haproxy和Keepalived是常用的组合，用于实现负载均衡和高可用性
 - 配置同步：Keepalived需要确保配置文件的同步，以保证所有节点的配置一致性，这可能需要额外的配置和管理工作。
 - 依赖性：Keepalived依赖于底层网络和操作系统的支持，可能受限于特定的网络环境和操作系统版本。
 
-## 架构图
+## 4. 架构图
 
-## 3. Haproxy
+![20240801162151](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20240801162151.png)
 
-### 3.1. 底层原理
+## 5. Haproxy
+
+### 5.1. 底层原理
 
 Keepalived 是一种用于实现高可用性的软件，其底层原理主要包括以下几个方面：
 
@@ -92,7 +116,7 @@ Keepalived 是一种用于实现高可用性的软件，其底层原理主要包
 
 通过以上机制，Keepalived 实现了服务器的冗余备份和故障切换，提供了高可用性的服务。当主服务器发生故障或不可用时，备份服务器可以快速接管虚拟 IP 地址，确保服务的连续性和可靠性。同时，Keepalived 还支持健康检查和路由表更新等功能，提供了更全面的高可用性解决方案。
 
-### 3.2. VRRP 底层原理
+### 5.2. VRRP 底层原理
 
 VRRP（Virtual Router Redundancy Protocol）是一种网络协议，用于提供网络设备的冗余和高可用性。VRRP协议通过将多个路由器组成一个虚拟路由器组（VRID），共同提供相同的虚拟IP地址，实现了路由器的冗余备份和故障切换。
 
@@ -110,13 +134,30 @@ VRRP协议的原理如下：
 
 通过VRRP协议，可以实现路由器的冗余备份和故障切换，提高网络的可用性和可靠性。当主路由器发生故障或不可用时，备份路由器可以快速接管虚拟IP地址，确保网络的正常运行。
 
-### 3.3. 配置
+### 5.4. 安装(二进制方式)
 
-### 3.4. 安装
+- <https://github.com/haproxy/haproxy>
 
-## 4. KeepAlived
+```sh
+wget https://www.haproxy.org/download/2.6/src/haproxy-2.6.2.tar.gz
 
-### 4.1. 底层原理
+yum -y install epel-release gcc systemd-devel
+
+
+tar zxf haproxy-2.6.2.tar.gz 
+cd haproxy-2.6.2 
+make clean 
+make -j 8 TARGET=linux-glibc USE_THREAD=1 
+make PREFIX=/opt/haproxy SBINDIR=/opt/haproxy/bin install
+
+vim ~/.bashrc
+export PATH=$PATH:/opt/haproxy/bin
+source ~/.bashrc
+```
+
+## 6. KeepAlived
+
+### 6.1. 底层原理
 
 Haproxy 是一款高性能的负载均衡器和代理服务器，其高效性能主要得益于以下几个方面的底层原理：
 
@@ -132,11 +173,11 @@ Haproxy 是一款高性能的负载均衡器和代理服务器，其高效性能
 
 总的来说，Haproxy 在设计和实现上充分考虑了性能和效率的因素，通过事件驱动、非阻塞 I/O、内存管理、负载均衡算法和健康检查等机制，使得其能够高效地处理大量并发连接和请求，提供高性能的负载均衡和代理服务。
 
-### 4.2. 配置
+### 6.3. 安装
 
-### 4.3. 安装
+- <https://github.com/osixia/docker-keepalived>
 
-## 5. 参考
+## 7. 参考
 
 - <https://itnext.io/create-a-highly-available-kubernetes-cluster-using-keepalived-and-haproxy-37769d0a65ba>
 - <https://j3ffyang.medium.com/haproxy-and-keepalived-for-multiple-kubernetes-master-nodes-985e4efa45cc>
@@ -144,7 +185,7 @@ Haproxy 是一款高性能的负载均衡器和代理服务器，其高效性能
 
 
 
-## 6. 关于作者
+## 8. 关于作者
 
 我的博客：<https://yezihack.github.io>
 

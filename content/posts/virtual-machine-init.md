@@ -136,6 +136,8 @@ chronyc sourcestats -v
 
 ```sh
 yum install -y open-vm-tools
+
+vmhgfs-fuse /mnt/hgfs/
 ```
 
 ## 6. 参考
