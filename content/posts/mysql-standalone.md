@@ -58,6 +58,34 @@ services:
       - /data/mysql:/var/lib/mysql
 EOF
 
+# 创建其它帐号
+cat > docker-compose.yml <<EOF
+version: '3'
+services:
+  mysql:
+    image: mysql:5.7.44
+    container_name: mysql
+    ports:
+      - 3306:3306
+    environment:
+        MYSQL_ROOT_PASSWORD=your_power_password
+        MYSQL_DATABASE: other-db
+        MYSQL_USER: other-user
+        MYSQL_PASSWORD: other-password
+    volumes:
+      - /data/mysql:/var/lib/mysql
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_general_ci
+      - --explicit_defaults_for_timestamp=true
+      - --lower_case_table_names=1
+      - --max_allowed_packet=16M
+      - --sql_mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION
+    ports:
+        - 3306:3306
+    restart: always
+EOF
+
 docker-compose up -d
 ```
 
