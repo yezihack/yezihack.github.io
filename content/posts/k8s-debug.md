@@ -112,6 +112,10 @@ ip link
 ip -d link
 ip addr
 
+## arp
+arp -a
+arp -n
+
 # 网络插件
 ## 主要看看是否启动，运行正常
 kubectl get pods -n kube-system -l app=flannel
