@@ -239,7 +239,7 @@ EOF
 
 #### .4.4.2. 支持GPU
 
-详细可参考：<https://yezihack.github.io/docker-daemon.html>
+详细可参考：<https://yezihack.github.io/posts/docker-daemon>
 
 ```json
 {

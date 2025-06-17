@@ -15,6 +15,7 @@ name = "百里江山"
 # 	#post = "/:year/:month/:day/:filename"
 # 	post = "/:filename"
 
+
 [params]
     title = "空树之空"
     brand = "空树之空"

@@ -28,6 +28,8 @@ reward: true
 - ip
 - iptables
 - firewall-cmd
+- traceroute
+- nmap
 
 ## 3. 网络问题
 
@@ -196,6 +198,16 @@ nsenter -t 12345 -n ip a
 nsenter -t 12345 -n ip route
 nsenter -t 12345 -n tcpdump -i eth0 -nneevvvv icmp
 nsenter -t 12345 -n tcpdump -i eth0 -nneevvvv -s0 -v port 80
+```
+
+## 探测
+
+```sh
+# 路由跟踪
+traceroute -n 192.168.9.74  # 若跨网段使用
+
+# 端口扫描
+nmap -Pn 192.168.9.74  # 跳过 ping 扫描，直接探测端口
 ```
 
 ## 5. 参考

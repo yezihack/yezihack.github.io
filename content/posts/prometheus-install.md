@@ -103,7 +103,7 @@ systemctl status prometheus # 查看详情
 
 ### .1.4. nginx 反向代理
 
-> htpasswd 参考: <https://yezihack.github.io/htpasswd.html>
+> htpasswd 参考: <https://yezihack.github.io/posts/htpasswd>
 
 ```nginx
 server {

@@ -809,7 +809,7 @@ admin
 
 
 
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/posts/k8s-mindmap)
 
 ## 参考
 

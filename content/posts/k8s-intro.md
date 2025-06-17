@@ -31,7 +31,7 @@ music_auto: 1
 
 > 本章节主要介绍应用程序在服务器上部署方式演变以及kubernetes的概念、组件和工作原理。
 >
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/posts/k8s-mindmap)
 
 ## 应用部署方式演变
 
@@ -155,7 +155,7 @@ kubernetes的本质是**一组服务器集群**，它可以在集群的每个节
 
 
 
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/posts/k8s-mindmap)
 
 ## 参考
 

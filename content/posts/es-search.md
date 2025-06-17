@@ -1095,10 +1095,10 @@ PUT index
 
 ## 推荐阅读
 
-1. [Elasticsearch 入门(一) 介绍](https://yezihack.github.io/es-info.html)
-2. [Elasticsearch 入门(二) 安装](https://yezihack.github.io/es-install.html)
-3. [Elasticsearch 入门(三) Head 助手安装](https://yezihack.github.io/es-head.html)
-4. [Elasticsearch 入门(四) 查询](https://yezihack.github.io/es-search.html)
+1. [Elasticsearch 入门(一) 介绍](https://yezihack.github.io/posts/es-info)
+2. [Elasticsearch 入门(二) 安装](https://yezihack.github.io/posts/es-install)
+3. [Elasticsearch 入门(三) Head 助手安装](https://yezihack.github.io/posts/es-head)
+4. [Elasticsearch 入门(四) 查询](https://yezihack.github.io/posts/es-search)
 
 ## 参考
 

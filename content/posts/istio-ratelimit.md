@@ -25,7 +25,7 @@ music_auto: 1
 
 ## 2. Istio 限流
 
-- 首先确认需要限流的应用是否已经加载了 sidecar，如果还未安装 istio, 请参考:<https://yezihack.github.io/istio-install.html>
+- 首先确认需要限流的应用是否已经加载了 sidecar，如果还未安装 istio, 请参考:<https://yezihack.github.io/posts/istio-install>
 
 创建 app-ratelimit.yaml：
 

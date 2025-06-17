@@ -24,7 +24,7 @@ music_auto: 1
 
 > 监控远程 linux 服务器CPU、内存、磁盘、I/O等信息
 >
-> 下载慢，请查看[软件下载列表](https://yezihack.github.io/soft.html)
+> 下载慢，请查看[软件下载列表](https://yezihack.github.io/posts/soft)
 
 https://prometheus.io/download/
 

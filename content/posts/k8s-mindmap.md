@@ -23,17 +23,17 @@ music_auto: 1
 
 ## kubernetes 导航目录
 
-- [第一章 kubernetes 介绍](https://yezihack.github.io/k8s-intro.html)
-- [第二章 Kubernetes 安装](https://yezihack.github.io/k8s-install.html)
-- [第三章 Kubernetes 资源管理](https://yezihack.github.io/k8s-resource.html)
-- [第四章 Kubernetes 实战操作](https://yezihack.github.io/k8s-operation.html)
-- [第五章 Kubernetes Pod 介绍](https://yezihack.github.io/k8s-pod.html)
-- [第六章 Kubernetes Pod 控制器](https://yezihack.github.io/k8s-pod-controller.html)
-- [第七章 Kubernetes Service 介绍](https://yezihack.github.io/k8s-service.html)
-- [第八章 Kubernetes Ingress 介绍](https://yezihack.github.io/k8s-ingress.html)
-- [第九章 Kubernetes 数据存储](https://yezihack.github.io/k8s-storage.html)
-- [第十章 Kubernetes 权限认证](https://yezihack.github.io/k8s-permission.html)
-- [第十一章 Kubernetes Dashboard](https://yezihack.github.io/k8s-dashboard.html)
+- [第一章 kubernetes 介绍](https://yezihack.github.io/posts/k8s-intro)
+- [第二章 Kubernetes 安装](https://yezihack.github.io/posts/k8s-install)
+- [第三章 Kubernetes 资源管理](https://yezihack.github.io/posts/k8s-resource)
+- [第四章 Kubernetes 实战操作](https://yezihack.github.io/posts/k8s-operation)
+- [第五章 Kubernetes Pod 介绍](https://yezihack.github.io/posts/k8s-pod)
+- [第六章 Kubernetes Pod 控制器](https://yezihack.github.io/posts/k8s-pod-controller)
+- [第七章 Kubernetes Service 介绍](https://yezihack.github.io/posts/k8s-service)
+- [第八章 Kubernetes Ingress 介绍](https://yezihack.github.io/posts/k8s-ingress)
+- [第九章 Kubernetes 数据存储](https://yezihack.github.io/posts/k8s-storage)
+- [第十章 Kubernetes 权限认证](https://yezihack.github.io/posts/k8s-permission)
+- [第十一章 Kubernetes Dashboard](https://yezihack.github.io/posts/k8s-dashboard)
 
 ## 脑图
 

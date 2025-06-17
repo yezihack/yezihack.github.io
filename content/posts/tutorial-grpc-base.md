@@ -40,8 +40,8 @@ gRPC 是 Google 开源的基于 Protobuf 和 Http2.0 协议的通信框架，底
 
 ## 推荐学习
 
-2. [gRPC入门 简介](https://yezihack.github.io/tutorial-grpc-base.html)
-2. [gRPC入门 Protobuf](https://yezihack.github.io/tutorial-grpc-protobuf.html)
-3. [gRPC入门 搭建完整gRPC](https://yezihack.github.io/tutorial-grpc-simple.html)
-4. [gRPC入门 实现双向流](https://yezihack.github.io/tutorial-grpc-stream-simple.html)
+2. [gRPC入门 简介](https://yezihack.github.io/posts/tutorial-grpc-base)
+2. [gRPC入门 Protobuf](https://yezihack.github.io/posts/tutorial-grpc-protobuf)
+3. [gRPC入门 搭建完整gRPC](https://yezihack.github.io/posts/tutorial-grpc-simple)
+4. [gRPC入门 实现双向流](https://yezihack.github.io/posts/tutorial-grpc-stream-simple)
 

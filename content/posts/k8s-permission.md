@@ -21,7 +21,7 @@ music_auto: 1
 
 > 本章节主要介绍Kubernetes的安全认证机制。
 >
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/posts/k8s-mindmap)
 
 ## 访问控制概述
 
@@ -362,7 +362,7 @@ Switched to context "kubernetes-admin@kubernetes".
 - DefaultTolerationSeconds：这个插件为那些没有设置forgiveness tolerations并具有notready:NoExecute和unreachable:NoExecute两种taints的Pod设置默认的“容忍”时间，为5min
 - PodSecurityPolicy：这个插件用于在创建或修改Pod时决定是否根据Pod的security context和可用的PodSecurityPolicy对Pod的安全策略进行控制
 
-> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/k8s-mindmap.html)
+> 找不到目录, 传送门：[Kubernetes 总纲及脑图](https://yezihack.github.io/posts/k8s-mindmap)
 
 ## 参考
 

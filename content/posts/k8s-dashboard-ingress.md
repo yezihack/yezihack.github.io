@@ -1,7 +1,7 @@
 ---
 title: "云运维笔记(3) k8s 安装 dashboard 配置 ingress"
 date: 2022-11-08T16:47:30+08:00
-lastmod: 2024-04-09T16:47:30+08:00
+lastmod: 2025-06-19T16:47:30+08:00
 draft: false
 tags: ["k8s", "云原生", "kubernetes", "教程", "dashboard", "ingress", "云运维笔记"]
 categories: ["云运维笔记"]
@@ -23,7 +23,7 @@ music_auto: 1
 
 之前写过一篇 kuberntes-dashboard 的文章，介绍如何使用 nodeport 方式部署与访问。
 
-[参考：第十一章 Kubernetes Dashboard](https://yezihack.github.io/k8s-dashboard.html)
+[参考：第十一章 Kubernetes Dashboard](https://yezihack.github.io/posts/k8s-dashboard)
 
 本次介绍使用 ingress 域名方式访问 dashboard。
 
