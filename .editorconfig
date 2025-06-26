@@ -7,7 +7,7 @@ indent_style = space
 #缩进大小2
 indent_size = 2
 #换行符lf
-# end_of_line = lf
+end_of_line = none
 #字符集utf-8
 charset = utf-8
 #是否删除行尾的空格
