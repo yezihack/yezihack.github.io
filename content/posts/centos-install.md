@@ -1,7 +1,7 @@
 ---
 title: "云运维笔记(1) CentOS7 安装"
 date: 2022-08-03T16:54:31+08:00
-lastmod: 2024-04-11T09:49:31+08:00
+lastmod: 2025-06-26T09:49:31+08:00
 draft: false
 tags: ["linux", "教程", "云运维笔记"]
 categories: ["云运维笔记"]
@@ -181,8 +181,12 @@ chsh -s /bin/zsh
 ## 9. 解决克隆 UUID 一致的问题
 
 ```sh
-# 机器 ID
+# 方法一：重置机器 ID
 sudo truncate -s 0 /etc/machine-id && sudo systemd-machine-id-setup
+
+# 方法二：在模板机器中置空UUID，系统第一次启动时会自动生成新的 ID
+sudo rm -f /etc/machine-id
+sudo touch /etc/machine-id
 
 # 网卡UUID更新
 sudo sed -i "s/^UUID=.*/UUID=$(uuidgen)/" /etc/sysconfig/network-scripts/ifcfg-ens33

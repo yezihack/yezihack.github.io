@@ -1,5 +1,5 @@
 ---
-title: "K8s Dashboard Helm"
+title: "Helm 安装 Kubernetes Dashboard"
 date: 2025-06-16T17:32:24+08:00
 lastmod: 2025-06-16T17:32:24+08:00
 draft: false
@@ -11,28 +11,50 @@ toc: true
 reward: true
 ---
 
-## 为什么使用 helm 安装
+## 1. 为什么使用 helm 安装
 
 - <https://github.com/kubernetes/dashboard/?tab=readme-ov-file#introduction>
 
 从版本 7.0.0 开始，我们不再支持基于 Manifest 的安装。现在仅支持基于 Helm 的安装。
 由于多容器设置和对 Kong 网关 API 代理的硬依赖，因此无法轻松支持基于 Manifest 的安装。
 
-## Helm 安装
+## 2. Helm 安装
 
 - 本次以 k8s 1.27 版本为例
 
 找到适配的版本，即 Helm Chart 7.5.0, See: <https://github.com/kubernetes/dashboard/releases?page=5>
 
 ```sh
+# 添加 helm 仓库
 helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
 
-helm search repo kubernetes-dashboard/kubernetes-dashboard --version 7.5.0
+# 更新仓库
+helm repo update
 
-helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
-helm upgrade --install kubernetes-dashboard ./kubernetes-dashboard-7.5.0.tgz --create-namespace --namespace kubernetes-dashboard --dry-run
-helm upgrade --install kubernetes-dashboard ./kubernetes-dashboard-7.5.0.tgz --create-namespace --namespace kubernetes-dashboard -f dashboard-values.yaml --dry-run
+# 查找 kubernetes-dashboard
+helm search repo kubernetes-dashboard/kubernetes-dashboard -l # 列出所有版本
+helm search repo kubernetes-dashboard/kubernetes-dashboard  --version 7.5.0 # 查看指定版本
 
+# 安装(不含 metrics-server、使用事先安装好的 metrics-server)
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard \
+  --version 7.5.0 \
+  --create-namespace \
+  --namespace kubernetes-dashboard \
+  --set app.ingress.enabled=true \
+  --set app.ingress.hosts[0]="web.k8s.local" \
+  --set app.ingress.ingressClassName=nginx \
+  --set app.ingress.issuer.scope=disabled \
+  --set app.ingress.tls.enabled=true \
+  --set app.ingress.tls.secretName="kubernetes-dashboard-tls"
+
+# 安装(含 metrics-server)
+helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard \
+  --create-namespace \
+  --namespace kubernetes-dashboard \
+  --set app.ingress.enabled=true \
+  --set app.ingress.hosts[0]="web.k8s.local" \
+  --set app.ingress.ingressClassName=nginx \
+  --set metrics-server.enabled=true
 ```
 
 涉及到的镜像：
@@ -48,6 +70,71 @@ docker.io/kubernetesui/dashboard-metrics-scraper:1.1.1
 docker.io/kubernetesui/dashboard-web:1.4.0
 ```
 
-依赖
+## 3. 生成自签名证书
 
-- 确保 metrics-server 和 dashboard-metrics-scraper 已启动并正在运行
+```sh
+# 生成自签名证书
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout tls.key -out tls.crt -subj "/CN=web.k8s.local"
+
+# 创建 kubernetes-dashboard-tls Secret
+kubectl -n kubernetes-dashboard create secret tls kubernetes-dashboard-tls --key tls.key --cert tls.crt
+```
+
+## 4. 访问
+
+- <https://web.k8s.local/>
+
+## 5. 生成 token
+
+- 超级管理员权限
+
+```sh
+# 创建一个 ServiceAccount
+kubectl -n kubernetes-dashboard create serviceaccount admin-user
+
+# 创建一个 ClusterRoleBinding
+kubectl -n kubernetes-dashboard create clusterrolebinding admin-user --clusterrole=cluster-admin --serviceaccount=kubernetes-dashboard:admin-user
+
+# 获取 token
+kubectl -n kubernetes-dashboard create token admin-user
+```
+
+或者使用YAML
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+```
+
+- 只读权限
+
+```sh
+# 创建一个 ServiceAccount
+kubectl -n kubernetes-dashboard create serviceaccount admin-view
+
+# 创建一个 ClusterRoleBinding
+kubectl -n kubernetes-dashboard create clusterrolebinding admin-view --clusterrole=view --serviceaccount=kubernetes-dashboard:admin-view
+
+# 获取 token
+kubectl -n kubernetes-dashboard create token admin-view
+```
+
+## 6. 参考
+
+- <https://github.com/kubernetes/dashboard/releases?page=5>
