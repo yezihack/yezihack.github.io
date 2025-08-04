@@ -3,7 +3,7 @@ title: "Kubernetes NetworkPolicy 完全指南：从入门到实战"
 date: 2025-08-04T17:53:05+08:00
 lastmod: 2025-08-04T17:53:05+08:00
 draft: false
-tags: ["k8s", "network", "networkpolicy]
+tags: ["k8s", "network", "networkpolicy"]
 categories: ["k8s", "network", "networkpolicy"]
 author: "百里"
 comment: false
