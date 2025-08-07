@@ -304,9 +304,67 @@ MongoDB分片(Sharding)是MongoDB的水平扩展解决方案，通过将数据�
 - 增加了架构复杂性和运维难度
 - 某些查询可能需要访问所有分片，影响性能
 
-## 4. 安装与配置
+## 4. 三、MongoDB 架构
 
-### 4.1. Windows安装
+### 4.1. 单实例架构
+
+仅一个 mongod 进程，适合开发或轻量业务场景。无高可用、扩展能力。
+
+```text
+Client --> mongod
+```
+
+---
+
+### 4.2. 副本集架构（Replica Set）
+
+MongoDB 的高可用基本单元。
+
+```text
+        +-------------------+
+        |    Client         |
+        +-------------------+
+             |  |
+             |  |
+       +-----+  +------+
+       |              |
+   Primary       Secondary(s)
+       |              |
+   Oplog同步         读操作（可选）
+```
+
+> 最少三个节点，包含一个 Primary 和多个 Secondary，通过 Oplog 实现数据同步和 failover。
+
+---
+
+### 4.3. 分片集群架构（Sharded Cluster）
+
+用于水平扩展大规模数据。
+
+```text
+            +-------------+
+            |   Client    |
+            +-------------+
+                   |
+                 mongos（路由）
+                   |
+       +-----------+-----------+
+       |                       |
+Config Server           Config Server
+       |                       |
+  +---------+           +----------+
+  | Shard 1 |           | Shard 2  |
+  |(Replica)|           |(Replica) |
+  +---------+           +----------+
+```
+
+* **mongos**：路由进程，请求分发器
+* **Config Server**：存储分片元数据
+* **Shard**：每个分片都是副本集
+
+## 5. 安装与配置
+
+### 5.1. Windows安装
 
 ```bash
 # 1. 下载MongoDB Community Server
@@ -322,7 +380,7 @@ mkdir C:\data\db
 mongod --dbpath C:\data\db
 ```
 
-### 4.2. Linux安装（Ubuntu）
+### 5.2. Linux安装（Ubuntu）
 
 ```bash
 # 1. 导入公钥
@@ -342,7 +400,7 @@ sudo systemctl start mongod
 sudo systemctl enable mongod
 ```
 
-### 4.3. Docker安装
+### 5.3. Docker安装
 
 ```bash
 # 拉取MongoDB镜像
@@ -355,7 +413,7 @@ docker run --name mongodb -p 27017:27017 -d mongo:latest
 docker exec -it mongodb mongosh
 ```
 
-### 4.4. Helm 安装
+### 5.4. Helm 安装
 
 ```sh
 # architecture 可选择：standalone, replicaset
@@ -421,9 +479,9 @@ helm upgrade --install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb 
 
 ---
 
-## 5. 基础操作
+## 6. 基础操作
 
-### 5.1. 连接数据库
+### 6.1. 连接数据库
 
 ```javascript
 // 使用mongosh连接
@@ -433,7 +491,7 @@ mongosh "mongodb://localhost:27017"
 mongosh "mongodb://localhost:27017/myapp"
 ```
 
-### 5.2. 数据库操作
+### 6.2. 数据库操作
 
 ```javascript
 // 查看所有数据库
@@ -452,7 +510,7 @@ db.dropDatabase()
 db.stats()
 ```
 
-### 5.3. 集合操作
+### 6.3. 集合操作
 
 ```javascript
 // 创建集合
@@ -468,9 +526,9 @@ db.users.drop()
 db.users.renameCollection("members")
 ```
 
-### 5.4. 文档的CRUD操作
+### 6.4. 文档的CRUD操作
 
-#### 5.4.1. 插入文档（Create）
+#### 6.4.1. 插入文档（Create）
 
 ```javascript
 // 插入单个文档
@@ -514,7 +572,7 @@ db.users.insertMany([
 }
 ```
 
-#### 5.4.2. 查询文档（Read）
+#### 6.4.2. 查询文档（Read）
 
 ```javascript
 // 查询所有文档
@@ -545,7 +603,7 @@ db.users.find({skills: "JavaScript"})  // 技能包含JavaScript
 db.users.find({"address.city": "北京"})
 ```
 
-#### 5.4.3. 更新文档（Update）
+#### 6.4.3. 更新文档（Update）
 
 ```javascript
 // 更新单个文档
@@ -597,7 +655,7 @@ db.users.updateOne(
 )
 ```
 
-#### 5.4.4. 删除文档（Delete）
+#### 6.4.4. 删除文档（Delete）
 
 ```javascript
 // 删除单个文档
@@ -612,9 +670,9 @@ db.users.deleteMany({})
 
 ---
 
-## 6. 高级查询
+## 7. 高级查询
 
-### 6.1. 比较操作符
+### 7.1. 比较操作符
 
 ```javascript
 // 等于
@@ -642,7 +700,7 @@ db.products.find({category: {$in: ["电子", "图书"]}})
 db.products.find({category: {$nin: ["电子", "图书"]}})
 ```
 
-### 6.2. 逻辑操作符
+### 7.2. 逻辑操作符
 
 ```javascript
 // AND 查询（默认）
@@ -681,7 +739,7 @@ db.products.find({
 })
 ```
 
-### 6.3. 数组查询
+### 7.3. 数组查询
 
 ```javascript
 // 准备数据
@@ -714,7 +772,7 @@ db.students.find({grades: {$elemMatch: {$gte: 85, $lte: 95}}})
 db.students.find({"grades.0": {$gte: 90}})  // 第一个成绩大于等于90
 ```
 
-### 6.4. 投影（Projection）
+### 7.4. 投影（Projection）
 
 ```javascript
 // 只返回指定字段
@@ -736,7 +794,7 @@ db.students.find(
 )
 ```
 
-### 6.5. 排序与分页
+### 7.5. 排序与分页
 
 ```javascript
 // 排序
@@ -758,9 +816,9 @@ db.products.countDocuments({price: {$gte: 100}})
 
 ---
 
-## 7. 索引优化
+## 8. 索引优化
 
-### 7.1. 索引基础
+### 8.1. 索引基础
 
 ```javascript
 // 查看集合的索引
@@ -786,7 +844,7 @@ db.sessions.createIndex(
 )
 ```
 
-### 7.2. 索引类型详解
+### 8.2. 索引类型详解
 
 ```javascript
 // 1. 文本索引
@@ -815,7 +873,7 @@ db.locations.find({
 db.users.createIndex({userId: "hashed"})
 ```
 
-### 7.3. 索引性能分析
+### 8.3. 索引性能分析
 
 ```javascript
 // 查看查询执行计划
@@ -834,7 +892,7 @@ db.users.dropIndex({age: 1})
 db.users.dropIndexes()
 ```
 
-### 7.4. 索引优化建议
+### 8.4. 索引优化建议
 
 ```javascript
 // 复合索引的字段顺序很重要
@@ -854,9 +912,9 @@ db.orders.find({
 
 ---
 
-## 8. 聚合框架
+## 9. 聚合框架
 
-### 8.1. 聚合管道基础
+### 9.1. 聚合管道基础
 
 ```javascript
 // 基本聚合管道结构
@@ -872,7 +930,7 @@ db.orders.aggregate([
 ])
 ```
 
-### 8.2. 常用聚合操作
+### 9.2. 常用聚合操作
 
 ```javascript
 // 准备测试数据
@@ -968,7 +1026,7 @@ db.articles.aggregate([
 ])
 ```
 
-### 8.3. 高级聚合操作
+### 9.3. 高级聚合操作
 
 ```javascript
 // $lookup - 关联查询（类似SQL的JOIN）
@@ -1043,7 +1101,7 @@ db.sales.aggregate([
 ])
 ```
 
-### 8.4. 聚合表达式
+### 9.4. 聚合表达式
 
 ```javascript
 // 条件表达式
@@ -1093,9 +1151,9 @@ db.users.aggregate([
 
 ---
 
-## 9. 复制集与分片
+## 10. 复制集与分片
 
-### 9.1. 复制集（Replica Set）
+### 10.1. 复制集（Replica Set）
 
 ```javascript
 // 复制集配置示例
@@ -1124,7 +1182,7 @@ db.users.find().readPref("secondary")
 mongosh "mongodb://mongodb1.example.com:27017,mongodb2.example.com:27017,mongodb3.example.com:27017/myapp?replicaSet=myReplicaSet"
 ```
 
-### 9.2. 分片（Sharding）
+### 10.2. 分片（Sharding）
 
 ```javascript
 // 启动配置服务器
@@ -1151,9 +1209,9 @@ sh.status()
 
 ---
 
-## 10. 性能优化
+## 11. 性能优化
 
-### 10.1. 查询优化
+### 11.1. 查询优化
 
 ```javascript
 // 1. 使用索引
@@ -1185,7 +1243,7 @@ db.users.aggregate([
 ])
 ```
 
-### 10.2. 写入优化
+### 11.2. 写入优化
 
 ```javascript
 // 1. 批量写入
@@ -1218,7 +1276,7 @@ db.users.insertOne(
 )
 ```
 
-### 10.3. 监控与诊断
+### 11.3. 监控与诊断
 
 ```javascript
 // 1. 查看当前操作
@@ -1243,9 +1301,9 @@ db.users.aggregate([{$indexStats: {}}])
 
 ---
 
-## 11. 实战项目
+## 12. 实战项目
 
-### 11.1. 博客系统设计
+### 12.1. 博客系统设计
 
 ```javascript
 // 1. 用户集合设计
@@ -1341,7 +1399,7 @@ db.tags.insertOne({
 })
 ```
 
-### 11.2. 博客系统核心功能实现
+### 12.2. 博客系统核心功能实现
 
 ```javascript
 // 1. 发布文章
@@ -1525,7 +1583,7 @@ function searchPosts(query, page = 1, limit = 10) {
 }
 ```
 
-### 11.3. 电商系统设计
+### 12.3. 电商系统设计
 
 ```javascript
 // 1. 商品集合设计
@@ -1802,9 +1860,9 @@ function getRecommendations(userId, limit = 10) {
 
 ---
 
-## 12. 面试问题集锦
+## 13. 面试问题集锦
 
-### 12.1. 基础概念题
+### 13.1. 基础概念题
 
 **Q1: 什么是MongoDB？它与关系型数据库有什么区别？**
 
@@ -1836,7 +1894,7 @@ ObjectId = 4字节时间戳 + 5字节随机值 + 3字节递增计数器
 - 最后3字节：自增计数器，确保同一秒内的唯一性
 ```
 
-### 12.2. 查询与索引题
+### 13.2. 查询与索引题
 
 **Q4: 解释MongoDB中的索引类型？**
 
@@ -1903,7 +1961,7 @@ db.collection.aggregate([
 ])
 ```
 
-### 12.3. 聚合框架题
+### 13.3. 聚合框架题
 
 **Q6: 解释MongoDB聚合框架的工作原理？**
 
@@ -1974,7 +2032,7 @@ db.orders.aggregate([
 // 3. 替代应用层的多次查询
 ```
 
-### 12.4. 复制集与分片题
+### 13.4. 复制集与分片题
 
 **Q8: 什么是MongoDB复制集？如何配置？**
 
@@ -2024,7 +2082,7 @@ sh.shardCollection("app.products", {category: 1, productId: 1})
 // {status: 1} - 基数太低
 ```
 
-### 12.5. 性能优化题
+### 13.5. 性能优化题
 
 **Q10: 如何监控MongoDB性能？**
 
@@ -2093,7 +2151,7 @@ db.collection.find().readPref("primaryPreferred") // 优先primary
 // nearest - 从网络延迟最小的节点读
 ```
 
-### 12.6. 事务与一致性题
+### 13.6. 事务与一致性题
 
 **Q12: MongoDB支持事务吗？如何使用？**
 
@@ -2220,7 +2278,7 @@ db.orders.createIndex({orderNumber: 1}, {unique: true})
 db.users.createIndex({email: 1}, {unique: true})
 ```
 
-### 12.7. 实际应用题
+### 13.7. 实际应用题
 
 **Q14: 如何设计一个高并发的商品秒杀系统？**
 
@@ -2412,7 +2470,7 @@ function processBigData(batchSize = 1000) {
 }
 ```
 
-### 12.8. 架构设计题
+### 13.8. 架构设计题
 
 **Q16: 如何设计MongoDB的备份和恢复策略？**
 
@@ -2585,7 +2643,7 @@ const clusterArchitecture = {
 }
 ```
 
-### 12.9. 故障排查题
+### 13.9. 故障排查题
 
 **Q18: MongoDB常见性能问题和解决方案？**
 
@@ -2743,25 +2801,25 @@ function validateMigration(sourceCol, targetCol) {
 
 ---
 
-## 13. 总结
+## 14. 总结
 
 MongoDB作为领先的NoSQL数据库，在现代应用开发中扮演着重要角色。通过本指南的学习，你应该能够：
 
-### 13.1. 掌握的核心技能：
+### 14.1. 掌握的核心技能：
 
 1. **基础操作**：CRUD操作、索引管理、聚合查询
 2. **高级特性**：复制集、分片、事务处理
 3. **性能优化**：查询优化、索引策略、监控诊断
 4. **架构设计**：数据建模、容量规划、高可用设计
 
-### 13.2. 实际应用能力：
+### 14.2. 实际应用能力：
 
 - 设计高性能的数据库架构
 - 处理大数据量的查询和存储
 - 实现高可用和故障恢复
 - 进行性能调优和问题排查
 
-### 13.3. 面试准备：
+### 14.3. 面试准备：
 
 - 理解MongoDB的核心概念和原理
 - 掌握常见问题的解决方案
