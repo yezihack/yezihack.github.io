@@ -3,8 +3,8 @@ title: "MySQL Buffer Pool 面试问答"
 date: 2025-08-06T14:25:34+08:00
 lastmod: 2025-08-06T14:25:34+08:00
 draft: false
-tags: ["MySQL", "InnoDB", "Buffer Pool", "k8s", "面试"]
-categories: ["数据库", "性能优化"]
+tags: ["mysql", "InnoDB", "Buffer Pool", "k8s", "面试"]
+categories: ["数据库", "性能优化", "mysql"]
 author: "百里"
 comment: false
 toc: true
