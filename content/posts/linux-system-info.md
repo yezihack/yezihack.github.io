@@ -9,11 +9,14 @@ author: "百里"
 comment: false
 toc: true
 reward: true
+
 # weight: 1
+
 # description = ""
 ---
 
 ## 1. 系统
+
 ```sh
 uname -a # 查看系统版本全部信息
 uname -r # 查看内核版本
@@ -24,6 +27,7 @@ lspci # 主板信息
 ```
 
 ## 2. 资源
+
 ```sh
 free -mh # 查看内存使用量和交换区使用量
 df -h # 查看各分区使用情况
@@ -44,13 +48,15 @@ watch -n 10 nvidia-smi # 动态查看GPU
 ```
 
 ## 3. 进程
+
 ```sh
 ps -ef                      # 查看所有进程
 top                         # 实时显示进程状态
 netstat -nplt               # 查看所有监听端口
 ```
 
-## 4. 用户 
+## 4. 用户
+
 ```sh
 w                           # 查看活动用户
 id <userID>                 # 查看指定用户信息
@@ -61,8 +67,8 @@ crontab -l                  # 查看当前用户的计划任务
 systemctl list-unit-files   # 列出服务的开机状态
 ```
 
+## 5. 网络
 
-# 网络
 ```sh
 ifconfig # 查看所有网络接口的属性
 ip addr # 查看网卡
@@ -73,7 +79,7 @@ netstat -antp # 查看所有已经建立的连接
 netstat -s # 查看网络统计信息
 ```
 
-## 其它
+## 6. 其它
 ```sh
 sudo cat /sys/class/dmi/id/product_uuid # 查看 product_uuid 唯一性
 ```

@@ -3,7 +3,7 @@ title: "MySQL 主从同步修复完整指南"
 date: 2025-09-04T18:30:05+08:00
 lastmod: 2025-09-05T10:18:41+08:00
 draft: false
-tags: ["mysql", "主从同步", "数据库运维", "GTID"]
+tags: ["mysql", "主从同步", "数据库运维"]
 categories: ["mysql", "数据库"]
 author: "百里"
 comment: false
