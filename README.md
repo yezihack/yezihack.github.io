@@ -1,4 +1,40 @@
-# action
+# 空树之空博客
+
+基于Hugo静态站点生成器的个人技术博客，使用Poison主题。
+
+## 📚 文档目录
+
+- [POISON_THEME_ANALYSIS.md](POISON_THEME_ANALYSIS.md) - Poison主题深度分析报告
+- [OPTIMIZATION_REPORT.md](OPTIMIZATION_REPORT.md) - 主题优化实施报告
+- [QUICK_TEST_GUIDE.md](QUICK_TEST_GUIDE.md) - 优化效果测试指南
+- [NEW_FEATURES.md](NEW_FEATURES.md) - 新增功能详细说明
+- [TAG_CLOUD_UPDATE.md](TAG_CLOUD_UPDATE.md) - 标签云现代化升级文档
+- [POSTS_TIMELINE_UPDATE.md](POSTS_TIMELINE_UPDATE.md) - Posts时间线展示文档
+- [ARTICLE_PAGE_UPDATE.md](ARTICLE_PAGE_UPDATE.md) - 文章详情页优化文档
+
+## 🎨 主题优化
+
+已完成以下优化（2025-10-17）：
+
+1. ✅ **滚动条样式统一** - 深色/浅色模式自适应
+2. ✅ **移动端体验改善** - 侧边栏紧凑化，减少30%高度
+3. ✅ **代码块优化** - 移动端字体调整，复制按钮优化
+4. ✅ **TOC显示优化** - 从1600px降至1280px，中等屏幕可用
+5. ✅ **表格响应式** - 自动横向滚动，移动端友好
+
+详细信息请查看 [OPTIMIZATION_REPORT.md](OPTIMIZATION_REPORT.md)
+
+## ✨ 新增功能
+
+已完成以下新功能（2025-10-17）：
+
+1. ✅ **分类菜单** - 侧边栏新增Categories分类导航
+2. ✅ **返回顶部按钮** - 右下角浮动按钮，平滑滚动到顶部
+3. ✅ **现代化标签云** - Categories/Tags页面毛玻璃效果展示
+4. ✅ **Posts时间线** - 按年份分组的紧凑列表布局
+5. ✅ **文章详情页** - 毛玻璃卡片布局，优化排版和动画
+
+详细信息请查看 [NEW_FEATURES.md](NEW_FEATURES.md)、[TAG_CLOUD_UPDATE.md](TAG_CLOUD_UPDATE.md)、[POSTS_TIMELINE_UPDATE.md](POSTS_TIMELINE_UPDATE.md) 和 [ARTICLE_PAGE_UPDATE.md](ARTICLE_PAGE_UPDATE.md)
 
 ## 1. 安装主题
 
@@ -100,4 +136,8 @@ hugo serve -e production
 
 # 生成public文件
 hugo
+
+# 本地运行 清理目标目录
+# 清理目标目录，避免重复生成
+hugo server --cleanDestinationDir
 ```

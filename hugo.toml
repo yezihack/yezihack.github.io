@@ -29,10 +29,12 @@ name = "百里江山"
     # description = "《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes（K8s）、DevOps、GitOps、运维和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。By <a href='https://github.com/yezihack' target='_blank'>@yezihack</a>"
     description = "《空樹之空》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。"
     dark_mode = true
+    mainSections = ["posts"]
 
     menu = [
         {Name = "About", URL = "/about/", HasChildren = false},
         {Name = "Posts", URL = "/posts/", Pre = "Recent", HasChildren = true, Limit = 5},
+        {Name = "Categories", URL = "/categories/", HasChildren = false},
         {Name = "Tags", URL = "/tags/", HasChildren = false},
     ]
 
@@ -84,3 +86,7 @@ name = "百里江山"
 [taxonomies]
     series = 'series'
     tags = 'tags'
+    categories = 'categories'
+
+[outputs]
+    home = ["HTML", "RSS", "JSON"]

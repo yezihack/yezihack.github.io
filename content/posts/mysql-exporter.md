@@ -3,8 +3,8 @@ title: "MySQL 监控与告警"
 date: 2025-09-22T15:22:04+08:00
 lastmod: 2025-09-22T15:22:04+08:00
 draft: false
-tags: [""]
-categories: [""]
+tags: ["mysql", "监控", "告警"]
+categories: ["mysql"]
 author: "百里"
 comment: false
 toc: true

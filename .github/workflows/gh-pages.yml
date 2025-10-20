@@ -3,7 +3,7 @@ name: GitHub Pages
 on:
   push:
     branches:
-      - blog-poison  # Set a branch to deploy
+      - blog-htop  # Set a branch to deploy
   # pull_request:
 
 jobs:
