@@ -75,7 +75,7 @@ jobs:
         # 条件判断: 仅在 blog-poison 分支触发部署
         # 注意: 此处分支名与触发条件中的 blog-htop 不一致,可能导致部署失败
         # 建议修改为: github.ref == 'refs/heads/blog-htop'
-        if: ${{ github.ref == 'refs/heads/blog-poison' }}
+        if: ${{ github.ref == 'refs/heads/blog-htop' }}
 
         with:
           # GitHub Token 用于推送到 gh-pages 分支
