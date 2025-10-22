@@ -1,0 +1,831 @@
+# Cursor AI 编程规范 - Golang 增强版
+
+## 🎯 项目概览
+
+支持多技术栈的项目规范，包括：
+- Python（PyQT6 GUI + FFmpeg 工具链）
+- Golang（CLI/Web 服务）
+- Shell 脚本
+- 前端（Vue3 + Element Plus）
+
+本文档重点补充 Golang 部分的详细规范。
+
+---
+
+## 📋 核心原则（通用）
+
+### 1. 理解优先，编码其次
+- 在写代码前，先用简短的话确认理解了需求
+- 如果需求模糊，主动列出 2-3 个可能的理解，让用户选择
+- 对于不确定的工具/库调用，及时查询官方文档
+
+### 2. 最小化文件创建
+- **严格禁止**主动创建：测试文件、文档、示例、配置模板、脚本
+- **默认行为**：只编辑现有文件
+- **创建新文件前**：必须说明原因并等待确认
+
+### 3. 代码质量标准
+- **简洁性**：能用 10 行解决的不写 50 行
+- **可读性**：变量名要有意义，避免不必要的缩写
+- **健壮性**：必须处理常见错误
+- **性能**：避免不必要的重复计算或 I/O 操作
+
+### 4. 沟通模式
+当收到模糊需求时，应该做：
+```
+我理解您想要 [简述理解]。为了提供最佳方案，请确认：
+1. [关键问题1]
+2. [关键问题2]
+```
+
+---
+
+## 🐹 Golang 规范详解
+
+### 技术栈与依赖
+
+| 功能 | 推荐库 | 说明 |
+|------|--------|------|
+| 版本 | `go1.24.0` | 最低要求 go1.20 |
+| CLI | `cobra` | 强大的命令行框架 |
+| 配置 | `viper` | 支持多种格式配置 |
+| Web | `gin` | 高性能 HTTP 框架 |
+| ORM | `gorm` | 功能完整的 ORM |
+| 日志 | `zap` / `zerolog` | 结构化日志 |
+| 测试 | `testify` / `gomock` | 单元测试和 Mock |
+| 协程池 | `ants` / `grpool` | 协程池管理 |
+| 网络 | `gnet` | 高性能网络库 |
+| JSON | `jsoniter` | 快速 JSON 解析 |
+| 定时 | `robfig/cron` | 定时任务调度 |
+| 工具包 | `lancet` / `goutil` | 常用工具函数 |
+| 文档 | `swag` | API 文档生成（Swagger）|
+
+### 项目结构
+
+```
+project-name/
+├── cmd/                    # 命令行入口（cobra 项目首选）
+│   └── root.go            # 根命令定义
+├── internal/              # 内部业务逻辑（不暴露给外部）
+│   ├── handler/           # HTTP handler 层（Web 服务）
+│   ├── service/           # 业务逻辑层（核心业务）
+│   ├── model/             # 数据模型（DB、DTO、VO）
+│   ├── repo/              # 数据访问层（Repository/DAO）
+│   ├── job/               # 定时任务、后台 worker
+│   └── util/              # 内部工具库
+├── pkg/                   # 可复用、公共模块（允许外部导入）
+│   ├── logger/            # 日志封装
+│   ├── middleware/        # HTTP 中间件
+│   └── utils/             # 公共工具库
+├── config/                # 配置定义、加载
+├── api/                   # 接口定义（REST/OpenAPI）
+├── web/                   # 前端资源（Vue 构建产物）
+├── scripts/               # 运维、构建脚本（bash）
+├── test/                  # 黑盒测试
+├── .env                   # 环境变量示例
+├── go.mod                 # 依赖声明
+├── go.sum                 # 依赖锁定
+├── main.go                # 启动入口（Web 服务或 CLI）
+├── Makefile               # 构建脚本
+└── README.md              # 项目说明
+```
+
+### 代码风格规范
+
+#### 命名约定
+
+| 类型 | 规范 | 示例 |
+|------|------|------|
+| 包名 | 小写，单词 | `handler`, `service`, `repo` |
+| 常量 | 大写驼峰 | `MaxRetries`, `DefaultTimeout` |
+| 变量（全局） | 大写驼峰 | `GlobalConfig`, `LoggerInstance` |
+| 变量（局部） | 小写驼峰 | `userName`, `maxRetries` |
+| 函数 | 大写驼峰（公开）/ 小写驼峰（私有） | `GetUser()`, `parseConfig()` |
+| 接口 | 大写驼峰，以 `er` 结尾 | `Reader`, `Writer`, `Handler` |
+| 结构体 | 大写驼峰 | `User`, `Config`, `Response` |
+| 结构体字段 | 大写驼峰（导出）/ 小写驼峰（私有） | `ID`, `Name`, `createdAt` |
+
+#### 函数长度与复杂度
+
+```go
+// ✅ 好的实践：函数控制在 60 行以内
+func (s *UserService) CreateUser(ctx context.Context, req *CreateUserReq) (*User, error) {
+    // 验证输入
+    if err := req.Validate(); err != nil {
+        return nil, fmt.Errorf("invalid request: %w", err)
+    }
+
+    // 检查用户是否已存在
+    existing, err := s.repo.GetByEmail(ctx, req.Email)
+    if err != nil && err != repo.ErrNotFound {
+        return nil, fmt.Errorf("query failed: %w", err)
+    }
+    if existing != nil {
+        return nil, ErrUserExists
+    }
+
+    // 创建用户
+    user := &User{
+        Email: req.Email,
+        Name:  req.Name,
+    }
+    if err := s.repo.Create(ctx, user); err != nil {
+        return nil, fmt.Errorf("create failed: %w", err)
+    }
+
+    return user, nil
+}
+
+// ❌ 避免：过长或嵌套过深的函数
+func BadFunction() {
+    // 超过 60 行的代码...
+    // 多层嵌套的 if/for...
+}
+```
+
+#### 错误处理
+
+```go
+// ✅ 使用 errors.Is / errors.As
+if errors.Is(err, context.Canceled) {
+    log.Info("请求被取消")
+}
+
+// ✅ 使用 fmt.Errorf 包装错误并添加上下文
+if err != nil {
+    return fmt.Errorf("failed to read config: %w", err)
+}
+
+// ❌ 避免：忽略错误
+_ = someFunc()  // 显式忽略
+
+// ❌ 避免：裸露的 panic（除非真的无法恢复）
+if err != nil {
+    panic(err)  // 仅在初始化时可接受
+}
+```
+
+#### 上下文使用
+
+```go
+// ✅ 始终使用 context.Context 作为第一参数
+func (s *Service) Process(ctx context.Context, data string) error {
+    // 检查上下文是否已取消
+    select {
+    case <-ctx.Done():
+        return ctx.Err()
+    default:
+    }
+
+    // 传递 context 到下层调用
+    return s.repo.Save(ctx, data)
+}
+
+// ❌ 避免：不使用 context
+func BadFunction(data string) error {
+    // ...
+}
+
+// ❌ 避免：使用 context.Background() 作为默认值
+return s.Process(context.Background(), data)  // 不够灵活
+```
+
+#### 接口设计
+
+```go
+// ✅ 小而精的接口
+type Writer interface {
+    Write(p []byte) (n int, err error)
+}
+
+type Reader interface {
+    Read(p []byte) (n int, err error)
+}
+
+// ✅ 分层接口
+type Repository interface {
+    Create(ctx context.Context, user *User) error
+    GetByID(ctx context.Context, id string) (*User, error)
+    Update(ctx context.Context, user *User) error
+}
+
+// ❌ 避免：过大的接口
+type UserService interface {
+    Create(...)
+    Update(...)
+    Delete(...)
+    Query(...)
+    Export(...)
+    Import(...)
+    // ... 太多职责
+}
+```
+
+### 分层架构规范
+
+#### Handler 层（接口层）
+
+```go
+// internal/handler/user.go
+type UserHandler struct {
+    service internal.UserService  // 依赖注入
+    logger  *zap.Logger
+}
+
+// @Summary 获取用户
+// @Router /api/v1/users/:id [get]
+func (h *UserHandler) GetUser(c *gin.Context) {
+    userID := c.Param("id")
+
+    user, err := h.service.GetByID(c.Request.Context(), userID)
+    if err != nil {
+        c.JSON(400, gin.H{"code": -1, "msg": "查询失败"})
+        return
+    }
+
+    c.JSON(200, gin.H{"code": 0, "msg": "success", "data": user})
+}
+```
+
+#### Service 层（业务逻辑层）
+
+```go
+// internal/service/user.go
+type UserService struct {
+    repo   internal.UserRepository
+    config *Config
+    logger *zap.Logger
+}
+
+func (s *UserService) GetByID(ctx context.Context, id string) (*User, error) {
+    // 业务逻辑验证
+    if id == "" {
+        return nil, fmt.Errorf("user id cannot be empty")
+    }
+
+    // 调用数据层
+    user, err := s.repo.GetByID(ctx, id)
+    if err != nil {
+        s.logger.Error("failed to get user", zap.Error(err), zap.String("id", id))
+        return nil, err
+    }
+
+    return user, nil
+}
+```
+
+#### Repository 层（数据访问层）
+
+```go
+// internal/repo/user.go
+type UserRepository struct {
+    db *gorm.DB
+}
+
+func (r *UserRepository) GetByID(ctx context.Context, id string) (*User, error) {
+    var user User
+    if err := r.db.WithContext(ctx).Where("id = ?", id).First(&user).Error; err != nil {
+        if errors.Is(err, gorm.ErrRecordNotFound) {
+            return nil, ErrNotFound
+        }
+        return nil, err
+    }
+    return &user, nil
+}
+```
+
+#### Model 层（数据模型）
+
+```go
+// internal/model/user.go
+
+// 数据库模型
+type User struct {
+    ID        string    `gorm:"primaryKey" json:"id"`
+    Email     string    `gorm:"index" json:"email"`
+    Name      string    `json:"name"`
+    CreatedAt time.Time `json:"created_at"`
+}
+
+// DTO（数据传输对象）
+type CreateUserReq struct {
+    Email string `json:"email" binding:"required,email"`
+    Name  string `json:"name" binding:"required,max=100"`
+}
+
+func (req *CreateUserReq) Validate() error {
+    if req.Email == "" {
+        return fmt.Errorf("email is required")
+    }
+    return nil
+}
+```
+
+### HTTP 接口规范
+
+#### 返回结构一致性
+
+```go
+// pkg/response/response.go
+type Response struct {
+    Code int         `json:"code"`        // 0 成功，其他为错误码
+    Msg  string      `json:"msg"`         // 消息
+    Data interface{} `json:"data,omitempty"` // 数据
+}
+
+type PagedResponse struct {
+    Code  int         `json:"code"`
+    Msg   string      `json:"msg"`
+    Data  interface{} `json:"data"`
+    Page  int         `json:"page"`
+    Limit int         `json:"limit"`
+    Total int64       `json:"total"`
+}
+
+// 辅助函数
+func Success(data interface{}) Response {
+    return Response{Code: 0, Msg: "success", Data: data}
+}
+
+func Error(code int, msg string) Response {
+    return Response{Code: code, Msg: msg}
+}
+```
+
+#### 路由注册
+
+```go
+// internal/handler/router.go
+func RegisterRoutes(engine *gin.Engine, handlers *Handlers) {
+    v1 := engine.Group("/api/v1")
+    {
+        // 用户相关
+        users := v1.Group("/users")
+        {
+            users.GET("/:id", handlers.User.GetUser)
+            users.POST("", handlers.User.CreateUser)
+            users.PUT("/:id", handlers.User.UpdateUser)
+        }
+
+        // 其他资源...
+    }
+}
+```
+
+### 中间件规范
+
+```go
+// pkg/middleware/auth.go
+func AuthMiddleware() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        token := c.GetHeader("Authorization")
+        if token == "" {
+            c.JSON(401, gin.H{"code": -1, "msg": "unauthorized"})
+            c.Abort()
+            return
+        }
+
+        // 验证 token
+        claims, err := parseToken(token)
+        if err != nil {
+            c.JSON(401, gin.H{"code": -1, "msg": "invalid token"})
+            c.Abort()
+            return
+        }
+
+        c.Set("user_id", claims.UserID)
+        c.Next()
+    }
+}
+
+// pkg/middleware/logger.go
+func LoggerMiddleware(logger *zap.Logger) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        logger.Info("incoming request",
+            zap.String("method", c.Request.Method),
+            zap.String("path", c.Request.URL.Path),
+        )
+        c.Next()
+    }
+}
+
+// 注册中间件
+func SetupMiddleware(engine *gin.Engine, logger *zap.Logger) {
+    engine.Use(LoggerMiddleware(logger))
+    engine.Use(AuthMiddleware())
+}
+```
+
+### 日志规范
+
+```go
+// pkg/logger/logger.go
+func InitLogger(env string) *zap.Logger {
+    var config zap.Config
+
+    if env == "production" {
+        config = zap.NewProductionConfig()
+    } else {
+        config = zap.NewDevelopmentConfig()
+    }
+
+    config.OutputPaths = []string{"stdout", "logs/app.log"}
+    config.ErrorOutputPaths = []string{"stderr", "logs/error.log"}
+
+    logger, _ := config.Build()
+    return logger
+}
+
+// 使用示例
+func (s *UserService) GetUser(ctx context.Context, id string) (*User, error) {
+    s.logger.Info("fetching user",
+        zap.String("user_id", id),
+        zap.String("source", "service"),
+    )
+
+    user, err := s.repo.GetByID(ctx, id)
+    if err != nil {
+        s.logger.Error("failed to fetch user",
+            zap.String("user_id", id),
+            zap.Error(err),
+        )
+        return nil, err
+    }
+
+    return user, nil
+}
+```
+
+### CLI 应用规范（Cobra）
+
+```go
+// cmd/root.go
+var rootCmd = &cobra.Command{
+    Use:   "myapp",
+    Short: "一个强大的 CLI 工具",
+    Long:  "详细的应用说明...",
+}
+
+func Execute() {
+    if err := rootCmd.Execute(); err != nil {
+        fmt.Fprintln(os.Stderr, err)
+        os.Exit(1)
+    }
+}
+
+// cmd/user.go
+var userCmd = &cobra.Command{
+    Use:   "user",
+    Short: "用户管理命令",
+}
+
+var getUserCmd = &cobra.Command{
+    Use:   "get [id]",
+    Short: "获取用户信息",
+    Args:  cobra.ExactArgs(1),
+    RunE: func(cmd *cobra.Command, args []string) error {
+        id := args[0]
+        // 处理逻辑
+        return nil
+    },
+}
+
+func init() {
+    rootCmd.AddCommand(userCmd)
+    userCmd.AddCommand(getUserCmd)
+}
+
+// main.go
+func main() {
+    cmd.Execute()
+}
+```
+
+### 配置管理（Viper）
+
+```go
+// config/config.go
+type Config struct {
+    Server struct {
+        Port int    `mapstructure:"port"`
+        Host string `mapstructure:"host"`
+    } `mapstructure:"server"`
+    Database struct {
+        DSN string `mapstructure:"dsn"`
+    } `mapstructure:"database"`
+    Log struct {
+        Level string `mapstructure:"level"`
+    } `mapstructure:"log"`
+}
+
+func LoadConfig(configPath string) (*Config, error) {
+    viper.SetConfigFile(configPath)
+    viper.SetConfigType("yaml")
+
+    // 设置默认值
+    viper.SetDefault("server.port", 8080)
+    viper.SetDefault("server.host", "0.0.0.0")
+
+    if err := viper.ReadInConfig(); err != nil {
+        return nil, err
+    }
+
+    var cfg Config
+    if err := viper.Unmarshal(&cfg); err != nil {
+        return nil, err
+    }
+
+    return &cfg, nil
+}
+```
+
+### 单元测试规范
+
+```go
+// internal/service/user_test.go
+func TestUserService_GetByID(t *testing.T) {
+    // 准备
+    mockRepo := new(MockUserRepository)
+    expectedUser := &User{ID: "1", Name: "张三"}
+    mockRepo.On("GetByID", mock.Anything, "1").Return(expectedUser, nil)
+
+    service := &UserService{repo: mockRepo}
+
+    // 执行
+    user, err := service.GetByID(context.Background(), "1")
+
+    // 断言
+    assert.NoError(t, err)
+    assert.Equal(t, expectedUser, user)
+    mockRepo.AssertExpectations(t)
+}
+
+// 表驱动测试
+func TestValidateEmail(t *testing.T) {
+    tests := []struct {
+        name  string
+        email string
+        valid bool
+    }{
+        {"valid email", "test@example.com", true},
+        {"invalid email", "invalid", false},
+        {"empty email", "", false},
+    }
+
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            result := ValidateEmail(tt.email)
+            assert.Equal(t, tt.valid, result)
+        })
+    }
+}
+```
+
+### 构建与部署
+
+```makefile
+# Makefile
+.PHONY: build test lint clean run
+
+# 编译
+build:
+	go build -o bin/myapp ./cmd
+
+# 测试
+test:
+	go test ./... -v -cover
+
+# 代码检查
+lint:
+	golangci-lint run ./...
+
+# 格式化
+fmt:
+	go fmt ./...
+
+# 清理
+clean:
+	rm -rf bin/
+
+# 运行
+run:
+	go run ./cmd/main.go
+
+# 安装依赖
+deps:
+	go mod download
+	go mod tidy
+
+# 生成 API 文档
+swag:
+	swag init -g ./cmd/main.go
+```
+
+### API 文档规范（Swagger）
+
+```go
+// internal/handler/user.go
+
+// GetUser 获取用户信息
+// @Summary 获取用户
+// @Description 根据用户 ID 获取用户详细信息
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path string true "用户 ID"
+// @Success 200 {object} Response{data=User}
+// @Failure 400 {object} Response
+// @Failure 404 {object} Response
+// @Router /api/v1/users/{id} [get]
+func (h *UserHandler) GetUser(c *gin.Context) {
+    userID := c.Param("id")
+    // ...
+}
+
+// CreateUser 创建用户
+// @Summary 创建用户
+// @Description 创建新用户
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param body body CreateUserReq true "用户信息"
+// @Success 201 {object} Response{data=User}
+// @Failure 400 {object} Response
+// @Router /api/v1/users [post]
+func (h *UserHandler) CreateUser(c *gin.Context) {
+    // ...
+}
+```
+
+---
+
+## 🔧 跨技术栈项目规范
+
+### Python (PyQT6 GUI) 规范
+
+#### 样式管理
+
+- 使用项目下的 `style_dark.qss` 样式文件
+- 在代码中加载样式：
+```python
+with open('style_dark.qss', 'r') as f:
+    style = f.read()
+app.setStyleSheet(style)
+```
+
+#### 异常处理
+
+```python
+try:
+    # 主要逻辑
+    result = some_operation()
+except FileNotFoundError as e:
+    QMessageBox.critical(self, "文件错误", f"找不到文件: {e.filename}")
+except subprocess.CalledProcessError as e:
+    QMessageBox.critical(self, "处理失败", f"命令执行失败:\n{e.stderr}")
+except Exception as e:
+    QMessageBox.critical(self, "未知错误", f"发生错误: {str(e)}")
+```
+
+### Shell 脚本规范
+
+#### 脚本头与结构
+
+```bash
+#!/usr/bin/env bash
+
+# 脚本说明
+# 功能: 项目部署脚本
+# 用途: 自动化构建和部署应用
+# 作者: [Author]
+# 版本: 1.0
+
+set -euo pipefail
+
+# 颜色定义
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# 全局变量（大写）
+CONFIG_DIR="/etc/myapp"
+LOG_FILE="/var/log/myapp/deploy.log"
+
+# 日志函数
+log_info() {
+    echo -e "${GREEN}[$(date '+%Y-%m-%d %H:%M:%S')][INFO]${NC} $1"
+}
+
+log_warn() {
+    echo -e "${YELLOW}[$(date '+%Y-%m-%d %H:%M:%S')][WARN]${NC} $1"
+}
+
+log_error() {
+    echo -e "${RED}[$(date '+%Y-%m-%d %H:%M:%S')][ERROR]${NC} $1"
+}
+
+# 功能函数
+build_project() {
+    local project_dir="$1"
+    log_info "开始构建项目: $project_dir"
+
+    if [[ ! -d "$project_dir" ]]; then
+        log_error "项目目录不存在: $project_dir"
+        return 1
+    fi
+
+    cd "$project_dir" || return 1
+    go build -o bin/myapp ./cmd
+}
+
+# 主函数
+main() {
+    case "${1:-help}" in
+        "build")
+            build_project "${2:-.}"
+            ;;
+        "deploy")
+            deploy_app
+            ;;
+        "status")
+            show_status
+            ;;
+        "help"|*)
+            show_help
+            ;;
+    esac
+}
+
+main "$@"
+```
+
+---
+
+## 🚫 禁止清单（所有语言通用）
+
+1. ❌ 不要重写整个文件，除非必须
+2. ❌ 不要添加不必要的依赖
+3. ❌ 不要过度抽象或创建无谓的设计模式
+4. ❌ 不要忽视现有代码风格
+5. ❌ 不要假设运行环境（路径、权限等）
+6. ❌ 不要创建测试/文档/示例文件（除非明确要求）
+7. ❌ 不要使用 panic 处理业务逻辑错误
+8. ❌ 不要忽视错误（必须处理或显式忽略：`_ = err`）
+
+---
+
+## 📝 标准响应模板
+
+### 情景 1: 收到模糊需求
+
+```
+我理解您想要 [简述理解]。为了提供最佳方案，请确认：
+1. [关键问题1]
+2. [关键问题2]
+```
+
+### 情景 2: 提供解决方案
+
+```
+[简短说明要做什么]
+
+**技术方案**: [简要说明]
+
+**实现代码**:
+[... code ...]
+
+**使用说明**:
+[... 说明 ...]
+
+**注意事项**:
+- [潜在问题1]
+- [限制2]
+```
+
+### 情景 3: 建议性方案
+
+```
+我理解您想 [目标]。有几种方案可选：
+
+**方案1**: [简述]
+- 优点：[...]
+- 缺点：[...]
+
+**方案2**: [简述]
+- 优点：[...]
+- 缺点：[...]
+
+**推荐**: 方案X，因为 [原因]。需要我实现吗？
+```
+
+---
+
+## 🎓 元规则
+
+1. **这些规则是指导性的**，不是严格限制
+2. **用户的明确指令** 优先级最高
+3. **当规则冲突时**，选择最符合用户意图的方案
+4. **持续优化**：根据反馈调整理解
+
+**目标**: 高效协作，减少返工，提升代码质量

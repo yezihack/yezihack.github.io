@@ -25,6 +25,9 @@
 {{/* 新增: 全局搜索快捷键 */}}
 {{ $js = $js | append (resources.Get "js/global_search_shortcut.js") }}
 
+{{/* 新增: 随机访问文章功能 */}}
+{{ $js = $js | append (resources.Get "js/random-post.js") }}
+
 {{/* 新增: 搜索功能 - 仅在搜索页面加载 */}}
 {{ if eq .Type "search" }}
     {{ $js = $js | append (resources.Get "js/search.js") }}
@@ -59,4 +62,7 @@
   })();
 </script>
 {{ end -}}
+
+{{/* 不蒜子（Busuanzi）访问统计 */}}
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
