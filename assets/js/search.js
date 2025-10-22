@@ -136,7 +136,7 @@
                     </div>
                     <p class="search-result-excerpt">${excerpt}...</p>
                     <div class="search-result-meta">
-                        ${item.tags ? item.tags.map(tag => `<span class="search-result-tag">${tag}</span>`).join('') : ''}
+                        ${item.tags ? item.tags.map(tag => `<a href="/tags/${encodeURIComponent(tag)}/" class="search-result-tag">${tag}</a>`).join('') : ''}
                     </div>
                 </article>
             `;

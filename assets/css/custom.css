@@ -315,7 +315,6 @@ div.highlight pre {
 /* 表格响应式容器 */
 .post table,
 .content table {
-    display: block;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -353,11 +352,30 @@ table {
     border-spacing: 0;
     border-radius: 6px;
     overflow: hidden;
+    /* 移除表格内多余的空行和间距 */
+    line-height: 1.5;
 }
 
 thead {
     background-color: var(--table-stripe-color);
     font-weight: 600;
+}
+
+/* 修复表头单元格样式 - 移除多余空行 */
+thead th {
+    padding: 0.5rem;
+    border: 1px solid var(--table-border-color);
+    vertical-align: middle;
+    line-height: 1.5;
+}
+
+/* 修复表格单元格样式 - 移除多余空行 */
+tbody td,
+tbody th {
+    padding: 0.5rem;
+    border: 1px solid var(--table-border-color);
+    vertical-align: middle;
+    line-height: 1.5;
 }
 
 tbody tr {
@@ -367,6 +385,13 @@ tbody tr {
 tbody tr:hover {
     background-color: var(--table-stripe-color) !important;
     opacity: 0.8;
+}
+
+/* 移除表格内段落的多余间距 */
+table p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
 }
 
 /* 表格内代码优化 */
@@ -456,24 +481,41 @@ body.dark-theme blockquote {
 }
 
 /* 文章导航按钮优化 */
+/* 上一篇/下一篇导航的统一基础样式 */
+.next-post,
+.previous-post {
+    display: flex;
+}
+
 .next-post a,
 .previous-post a {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--table-border-color);
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1.5rem;
+
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
 }
 
 .next-post a:hover,
 .previous-post a:hover {
-    background-color: var(--table-stripe-color);
+    background: rgba(255, 255, 255, 0.12);
+    border-color: var(--link-color);
+    transform: translateY(-4px);
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.12),
+        0 0 0 1px var(--link-color);
     text-decoration: none;
-    transform: translateX(5px);
-}
-
-.previous-post a:hover {
-    transform: translateX(-5px);
 }
 
 /* 平滑滚动 */
@@ -1344,9 +1386,44 @@ body.dark-theme .posts-timeline .post-date {
     margin-bottom: 2rem;
 }
 
+/* 搜索图标 - 单独渲染，不受输入框 backdrop-filter 影响 */
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    width: 26px;
+    height: 26px;
+
+    color: var(--text-color);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+
+    /* 确保清晰渲染，完全不受父元素模糊影响 */
+    will-change: transform, color;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    /* 隔离层，防止继承父元素的 backdrop-filter */
+    isolation: isolate;
+    -webkit-filter: brightness(1);
+}
+
+.search-input-wrapper:focus-within .search-icon {
+    color: var(--link-color);
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
 .search-input {
     width: 100%;
-    padding: 1rem 1rem 1rem 3.2rem;
+    padding: 1rem 1rem 1rem 3.5rem;
+    min-height: 3rem;
 
     font-size: 1.1em;
     font-weight: 400;
@@ -1372,21 +1449,6 @@ body.dark-theme .posts-timeline .post-date {
 .search-input::placeholder {
     color: var(--list-color);
     opacity: 0.6;
-}
-
-/* 搜索图标 */
-.search-icon {
-    position: absolute;
-    left: 1.1rem;
-    color: var(--list-color);
-    pointer-events: none;
-    transition: color 0.3s ease;
-    opacity: 0.8;
-}
-
-.search-input:focus ~ .search-icon {
-    color: var(--link-color);
-    opacity: 1;
 }
 
 /* 清除按钮 */
@@ -1546,6 +1608,16 @@ body.dark-theme .posts-timeline .post-date {
     border: 1px solid rgba(255, 255, 255, 0.1);
 
     transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.search-result-tag:hover {
+    background: rgba(38, 139, 210, 0.15);
+    border-color: var(--link-color);
+    color: var(--link-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-result-item:hover .search-result-tag {
@@ -1631,9 +1703,8 @@ body.dark-theme .clear-search {
     }
 
     .search-icon {
-        left: 1rem;
-        width: 20px;
-        height: 20px;
+        left: 0.9rem;
+        /* 移除固定尺寸限制，让 SVG 自然显示 */
     }
 
     .clear-search {
@@ -2043,7 +2114,9 @@ body.dark-theme .clear-search {
     display: flex;
 }
 
-.previous-post a {
+/* 统一样式 - 上一篇和下一篇导航 */
+.previous-post a,
+.next-post a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -2070,6 +2143,17 @@ body.dark-theme .clear-search {
     overflow: hidden;
 }
 
+/* 上一篇 - 左对齐 */
+.previous-post a {
+    text-align: left;
+}
+
+/* 下一篇 - 右对齐 */
+.next-post a {
+    text-align: right;
+}
+
+/* 箭头装饰 - 上一篇 */
 .previous-post a::before {
     content: '←';
     position: absolute;
@@ -2082,34 +2166,7 @@ body.dark-theme .clear-search {
     transition: all 0.3s ease;
 }
 
-.next-post a {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 100%;
-    padding: 1.5rem;
-    text-align: right;
-
-    background: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-
-    text-decoration: none;
-    color: var(--text-color);
-
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.08),
-        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-
-    transition: all 0.3s ease;
-
-    position: relative;
-    overflow: hidden;
-}
-
+/* 箭头装饰 - 下一篇 */
 .next-post a::after {
     content: '→';
     position: absolute;
@@ -2122,6 +2179,7 @@ body.dark-theme .clear-search {
     transition: all 0.3s ease;
 }
 
+/* 悬停效果 - 统一 */
 .previous-post a:hover,
 .next-post a:hover {
     background: rgba(255, 255, 255, 0.12);
@@ -2132,6 +2190,7 @@ body.dark-theme .clear-search {
         0 0 0 1px var(--link-color);
 }
 
+/* 悬停时箭头移动 */
 .previous-post a:hover::before {
     opacity: 0.8;
     left: 0.5rem;
@@ -2222,6 +2281,7 @@ body.dark-theme .toc-wrapper {
     border-color: rgba(255, 255, 255, 0.1);
 }
 
+/* 暗色主题 - 导航样式 */
 body.dark-theme .previous-post a,
 body.dark-theme .next-post a {
     background: rgba(255, 255, 255, 0.04);
@@ -2348,6 +2408,7 @@ body.dark-theme .next-post a:hover {
         background: rgba(255, 255, 255, 0.95);
     }
 
+    /* 不支持毛玻璃效果时的降级方案 - 暗色主题 */
     body.dark-theme .info,
     body.dark-theme .toc-wrapper,
     body.dark-theme .post pre,
@@ -2752,4 +2813,30 @@ body.dark-theme .sidebar-search-box:hover {
 /* ==========================================================================
    End of Custom Styles
    ========================================================================== */
+
+/* 暗色主题下的搜索图标 */
+body.dark-theme .search-icon {
+    color: rgba(255, 255, 255, 1);
+}
+
+body.dark-theme .search-input-wrapper:focus-within .search-icon {
+    color: var(--link-color);
+}
+
+body.dark-theme .search-result-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* 暗色主题 - 搜索结果标签 */
+body.dark-theme .search-result-tag {
+    background: rgba(38, 139, 210, 0.08);
+    color: rgb(100, 181, 246);
+    border-color: rgba(38, 139, 210, 0.2);
+}
+
+body.dark-theme .search-result-tag:hover {
+    background: rgba(38, 139, 210, 0.12);
+    border-color: rgba(38, 139, 210, 0.4);
+    color: rgb(100, 181, 246);
+}
 
