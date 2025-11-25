@@ -72,18 +72,24 @@ jobs:
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
 
-        # 条件判断: 仅在 blog-poison 分支触发部署
-        # 注意: 此处分支名与触发条件中的 blog-htop 不一致,可能导致部署失败
-        # 建议修改为: github.ref == 'refs/heads/blog-htop'
-        if: ${{ github.ref == 'refs/heads/blog-htop' }}
-
         with:
-          # GitHub Token 用于推送到 gh-pages 分支
-          # GITHUB_TOKEN 是 GitHub Actions 自动创建的临时 token
-          # 无需手动配置,具有仓库的读写权限
-          # 注意: 这不是个人访问令牌(Personal Access Token)
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
-          # 指定要部署的目录(Hugo 构建输出目录)
-          # 此目录的内容会被推送到 gh-pages 分支,作为静态网站托管
           publish_dir: ./public
+          publish_branch: gh-pages
+          force_orphan: true
+
+        # # 条件判断: 仅在 blog-poison 分支触发部署
+        # # 注意: 此处分支名与触发条件中的 blog-htop 不一致,可能导致部署失败
+        # # 建议修改为: github.ref == 'refs/heads/blog-htop'
+        # if: ${{ github.ref == 'refs/heads/kong-htop' }}
+
+        # with:
+        #   # GitHub Token 用于推送到 gh-pages 分支
+        #   # GITHUB_TOKEN 是 GitHub Actions 自动创建的临时 token
+        #   # 无需手动配置,具有仓库的读写权限
+        #   # 注意: 这不是个人访问令牌(Personal Access Token)
+        #   github_token: ${{ secrets.GITHUB_TOKEN }}
+
+        #   # 指定要部署的目录(Hugo 构建输出目录)
+        #   # 此目录的内容会被推送到 gh-pages 分支,作为静态网站托管
+        #   publish_dir: ./public
