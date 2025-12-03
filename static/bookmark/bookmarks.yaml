@@ -1,0 +1,323 @@
+bookmarks:
+  # 教程学习
+  - name: 书栈网
+    url: https://www.bookstack.cn
+    description: 优质的IT技术文档和教程分享平台
+    category: 教程学习
+    rating: 5
+
+  - name: 菜鸟教程
+    url: https://www.runoob.com/
+    description: 提供各种编程语言的基础教程
+    category: 教程学习
+    rating: 4
+
+  # 开发工具
+  - name: GitHub
+    url: https://github.com/
+    description: 全球最大的代码托管平台，开源项目的家园
+    category: 技术社区
+    rating: 5
+
+  - name: Stack Overflow
+    url: https://stackoverflow.com/
+    description: 程序员问答社区，解决编程问题的好帮手
+    category: 技术社区
+    rating: 4
+
+  # 技术社区
+  - name: 思否提问
+    url: https://segmentfault.com/
+    description: 中文技术问答社区
+    category: 技术社区
+    rating: 3
+
+  - name: 掘金
+    url: https://juejin.im/
+    description: 优质的技术分享社区
+    category: 技术社区
+    rating: 3
+
+  - name: Go语言中文网
+    url: https://studygolang.com/
+    description: Go语言学习和交流平台
+    category: 技术社区
+    rating: 3
+
+  - name: V2EX
+    url: https://www.v2ex.com/
+    description: 创意工作者的社区
+    category: 技术社区
+    rating: 4
+
+  - name: InfoQ
+    url: https://www.infoq.cn/
+    description: 技术资讯和深度文章
+    category: 技术社区
+    rating: 4
+
+  - name: Medium
+    url: https://medium.com/
+    description: 国际知名的技术博客平台
+    category: 技术社区
+    rating: 4
+
+  - name: Reddit
+    url: https://www.reddit.com/
+    description: 互联网上最大的社区论坛
+    category: 技术社区
+    rating: 1
+
+  # 算法学习
+  - name: 力扣算法
+    url: https://leetcode-cn.com/
+    description: 算法题库，提升编程能力和面试准备
+    category: 教程学习
+    rating: 5
+
+  # 视频学习
+  - name: 哔哩哔哩
+    url: https://www.bilibili.com/
+    description: 优质的技术视频学习平台
+    category: 教程学习
+    rating: 4
+
+  # 技术博客
+  - name: 酷壳-耗子叔
+    url: https://coolshell.cn/
+    description: 陈皓的技术博客，深度技术文章
+    category: 技术博客
+    rating: 5
+
+  - name: 飞雪无情
+    url: https://www.flysnow.org/
+    description: Go语言相关技术博客
+    category: 技术博客
+    rating: 3
+
+  - name: 阮一峰
+    url: http://www.ruanyifeng.com/
+    description: 知名技术博主，通俗易懂的技术文章
+    category: 技术博客
+    rating: 4
+
+  - name: 美团技术
+    url: https://tech.meituan.com/
+    description: 美团技术团队博客
+    category: 技术博客
+    rating: 3
+
+  - name: 峰云
+    url: http://xiaorui.cc/
+    description: Python和Go相关技术博客
+    category: 技术博客
+    rating: 3
+
+  - name: PHP鸟哥
+    url: https://www.laruence.com/
+    description: 鸟哥的技术博客
+    category: 技术博客
+    rating: 3
+
+  - name: 鸟窝
+    url: https://colobu.com/
+    description: Go语言和分布式系统
+    category: 技术博客
+    rating: 3
+
+  - name: 淘宝数据库月报
+    url: http://mysql.taobao.org/monthly/
+    description: 数据库技术深度文章
+    category: 技术博客
+    rating: 4
+
+  - name: 小林Coding
+    url: https://www.cnblogs.com/xiaolincoding/
+    description: 图解计算机基础
+    category: 技术博客
+    rating: 4
+
+  - name: 编程深思录
+    url: https://www.cyhone.com/
+    description: 深度技术思考
+    category: 技术博客
+    rating: 4
+
+  - name: 并发编程网
+    url: http://ifeve.com/
+    description: 并发编程相关技术
+    category: 技术博客
+    rating: 3
+
+  - name: Facebook技术
+    url: https://engineering.fb.com/
+    description: Facebook工程技术博客
+    category: 技术博客
+    rating: 3
+
+
+  - name: 小米技术
+    url: https://xiaomi-info.github.io/
+    description: 小米技术团队博客
+    category: 技术博客
+    rating: 3
+
+  - name: LinkedIn技术
+    url: https://engineering.linkedin.com/blog
+    description: LinkedIn工程技术博客
+    category: 技术博客
+    rating: 3
+
+  # Golang资源
+
+  - name: Awesome Go CN
+    url: https://github.com/yinggaozhen/awesome-go-cn
+    description: Go语言优秀资源中文版
+    category: Golang资源
+    rating: 5
+
+  - name: Go周刊
+    url: https://github.com/polaris1119/golangweekly
+    description: Go语言每周资讯
+    category: Golang资源
+    rating: 4
+
+  - name: 科技周刊
+    url: https://github.com/ruanyf/weekly
+    description: 阮一峰的科技周刊
+    category: 新闻资讯
+    rating: 4
+
+  # 云原生
+  - name: CNCF官网
+    url: https://www.cncf.io/projects/
+    description: 云原生计算基金会毕业项目
+    category: 云原生
+    rating: 5
+
+  # 摄影网站
+  - name: 1x摄影
+    url: https://1x.com/
+    description: 高质量摄影图片网
+    category: 摄影网站
+    rating: 4
+
+  - name: 徕卡作品廊
+    url: https://lfi-online.de/
+    description: 徕卡旗下的摄影作品廊
+    category: 摄影网站
+    rating: 4
+
+  - name: 500PX
+    url: https://500px.com/
+    description: 知名的摄影作品分享平台
+    category: 摄影网站
+    rating: 4
+
+  # 实用工具
+  - name: Markdown转公众号
+    url: https://doocs.github.io/md/
+    description: Markdown格式转微信公众号格式
+    category: 实用工具
+    rating: 4
+
+  - name: ProcessOn
+    url: https://www.processon.com/
+    description: 在线画图工具
+    category: 实用工具
+    rating: 4
+
+  - name: 鸠摩搜书
+    url: https://www.jiumodiary.com/
+    description: 电子书搜索引擎
+    category: 实用工具
+    rating: 4
+
+  - name: 蓝凑云
+    url: https://www.lanzou.com/
+    description: 免费网盘服务
+    category: 实用工具
+    rating: 3
+
+  - name: 图片压缩
+    url: https://www.iloveimg.com/zh-cn
+    description: 在线图片压缩工具
+    category: 实用工具
+    rating: 4
+
+  - name: Calibre
+    url: https://calibre-ebook.com/
+    description: 电子书管理工具
+    category: 实用工具
+    rating: 4
+
+  - name: 电子书转换器
+    url: http://cn.epubee.com/
+    description: 在线电子书格式转换
+    category: 实用工具
+    rating: 3
+
+  - name: 配色大师
+    url: https://peiseka.com/
+    description: 配色方案和灵感
+    category: 实用工具
+    rating: 3
+
+  - name: Can I Use
+    url: https://caniuse.com
+    description: 查询浏览器对Web技术的支持情况
+    category: 实用工具
+    rating: 4
+
+  - name: Regex101
+    url: https://regex101.com
+    description: 正则表达式在线测试和学习工具
+    category: 实用工具
+    rating: 4
+
+  - name: 密码生成器
+    url: /tools/password-generator.html
+    description: 随机生成安全密码，支持自定义长度和字符类型
+    category: 实用工具
+    rating: 10
+
+  # 徽章工具
+  - name: Shields.io
+    url: https://shields.io/
+    description: 生成各种项目徽章
+    category: 徽章工具
+    rating: 4
+
+  - name: Go Report Card
+    url: https://goreportcard.com/
+    description: Go项目质量评价
+    category: 徽章工具
+    rating: 4
+
+  - name: Go.dev
+    url: https://go.dev/
+    description: Go官方文档
+    category: 徽章工具
+    rating: 5
+
+  - name: Gitter
+    url: https://gitter.im/
+    description: 开发者聊天社区
+    category: 徽章工具
+    rating: 3
+
+  - name: Codecov
+    url: https://codecov.io/
+    description: 代码测试覆盖率分析
+    category: 徽章工具
+    rating: 4
+
+  - name: Travis CI
+    url: https://travis-ci.org/
+    description: 持续集成服务
+    category: 徽章工具
+    rating: 4
+
+
+
+

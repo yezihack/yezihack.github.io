@@ -24,10 +24,10 @@ name = "百里江山"
     mainSections = ["posts"]
 
     menu = [
-        {Name = "Maps", URL = "/about/", HasChildren = false},
         {Name = "Posts", URL = "/posts/", HasChildren = false},
         {Name = "Categories", URL = "/categories/", HasChildren = false},
         {Name = "Tags", URL = "/tags/", HasChildren = false},
+        {Name = "Bookmark", URL = "/bookmark/", HasChildren = false},
     ]
     # {Name = "Posts", URL = "/posts/", Pre = "Recent", HasChildren = true, Limit = 5},
 
@@ -53,25 +53,25 @@ name = "百里江山"
     moon_sun_color = "#FFF"                 # default is #FFF
     moon_sun_background_color = "#515151"   # default is #515151
 
-    # light mode
+    # light mode - 柔和护眼配色（与 bookmark 统一）
     text_color = "#222"             # default is #222
-    content_bg_color = "#FAF9F6"    # default is #FAF9F6
+    content_bg_color = "#f5f7fa"    # 柔和的浅灰蓝色（原 #FAF9F6）
     post_title_color = "#303030"    # default is #303030
     list_color = "#5a5a5a"          # default is #5a5a5a
-    link_color = "#268bd2"          # default is #268bd2
-    date_color = "#515151"          # default is #515151
-    table_border_color = "#E5E5E5"  # default is #E5E5E5
-    table_stripe_color = "#F9F9F9"  # default is #F9F9F9
+    link_color = "#667eea"          # 紫蓝色（原 #268bd2）
+    date_color = "#718096"          # 柔和灰色（原 #515151）
+    table_border_color = "#e8eaf6"  # 淡紫灰色（原 #E5E5E5）
+    table_stripe_color = "#f8f9fb"  # 更浅的灰蓝色（原 #F9F9F9）
 
-    # dark mode
-    text_color_dark = "#eee"            # default is #eee
-    content_bg_color_dark = "#121212"   # default is #121212
-    post_title_color_dark = "#DBE2E9"   # default is #DBE2E9
-    list_color_dark = "#9d9d9d"         # default is #9d9d9d
-    link_color_dark = "#268bd2"         # default is #268bd2
-    date_color_dark = "#9a9a9a"         # default is #9a9a9a
-    table_border_color_dark = "#515151" # default is #515151
-    table_stripe_color_dark = "#202020" # default is #202020
+    # dark mode - 柔和深色模式（与 bookmark 统一）
+    text_color_dark = "#e8eaf6"         # 浅灰白色（原 #eee）
+    content_bg_color_dark = "#1e1e2e"   # 深灰紫色（原 #121212）
+    post_title_color_dark = "#e8eaf6"   # 浅灰白色（原 #DBE2E9）
+    list_color_dark = "#b4b7c9"         # 中灰蓝色（原 #9d9d9d）
+    link_color_dark = "#a78bfa"         # 淡紫色（原 #268bd2）
+    date_color_dark = "#b4b7c9"         # 中灰蓝色（原 #9a9a9a）
+    table_border_color_dark = "#2a2a3e" # 深灰蓝色（原 #515151）
+    table_stripe_color_dark = "#252535" # 深灰紫色（原 #202020）
 
 
 [params.meta]
