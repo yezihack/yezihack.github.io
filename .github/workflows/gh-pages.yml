@@ -37,7 +37,7 @@ jobs:
         with:
           # 递归拉取子模块(Hugo 主题通常作为 Git 子模块存在)
           # true: 拉取一层子模块, recursive: 递归拉取所有嵌套子模块
-          submodules: true
+          submodules: false
 
           # 拉取完整的 Git 历史记录
           # 0 表示拉取所有历史,这样 Hugo 可以使用 .GitInfo 和 .Lastmod 获取文件修改时间
