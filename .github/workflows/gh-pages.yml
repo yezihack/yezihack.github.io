@@ -12,7 +12,7 @@ on:
     branches:
       - kong-htop  # 监听 kong-htop 分支的推送事件,当此分支有新提交时触发工作流
   # pull_request:  # PR 触发已禁用(如需启用,取消此行注释)
-  workflow_dispatch
+  workflow_dispatch:
 
 # ========================================
 # 工作流任务定义
@@ -69,6 +69,8 @@ jobs:
           hugo --minify
           echo "=== 检查 bookmark 目录 ==="
           ls -la public/bookmark/ || echo "bookmark 目录不存在"
+          ls -la public/
+          ls -la public/themes/
 
       # --------------------------------------------------
       # 步骤 4: 部署到 GitHub Pages
