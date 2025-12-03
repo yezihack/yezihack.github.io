@@ -38,7 +38,7 @@ jobs:
         with:
           # 递归拉取子模块(Hugo 主题通常作为 Git 子模块存在)
           # true: 拉取一层子模块, recursive: 递归拉取所有嵌套子模块
-          submodules: false
+          submodules: true
 
           # 拉取完整的 Git 历史记录
           # 0 表示拉取所有历史,这样 Hugo 可以使用 .GitInfo 和 .Lastmod 获取文件修改时间
@@ -65,7 +65,10 @@ jobs:
       - name: Build
         # --minify: 压缩 HTML/CSS/JS,减小文件体积,提升加载速度
         # 构建结果默认输出到 ./public 目录
-        run: hugo --minify
+        run: |
+          hugo --minify
+          echo "=== 检查 bookmark 目录 ==="
+          ls -la public/bookmark/ || echo "bookmark 目录不存在"
 
       # --------------------------------------------------
       # 步骤 4: 部署到 GitHub Pages
