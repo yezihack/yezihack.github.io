@@ -70,7 +70,6 @@ jobs:
           echo "=== 检查 bookmark 目录 ==="
           ls -la public/bookmark/ || echo "bookmark 目录不存在"
           ls -la public/
-          ls -la public/themes/
 
       # --------------------------------------------------
       # 步骤 4: 部署到 GitHub Pages
