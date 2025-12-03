@@ -12,6 +12,7 @@ on:
     branches:
       - kong-htop  # 监听 kong-htop 分支的推送事件,当此分支有新提交时触发工作流
   # pull_request:  # PR 触发已禁用(如需启用,取消此行注释)
+  workflow_dispatch
 
 # ========================================
 # 工作流任务定义
