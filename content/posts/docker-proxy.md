@@ -3,8 +3,8 @@ title: "Docker Daemon 配置代理完整指南"
 date: 2025-11-28T19:29:51+08:00
 lastmod: 2025-11-28T19:29:51+08:00
 draft: false
-tags: [""]
-categories: [""]
+tags: ["docker", "proxy", "tool"]
+categories: ["docker"]
 author: "百里"
 comment: false
 toc: true

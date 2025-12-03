@@ -3,8 +3,8 @@ title: "Docker Buildx v0.30.1 安装与使用全指南（2025 最新版）"
 date: 2025-11-28T19:51:27+08:00
 lastmod: 2025-11-28T19:51:27+08:00
 draft: false
-tags: [""]
-categories: [""]
+tags: ["docker", "linux"]
+categories: ["docker"]
 author: "百里"
 comment: false
 toc: true
