@@ -297,7 +297,7 @@ bookmarks:
   - name: Go.dev
     url: https://go.dev/
     description: Go官方文档
-    category: 徽章工具
+    category: Golang资源
     rating: 5
 
   - name: Gitter
@@ -318,6 +318,115 @@ bookmarks:
     category: 徽章工具
     rating: 4
 
+# 针对外国人的综合求职网站
+  - name: GaijinPot Jobs
+    url: https://jobs.gaijinpot.com/
+    description: 面向外国人的热门求职网站,提供就业搜索、旅游指南、日语学习和租房协助等服务
+    category: 职业发展
+    rating: 5
 
+  - name: WeXpats Jobs
+    url: https://we-xpats.com/en/job/
+    description: 支持8种语言的外国人求职网站,可以根据日语水平搜索工作,拥有4万多个职位
+    category: 职业发展
+    rating: 5
 
+  - name: Daijob.com
+    url: https://www.daijob.com/en/
+    description: 日本最大的双语人才求职网站,自1998年起服务于在日本寻找工作的双语和多语言人才
+    category: 职业发展
+    rating: 5
+
+  - name: NIPPON SHIGOTO.com
+    url: https://nipponshigoto.com/en/
+    description: 提供中文、韩文、英文等多语言浏览,提供从兼职到全职的免费求职服务
+    category: 职业发展
+    rating: 4
+
+  - name: YOLO Japan
+    url: https://www.yolo-japan.com/en/
+    description: 日本最大的外国人求职网站之一,拥有超过24万注册用户和丰富的职位选择
+    category: 职业发展
+    rating: 4
+
+  - name: Jobs in Japan
+    url: https://jobsinjapan.com/
+    description: 面向外国人的综合求职平台,提供全职、兼职、合同工等多种就业形式,支持签证担保
+    category: 职业发展
+    rating: 4
+
+  # IT和科技行业专门网站
+  - name: Japan Dev
+    url: https://japan-dev.com/
+    description: 为英语使用者提供精选的日本开发者职位,无需日语,可从海外申请并提供签证担保
+    category: 职业发展
+    rating: 5
+
+  - name: TokyoDev
+    url: https://www.tokyodev.com/
+    description: 专为在日本的英语软件工程师提供的职位板和社区,提供超过100个英语友好职位
+    category: 职业发展
+    rating: 5
+
+  - name: Yaaay
+    url: https://yaaay.jp/
+    description: IT行业英文求职板,提供试用工作机会,专注于日本科技行业招聘
+    category: 职业发展
+    rating: 4
+
+  - name: EJable
+    url: https://ejable.com/
+    description: 提供适合不同语言能力的科技职位,专注于日本IT行业双语和英语职位
+    category: 职业发展
+    rating: 4
+
+  # 日本本土主流求职网站
+  - name: リクナビ (Rikunabi)
+    url: https://next.rikunabi.com/
+    description: 日本最大的应届毕业生求职网站之一,也提供转职求职服务
+    category: 职业发展
+    rating: 5
+
+  - name: doda
+    url: https://doda.jp/
+    description: 综合性转职求职网站,拥有业界最大级别的求人数和全面的职业支持体系
+    category: 职业发展
+    rating: 5
+
+  - name: Indeed Japan
+    url: https://jp.indeed.com/
+    description: 国际知名求职平台的日本版,提供免费和付费职位搜索服务
+    category: 职业发展
+    rating: 5
+
+  - name: エンゲージ (en-gage)
+    url: https://en-gage.net/
+    description: 综合求职网站,掲載企業数日本第一,提供全职、兼职、实习等多种职位
+    category: 职业发展
+    rating: 4
+
+# 其他推荐网站
+  - name: Wantedly
+    url: https://jp.wantedly.com/
+    description: 日本独特的社交招聘平台,注重价值观匹配,拥有约12万职位,特别适合IT和创业公司
+    category: 职业发展
+    rating: 4
+
+  - name: 活动行
+    url: https://www.huodongxing.com/
+    description: 发布活动,线上活动,B2B 获客,活动推广,会议推广,电子签到,企业直播,线上课程,线上展览
+    category: 活动展览
+    rating: 4
+
+  - name: Luma
+    url: https://luma.com
+    description: 使用 Luma 轻松发现和举办难忘的活动。邀请朋友、售卖门票，发现身边的精彩活动
+    category: 活动展览
+    rating: 4
+
+  - name: Eventbrite
+    url: https://www.eventbrite.com/
+    description: 一个全球领先的活动创建、票务销售与管理平台
+    category: 活动展览
+    rating: 4
 
