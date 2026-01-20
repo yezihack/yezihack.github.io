@@ -436,7 +436,7 @@ bookmarks:
     description: GitHub 上的热门项目
     category: github
     rating: 4
-    
+
   - name: Github Trending 日榜
     url: https://github.com/OpenGithubs/github-daily-rank
     description: GitHub 上的热门项目
@@ -449,4 +449,20 @@ bookmarks:
     category: github
     rating: 4
 
+  - name: VUE后台管理系统模板
+    url: http://vue.easydo.work/
+    description: 收集了各种基于Vue.js的后台管理系统模板
+    category: github
+    rating: 4
 
+  - name: 无限听歌
+    url: https://xdocs.hanxi.cc/
+    description: 无限听歌解放小爱音箱
+    category: github
+    rating: 4
+
+  - name: 算法刷题
+    url: https://labuladong.online/zh/
+    description: 算法刷题速成指南
+    category: 面试
+    rating: 4
