@@ -21,18 +21,21 @@ Claude Code 是 Anthropic 推出的代理编码工具，可在终端、VS Code�
 ### 1.1 前置环境要求
 
 #### Windows
+
 - Windows 10 或更高版本
 - Git for Windows （必需）
 - PowerShell 或 CMD
 - Node.js 14+ （可选，但推荐）
 
 #### macOS
+
 - macOS 10.12 或更高版本
 - Xcode Command Line Tools
 - Homebrew （推荐）
 - Node.js 14+ （可选）
 
 #### Linux
+
 - Ubuntu 18.04+ 或其他主流发行版
 - curl 或 wget
 - Node.js 14+ （可选）
@@ -41,7 +44,25 @@ Claude Code 是 Anthropic 推出的代理编码工具，可在终端、VS Code�
 
 在安装Claude Code之前，建议先安装Node.js的包管理工具，以便支持更多功能。
 
+**Windows (msi/二进制):**
+
+1. 下载 [Node.js 安装包](https://nodejs.org/en/download/)
+
+2. 运行安装程序，选择LTS版本（推荐）
+
+3. 安装完成后，打开命令提示符或PowerShell，验证安装：!
+  
+![20260405192352](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260405192352.png)
+
+1. 验证
+
+```bash
+node -v
+npm -v
+```
+
 **Windows (PowerShell):**
+
 ```powershell
 # 使用winget安装（推荐）
 winget install OpenJS.NodeJS
@@ -55,6 +76,7 @@ npm --version
 ```
 
 **macOS:**
+
 ```bash
 # 使用Homebrew安装（推荐）
 brew install node
@@ -68,6 +90,7 @@ npm --version
 ```
 
 **Linux (Ubuntu/Debian):**
+
 ```bash
 # 使用包管理器
 sudo apt-get update
@@ -83,6 +106,7 @@ npm --version
 ```
 
 **Linux (Fedora/CentOS):**
+
 ```bash
 sudo dnf install nodejs npm
 # 或
@@ -90,6 +114,7 @@ sudo yum install nodejs npm
 ```
 
 设置国内NPM镜像（加快安装速度）：
+
 ```bash
 npm config set registry https://registry.npmmirror.com
 npm config set disturl https://registry.npmmirror.com/dist
@@ -101,16 +126,19 @@ npm config set sass_binary_site https://registry.npmmirror.com/mirrors/node-sass
 #### 方式一：官方安装脚本（推荐）
 
 **macOS 和 Linux:**
+
 ```bash
 curl -fsSL https://claude.ai/install.sh | bash
 ```
 
 **Windows PowerShell:**
+
 ```powershell
 irm https://claude.ai/install.ps1 | iex
 ```
 
 **Windows CMD:**
+
 ```cmd
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
@@ -118,11 +146,13 @@ curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del in
 #### 方式二：包管理器安装
 
 **macOS (Homebrew):**
+
 ```bash
 brew install anthropic/claude-code/claude-code
 ```
 
 **Windows (WinGet):**
+
 ```powershell
 winget install Anthropic.ClaudeCode
 ```
@@ -143,6 +173,7 @@ claude
 ```
 
 首次启动时，系统会提示you登录。根据你的需求选择：
+
 - **Claude 订阅** - 需要 Claude.ai 账户
 - **Anthropic API** - 需要 Anthropic 控制台 API Key
 - **第三方提供商** - 支持集成其他AI服务
@@ -167,6 +198,7 @@ claude
 **方式一：环境变量配置**
 
 Windows PowerShell:
+
 ```powershell
 $env:ANTHROPIC_API_KEY="your-zhipu-api-key"
 $env:ANTHROPIC_API_BASE="https://open.bigmodel.cn/api/paas/v4"
@@ -174,6 +206,7 @@ $env:ANTHROPIC_MODEL="glm-5"
 ```
 
 Linux/macOS:
+
 ```bash
 export ANTHROPIC_API_KEY="your-zhipu-api-key"
 export ANTHROPIC_API_BASE="https://open.bigmodel.cn/api/paas/v4"
@@ -183,6 +216,7 @@ export ANTHROPIC_MODEL="glm-5"
 **方式二：全局配置文件**
 
 编辑 `~/.claude/settings.json`:
+
 ```json
 {
   "model": "glm-5",
@@ -198,6 +232,7 @@ export ANTHROPIC_MODEL="glm-5"
 **方式三：项目级配置**
 
 在项目根目录创建 `.claude/settings.json`:
+
 ```json
 {
   "model": "glm-5",
@@ -253,6 +288,7 @@ export ANTHROPIC_MODEL="glm-5"
 ```
 
 **配置说明：**
+
 - `model: sonnet` - 使用 Sonnet（成本低约60%，处理大部分任务）
 - `MAX_THINKING_TOKENS: 10000` - 限制思考tokens，降低成本70%
 - `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE: 50` - 更早压缩上下文
@@ -318,6 +354,7 @@ npm install
 ### 3.2 核心功能清单
 
 #### 代理（38个）
+
 - **planner.md** - 功能实现规划
 - **architect.md** - 系统设计决策
 - **code-reviewer.md** - 代码质量评审
@@ -329,6 +366,7 @@ npm install
 - **语言特定reviewer** - Python/Go/Rust/Kotlin等
 
 #### 技能（156个）
+
 - **前端patterns** - React/Next.js最佳实践
 - **后端patterns** - API设计、数据库、缓存
 - **测试框架** - pytest、Jest、Spring Boot测试
@@ -339,6 +377,7 @@ npm install
 - **数据工程** - ClickHouse、PostgreSQL优化
 
 #### 命令（72个）
+
 ```bash
 # 规划与设计
 /plan "Add user authentication"
@@ -409,6 +448,7 @@ cat everything-claude-code/hooks/hooks.json
 从 `everything-claude-code/mcp-configs/mcp-servers.json` 中选择需要的机器人：
 
 常用MCP服务器：
+
 ```json
 {
   "mcpServers": {
@@ -454,6 +494,7 @@ Claude Skills 是可复用的工作流定义，教会Claude如何执行特定任
 #### 按类别推荐
 
 **开发工具类**
+
 - **mcp-builder** - 创建高质量MCP服务器
 - **frontend-design** - 构建生产级前端界面
 - **web-artifacts-builder** - React/Tailwind多组件制作
@@ -461,6 +502,7 @@ Claude Skills 是可复用的工作流定义，教会Claude如何执行特定任
 - **postgresql** - PostgreSQL数据库操作
 
 **文档处理类**
+
 - **docx** - Word文档创建/编辑
 - **pdf** - PDF文本提取、合并
 - **pptx** - 幻灯片制作
@@ -468,12 +510,14 @@ Claude Skills 是可复用的工作流定义，教会Claude如何执行特定任
 - **doc-coauthoring** - 文档共创流程
 
 **研究与分析类**
+
 - **research-lookup** - 当前信息查询
 - **scientific-writing** - 学术论文写作
 - **market-research** - 市场竞争分析
 - **content-research-writer** - 带引用的内容创作
 
 **创意内容类**
+
 - **canvas-design** - 海报设计
 - **theme-factory** - 主题应用
 - **slack-gif-creator** - Slack GIF动画
@@ -498,18 +542,23 @@ Claude Skills 是可复用的工作流定义，教会Claude如何执行特定任
 包含78个Composio应用自动化Skills：
 
 **CRM & 销售**
+
 - HubSpot/Salesforce/Pipedrive/Zoho automation
 
 **项目管理**
+
 - Asana/Jira/Linear/Notion/Todoist/Trello
 
 **沟通协作**
+
 - Slack/Gmail/Microsoft Teams/Discord
 
 **DevOps & 代码**
+
 - GitHub/GitLab/CircleCI/Datadog/Sentry
 
 **工作流自动化**
+
 - Make/n8n/Zapier集成
 
 ### 4.3 安装与使用Skills
@@ -585,6 +634,7 @@ keywords: ["keyword1", "keyword2"]
 ```
 
 安装自定义skill：
+
 ```bash
 cp -r my-skill ~/.claude/skills/
 ```
@@ -610,6 +660,7 @@ rm -rf ~/.claude/skills/skill-name  # 保留最常用的版本
 ```
 
 推荐安装顺序：
+
 1. **第一层** - everything-claude-code（最全、最新）
 2. **第二层** - Composer HQ awesome-claude-skills（补充）
 3. **第三层** - 官方skills（必要时）
@@ -623,6 +674,7 @@ MCP 是一个开放标准，让AI模型可以访问外部工具和数据源。
 ### 5.1 MCP核心概念
 
 **关键概念**
+
 - **Servers** - 暴露tools/resources的服务
 - **Tools** - Claude可以调用的可执行操作
 - **Resources** - 外部数据源（文件、API、数据库）
@@ -745,6 +797,7 @@ server.start();
 ```
 
 注册到Claude Code：
+
 ```json
 {
   "mcpServers": {
@@ -764,6 +817,7 @@ server.start();
 ### 6.1 什么是Agents
 
 Agents 是具有特定角色和专业领域的子AI助手。每个Agent有：
+
 - **专业知识** - 特定领域的instructions
 - **工具集** - 可用的工具/能力
 - **上下文** - 保存的状态和记忆
@@ -1026,9 +1080,10 @@ git commit -m "docs: Update API documentation"
 ```
 
 成本对比：
+
 - Opus全职 = 基准成本
 - Sonnet全职 = 基准成本的40%
-- 上述配置 = 基准成本的13% (40% * 深度思考降低 * 子agent降低)
+- 上述配置 = 基准成本的13% (40% *深度思考降低* 子agent降低)
 
 ### 8.2 上下文管理技巧
 
@@ -1097,6 +1152,7 @@ git commit -m "docs: Update API documentation"
 ### 常见问题
 
 **问题1：API连接失败**
+
 ```bash
 # 验证API Key
 $env:ANTHROPIC_API_KEY  # Windows PowerShell
@@ -1110,6 +1166,7 @@ ping api.anthropic.com
 ```
 
 **问题2：Plugin无法加载**
+
 ```bash
 # 清除插件缓存
 rm -rf ~/.claude/plugins-cache
@@ -1122,6 +1179,7 @@ claude
 ```
 
 **问题3：MCP服务器连接超时**
+
 ```json
 // 增加超时时间
 {
@@ -1140,6 +1198,7 @@ claude
 ```
 
 **问题4：Token限额超出**
+
 ```bash
 # 查看成本
 /cost
@@ -1162,16 +1221,19 @@ claude
 ### 核心要点回顾
 
 ✅ **三步启动**
+
 1. 安装Node.js和Claude Code
 2. 配置大模型API (智谱GLM-5推荐)
 3. 安装Everything Claude Code插件
 
 ✅ **三层能力扩展**
+
 1. **Skills** - 工作流模板库
 2. **MCP** - 外部工具集成
 3. **Agents** - 专业协作伙伴
 
 ✅ **三个必装插件包**
+
 1. everything-claude-code (通用最强)
 2. awesome-claude-skills (补充)
 3. 行业特定skills (按需)
@@ -1181,20 +1243,24 @@ claude
 ### 推荐资源
 
 **官方文档**
+
 - [Claude Code官方文档](https://code.claude.com/docs/zh-CN/) - 各语言详细指南
 - [Anthropic API文档](https://docs.anthropic.com/) - API参考
 
 **社区资源**
+
 - [Everything Claude Code](https://github.com/affaan-m/everything-claude-code) - 最全插件包
 - [Awesome Claude Skills](https://github.com/ComposioHQ/awesome-claude-skills) - 社区skills合集
 - [Claude Skills市场](https://www.claudeskill.site/zh/skills) - 209个官方skills
 
 **学习资源**
+
 - [Shorthand Guide](https://github.com/affaan-m/everything-claude-code/blob/main/the-shorthand-guide.md) - 快速入门指南
 - [Longform Guide](https://github.com/affaan-m/everything-claude-code/blob/main/the-longform-guide.md) - 深度进阶指南
 - [Security Guide](https://github.com/affaan-m/everything-claude-code/blob/main/the-security-guide.md) - 安全最佳实践
 
 **国内大模型**
+
 - [智谱GLM-5](https://open.bigmodel.cn) - 国内最强开源模型
 - [阿里Qwen](https://dashscope.aliyuncs.com) - 通义千问系列
 - [百度文心一言](https://console.bce.baidu.com/qianfan/ais) - 文心一言API
