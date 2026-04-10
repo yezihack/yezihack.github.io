@@ -380,19 +380,19 @@ npm install
 
 ```bash
 # 规划与设计
-/plan "Add user authentication"
+/plan "Add user authentication" # 需求分析-> 风险评估-> 制作实现计划 
 /architect "Design database schema"
 
 # 开发流程
-/tdd "Design test cases"
-/code-review "Review my implementation"
-/build-fix "Fix compilation errors"
+/tdd "Design test cases" # 强制 TDD 流程： 先写测试-》再实现-》验证覆盖率 > 80%
+/code-review "Review my implementation" # 安全扫描、质量审查
+/build-fix "Fix compilation errors" # 修复编译错误
 /e2e "Generate Playwright tests"
 
 # 学习与优化
 /learn "Extract patterns from session"
 /learn-eval "Evaluate patterns"
-/verify "Run verification loop"
+/verify "Run verification loop" # 全面验证整个代码库， 包括：构建，测试，安全
 
 # 多模型编排
 /multi-plan "Decompose complex task"
@@ -402,7 +402,7 @@ npm install
 
 # 工具集成
 /setup-pm "Configure package manager"
-/skill-create "Generate skills from git"
+/skill-create "Generate skills from git" # 分析你的 git 历史，自动提取编程模式并生成 SKILL.md
 /pm2 "Manage services with PM2"
 
 # 持续学习
