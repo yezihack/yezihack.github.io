@@ -3,8 +3,8 @@ title: "告别插件！VS Code 原生实现 Ctrl+V 粘贴图片并自定义存�
 date: 2026-04-10T15:08:33+08:00
 lastmod: 2026-04-10T15:08:33+08:00
 draft: false
-tags: [""]
-categories: [""]
+tags: ["vscode"]
+categories: ["vscode"]
 author: "百里"
 comment: false
 toc: true
