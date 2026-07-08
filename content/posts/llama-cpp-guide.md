@@ -108,7 +108,6 @@ llama-server `
   --alias claude-mythos-5-1m `
   -m F:\ai\llama.cpp\models\Qwythos-9B-Claude-Mythos-5-1M-Q4_K_M.gguf `
   --mmproj F:\ai\llama.cpp\models\mmproj-Qwythos-9B-Claude-Mythos-5-1M-F16.gguf `
-  --alias claude-mythos-5-1m `
   -c 32768 --host 127.0.0.1 --port 8080
 
 # 更复杂的配置
