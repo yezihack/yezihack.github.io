@@ -13,7 +13,7 @@ reward: true
 
 ## 1. 什么是 llama.cpp
 
-llama.cpp 是一个用 C/C++ 从零实现的 LLM 推理引擎，最初由 Georgi Gerganov 为了在 MacBook 上跑 LLaMA 而写，现在已经发展成支持几乎所有主流开源模型架构的通用推理框架。核心特点是**零依赖、极致优化、跨平台**——CPU、CUDA、Metal、Vulkan、ROCm 都能跑，甚至能在树莓派上跑。
+始于2023年的llama.cpp 是一个用 C/C++ 从零实现的 LLM 推理引擎，最初由 Georgi Gerganov 为了在 MacBook 上跑 LLaMA 而写，现在已经发展成支持几乎所有主流开源模型架构的通用推理框架。核心特点是**零依赖、极致优化、跨平台**——CPU、CUDA、Metal、Vulkan、ROCm 都能跑，甚至能在树莓派上跑。
 
 核心组件:
 
@@ -23,6 +23,16 @@ llama.cpp 是一个用 C/C++ 从零实现的 LLM 推理引擎，最初由 Georgi
 4. llama-cli / llama-bench:命令行推理和性能测试工具
 
 ## 2. 安装 llama.cpp
+
+### 2.1. 一键安装
+
+- <https://llama.app/>
+
+打开命令行，输入：`irm https://llama.app/install.ps1 | iex`
+
+打开命令行方式：Win+ R，输入：powershell 或 wt
+
+### 2.2. 手动安装
 
 打开：<https://github.com/ggml-org/llama.cpp/releases> 下载最新的推理工具
 
@@ -72,10 +82,13 @@ window 方法：
 # 国内加速
 # linux & mac
 export HF_ENDPOINT=https://hf-mirror.com
+mkdir -p /data/ai
+export LLAMA_CACHE = "/data/ai"
 llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 
 # windows
 $env:HF_ENDPOINT = "https://hf-mirror.com"
+$env:LLAMA_CACHE = "F:\ai\models_cache"
 llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 ## 以上会下载在`C盘用户名\.cache\huggingface\hub\models--empero-ai--Qwythos-9B-Claude-Mythos-5-1M-GGUF`目录下
 ## 由于模型文件很大、占用C盘空间、建议采用设置环境变量方式指定下载目录
@@ -86,14 +99,43 @@ llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 1. <https://huggingface.co/empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF/resolve/main/Qwythos-9B-Claude-Mythos-5-1M-MTP-Q4_K_M.gguf?download=true>
 2. <https://huggingface.co/empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF/resolve/main/mmproj-Qwythos-9B-Claude-Mythos-5-1M-F16.gguf?download=true>
 
-模型保存目录为：`F:\ai\llama.cpp\models`
+模型保存目录为：`F:\ai\models`
 
-## 4. 推理
+## 4. 压力测试
+
+```sh
+llama-bench -m Qwythos-9B-Claude-Mythos-5-1M-MTP-Q4_K_M.gguf
+
+# 或
+
+$env:LLAMA_CACHE = "F:\ai\models_cache"
+llama-bench -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
+```
+
+![20260707163242](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260707163242.png)
+
+| 字段    | 解释                                                                 |
+| ------- | -------------------------------------------------------------------- |
+| model   | 模型名称，这里是 9B 量化 Q4_K_M                                      |
+| size    | 模型加载占用显存 / 内存：5.23GiB                                     |
+| params  | 模型参数量：89.5 亿参数（9B）                                        |
+| backend | 计算后端 CUDA = 显卡跑，CPU = 纯 CPU                                 |
+| ngl     | GPU 分层层数，-1 = 全部层丢显卡（全卡加速）                          |
+| test    | 两种测试项目：<br>pp512：Prefill 预填充，输入 512token<br>tg128：Token Generate 生成，输出 128token |
+| t/s     | token per second，每秒处理 token 数，± 后面是波动误差                |
+
+怎么判断性能好坏（参考标准）：
+
+1. ＜20 t/s：很慢，大概率 CPU 跑 / 显存不足分层不够
+2. 30～50 t/s：中端游戏卡正常区间（你的 46 属于优秀）
+3. ＞60 t/s：高端卡（4090/5090）
+
+## 5. 推理
 
 ```sh
 # 使用在线方式
-$env:LLAMA_CACHE = "F:\ai\llama.cpp\models_cache"
-llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M --alias claude-mythos-5-1m --port 8080
+$env:LLAMA_CACHE = "F:\ai\models_cache"
+llama-serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M --alias claude-mythos-5-1m --port 8080
 
 # linux & mac 手动下载文件、指定文件启动模型
 llama-server \
@@ -151,26 +193,6 @@ llama-server `
 - `--api-key`：API 密钥
 - `--port` ：端口
 
-## 5. 压力测试
-
-![20260707163242](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260707163242.png)
-
-| 字段    | 解释                                                                 |
-| ------- | -------------------------------------------------------------------- |
-| model   | 模型名称，这里是 9B 量化 Q4_K_M                                      |
-| size    | 模型加载占用显存 / 内存：5.23GiB                                     |
-| params  | 模型参数量：89.5 亿参数（9B）                                        |
-| backend | 计算后端 CUDA = 显卡跑，CPU = 纯 CPU                                 |
-| ngl     | GPU 分层层数，-1 = 全部层丢显卡（全卡加速）                          |
-| test    | 两种测试项目：<br>pp512：Prefill 预填充，输入 512token<br>tg128：Token Generate 生成，输出 128token |
-| t/s     | token per second，每秒处理 token 数，± 后面是波动误差                |
-
-怎么判断性能好坏（参考标准）：
-
-1. ＜20 t/s：很慢，大概率 CPU 跑 / 显存不足分层不够
-2. 30～50 t/s：中端游戏卡正常区间（你的 46 属于优秀）
-3. ＞60 t/s：高端卡（4090/5090）
-
 ## 6. 工具选择
 
 - <https://openrouter.ai/apps>
@@ -187,11 +209,16 @@ llama-server `
 2. linux & mac : `curl -fsSL https://pi.dev/install.sh | sh`
 
 ```sh
+# 插件
+pi install git:github.com/huggingface/pi-llama
+
 # 进入Viber Coding状态
 pi 
 # 查看当前模型
 /model
 ```
+
+- 注意这条命令 `pi install git:github.com/huggingface/pi-llama` 需要本机安装 git，没有则先安装 git <https://git-scm.com/install/windows>
 
 ## 8. Claude Code
 
@@ -199,53 +226,19 @@ pi
 - 安装：`npm install -g @anthropic-ai/claude-code`
 - 安装路由工具ccr: `npm install -g @musistudio/claude-code-router`
 
-claude settings.json 配置：
-
-```json
-{
-  "env": {
-    "ANTHROPIC_BASE_URL": "http://127.0.0.1:3456",
-    "ANTHROPIC_AUTH_TOKEN": "sk-xxxxxx",
-    "ANTHROPIC_MODEL": "claude-mythos-5-1m"
-  },
-  "model": "claude-mythos-5-1m"
-}
-```
-
-ccr settings.json 配置：
-
-```json
-{
-  "PORT": 3456,
-  "LOG": true,
-  "Providers": [
-    {
-      "name": "claude",
-      "api_base_url": "http://localhost:8080/v1/chat/completions",
-      "api_key": "sk-xxxxxx",
-      "models": ["claude-mythos-5-1m"],
-      "transformer": { "use": ["openai"] }
-    }
-  ],
-  "Router": {
-    "default": "claude,claude-mythos-5-1m"
-  }
-}
-```
-
 ```sh
-# 重启 ccr
-ccr restart
+# 安装 claude code cli
+npm install -g @anthropic-ai/claude-code
 
-# 查看ccr状态
-ccr status
+# 安装路由工具
+npm install -g @musistudio/claude-code-router
 
-# 第一种方式
-ccr code
-
-# 第二种方式
-claude
+# 进入UI, 接入  Agent 配置
+ccr start
+ccr ui
 ```
+
+![20260715191710](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260715191710.png)
 
 ## 9. 接入 Cherry Studio
 
@@ -255,6 +248,6 @@ claude
 
 ## 10. 接入 Vscode
 
-- 添加自定义模型
+- 先登陆 vscode，然后再添加自定义模型
 
 ![20260707135544](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260707135544.png)
