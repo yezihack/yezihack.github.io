@@ -52,6 +52,8 @@ reward: true
 1. `llama-b9860-bin-win-cuda-12.4-x64.zip` 解压后加入环境变量中
 2. `cudart-llama-bin-win-cuda-12.4-x64.zip` 解压后放在 `llama-b9860-bin-win-cuda-12.4-x64.zip` 解压后的目录中
 
+建议：存储在 `D:\llama` 目录中
+
 linux & mac 方法：
 
 ```bash
@@ -82,13 +84,13 @@ window 方法：
 # 国内加速
 # linux & mac
 export HF_ENDPOINT=https://hf-mirror.com
-mkdir -p /data/ai
-export LLAMA_CACHE = "/data/ai"
+mkdir -p /data/llama
+export LLAMA_CACHE = "/data/llama"
 llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 
 # windows
 $env:HF_ENDPOINT = "https://hf-mirror.com"
-$env:LLAMA_CACHE = "F:\ai\models_cache"
+$env:LLAMA_CACHE = "D:\llama\models_cache"
 llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 ## 以上会下载在`C盘用户名\.cache\huggingface\hub\models--empero-ai--Qwythos-9B-Claude-Mythos-5-1M-GGUF`目录下
 ## 由于模型文件很大、占用C盘空间、建议采用设置环境变量方式指定下载目录
@@ -99,7 +101,7 @@ llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 1. <https://huggingface.co/empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF/resolve/main/Qwythos-9B-Claude-Mythos-5-1M-MTP-Q4_K_M.gguf?download=true>
 2. <https://huggingface.co/empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF/resolve/main/mmproj-Qwythos-9B-Claude-Mythos-5-1M-F16.gguf?download=true>
 
-模型保存目录为：`F:\ai\models`
+模型保存目录为：`D:\llama\models`
 
 ## 4. 压力测试
 
@@ -108,7 +110,7 @@ llama-bench -m Qwythos-9B-Claude-Mythos-5-1M-MTP-Q4_K_M.gguf
 
 # 或
 
-$env:LLAMA_CACHE = "F:\ai\models_cache"
+$env:LLAMA_CACHE = "D:\llama\models_cache"
 llama-bench -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 ```
 
@@ -134,7 +136,7 @@ llama-bench -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 
 ```sh
 # 使用在线方式
-$env:LLAMA_CACHE = "F:\ai\models_cache"
+$env:LLAMA_CACHE = "D:\llama\models_cache"
 llama-serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M --alias claude-mythos-5-1m --port 8080
 
 # linux & mac 手动下载文件、指定文件启动模型
@@ -248,6 +250,7 @@ ccr ui
 
 ## 10. 接入 Vscode
 
+- 下载：<https://code.visualstudio.com/download>
 - 先登陆 vscode，然后再添加自定义模型
 
 ![20260707135544](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260707135544.png)
