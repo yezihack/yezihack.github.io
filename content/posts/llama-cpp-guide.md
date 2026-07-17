@@ -199,7 +199,23 @@ llama-server `
 
 - <https://openrouter.ai/apps>
 
-## 7. 接入 Pi
+## 7. 安装 nodejs
+
+- 安装 npm: <https://nodejs.org/en/download> 建议下带`LTS`版本
+
+```sh
+# 验证版本
+node -v
+npm -v
+
+# 设置加速源
+npm config set registry https://registry.npmmirror.com
+
+# 验证是否生效
+npm config get registry
+```
+
+## 8. 接入 Pi
 
 > 也是 llama.app 官方推荐的接入方式 <https://llama.app/>
 
@@ -207,26 +223,26 @@ llama-server `
 
 安装 pi 工具：
 
-1. windows : `powershell -c "irm https://pi.dev/install.ps1 | iex"`
-2. linux & mac : `curl -fsSL https://pi.dev/install.sh | sh`
+```sh
+npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+```
+
+- 使用 PI
 
 ```sh
-# 插件
+# llama 自动发现插件
 pi install git:github.com/huggingface/pi-llama
 
 # 进入Viber Coding状态
-pi 
+pi
+
 # 查看当前模型
 /model
 ```
 
 - 注意这条命令 `pi install git:github.com/huggingface/pi-llama` 需要本机安装 git，没有则先安装 git <https://git-scm.com/install/windows>
 
-## 8. Claude Code
-
-- 安装 npm: <https://nodejs.org/en/download> 建议下带`LTS`版本
-- 安装：`npm install -g @anthropic-ai/claude-code`
-- 安装路由工具ccr: `npm install -g @musistudio/claude-code-router`
+## 9. Claude Code
 
 ```sh
 # 安装 claude code cli
@@ -242,13 +258,13 @@ ccr ui
 
 ![20260715191710](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260715191710.png)
 
-## 9. 接入 Cherry Studio
+## 10. 接入 Cherry Studio
 
 - 下载 <https://cherryai.com.cn/>
 
 ![20260707102017](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260707102017.png)
 
-## 10. 接入 Vscode
+## 11. 接入 Vscode
 
 - 下载：<https://code.visualstudio.com/download>
 - 先登陆 vscode，然后再添加自定义模型
