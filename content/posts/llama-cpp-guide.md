@@ -103,6 +103,24 @@ llama serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 
 模型保存目录为：`D:\llama\models`
 
+如何选择模型大小：
+
+> 显存需求 = 模型文件大小 + KV Cache/上下文占用 + 系统预留(1-2GB)
+> 换算公式：显卡显存 ≥ 模型文件大小 × 1.2~1.3
+
+| 文件 | 模型体积 | 加上4-8K上下文预留 | 建议最低显存 | 对应显卡举例 |
+|---|---|---|---|---|
+| Q4_K_M | 5.6-5.9GB | +1.5GB左右 | **8GB** | RTX 3060 12GB / 4060 8GB |
+| Q5_K_M | 6.5-6.7GB | +1.5GB左右 | **10GB** | RTX 3080 10GB / 4060 Ti 16GB |
+| Q6_K | 7.4-7.6GB | +2GB左右 | **10-12GB** | RTX 3060 12GB / 4070 12GB |
+| Q8_0 | 9.5-9.8GB | +2-3GB左右 | **12-16GB** | RTX 4060 Ti 16GB / 4070 Ti Super 16GB |
+| BF16(全精度) | 17.9-18.4GB | +3-4GB左右 | **20GB+** | RTX 4090 24GB / A5000 24GB(单卡装不进普通消费卡) |
+
+MTP 与 普通的区别：
+
+- 普通模型：支持单token预测，上下文长度有限，推理速度较快，显存占用较低。
+- MTP模型：支持多token预测，可以支持更长的上下文长度，但推理速度会变慢，显存占用会变高。（必须 llama.cpp 支持才行，运行时额外新增参数：`--spec-type draft-mtp`）
+
 ## 4. 压力测试
 
 ```sh
@@ -137,7 +155,7 @@ llama-bench -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M
 ```sh
 # 使用在线方式
 $env:LLAMA_CACHE = "D:\llama\models_cache"
-llama-serve -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M --alias claude-mythos-5-1m --port 8080
+llama-server -hf empero-ai/Qwythos-9B-Claude-Mythos-5-1M-GGUF:Q4_K_M --alias claude-mythos-5-1m --port 8080
 
 # linux & mac 手动下载文件、指定文件启动模型
 llama-server \
