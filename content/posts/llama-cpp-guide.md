@@ -13,6 +13,8 @@ reward: true
 
 ## 1. 什么是 llama.cpp
 
+- <https://github.com/ggml-org/llama.cpp>
+
 始于2023年的llama.cpp 是一个用 C/C++ 从零实现的 LLM 推理引擎，最初由 Georgi Gerganov 为了在 MacBook 上跑 LLaMA 而写，现在已经发展成支持几乎所有主流开源模型架构的通用推理框架。核心特点是**零依赖、极致优化、跨平台**——CPU、CUDA、Metal、Vulkan、ROCm 都能跑，甚至能在树莓派上跑。
 
 核心组件:
@@ -20,7 +22,7 @@ reward: true
 1. llama.cpp 本体:推理引擎和 C API
 2. llama-server:内置的 HTTP server,提供 OpenAI 兼容和原生 API
 3. 量化格式 GGUF:自家的模型格式,支持 Q4_K_M、IQ2_M、IQ3_XXS 这些你已经在用的量化方案
-4. llama-cli / llama-bench:命令行推理和性能测试工具
+4. 提供丰富的工具：llama / llama-serve / llama-cli / llama-bench 命令行推理和性能测试工具
 
 ## 2. 安装 llama.cpp
 
@@ -44,13 +46,13 @@ reward: true
 
 ![20260703160945](https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260703160945.png)
 
-2. 我的操作系统是：Windows 10 64位
+1. 我的操作系统是：Windows  64位
 
-- 下载：<https://github.com/ggml-org/llama.cpp/releases/download/b9860/llama-b9860-bin-win-cuda-12.4-x64.zip>
-- 加速库：<https://github.com/ggml-org/llama.cpp/releases/download/b9860/cudart-llama-bin-win-cuda-12.4-x64.zip>
+- 下载：<https://github.com/ggml-org/llama.cpp/releases/download/b10082/llama-b10082-bin-win-cuda-12.4-x64.zip>
+- 加速库：<https://github.com/ggml-org/llama.cpp/releases/download/b10082/cudart-llama-bin-win-cuda-12.4-x64.zip>
 
-1. `llama-b9860-bin-win-cuda-12.4-x64.zip` 解压后加入环境变量中
-2. `cudart-llama-bin-win-cuda-12.4-x64.zip` 解压后放在 `llama-b9860-bin-win-cuda-12.4-x64.zip` 解压后的目录中
+1. `llama-b10082-bin-win-cuda-12.4-x64.zip` 解压后加入环境变量中
+2. `cudart-llama-bin-win-cuda-12.4-x64.zip` 解压后放在 `llama-b10082-bin-win-cuda-12.4-x64.zip` 解压后的目录中
 
 建议：存储在 `D:\llama` 目录中
 
@@ -58,7 +60,7 @@ linux & mac 方法：
 
 ```bash
 vim ~/.bashrc
-export PATH=$PATH:/path/to/llama-b9860-bin-linux-cuda-12.4-x64
+export PATH=$PATH:/path/to/llama-b10082-bin-linux-cuda-12.4-x64
 ```
 
 window 方法：
