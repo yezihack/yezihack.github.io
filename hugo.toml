@@ -4,9 +4,13 @@ title = "空树之空"
 theme = "kong-htop"
 paginate = 10
 pluralizelisttitles = false
+enableRobotsTXT = true
 
 [Author]
 name = "百里江山"
+
+[permalinks]
+  posts = "/:filename/"     # 或者使用 :slug 或 :title
 
 [params]
     # title = "空树之空"
@@ -33,15 +37,16 @@ name = "百里江山"
     ]
     # {Name = "Posts", URL = "/posts/", Pre = "Recent", HasChildren = true, Limit = 5},
 
-    # github_url = "https://github.com/yezihack"
+    github_url = "https://github.com/yezihack"
     # linkedin_url = "https://linkedin.com"
     # twitter_url = "https://twitter.com"
     # discord_url = "https://discord.com"
-    # youtube_url = "https://youtube.com"
+    youtube_url = "https://youtube.com/@bailicode"
     # email_url = "mailto://freeit@126.com"
 
     # Adds an RSS icon to the end of the socials which links to {{ .Site.BaseURL }}/index.xml
     rss_icon = true
+    # xmpp_url = true
     # Which section the RSS icon links to, defaults to all content. See https://gohugo.io/templates/rss/#section-rss
     rss_section = "posts"
 

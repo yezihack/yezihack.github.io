@@ -9,6 +9,9 @@ author: "百里"
 comment: false
 toc: true
 reward: true
+aliases:
+  - /posts/llama-cpp-guide
+  - /posts/llama-cpp-guide/
 ---
 
 ## 1. 什么是 llama.cpp
