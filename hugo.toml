@@ -29,6 +29,8 @@ name = "百里江山"
     dark_mode = true
     mainSections = ["posts"]
 
+    uglyURLs = true
+
     menu = [
         {Name = "Posts", URL = "/posts/", HasChildren = false},
         {Name = "Categories", URL = "/categories/", HasChildren = false},
