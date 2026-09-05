@@ -1,0 +1,394 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Kubernetes 集群 DNS 解析与网络问题排查完整指南</title><meta property="og:title" content="百里觅码 - Kubernetes 集群 DNS 解析与网络问题排查完整指南"><meta name=twitter:title content="百里觅码 - Kubernetes 集群 DNS 解析与网络问题排查完整指南"><meta itemprop=name content="百里觅码 - Kubernetes 集群 DNS 解析与网络问题排查完整指南"><meta name=application-name content="百里觅码 - Kubernetes 集群 DNS 解析与网络问题排查完整指南"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/k8s-dns-diagnosis/><link rel=canonical href=https://yezihack.github.io/k8s-dns-diagnosis/ itemprop=url><meta name=url content="https://yezihack.github.io/k8s-dns-diagnosis/"><meta name=twitter:url content="https://yezihack.github.io/k8s-dns-diagnosis/"><meta property="og:url" content="https://yezihack.github.io/k8s-dns-diagnosis/"><meta property="og:updated_time" content="28010-28-07T1010:51:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="28010-28-07T1010:51:25+0800"><meta property="article:published_time" content="28010-28-07T1010:51:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Kubernetes 集群 DNS 解析与网络问题排查完整指南","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-10-28","description":"","wordCount":"1493","mainEntityOfPage":"True","dateModified":"2025-10-28","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/k8s-dns-diagnosis/>Kubernetes 集群 DNS 解析与网络问题排查完整指南</a></h1><time datetime=2025-10-28T19:10:51+0800 class=post-date>October 28, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>1493</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>8 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-k8s><a href=https://yezihack.github.io/tags/k8s>k8s</a></li><li class=tag-network><a href=https://yezihack.github.io/tags/network>network</a></li><li class=tag-kubernetes><a href=https://yezihack.github.io/tags/kubernetes>kubernetes</a></li><li class=tag-flannel><a href=https://yezihack.github.io/tags/flannel>flannel</a></li></ul></div><h2 id=文章概述>文章概述</h2><p>本文记录了一次完整的 Kubernetes 集群网络问题排查过程，从容器内 DNS 解析失败，到发现 RBAC 权限缺失，再到解决跨节点 Pod 网络不通的完整历程。适用于 Kubernetes 1.29 版本，使用 Flannel 作为 CNI 插件。</p><h2 id=目录>目录</h2><ul><li><a href=#%e9%97%ae%e9%a2%98%e7%8e%b0%e8%b1%a1>问题现象</a></li><li><a href=#%e6%8e%92%e6%9f%a5%e6%80%9d%e8%b7%af>排查思路</a></li><li><a href=#%e9%97%ae%e9%a2%98%e4%b8%80kube-proxy-rbac-%e6%9d%83%e9%99%90%e7%bc%ba%e5%a4%b1>问题一：kube-proxy RBAC 权限缺失</a></li><li><a href=#%e9%97%ae%e9%a2%98%e4%ba%8cflannel-rbac-%e6%9d%83%e9%99%90%e7%bc%ba%e5%a4%b1>问题二：flannel RBAC 权限缺失</a></li><li><a href=#%e9%97%ae%e9%a2%98%e4%b8%89%e5%8f%8c-pod-cidr-%e5%85%b1%e5%ad%98%e5%af%bc%e8%87%b4%e8%b7%af%e7%94%b1%e9%97%ae%e9%a2%98>问题三：双 Pod CIDR 共存导致路由问题</a></li><li><a href=#%e6%95%85%e9%9a%9c%e6%80%bb%e7%bb%93%e4%b8%8e%e9%a2%84%e9%98%b2>故障总结与预防</a></li><li><a href=#dns-%e9%97%ae%e9%a2%98%e6%8e%92%e6%9f%a5%e9%80%9a%e7%94%a8%e6%96%b9%e6%b3%95%e8%ae%ba>DNS 问题排查通用方法论</a></li></ul><hr><h2 id=问题现象>问题现象</h2><h3 id=环境信息>环境信息</h3><ul><li><strong>Kubernetes 版本</strong>: 1.29</li><li><strong>网络插件</strong>: Flannel (VXLAN 模式)</li><li><strong>集群规模</strong>: 5 节点（3 master + 2 GPU worker）</li><li><strong>故障时间</strong>: 已运行 n 天后突然出现</li></ul><h3 id=初始症状>初始症状</h3><p>容器内无法进行 DNS 解析和服务访问：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 在容器内测试</span>
+</span></span><span style=display:flex><span>$ ping coredns.kube-system
+</span></span><span style=display:flex><span>ping: bad address <span style=color:#e6db74>&#39;coredns.kube-system&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>$ nc -zv coredns.kube-system <span style=color:#ae81ff>53</span>
+</span></span><span style=display:flex><span>nc: bad address <span style=color:#e6db74>&#39;coredns.kube-system&#39;</span>
+</span></span></code></pre></div><p>CoreDNS Service 信息正常：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ kubectl get svc -n kube-system coredns
+</span></span><span style=display:flex><span>NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT<span style=color:#f92672>(</span>S<span style=color:#f92672>)</span>                  AGE
+</span></span><span style=display:flex><span>coredns   ClusterIP   10.233.0.3     &lt;none&gt;        53/UDP,53/TCP,9153/TCP   94d
+</span></span></code></pre></div><hr><h2 id=排查思路>排查思路</h2><p>遇到 DNS 问题时，应该按照以下层次进行排查：</p><pre tabindex=0><code>应用层问题（DNS 解析）
+    ↓
+服务层问题（Service 无法访问）
+    ↓
+网络层问题（Pod 间网络不通）
+    ↓
+组件层问题（kube-proxy、CNI）
+    ↓
+权限层问题（RBAC）
+    ↓
+配置层问题（网络配置冲突）
+</code></pre><hr><h2 id=问题一kube-proxy-rbac-权限缺失>问题一：kube-proxy RBAC 权限缺失</h2><h3 id=发现过程>发现过程</h3><p>查看 kube-proxy 日志时发现大量权限错误：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ kubectl logs -n kube-system kube-proxy-xxxxx --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>50</span>
+</span></span></code></pre></div><p><strong>关键错误信息</strong>：</p><pre tabindex=0><code>User &#34;system:serviceaccount:kube-system:kube-proxy&#34; cannot list resource &#34;services&#34;
+User &#34;system:serviceaccount:kube-system:kube-proxy&#34; cannot list resource &#34;nodes&#34;
+User &#34;system:serviceaccount:kube-system:kube-proxy&#34; cannot list resource &#34;endpointslices&#34;
+RBAC: [clusterrole.rbac.authorization.k8s.io &#34;system:node-proxier&#34; not found, ...]
+</code></pre><h3 id=根因分析>根因分析</h3><p>kube-proxy 需要通过 <code>system:node-proxier</code> ClusterRole 来：</p><ol><li>监听 Services 资源变化</li><li>监听 Endpoints/EndpointSlices 资源变化</li><li>监听 Nodes 资源变化</li><li>创建 events 事件</li></ol><p>缺少权限导致：</p><ul><li>无法建立 iptables/ipvs 规则</li><li>Service 网络完全失效</li><li>DNS Service 无法访问</li></ul><h3 id=解决方案>解决方案</h3><p>创建完整的 kube-proxy RBAC 配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># kube-proxy-rbac.yaml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:node-proxier</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>rules</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>endpoints</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>services</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>nodes</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>get</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>list</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>watch</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>discovery.k8s.io</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>endpointslices</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>get</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>list</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>watch</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>events</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>create</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>patch</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>update</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>events.k8s.io</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>events</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>create</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>patch</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>update</span>
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:node-proxier</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>roleRef</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>system:node-proxier</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>subjects</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kube-proxy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+</span></span></code></pre></div><p>应用配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 应用 RBAC 配置</span>
+</span></span><span style=display:flex><span>kubectl apply -f kube-proxy-rbac.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 重启 kube-proxy pods</span>
+</span></span><span style=display:flex><span>kubectl delete pod -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 验证日志</span>
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span>
+</span></span></code></pre></div><h3 id=注意事项>注意事项</h3><p>⚠️ <strong>Kubernetes 1.19+ 的 events 权限</strong>：需要同时配置 <code>""</code> 和 <code>events.k8s.io</code> 两个 API group 的 events 资源权限，因为从 1.19 开始 events 资源迁移到了新的 API group。</p><hr><h2 id=问题二flannel-rbac-权限缺失>问题二：flannel RBAC 权限缺失</h2><h3 id=发现过程-1>发现过程</h3><p>修复 kube-proxy 后，发现部分节点的 Pod 网络仍然不通。查看 flannel 日志：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ kubectl logs -n kube-system -l app<span style=color:#f92672>=</span>flannel --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span>
+</span></span></code></pre></div><p><strong>关键错误信息</strong>：</p><pre tabindex=0><code>User &#34;system:serviceaccount:kube-system:flannel&#34; cannot list resource &#34;nodes&#34;
+RBAC: [clusterrole.rbac.authorization.k8s.io &#34;flannel&#34; not found, ...]
+Failed to watch *v1.Node: nodes is forbidden
+</code></pre><h3 id=根因分析-1>根因分析</h3><p>Flannel 需要：</p><ol><li>监听 Nodes 资源变化，获取每个节点的 Pod CIDR</li><li>动态建立 VXLAN 隧道到其他节点</li><li>更新节点状态（设置 node.status.network-unavailable）</li></ol><p>缺少权限导致：</p><ul><li>无法发现新节点或节点变化</li><li>无法建立跨节点的 VXLAN 路由</li><li>跨节点 Pod 网络不通</li></ul><h3 id=解决方案-1>解决方案</h3><p>创建 flannel RBAC 配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># flannel-rbac.yaml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>rules</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>pods</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>get</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>nodes</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>get</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>list</span>
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>watch</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>apiGroups</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>nodes/status</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>verbs</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>patch</span>
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRoleBinding</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>roleRef</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>apiGroup</span>: <span style=color:#ae81ff>rbac.authorization.k8s.io</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ClusterRole</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>subjects</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ServiceAccount</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>flannel</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+</span></span></code></pre></div><p>应用配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 应用 RBAC 配置</span>
+</span></span><span style=display:flex><span>kubectl apply -f flannel-rbac.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 重启 flannel pods</span>
+</span></span><span style=display:flex><span>kubectl delete pod -n kube-system -l app<span style=color:#f92672>=</span>flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 验证路由建立</span>
+</span></span><span style=display:flex><span>ip route | grep 10.233
+</span></span><span style=display:flex><span>bridge fdb show dev flannel.1
+</span></span></code></pre></div><hr><h2 id=问题三双-pod-cidr-共存导致路由问题>问题三：双 Pod CIDR 共存导致路由问题</h2><h3 id=发现过程-2>发现过程</h3><p>修复 RBAC 后，仍然存在部分节点间 Pod 无法通信。通过 tcpdump 抓包分析：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 在目标节点抓包</span>
+</span></span><span style=display:flex><span>$ tcpdump -i bond0 udp port <span style=color:#ae81ff>8472</span> -nn -vv
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 关键发现</span>
+</span></span><span style=display:flex><span>10.244.2.0 &gt; 10.233.67.18: ICMP echo request  <span style=color:#75715e># 请求来自旧 CIDR</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 但没有看到回复包</span>
+</span></span></code></pre></div><p>检查节点邻居表：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>$ ip neigh show dev flannel.1
+</span></span><span style=display:flex><span>10.244.0.0 lladdr xx:xx:xx:xx:xx:xx PERMANENT  <span style=color:#75715e># 旧 CIDR</span>
+</span></span><span style=display:flex><span>10.244.1.0 lladdr xx:xx:xx:xx:xx:xx PERMANENT
+</span></span><span style=display:flex><span>10.233.64.0 lladdr xx:xx:xx:xx:xx:xx PERMANENT  <span style=color:#75715e># 新 CIDR</span>
+</span></span><span style=display:flex><span>10.233.65.0 lladdr xx:xx:xx:xx:xx:xx PERMANENT
+</span></span></code></pre></div><h3 id=根因分析-2>根因分析</h3><p>集群中同时存在两套 Pod CIDR：</p><ul><li><strong>旧配置</strong>: <code>10.244.0.0/16</code></li><li><strong>新配置</strong>: <code>10.233.64.0/18</code></li></ul><p>导致的问题：</p><ol><li>部分节点使用旧 CIDR，部分使用新 CIDR</li><li>使用新 CIDR 的节点没有到旧 CIDR 的路由</li><li>ICMP 请求能到达，但回复包无法返回</li></ol><h3 id=诊断命令>诊断命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 检查所有节点的 Pod CIDR 分配</span>
+</span></span><span style=display:flex><span>kubectl get nodes -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{range .items[*]}{.metadata.name}{&#34;\t&#34;}{.spec.podCIDR}{&#34;\n&#34;}{end}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 查找使用旧 CIDR 的 Pod</span>
+</span></span><span style=display:flex><span>kubectl get pods --all-namespaces -o wide | grep <span style=color:#e6db74>&#34;10.244&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 检查节点网络接口</span>
+</span></span><span style=display:flex><span>ip addr show | grep -E <span style=color:#e6db74>&#34;10.244|10.233&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 检查 flannel 配置</span>
+</span></span><span style=display:flex><span>kubectl get cm -n kube-system kube-flannel-cfg -o yaml
+</span></span></code></pre></div><h3 id=解决方案-2>解决方案</h3><h4 id=方案-a统一到新-cidr推荐>方案 A：统一到新 CIDR（推荐）</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 在使用旧 CIDR 的节点上执行</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 备份路由</span>
+</span></span><span style=display:flex><span>ip route save &gt; /tmp/routes.backup
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除旧的 CNI 网桥（会自动重建）</span>
+</span></span><span style=display:flex><span>ip link set cni0 down
+</span></span><span style=display:flex><span>ip link delete cni0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 重启该节点的网络组件</span>
+</span></span><span style=display:flex><span>systemctl restart kubelet
+</span></span><span style=display:flex><span>kubectl delete pod -n kube-system -l app<span style=color:#f92672>=</span>flannel --field-selector spec.nodeName<span style=color:#f92672>=</span>&lt;node-name&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 验证 Pod 使用新 CIDR</span>
+</span></span><span style=display:flex><span>kubectl get pods -o wide --field-selector spec.nodeName<span style=color:#f92672>=</span>&lt;node-name&gt;
+</span></span></code></pre></div><h4 id=方案-b临时添加路由快速恢复>方案 B：临时添加路由（快速恢复）</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 在使用新 CIDR 的节点上，为每个旧 CIDR 添加路由</span>
+</span></span><span style=display:flex><span>ip route add 10.244.X.0/24 via 10.244.X.0 dev flannel.1 onlink
+</span></span></code></pre></div><h3 id=验证修复>验证修复</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 确认所有节点使用统一 CIDR</span>
+</span></span><span style=display:flex><span>kubectl get nodes -o custom-columns<span style=color:#f92672>=</span>NAME:.metadata.name,CIDR:.spec.podCIDR
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 确认没有旧 IP 的 Pod</span>
+</span></span><span style=display:flex><span>kubectl get pods --all-namespaces -o wide | grep <span style=color:#e6db74>&#34;10.244&#34;</span> <span style=color:#f92672>||</span> echo <span style=color:#e6db74>&#34;清理完成&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 测试跨节点连通性</span>
+</span></span><span style=display:flex><span>ping &lt;remote-pod-ip&gt;
+</span></span></code></pre></div><hr><h2 id=故障总结与预防>故障总结与预防</h2><h3 id=问题根源>问题根源</h3><p>本次故障是一个<strong>级联式问题</strong>：</p><pre tabindex=0><code>1. RBAC 配置丢失（可能原因：集群升级/误删除/初始化不完整）
+   ↓
+2. kube-proxy 无法工作 → Service 网络失效 → DNS 无法访问
+   ↓
+3. flannel 无法工作 → 无法建立跨节点路由 → Pod 网络不通
+   ↓
+4. 网络配置冲突（双 CIDR） → 部分路由缺失 → 连通性问题
+</code></pre><h3 id=为什么会丢失-rbac>为什么会丢失 RBAC</h3><p>可能的原因：</p><ol><li><strong>手动删除了系统 ClusterRole</strong>（最常见）</li><li><strong>集群升级过程中 RBAC 未正确迁移</strong></li><li><strong>使用了不完整的集群初始化配置</strong></li><li><strong>etcd 数据部分丢失或恢复不完整</strong></li></ol><h3 id=预防措施>预防措施</h3><h4 id=1-定期备份-rbac-配置>1. 定期备份 RBAC 配置</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 备份所有系统 ClusterRole</span>
+</span></span><span style=display:flex><span>kubectl get clusterrole -o yaml &gt; cluster-roles-backup.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 备份所有 ClusterRoleBinding</span>
+</span></span><span style=display:flex><span>kubectl get clusterrolebinding -o yaml &gt; cluster-rolebindings-backup.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 定期执行（加入 cron）</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>0</span> <span style=color:#ae81ff>2</span> * * * kubectl get clusterrole,clusterrolebinding -o yaml &gt; /backup/rbac-<span style=color:#66d9ef>$(</span>date +<span style=color:#ae81ff>\%</span>Y<span style=color:#ae81ff>\%</span>m<span style=color:#ae81ff>\%</span>d<span style=color:#66d9ef>)</span>.yaml
+</span></span></code></pre></div><h4 id=2-监控关键组件日志>2. 监控关键组件日志</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># Prometheus AlertManager 规则示例</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>groups</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>name</span>: <span style=color:#ae81ff>k8s-rbac</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>rules</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>KubeProxyRBACError</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>expr</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      sum(rate(container_log_errors{pod=~&#34;kube-proxy.*&#34;,error=~&#34;.*forbidden.*&#34;}[5m])) &gt; 0</span>      
+</span></span><span style=display:flex><span>    <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;kube-proxy RBAC 权限错误&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>FlannelRBACError</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>expr</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      sum(rate(container_log_errors{pod=~&#34;kube-flannel.*&#34;,error=~&#34;.*forbidden.*&#34;}[5m])) &gt; 0</span>      
+</span></span><span style=display:flex><span>    <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;flannel RBAC 权限错误&#34;</span>
+</span></span></code></pre></div><h4 id=3-健康检查脚本>3. 健康检查脚本</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e># check-k8s-rbac.sh</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;=== 检查关键 ClusterRole ===&#34;</span>
+</span></span><span style=display:flex><span>critical_roles<span style=color:#f92672>=(</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;system:node-proxier&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;flannel&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;system:kube-dns&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> role in <span style=color:#e6db74>&#34;</span><span style=color:#e6db74>${</span>critical_roles[@]<span style=color:#e6db74>}</span><span style=color:#e6db74>&#34;</span>; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> ! kubectl get clusterrole <span style=color:#e6db74>&#34;</span>$role<span style=color:#e6db74>&#34;</span> &amp;&gt;/dev/null; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;❌ ClusterRole </span>$role<span style=color:#e6db74> 不存在！&#34;</span>
+</span></span><span style=display:flex><span>        exit <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;✅ ClusterRole </span>$role<span style=color:#e6db74> 存在&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>done</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo -e <span style=color:#e6db74>&#34;\n=== 检查组件日志 ===&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> kubectl logs -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span> | grep -i <span style=color:#e6db74>&#34;forbidden&#34;</span> &amp;&gt;/dev/null; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;❌ kube-proxy 存在权限错误&#34;</span>
+</span></span><span style=display:flex><span>    exit <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> kubectl logs -n kube-system -l app<span style=color:#f92672>=</span>flannel --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span> | grep -i <span style=color:#e6db74>&#34;forbidden&#34;</span> &amp;&gt;/dev/null; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;❌ flannel 存在权限错误&#34;</span>
+</span></span><span style=display:flex><span>    exit <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;✅ 所有检查通过&#34;</span>
+</span></span></code></pre></div><h4 id=4-网络配置管理>4. 网络配置管理</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 确保 Pod CIDR 配置一致性</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在集群初始化前明确定义</span>
+</span></span><span style=display:flex><span>kubeadm init --pod-network-cidr<span style=color:#f92672>=</span>10.233.64.0/18
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 定期审计 Pod CIDR 分配</span>
+</span></span><span style=display:flex><span>kubectl get nodes -o custom-columns<span style=color:#f92672>=</span>NAME:.metadata.name,CIDR:.spec.podCIDR | sort -k2
+</span></span></code></pre></div><hr><h2 id=dns-问题排查通用方法论>DNS 问题排查通用方法论</h2><h3 id=快速诊断流程图>快速诊断流程图</h3><pre tabindex=0><code>DNS 解析失败
+    ↓
+┌─────────────────────────────┐
+│ 1. 测试 ClusterIP 直连      │
+│ nslookup kubernetes 10.233.0.3 │
+└─────────────────────────────┘
+         ↓ 成功              ↓ 失败
+    DNS 配置问题         Service 网络问题
+         ↓                      ↓
+    检查 /etc/resolv.conf   检查 kube-proxy
+         ↓                      ↓
+    nameserver 正确?       查看日志 RBAC?
+         ↓                      ↓
+    Pod dnsPolicy?         修复权限/重启
+         ↓                      ↓
+    kubelet clusterDNS?    检查 ipvs/iptables
+                               ↓
+                          测试 Pod 网络连通性
+                               ↓
+                          检查 CNI 插件 (flannel)
+                               ↓
+                          查看日志 RBAC?
+                               ↓
+                          检查路由/FDB表
+                               ↓
+                          检查防火墙/内核参数
+</code></pre><h3 id=分层排查清单>分层排查清单</h3><h4 id=layer-1-dns-配置层>Layer 1: DNS 配置层</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ✓ 检查容器 DNS 配置</span>
+</span></span><span style=display:flex><span>cat /etc/resolv.conf
+</span></span><span style=display:flex><span><span style=color:#75715e># 应该包含：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># nameserver &lt;CoreDNS-ClusterIP&gt;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># search &lt;namespace&gt;.svc.cluster.local svc.cluster.local cluster.local</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># options ndots:5</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 直接测试 CoreDNS</span>
+</span></span><span style=display:flex><span>nslookup kubernetes.default.svc.cluster.local &lt;CoreDNS-ClusterIP&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 测试外部 DNS</span>
+</span></span><span style=display:flex><span>nslookup www.google.com &lt;CoreDNS-ClusterIP&gt;
+</span></span></code></pre></div><p><strong>常见问题</strong>：</p><ul><li>nameserver 指向错误的 IP</li><li>kubelet <code>--cluster-dns</code> 参数配置错误</li><li>Pod <code>dnsPolicy</code> 配置为 &ldquo;None&rdquo; 但未指定 dnsConfig</li></ul><h4 id=layer-2-service-网络层>Layer 2: Service 网络层</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ✓ 验证 Service 存在且有 Endpoints</span>
+</span></span><span style=display:flex><span>kubectl get svc -n kube-system coredns
+</span></span><span style=display:flex><span>kubectl get endpoints -n kube-system coredns
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 测试 Service ClusterIP 连通性</span>
+</span></span><span style=display:flex><span>nc -zv &lt;CoreDNS-ClusterIP&gt; <span style=color:#ae81ff>53</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 检查 kube-proxy 状态</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span> | grep -i error
+</span></span></code></pre></div><p><strong>常见问题</strong>：</p><ul><li>kube-proxy 未运行或有错误</li><li>RBAC 权限不足</li><li>ipvs/iptables 规则缺失</li></ul><h4 id=layer-3-pod-网络层>Layer 3: Pod 网络层</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ✓ 测试 Pod 间连通性</span>
+</span></span><span style=display:flex><span>kubectl run test --image<span style=color:#f92672>=</span>busybox --rm -it -- ping &lt;CoreDNS-Pod-IP&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 检查 CNI 插件状态</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system -l app<span style=color:#f92672>=</span>flannel
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l app<span style=color:#f92672>=</span>flannel --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 验证路由表</span>
+</span></span><span style=display:flex><span>ip route | grep &lt;pod-cidr&gt;
+</span></span><span style=display:flex><span>bridge fdb show dev flannel.1  <span style=color:#75715e># 对于 flannel VXLAN</span>
+</span></span></code></pre></div><p><strong>常见问题</strong>：</p><ul><li>CNI 插件未运行</li><li>RBAC 权限不足</li><li>VXLAN 隧道未建立</li><li>防火墙阻塞</li></ul><h4 id=layer-4-系统配置层>Layer 4: 系统配置层</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ✓ IP 转发</span>
+</span></span><span style=display:flex><span>sysctl net.ipv4.ip_forward  <span style=color:#75715e># 应该为 1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 防火墙</span>
+</span></span><span style=display:flex><span>systemctl status firewalld
+</span></span><span style=display:flex><span>iptables -L FORWARD -n | head
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ 内核模块</span>
+</span></span><span style=display:flex><span>lsmod | grep br_netfilter
+</span></span><span style=display:flex><span>lsmod | grep overlay
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ✓ SELinux（如适用）</span>
+</span></span><span style=display:flex><span>getenforce  <span style=color:#75715e># 应该为 Permissive 或 Disabled</span>
+</span></span></code></pre></div><h3 id=常用调试命令速查>常用调试命令速查</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># === CoreDNS 相关 ===</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 CoreDNS 配置</span>
+</span></span><span style=display:flex><span>kubectl get cm -n kube-system coredns -o yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 CoreDNS 日志</span>
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-dns --tail<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重启 CoreDNS</span>
+</span></span><span style=display:flex><span>kubectl rollout restart -n kube-system deployment/coredns
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># === Service 网络 ===</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 Service 详情</span>
+</span></span><span style=display:flex><span>kubectl describe svc -n kube-system coredns
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 Endpoints</span>
+</span></span><span style=display:flex><span>kubectl get endpoints -n kube-system coredns -o yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 ipvs 规则（ipvs 模式）</span>
+</span></span><span style=display:flex><span>ipvsadm -Ln | grep &lt;ClusterIP&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 iptables 规则（iptables 模式）</span>
+</span></span><span style=display:flex><span>iptables-save | grep &lt;ClusterIP&gt;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># === Pod 网络 ===</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 Pod CIDR 分配</span>
+</span></span><span style=display:flex><span>kubectl get nodes -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{range .items[*]}{.metadata.name}{&#34;\t&#34;}{.spec.podCIDR}{&#34;\n&#34;}{end}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查网络接口</span>
+</span></span><span style=display:flex><span>ip addr show
+</span></span><span style=display:flex><span>ip route show
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 抓包分析</span>
+</span></span><span style=display:flex><span>tcpdump -i &lt;interface&gt; -nn -vv port <span style=color:#ae81ff>53</span>
+</span></span><span style=display:flex><span>tcpdump -i &lt;interface&gt; udp port <span style=color:#ae81ff>8472</span>  <span style=color:#75715e># flannel VXLAN</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># === RBAC 权限 ===</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 ServiceAccount</span>
+</span></span><span style=display:flex><span>kubectl get sa -n kube-system kube-proxy
+</span></span><span style=display:flex><span>kubectl get sa -n kube-system flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 ClusterRole</span>
+</span></span><span style=display:flex><span>kubectl get clusterrole system:node-proxier
+</span></span><span style=display:flex><span>kubectl get clusterrole flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 ClusterRoleBinding</span>
+</span></span><span style=display:flex><span>kubectl get clusterrolebinding system:node-proxier
+</span></span><span style=display:flex><span>kubectl get clusterrolebinding flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试权限</span>
+</span></span><span style=display:flex><span>kubectl auth can-i list services --as<span style=color:#f92672>=</span>system:serviceaccount:kube-system:kube-proxy
+</span></span></code></pre></div><hr><h2 id=总结>总结</h2><h3 id=关键要点>关键要点</h3><ol><li><p><strong>DNS 问题往往是表象</strong>，根因可能在更底层（RBAC、网络路由、配置冲突）</p></li><li><p><strong>RBAC 是基础</strong>，确保关键组件有正确的权限：</p><ul><li>kube-proxy 需要 <code>system:node-proxier</code></li><li>flannel 需要 <code>flannel</code> ClusterRole</li><li>CoreDNS 需要 <code>system:coredns</code></li></ul></li><li><p><strong>分层诊断</strong>，从应用层到基础设施层逐层排查</p></li><li><p><strong>日志是最好的老师</strong>，学会阅读组件日志中的关键错误信息</p></li><li><p><strong>网络配置一致性</strong>，避免多套 CIDR 并存</p></li></ol><h3 id=最佳实践>最佳实践</h3><p>✅ <strong>DO</strong></p><ul><li>定期备份 RBAC 配置</li><li>监控关键组件日志</li><li>使用版本控制管理集群配置</li><li>建立标准化的故障诊断流程</li><li>记录集群变更历史</li></ul><p>❌ <strong>DON&rsquo;T</strong></p><ul><li>不要轻易删除系统 ClusterRole</li><li>不要在生产环境直接修改核心配置</li><li>不要忽略组件日志中的警告</li><li>不要混用多套网络配置</li></ul><h3 id=相关资源>相关资源</h3><ul><li><a href=https://kubernetes.io/docs/reference/access-authn-authz/rbac/ target=_blank>Kubernetes RBAC 官方文档</a></li><li><a href=https://coredns.io/manual/toc/#troubleshooting target=_blank>CoreDNS Troubleshooting</a></li><li><a href=https://github.com/flannel-io/flannel target=_blank>Flannel Documentation</a></li><li><a href=https://kubernetes.io/docs/tasks/debug/debug-application/debug-service/ target=_blank>Kubernetes Network Troubleshooting</a></li></ul><hr><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/redis-params/?ref=footer"><span>« Previous</span><br>Redis 参数配置详解与优化指南</a></div><div class=next-post><a href="https://yezihack.github.io/k8s-openyurt/?ref=footer"><span>Next »</span><br>OpenYurt 完整使用手册 - 从入门到实践</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#文章概述>文章概述</a></li><li><a href=#目录>目录</a></li><li><a href=#问题现象>问题现象</a><ul><li><a href=#环境信息>环境信息</a></li><li><a href=#初始症状>初始症状</a></li></ul></li><li><a href=#排查思路>排查思路</a></li><li><a href=#问题一kube-proxy-rbac-权限缺失>问题一：kube-proxy RBAC 权限缺失</a><ul><li><a href=#发现过程>发现过程</a></li><li><a href=#根因分析>根因分析</a></li><li><a href=#解决方案>解决方案</a></li><li><a href=#注意事项>注意事项</a></li></ul></li><li><a href=#问题二flannel-rbac-权限缺失>问题二：flannel RBAC 权限缺失</a><ul><li><a href=#发现过程-1>发现过程</a></li><li><a href=#根因分析-1>根因分析</a></li><li><a href=#解决方案-1>解决方案</a></li></ul></li><li><a href=#问题三双-pod-cidr-共存导致路由问题>问题三：双 Pod CIDR 共存导致路由问题</a><ul><li><a href=#发现过程-2>发现过程</a></li><li><a href=#根因分析-2>根因分析</a></li><li><a href=#诊断命令>诊断命令</a></li><li><a href=#解决方案-2>解决方案</a></li><li><a href=#验证修复>验证修复</a></li></ul></li><li><a href=#故障总结与预防>故障总结与预防</a><ul><li><a href=#问题根源>问题根源</a></li><li><a href=#为什么会丢失-rbac>为什么会丢失 RBAC</a></li><li><a href=#预防措施>预防措施</a></li></ul></li><li><a href=#dns-问题排查通用方法论>DNS 问题排查通用方法论</a><ul><li><a href=#快速诊断流程图>快速诊断流程图</a></li><li><a href=#分层排查清单>分层排查清单</a></li><li><a href=#常用调试命令速查>常用调试命令速查</a></li></ul></li><li><a href=#总结>总结</a><ul><li><a href=#关键要点>关键要点</a></li><li><a href=#最佳实践>最佳实践</a></li><li><a href=#相关资源>相关资源</a></li></ul></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

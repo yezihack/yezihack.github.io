@@ -1,0 +1,379 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Kubernetes NetworkPolicy 完全指南：从入门到实战</title><meta property="og:title" content="百里觅码 - Kubernetes NetworkPolicy 完全指南：从入门到实战"><meta name=twitter:title content="百里觅码 - Kubernetes NetworkPolicy 完全指南：从入门到实战"><meta itemprop=name content="百里觅码 - Kubernetes NetworkPolicy 完全指南：从入门到实战"><meta name=application-name content="百里觅码 - Kubernetes NetworkPolicy 完全指南：从入门到实战"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/networkpolicy/><link rel=canonical href=https://yezihack.github.io/networkpolicy/ itemprop=url><meta name=url content="https://yezihack.github.io/networkpolicy/"><meta name=twitter:url content="https://yezihack.github.io/networkpolicy/"><meta property="og:url" content="https://yezihack.github.io/networkpolicy/"><meta property="og:updated_time" content="4008-04-05T853:05:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="4008-04-05T853:05:25+0800"><meta property="article:published_time" content="4008-04-05T853:05:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Kubernetes NetworkPolicy 完全指南：从入门到实战","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-08-04","description":"","wordCount":"893","mainEntityOfPage":"True","dateModified":"2025-08-04","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/networkpolicy/>Kubernetes NetworkPolicy 完全指南：从入门到实战</a></h1><time datetime=2025-08-04T17:53:05+0800 class=post-date>August 4, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>893</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>5 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-k8s><a href=https://yezihack.github.io/tags/k8s>k8s</a></li><li class=tag-network><a href=https://yezihack.github.io/tags/network>network</a></li><li class=tag-networkpolicy><a href=https://yezihack.github.io/tags/networkpolicy>networkpolicy</a></li></ul></div><h2 id=前言>前言</h2><p>在 Kubernetes 集群中，默认情况下所有 Pod 之间都可以自由通信。但在生产环境中，我们往往需要对网络流量进行精细化控制，这时就需要用到 NetworkPolicy。本文将从基础概念到实际应用，全面介绍 NetworkPolicy 的使用方法。</p><h2 id=什么是-networkpolicy>什么是 NetworkPolicy？</h2><p>NetworkPolicy 是 Kubernetes 的一种资源对象，用于定义 Pod 之间的网络访问规则。它类似于传统网络中的防火墙规则，可以控制：</p><ul><li><strong>入站流量（Ingress）</strong>：哪些来源可以访问目标 Pod</li><li><strong>出站流量（Egress）</strong>：目标 Pod 可以访问哪些目的地</li></ul><h2 id=前置条件>前置条件</h2><p>在开始之前，确保您的集群满足以下条件：</p><h3 id=1-cni-插件支持>1. CNI 插件支持</h3><p>NetworkPolicy 需要 CNI 插件的支持，常见支持的插件包括：</p><ul><li><strong>Calico</strong>（推荐）</li><li><strong>Cilium</strong></li><li><strong>Weave Net</strong></li><li><strong>Antrea</strong></li></ul><p>⚠️ <strong>注意</strong>：Flannel 默认不支持 NetworkPolicy</p><h3 id=2-验证支持情况>2. 验证支持情况</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查当前 CNI 插件</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system | grep -E <span style=color:#e6db74>&#34;(calico|cilium|weave|antrea)&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建测试策略验证支持</span>
+</span></span><span style=display:flex><span>kubectl apply -f - <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: networking.k8s.io/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: NetworkPolicy
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: test-policy
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  namespace: default
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  podSelector: {}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  policyTypes: []
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 如果支持，会输出 &#34;networkpolicy/test-policy created&#34;</span>
+</span></span><span style=display:flex><span>kubectl get networkpolicies -n default
+</span></span></code></pre></div><h2 id=networkpolicy-基础语法>NetworkPolicy 基础语法</h2><h3 id=完整结构示例>完整结构示例</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>example-policy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 选择应用此策略的 Pod</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>web-server</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 策略类型：Ingress（入站）和/或 Egress（出站）</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Egress</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 入站规则</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>role</span>: <span style=color:#ae81ff>frontend</span>
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>namespaceSelector</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>name</span>: <span style=color:#ae81ff>allowed-namespace</span>
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>ipBlock</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>cidr</span>: <span style=color:#ae81ff>192.168.1.0</span><span style=color:#ae81ff>/24</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>except</span>:
+</span></span><span style=display:flex><span>              - <span style=color:#ae81ff>192.168.1.100</span><span style=color:#ae81ff>/32</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+</span></span><span style=display:flex><span>  
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 出站规则</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>to</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>              <span style=color:#f92672>role</span>: <span style=color:#ae81ff>database</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>port</span>: <span style=color:#ae81ff>5432</span>
+</span></span></code></pre></div><h3 id=关键字段解析>关键字段解析</h3><table><thead><tr><th>字段</th><th>说明</th></tr></thead><tbody><tr><td><code>podSelector</code></td><td>选择应用此策略的目标 Pod</td></tr><tr><td><code>policyTypes</code></td><td>策略类型，可以是 <code>Ingress</code>、<code>Egress</code> 或两者</td></tr><tr><td><code>ingress.from</code></td><td>定义允许的入站来源</td></tr><tr><td><code>egress.to</code></td><td>定义允许的出站目标</td></tr><tr><td><code>ports</code></td><td>指定允许的端口和协议</td></tr></tbody></table><h2 id=实战案例>实战案例</h2><h3 id=案例-1拒绝所有流量默认拒绝策略>案例 1：拒绝所有流量（默认拒绝策略）</h3><p>首先创建一个拒绝所有流量的基础策略：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>deny-all</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>: {}  <span style=color:#75715e># 选择命名空间中的所有 Pod</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Egress</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 没有定义 ingress 和 egress 规则，因此拒绝所有流量</span>
+</span></span></code></pre></div><h3 id=案例-2web-应用三层架构>案例 2：Web 应用三层架构</h3><p>创建一个典型的 Web 应用场景：Frontend → Backend → Database</p><h4 id=环境准备>环境准备</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 创建命名空间和标签</span>
+</span></span><span style=display:flex><span>kubectl create namespace webapp
+</span></span><span style=display:flex><span>kubectl label namespace webapp name<span style=color:#f92672>=</span>webapp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 部署应用（示例）</span>
+</span></span><span style=display:flex><span>kubectl apply -f - <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: apps/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: Deployment
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: frontend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  namespace: webapp
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  replicas: 2
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  selector:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    matchLabels:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      app: frontend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      tier: web
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  template:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      labels:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        app: frontend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        tier: web
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      containers:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - name: frontend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        image: nginx:alpine
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        ports:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        - containerPort: 80
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>---
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: apps/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: Deployment
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: backend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  namespace: webapp
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  replicas: 2
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  selector:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    matchLabels:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      app: backend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      tier: api
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  template:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      labels:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        app: backend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        tier: api
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      containers:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - name: backend
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        image: nginx:alpine
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        ports:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        - containerPort: 8080
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>---
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: apps/v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: Deployment
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  name: database
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  namespace: webapp
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  replicas: 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  selector:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    matchLabels:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      app: database
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      tier: db
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  template:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    metadata:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      labels:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        app: database
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        tier: db
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      containers:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - name: database
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        image: postgres:13
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        ports:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        - containerPort: 5432
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h4 id=网络策略配置>网络策略配置</h4><p><strong>1. Frontend 策略</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>frontend-policy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>webapp</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>web</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Egress</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许来自集群外部的流量（通过 Ingress Controller）</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许访问 Backend</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>to</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>api</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许 DNS 解析</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>to</span>: []
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>UDP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>53</span>
+</span></span></code></pre></div><p><strong>2. Backend 策略</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>backend-policy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>webapp</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>api</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Egress</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 只允许来自 Frontend 的流量</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>web</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许访问 Database</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>to</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>db</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>5432</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许 DNS 解析</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>to</span>: []
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>UDP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>53</span>
+</span></span></code></pre></div><p><strong>3. Database 策略</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>database-policy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>webapp</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>db</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Egress</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 只允许来自 Backend 的流量</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>tier</span>: <span style=color:#ae81ff>api</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>5432</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许 DNS 解析（如需要）</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>to</span>: []
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>UDP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>53</span>
+</span></span></code></pre></div><h3 id=案例-3跨命名空间访问控制>案例 3：跨命名空间访问控制</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>cross-namespace-policy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>api-server</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许来自 staging 命名空间的特定 Pod</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>namespaceSelector</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>name</span>: <span style=color:#ae81ff>staging</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>            <span style=color:#f92672>app</span>: <span style=color:#ae81ff>test-client</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 允许来自相同命名空间的所有 Pod</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>podSelector</span>: {}
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+</span></span></code></pre></div><h3 id=案例-4基于-ip-的访问控制>案例 4：基于 IP 的访问控制</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>networking.k8s.io/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>NetworkPolicy</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>ip-allowlist-policy</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>app</span>: <span style=color:#ae81ff>admin-panel</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>policyTypes</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>Ingress</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 只允许特定 IP 段的流量</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>ipBlock</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cidr</span>: <span style=color:#ae81ff>10.0.0.0</span><span style=color:#ae81ff>/8</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>except</span>:
+</span></span><span style=display:flex><span>            - <span style=color:#ae81ff>10.0.1.0</span><span style=color:#ae81ff>/24 </span> <span style=color:#75715e># 排除特定子网</span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>ipBlock</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cidr</span>: <span style=color:#ae81ff>192.168.1.0</span><span style=color:#ae81ff>/24</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>port</span>: <span style=color:#ae81ff>443</span>
+</span></span></code></pre></div><h2 id=测试和验证>测试和验证</h2><h3 id=1-创建测试-pod>1. 创建测试 Pod</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 创建测试客户端</span>
+</span></span><span style=display:flex><span>kubectl run test-client --image<span style=color:#f92672>=</span>busybox -it --rm --restart<span style=color:#f92672>=</span>Never -- sh
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在 Pod 内测试连接</span>
+</span></span><span style=display:flex><span>wget -qO- --timeout<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span> http://frontend-service.webapp.svc.cluster.local
+</span></span></code></pre></div><h3 id=2-使用-netshoot-进行网络调试>2. 使用 netshoot 进行网络调试</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl run netshoot --image<span style=color:#f92672>=</span>nicolaka/netshoot -it --rm --restart<span style=color:#f92672>=</span>Never
+</span></span></code></pre></div><h3 id=3-查看策略状态>3. 查看策略状态</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 列出所有网络策略</span>
+</span></span><span style=display:flex><span>kubectl get networkpolicy -A
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看策略详情</span>
+</span></span><span style=display:flex><span>kubectl describe networkpolicy frontend-policy -n webapp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 Pod 标签</span>
+</span></span><span style=display:flex><span>kubectl get pods -n webapp --show-labels
+</span></span></code></pre></div><h2 id=常见问题和最佳实践>常见问题和最佳实践</h2><h3 id=问题-1策略不生效>问题 1：策略不生效</h3><p><strong>可能原因：</strong></p><ul><li>CNI 插件不支持 NetworkPolicy</li><li>Pod 标签选择器错误</li><li>策略应用到错误的命名空间</li></ul><p><strong>解决方法：</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查 CNI 插件</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system | grep -E <span style=color:#e6db74>&#34;(calico|cilium)&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证标签选择器</span>
+</span></span><span style=display:flex><span>kubectl get pods --show-labels -n your-namespace
+</span></span></code></pre></div><h3 id=问题-2dns-解析失败>问题 2：DNS 解析失败</h3><p>NetworkPolicy 可能会阻止 DNS 查询，需要显式允许：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>to</span>: []
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>UDP</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>53</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>53</span>
+</span></span></code></pre></div><h3 id=问题-3服务发现问题>问题 3：服务发现问题</h3><p>确保允许访问 Kubernetes API Server：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>to</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>ipBlock</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>cidr</span>: <span style=color:#ae81ff>10.96.0.1</span><span style=color:#ae81ff>/32 </span> <span style=color:#75715e># API Server IP</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>443</span>
+</span></span></code></pre></div><h3 id=最佳实践>最佳实践</h3><ol><li><strong>从拒绝开始</strong>：先创建 <code>deny-all</code> 策略，再逐步添加允许规则</li><li><strong>最小权限原则</strong>：只开放必需的端口和协议</li><li><strong>使用标签管理</strong>：合理设计 Pod 和 Namespace 标签</li><li><strong>分层设计</strong>：按应用层次设计网络策略</li><li><strong>文档化</strong>：为每个策略添加清晰的注释说明</li><li><strong>定期审计</strong>：定期检查和更新网络策略</li></ol><h2 id=高级功能>高级功能</h2><h3 id=1-命名端口支持>1. 命名端口支持</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>to</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>app</span>: <span style=color:#ae81ff>database</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>ports</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>protocol</span>: <span style=color:#ae81ff>TCP</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>port</span>: <span style=color:#ae81ff>db-port </span> <span style=color:#75715e># 使用命名端口</span>
+</span></span></code></pre></div><h3 id=2-组合选择器>2. 组合选择器</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>from</span>:
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 必须同时满足命名空间和 Pod 标签条件</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>namespaceSelector</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>name</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>podSelector</span>:
+</span></span><span style=display:flex><span>        <span style=color:#f92672>matchLabels</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>role</span>: <span style=color:#ae81ff>api-client</span>
+</span></span></code></pre></div><h3 id=3-空规则的含义>3. 空规则的含义</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 允许所有入站流量</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>ingress</span>:
+</span></span><span style=display:flex><span>  - {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 允许所有出站流量  </span>
+</span></span><span style=display:flex><span><span style=color:#f92672>egress</span>:
+</span></span><span style=display:flex><span>  - {}
+</span></span></code></pre></div><h2 id=监控和日志>监控和日志</h2><h3 id=使用-calico-查看策略日志>使用 Calico 查看策略日志</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 启用 Calico 日志记录</span>
+</span></span><span style=display:flex><span>kubectl patch felixconfiguration default --type merge --patch <span style=color:#e6db74>&#39;{&#34;spec&#34;:{&#34;flowLogsEnableNetworkPolicy&#34;:true}}&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看拒绝的连接</span>
+</span></span><span style=display:flex><span>kubectl logs -n calico-system -l k8s-app<span style=color:#f92672>=</span>calico-node | grep <span style=color:#e6db74>&#34;calico-packet&#34;</span>
+</span></span></code></pre></div><h3 id=使用-cilium-hubble>使用 Cilium Hubble</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 安装 Hubble CLI</span>
+</span></span><span style=display:flex><span>hubble observe --type drop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看网络流量</span>
+</span></span><span style=display:flex><span>hubble observe --namespace webapp
+</span></span></code></pre></div><h2 id=总结>总结</h2><p>NetworkPolicy 是 Kubernetes 中实现网络安全的重要工具。通过合理设计和应用网络策略，我们可以：</p><ul><li>实现零信任网络架构</li><li>符合安全合规要求</li><li>减少攻击面</li><li>提高系统安全性</li></ul><p>掌握 NetworkPolicy 的使用，是构建安全 Kubernetes 集群的必备技能。在实际应用中，建议从简单的场景开始，逐步构建复杂的网络安全策略。</p><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/cobra/?ref=footer"><span>« Previous</span><br>Cobra 使用说明</a></div><div class=next-post><a href="https://yezihack.github.io/mysql-binlog/?ref=footer"><span>Next »</span><br>MySQL持久化参数深度解析与面试指南</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#前言>前言</a></li><li><a href=#什么是-networkpolicy>什么是 NetworkPolicy？</a></li><li><a href=#前置条件>前置条件</a><ul><li><a href=#1-cni-插件支持>1. CNI 插件支持</a></li><li><a href=#2-验证支持情况>2. 验证支持情况</a></li></ul></li><li><a href=#networkpolicy-基础语法>NetworkPolicy 基础语法</a><ul><li><a href=#完整结构示例>完整结构示例</a></li><li><a href=#关键字段解析>关键字段解析</a></li></ul></li><li><a href=#实战案例>实战案例</a><ul><li><a href=#案例-1拒绝所有流量默认拒绝策略>案例 1：拒绝所有流量（默认拒绝策略）</a></li><li><a href=#案例-2web-应用三层架构>案例 2：Web 应用三层架构</a></li><li><a href=#案例-3跨命名空间访问控制>案例 3：跨命名空间访问控制</a></li><li><a href=#案例-4基于-ip-的访问控制>案例 4：基于 IP 的访问控制</a></li></ul></li><li><a href=#测试和验证>测试和验证</a><ul><li><a href=#1-创建测试-pod>1. 创建测试 Pod</a></li><li><a href=#2-使用-netshoot-进行网络调试>2. 使用 netshoot 进行网络调试</a></li><li><a href=#3-查看策略状态>3. 查看策略状态</a></li></ul></li><li><a href=#常见问题和最佳实践>常见问题和最佳实践</a><ul><li><a href=#问题-1策略不生效>问题 1：策略不生效</a></li><li><a href=#问题-2dns-解析失败>问题 2：DNS 解析失败</a></li><li><a href=#问题-3服务发现问题>问题 3：服务发现问题</a></li><li><a href=#最佳实践>最佳实践</a></li></ul></li><li><a href=#高级功能>高级功能</a><ul><li><a href=#1-命名端口支持>1. 命名端口支持</a></li><li><a href=#2-组合选择器>2. 组合选择器</a></li><li><a href=#3-空规则的含义>3. 空规则的含义</a></li></ul></li><li><a href=#监控和日志>监控和日志</a><ul><li><a href=#使用-calico-查看策略日志>使用 Calico 查看策略日志</a></li><li><a href=#使用-cilium-hubble>使用 Cilium Hubble</a></li></ul></li><li><a href=#总结>总结</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

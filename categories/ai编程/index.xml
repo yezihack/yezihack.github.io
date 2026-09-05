@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AI编程 on 空树之空</title><link>https://yezihack.github.io/categories/ai%E7%BC%96%E7%A8%8B/</link><description>Recent content in AI编程 on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 03 Apr 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://yezihack.github.io/categories/ai%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude Code 完整入门手册：安装、配置与实战指南</title><link>https://yezihack.github.io/claude-code-guide/</link><pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate><guid>https://yezihack.github.io/claude-code-guide/</guid><description>简介 Claude Code 是 Anthropic 推出的代理编码工具，可在终端、VS Code、JetBrains IDE、桌面应用和浏览器中使用。它能够读取代码库、编辑文件、运行命令，并与开发工具集成，帮助你快速构建功能、修复bug和自动化开发任务。
+本手册将详细讲解如何在各操作系统上安装配置Claude Code，并深度集成国内大模型和各类开发工具。
+第一部分：环境准备与基础安装 1.1 前置环境要求 Windows Windows 10 或更高版本 Git for Windows （必需） PowerShell 或 CMD Node.js 14+ （可选，但推荐） macOS macOS 10.12 或更高版本 Xcode Command Line Tools Homebrew （推荐） Node.js 14+ （可选） Linux Ubuntu 18.04+ 或其他主流发行版 curl 或 wget Node.js 14+ （可选） 1.2 Node.js 安装与配置 在安装Claude Code之前，建议先安装Node.js的包管理工具，以便支持更多功能。
+Windows (msi/二进制):
+下载 Node.js 安装包
+运行安装程序，选择LTS版本（推荐）
+安装完成后，打开命令提示符或PowerShell，验证安装：!
+验证 node -v npm -v Windows (PowerShell):
+# 使用winget安装（推荐） winget install OpenJS.</description></item></channel></rss>

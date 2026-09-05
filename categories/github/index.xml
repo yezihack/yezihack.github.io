@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>github on 空树之空</title><link>https://yezihack.github.io/categories/github/</link><description>Recent content in github on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Oct 2025 14:54:16 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/categories/github/index.xml" rel="self" type="application/rss+xml"/><item><title>GitHub 开源协议完全指南：个人项目如何选择合适的许可证</title><link>https://yezihack.github.io/license/</link><pubDate>Sat, 11 Oct 2025 14:54:16 +0800</pubDate><guid>https://yezihack.github.io/license/</guid><description>1. 引言 当你在 GitHub 上创建开源项目时，选择合适的开源协议（License）是至关重要的一步。它不仅定义了他人如何使用你的代码，也保护了你作为作者的权益。本文将详细介绍常见的开源协议及其使用场景，帮助你做出明智的选择。
+2. 为什么需要开源协议？ 没有协议的代码在法律上属于&amp;quot;保留所有权利&amp;quot;，这意味着：
+❌ 他人不能合法使用、修改或分发你的代码 ❌ 即使代码公开在 GitHub 上，也不代表可以随意使用 ✅ 添加协议后，明确了使用权限，让你的项目真正&amp;quot;开源&amp;quot; 3. 常见开源协议详解 3.1. MIT License（最宽松、最流行） 特点：
+✅ 极其简单宽松 ✅ 允许商业使用 ✅ 可以修改、分发、私有使用 ✅ 只需保留版权声明和许可声明 限制：
+无担保声明（使用风险自负） 不提供专利授权 适合场景：
+个人项目想要最大化传播 希望被广泛采用，包括商业项目 不想有太多法律限制 知名项目： jQuery, Node.js, React
+3.2. Apache License 2.0（企业友好） 特点：
+✅ 允许商业使用 ✅ 明确的专利授权 ✅ 可以修改、分发 ✅ 必须声明修改内容 限制：
+必须包含 NOTICE 文件 不能使用项目商标 适合场景：
+涉及专利的项目 希望企业采用的项目 需要明确贡献者专利权的场景 知名项目： Android, Apache 系列软件, Kubernetes
+3.3. GNU GPL v3.</description></item></channel></rss>

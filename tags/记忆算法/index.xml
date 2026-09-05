@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>记忆算法 on 空树之空</title><link>https://yezihack.github.io/tags/%E8%AE%B0%E5%BF%86%E7%AE%97%E6%B3%95/</link><description>Recent content in 记忆算法 on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 27 Apr 2026 20:00:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E8%AE%B0%E5%BF%86%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml"/><item><title>FSRS 算法深入解析：比 SM-2 更智能的间隔重复调度</title><link>https://yezihack.github.io/fsrs-algorithm/</link><pubDate>Mon, 27 Apr 2026 20:00:00 +0800</pubDate><guid>https://yezihack.github.io/fsrs-algorithm/</guid><description>前言 SM-2 算法自 1987 年由 Piotr Wozniak 设计以来，一直是间隔重复（Spaced Repetition）领域的核心算法。它简单有效，但有一个致命缺陷：所有用户共用同一套固定参数。
+FSRS（Free Spaced Repetition Scheduler）由 Jarrett Ye 于 2022 年开发，旨在用机器学习取代手工调参，让算法真正适应每个用户的记忆特性。
+一、SM-2 的局限性 SM-2 的核心问题在于它的参数是固定的：
+所有新用户使用相同的初始 easiness factor（2.5） 所有用户使用相同的间隔乘数 失败时所有卡片一律重置 这意味着一个记忆力超强的人和一个普通人，背同样的单词，系统给他们的复习节奏完全一样——只是因为算法无法感知他们的差异。
+二、FSRS 的核心思想：DSR 模型 FSRS 基于 Difficulty-Stability-Retrievability（难度-稳定性-可检索性） 三元素模型：
+变量 含义 范围 D (Difficulty) 记忆的难度 [1, 10]，值越大越难记住 S (Stability) 记忆稳定度 天数，R 从 100% 衰减到 90% 所需时间 R (Retrievability) 当前可检索概率 [0, 1]，即「我现在能回忆起来的概率」 遗忘曲线 FSRS 使用以下公式计算可检索性随时间衰减：
+$$R(t, S) = \left(1 + factor \cdot \frac{t}{S}\right)^{-decay}$$
+其中 factor 和 decay 是可训练的参数。当你设置目标保留率（默认 90%）时，系统会计算下次复习的时间点，使得 R 恰好衰减到目标值。</description></item></channel></rss>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ollama on 空树之空</title><link>https://yezihack.github.io/tags/ollama/</link><description>Recent content in ollama on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 22 Jan 2026 11:19:37 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/ollama/index.xml" rel="self" type="application/rss+xml"/><item><title>从零打造私人AI知识库：Ollama + AnythingLLM 完全指南</title><link>https://yezihack.github.io/anythingllm/</link><pubDate>Thu, 22 Jan 2026 11:19:37 +0800</pubDate><guid>https://yezihack.github.io/anythingllm/</guid><description>在这个信息爆炸的时代，如何高效管理和利用自己的知识资产？本文将手把手教你搭建一个完全本地化、保护隐私的AI知识库系统。
+🎯 为什么需要私人AI知识库？ 想象这样的场景：
+📚 你有大量的学习资料、工作文档，需要时却找不到 🔍 想快速了解一份长达100页的报告核心内容 💼 公司文档敏感，不能上传到ChatGPT等在线服务 🧠 希望AI成为你的&amp;quot;第二大脑&amp;quot;，随时调取知识 解决方案就是：Ollama + AnythingLLM
+核心优势 ✅ 完全本地化 - 数据不出本地，保护隐私
+✅ 免费开源 - 无需订阅费用，永久免费使用
+✅ 离线运行 - 不依赖网络，随时可用
+✅ 灵活定制 - 可选择不同模型，满足各种需求
+📋 准备工作 系统要求 最低配置：
+CPU: 4核心以上 内存: 8GB（推荐16GB） 硬盘: 20GB可用空间 操作系统: Windows 10/11、macOS、Linux 推荐配置：
+CPU: 8核心以上 内存: 16GB以上 显卡: 支持CUDA的NVIDIA显卡（可选，能大幅提升速度） 需要下载的软件 Ollama - 本地大语言模型运行环境 AnythingLLM - 知识库管理界面 🚀 第一步：安装 Ollama 1.1 下载安装 访问 Ollama 官网：https://ollama.ai
+根据你的操作系统选择对应版本：
+Windows 用户：</description></item></channel></rss>

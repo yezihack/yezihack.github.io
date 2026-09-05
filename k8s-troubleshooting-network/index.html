@@ -1,0 +1,317 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案</title><meta property="og:title" content="百里觅码 - Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案"><meta name=twitter:title content="百里觅码 - Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案"><meta itemprop=name content="百里觅码 - Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案"><meta name=application-name content="百里觅码 - Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/k8s-troubleshooting-network/><link rel=canonical href=https://yezihack.github.io/k8s-troubleshooting-network/ itemprop=url><meta name=url content="https://yezihack.github.io/k8s-troubleshooting-network/"><meta name=twitter:url content="https://yezihack.github.io/k8s-troubleshooting-network/"><meta property="og:url" content="https://yezihack.github.io/k8s-troubleshooting-network/"><meta property="og:updated_time" content="5009-05-04T93:59:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="5009-05-04T93:59:25+0800"><meta property="article:published_time" content="5009-05-04T93:59:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-09-05","description":"","wordCount":"1203","mainEntityOfPage":"True","dateModified":"2025-09-05","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/k8s-troubleshooting-network/>Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案</a></h1><time datetime=2025-09-05T16:03:59+0800 class=post-date>September 5, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>1203</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>6 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-k8s><a href=https://yezihack.github.io/tags/k8s>k8s</a></li><li class=tag-网络排障><a href=https://yezihack.github.io/tags/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%9A%9C>网络排障</a></li><li class=tag-故障排查><a href=https://yezihack.github.io/tags/%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5>故障排查</a></li></ul></div><p>在 Kubernetes 集群的运维过程中，网络问题是最常见也是最复杂的故障类型之一。本文将基于一个真实的生产环境案例，详细介绍如何系统性地排查和解决 K8s 网络问题，涵盖从基础网络连通性到 DNS 解析的完整故障链条。</p><h2 id=案例背景>案例背景</h2><p>在一个运行 Kubernetes 1.29 的生产集群中，我们遇到了以下问题：</p><ul><li>宿主机网络正常，可以访问外网</li><li>容器内无法访问外网</li><li>使用 Flannel 作为 CNI 网络插件</li><li>后续发现容器无法 ping 通 CoreDNS Service IP</li></ul><p>通过深入排查，我们发现了一个有趣的现象：DNS 配置错误不仅影响域名解析，还会导致整个 Service 网络不可达。</p><h2 id=第一部分容器外网访问故障排查>第一部分：容器外网访问故障排查</h2><h3 id=11-基础网络连通性检查>1.1 基础网络连通性检查</h3><p>当容器无法访问外网时，首先需要验证网络的分层连通性：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 进入问题 Pod 测试网络</span>
+</span></span><span style=display:flex><span>kubectl exec -it &lt;pod-name&gt; -- /bin/sh
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试容器到节点网络</span>
+</span></span><span style=display:flex><span>ping 10.244.0.1  <span style=color:#75715e># Pod 网关，通常是节点IP</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试集群内部网络</span>
+</span></span><span style=display:flex><span>nslookup kubernetes.default.svc.cluster.local
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试外网IP连通性</span>
+</span></span><span style=display:flex><span>ping 8.8.8.8
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试外网DNS解析</span>
+</span></span><span style=display:flex><span>nslookup google.com
+</span></span></code></pre></div><p><strong>诊断要点</strong>：</p><ul><li>如果 ping 节点 IP 不通：CNI 网络问题</li><li>如果 ping 外网 IP 不通：NAT/路由问题</li><li>如果 IP 通但 DNS 不通：DNS 配置问题</li></ul><h3 id=12-flannel-网络状态检查>1.2 Flannel 网络状态检查</h3><p>Flannel 作为覆盖网络，其状态直接影响 Pod 间通信：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查 Flannel Pod 运行状态</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system | grep flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 Flannel 配置</span>
+</span></span><span style=display:flex><span>kubectl get configmap kube-flannel-cfg -n kube-system -o yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 分析 Flannel 日志</span>
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l app<span style=color:#f92672>=</span>flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查网络接口状态</span>
+</span></span><span style=display:flex><span>ip addr show flannel.1
+</span></span><span style=display:flex><span>ip route show | grep flannel
+</span></span></code></pre></div><p><strong>常见问题</strong>：</p><ul><li>Flannel Pod 启动失败</li><li>网络配置与实际不符</li><li>VXLAN 隧道建立失败</li></ul><h3 id=13-宿主机网络配置验证>1.3 宿主机网络配置验证</h3><p>外网访问的关键在于正确的 NAT 配置和 IP 转发：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查 IP 转发（必须为 1）</span>
+</span></span><span style=display:flex><span>cat /proc/sys/net/ipv4/ip_forward
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 永久开启 IP 转发</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.ipv4.ip_forward = 1&#39;</span> | sudo tee -a /etc/sysctl.conf
+</span></span><span style=display:flex><span>sudo sysctl -p
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查关键的 MASQUERADE 规则</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -L POSTROUTING -n | grep MASQUERADE
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 应该看到类似规则：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># MASQUERADE  all  --  10.244.0.0/16    0.0.0.0/0</span>
+</span></span></code></pre></div><h3 id=14-iptables-规则诊断与修复>1.4 iptables 规则诊断与修复</h3><p>最常见的外网访问问题是 MASQUERADE 规则缺失：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查完整的 NAT 规则</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -L -n
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 手动添加 MASQUERADE 规则（临时修复）</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -A POSTROUTING -s 10.244.0.0/16 -j MASQUERADE
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 FORWARD 链规则</span>
+</span></span><span style=display:flex><span>sudo iptables -t filter -L FORWARD -n
+</span></span></code></pre></div><p><strong>系统化排查脚本</strong>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>echo <span style=color:#e6db74>&#34;=== K8s 外网访问排查脚本 ===&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;1. IP 转发状态：&#34;</span>
+</span></span><span style=display:flex><span>cat /proc/sys/net/ipv4/ip_forward
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;2. Flannel 网络状态：&#34;</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system | grep flannel
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;3. MASQUERADE 规则：&#34;</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -L POSTROUTING -n | grep MASQUERADE | head -3
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;4. 测试容器外网连通性：&#34;</span>
+</span></span><span style=display:flex><span>kubectl run nettest --image<span style=color:#f92672>=</span>busybox --rm -it --restart<span style=color:#f92672>=</span>Never -- ping -c <span style=color:#ae81ff>3</span> 8.8.8.8
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;5. 检查网络接口：&#34;</span>
+</span></span><span style=display:flex><span>ip addr show | grep -E <span style=color:#e6db74>&#34;(flannel|cni)&#34;</span>
+</span></span></code></pre></div><h2 id=第二部分service-网络故障深度排查>第二部分：Service 网络故障深度排查</h2><p>在解决了基础网络问题后，我们发现了新问题：容器能 ping 通节点 IP（10.244.0.1），但无法 ping 通 CoreDNS 的 Service IP（10.96.0.3）。</p><h3 id=21-service-网络架构理解>2.1 Service 网络架构理解</h3><p>Kubernetes Service 网络依赖 kube-proxy 创建的 iptables/ipvs 规则实现：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>客户端请求 Service IP → iptables DNAT 规则 → 转发到后端 Pod IP
+</span></span></code></pre></div><h3 id=22-kube-proxy-状态检查>2.2 kube-proxy 状态检查</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看 kube-proxy 运行状态</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system | grep kube-proxy
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 kube-proxy 日志</span>
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 kube-proxy 配置</span>
+</span></span><span style=display:flex><span>kubectl get configmap kube-proxy -n kube-system -o yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 确认 proxy 模式</span>
+</span></span><span style=display:flex><span>kubectl logs -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy | grep <span style=color:#e6db74>&#34;Using.*Proxy&#34;</span>
+</span></span></code></pre></div><h3 id=23-service-和-endpoints-验证>2.3 Service 和 Endpoints 验证</h3><p>Service 网络的核心是 Endpoints 对象：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查 CoreDNS Service 配置</span>
+</span></span><span style=display:flex><span>kubectl get svc -n kube-system | grep kube-dns
+</span></span><span style=display:flex><span>kubectl describe svc kube-dns -n kube-system
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查 Endpoints（最关键）</span>
+</span></span><span style=display:flex><span>kubectl get endpoints kube-dns -n kube-system
+</span></span><span style=display:flex><span>kubectl describe endpoints kube-dns -n kube-system
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 正常输出应包含：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Addresses: 10.244.0.2:53,10.244.1.2:53</span>
+</span></span></code></pre></div><p><strong>Endpoints 为空的常见原因</strong>：</p><ul><li>Pod 标签与 Service selector 不匹配</li><li>Pod 未通过就绪性检查</li><li>Pod 处于异常状态</li></ul><h3 id=24-iptables-规则深度分析>2.4 iptables 规则深度分析</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看 Service 相关的 iptables 规则</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -L -n | grep 10.96.0.3
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 KUBE-SERVICES 链</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -L KUBE-SERVICES -n
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看具体 Service 的转发规则</span>
+</span></span><span style=display:flex><span>sudo iptables -t nat -L KUBE-SVC-TCOU7JCQXEZGVUNU -n
+</span></span></code></pre></div><h3 id=25-service-网络故障修复>2.5 Service 网络故障修复</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 重启 kube-proxy（最常见的解决方案）</span>
+</span></span><span style=display:flex><span>kubectl rollout restart daemonset kube-proxy -n kube-system
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 强制重新创建 kube-proxy Pod</span>
+</span></span><span style=display:flex><span>kubectl delete pods -n kube-system -l k8s-app<span style=color:#f92672>=</span>kube-proxy
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证修复效果</span>
+</span></span><span style=display:flex><span>kubectl rollout status daemonset kube-proxy -n kube-system
+</span></span></code></pre></div><h2 id=第三部分coredns-配置问题的深度分析>第三部分：CoreDNS 配置问题的深度分析</h2><p>最有趣的发现是：DNS 配置错误导致的连锁反应远超预期。</p><h3 id=31-问题现象>3.1 问题现象</h3><p>原始配置中的问题：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 错误配置</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>forward . 233.5.5.5 114.114.114.114</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 修正配置  </span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>forward . 223.5.5.5 114.114.114.114</span>
+</span></span></code></pre></div><p><strong>现象</strong>：</p><ul><li>修改前：无法 ping CoreDNS Pod，无法 ping Service IP</li><li>修改后：一切恢复正常</li></ul><h3 id=32-技术原理深度解释>3.2 技术原理深度解释</h3><h4 id=coredns-健康检查机制>CoreDNS 健康检查机制</h4><p>CoreDNS Pod 包含内置的健康检查：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># Deployment 中的健康检查配置</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>livenessProbe</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>httpGet</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/health</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8080</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>timeoutSeconds</span>: <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>readinessProbe</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>httpGet</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>path</span>: <span style=color:#ae81ff>/ready  </span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>port</span>: <span style=color:#ae81ff>8181</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>timeoutSeconds</span>: <span style=color:#ae81ff>2</span>
+</span></span></code></pre></div><h4 id=故障传播链条>故障传播链条</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-txt data-lang=txt><span style=display:flex><span>233.5.5.5 DNS 服务器无响应
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>CoreDNS forward 插件查询阻塞  
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>健康检查端点超时
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>Pod 标记为 NotReady
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>从 Service Endpoints 中移除
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>Service IP 无可用后端
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>ping Service IP 失败
+</span></span></code></pre></div><h3 id=33-coredns-最佳实践配置>3.3 CoreDNS 最佳实践配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ConfigMap</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>coredns</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>kube-system</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>Corefile</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    .:53 {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        errors
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        health {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            lameduck 5s
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        ready
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        kubernetes cluster.local in-addr.arpa ip6.arpa {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            pods insecure
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            fallthrough in-addr.arpa ip6.arpa
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            ttl 30
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        prometheus :9153
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        # 生产环境推荐配置
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        forward . 223.5.5.5 223.6.6.6 114.114.114.114 8.8.8.8 {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            # 最大失败3次后标记服务器不可用
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            max_fails 3
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            # 服务器恢复检查间隔
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            expire 10s
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            # 健康检查间隔  
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            health_check 5s
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            # 负载均衡策略
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            policy round_robin
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            # 查询超时时间
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>            timeout 2s
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        cache 30
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        loop
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        reload
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>        loadbalance
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    }</span>    
+</span></span></code></pre></div><h3 id=34-coredns-关键参数详解>3.4 CoreDNS 关键参数详解</h3><table><thead><tr><th>参数</th><th>作用</th><th>推荐值</th><th>说明</th></tr></thead><tbody><tr><td>max_fails</td><td>最大失败次数</td><td>3</td><td>超过后标记服务器不可用</td></tr><tr><td>expire</td><td>恢复检查间隔</td><td>10s</td><td>不可用服务器的重试间隔</td></tr><tr><td>health_check</td><td>健康检查间隔</td><td>5s</td><td>主动检查上游 DNS 健康状态</td></tr><tr><td>timeout</td><td>查询超时时间</td><td>2s</td><td>单次 DNS 查询的超时限制</td></tr><tr><td>policy</td><td>负载均衡策略</td><td>round_robin</td><td>多个 DNS 服务器的分配算法</td></tr></tbody></table><h3 id=35-故障验证和测试>3.5 故障验证和测试</h3><h4 id=实时监控脚本>实时监控脚本</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>echo <span style=color:#e6db74>&#34;=== CoreDNS 健康监控 ===&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>while</span> true; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 检查 CoreDNS Pod 就绪状态</span>
+</span></span><span style=display:flex><span>    READY_PODS<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl -n kube-system get pods -l k8s-app<span style=color:#f92672>=</span>kube-dns <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.items[*].status.containerStatuses[*].ready}&#39;</span> | <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        tr <span style=color:#e6db74>&#39; &#39;</span> <span style=color:#e6db74>&#39;\n&#39;</span> | grep true | wc -l<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    TOTAL_PODS<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl -n kube-system get pods -l k8s-app<span style=color:#f92672>=</span>kube-dns <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        --no-headers | wc -l<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date<span style=color:#66d9ef>)</span><span style=color:#e6db74>: CoreDNS Ready: </span>$READY_PODS<span style=color:#e6db74>/</span>$TOTAL_PODS<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 检查 Service Endpoints</span>
+</span></span><span style=display:flex><span>    ENDPOINTS<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>kubectl -n kube-system get endpoints kube-dns <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>        -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.subsets[*].addresses[*].ip}&#39;</span> | wc -w<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date<span style=color:#66d9ef>)</span><span style=color:#e6db74>: Service Endpoints: </span>$ENDPOINTS<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> <span style=color:#e6db74>&#34;</span>$READY_PODS<span style=color:#e6db74>&#34;</span> -eq <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span> <span style=color:#f92672>||</span> <span style=color:#f92672>[</span> <span style=color:#e6db74>&#34;</span>$ENDPOINTS<span style=color:#e6db74>&#34;</span> -eq <span style=color:#ae81ff>0</span> <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;WARNING: CoreDNS service degraded!&#34;</span>
+</span></span><span style=display:flex><span>        kubectl -n kube-system get pods -l k8s-app<span style=color:#f92672>=</span>kube-dns
+</span></span><span style=display:flex><span>        kubectl -n kube-system get endpoints kube-dns
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    sleep <span style=color:#ae81ff>10</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>done</span>
+</span></span></code></pre></div><h4 id=dns-功能验证>DNS 功能验证</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 测试内部 DNS</span>
+</span></span><span style=display:flex><span>kubectl run dns-test --image<span style=color:#f92672>=</span>busybox --rm -it --restart<span style=color:#f92672>=</span>Never -- <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    nslookup kubernetes.default.svc.cluster.local
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试外部 DNS  </span>
+</span></span><span style=display:flex><span>kubectl run dns-test --image<span style=color:#f92672>=</span>busybox --rm -it --restart<span style=color:#f92672>=</span>Never -- <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    nslookup google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 直接测试 CoreDNS Service</span>
+</span></span><span style=display:flex><span>kubectl run dns-test --image<span style=color:#f92672>=</span>busybox --rm -it --restart<span style=color:#f92672>=</span>Never -- <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    nslookup google.com 10.96.0.10
+</span></span></code></pre></div><h2 id=第四部分综合排障方法论>第四部分：综合排障方法论</h2><h3 id=41-分层排障法>4.1 分层排障法</h3><p>Kubernetes 网络问题排查应该按层次进行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-txt data-lang=txt><span style=display:flex><span>应用层：DNS 解析、Service 发现
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>服务层：Service、Endpoints、kube-proxy
+</span></span><span style=display:flex><span>    ↓  
+</span></span><span style=display:flex><span>网络层：Pod 网络、CNI 插件
+</span></span><span style=display:flex><span>    ↓
+</span></span><span style=display:flex><span>系统层：iptables、路由、网卡
+</span></span></code></pre></div><h3 id=42-通用排障工具箱>4.2 通用排障工具箱</h3><h4 id=网络诊断容器>网络诊断容器</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Pod</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>network-debug</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>debug</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nicolaka/netshoot</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;sleep&#34;</span>, <span style=color:#e6db74>&#34;3600&#34;</span>]
+</span></span><span style=display:flex><span>  <span style=color:#f92672>hostNetwork</span>: <span style=color:#66d9ef>true</span>  <span style=color:#75715e># 可选：使用主机网络排查</span>
+</span></span></code></pre></div><h4 id=一键诊断脚本>一键诊断脚本</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>echo <span style=color:#e6db74>&#34;=== Kubernetes 网络全面诊断 ===&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;1. 集群基本信息：&#34;</span>
+</span></span><span style=display:flex><span>kubectl cluster-info
+</span></span><span style=display:flex><span>kubectl get nodes -o wide
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;2. 网络组件状态：&#34;</span>
+</span></span><span style=display:flex><span>kubectl get pods -n kube-system | grep -E <span style=color:#e6db74>&#34;(flannel|coredns|kube-proxy)&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;3. Service 网络状态：&#34;</span>
+</span></span><span style=display:flex><span>kubectl get svc -A | head -10
+</span></span><span style=display:flex><span>kubectl get endpoints -A | head -10
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;4. 宿主机网络配置：&#34;</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;IP Forward: </span><span style=color:#66d9ef>$(</span>cat /proc/sys/net/ipv4/ip_forward<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;MASQUERADE 规则数量: </span><span style=color:#66d9ef>$(</span>sudo iptables -t nat -L POSTROUTING -n | grep MASQUERADE | wc -l<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;5. DNS 配置检查：&#34;</span>
+</span></span><span style=display:flex><span>kubectl -n kube-system get cm coredns -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.data.Corefile}&#39;</span> | grep forward
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;6. 端到端测试：&#34;</span>
+</span></span><span style=display:flex><span>kubectl run connectivity-test --image<span style=color:#f92672>=</span>busybox --rm -it --restart<span style=color:#f92672>=</span>Never -- /bin/sh -c <span style=color:#e6db74>&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    echo &#39;Testing Pod to Node:&#39; &amp;&amp; ping -c 2 </span><span style=color:#66d9ef>$(</span>kubectl get nodes -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.items[0].status.addresses[0].address}&#39;</span><span style=color:#66d9ef>)</span><span style=color:#e6db74> &amp;&amp;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    echo &#39;Testing Pod to Service:&#39; &amp;&amp; ping -c 2 kubernetes.default &amp;&amp;  
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    echo &#39;Testing External DNS:&#39; &amp;&amp; nslookup google.com &amp;&amp;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    echo &#39;All tests completed&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;</span>
+</span></span></code></pre></div><h3 id=43-预防性监控>4.3 预防性监控</h3><h4 id=prometheus-监控指标>Prometheus 监控指标</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># CoreDNS 关键指标</span>
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>coredns_dns_request_duration_seconds</span>
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>coredns_dns_response_rcode_total  </span>
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>coredns_forward_request_duration_seconds</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># kube-proxy 指标  </span>
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>kubeproxy_sync_proxy_rules_duration_seconds</span>
+</span></span><span style=display:flex><span>- <span style=color:#ae81ff>kubeproxy_network_programming_duration_seconds</span>
+</span></span></code></pre></div><h4 id=告警规则示例>告警规则示例</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>groups</span>:
+</span></span><span style=display:flex><span>- <span style=color:#f92672>name</span>: <span style=color:#ae81ff>k8s-network</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>rules</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>CoreDNSDown</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>up{job=&#34;kube-dns&#34;} == 0</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>ServiceEndpointsEmpty</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>kube_service_status_load_balancer_ingress == 0</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>for</span>: <span style=color:#ae81ff>2m</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>DNSLatencyHigh  </span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>coredns_dns_request_duration_seconds{quantile=&#34;0.99&#34;} &gt; 1</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>for</span>: <span style=color:#ae81ff>5m</span>
+</span></span></code></pre></div><h2 id=第五部分生产环境最佳实践>第五部分：生产环境最佳实践</h2><h3 id=51-网络配置最佳实践>5.1 网络配置最佳实践</h3><h4 id=coredns-生产配置>CoreDNS 生产配置</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 高可用 CoreDNS 配置</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>forward . 223.5.5.5 223.6.6.6 114.114.114.114 8.8.8.8 {</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>max_fails 2</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>expire 5s  </span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>health_check 3s</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>timeout 1s</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>policy round_robin</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 合理的缓存配置</span>
+</span></span><span style=display:flex><span><span style=color:#ae81ff>cache 30 {</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>success 9984 30</span>
+</span></span><span style=display:flex><span>    <span style=color:#ae81ff>denial 9984 10</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=kube-proxy-优化>kube-proxy 优化</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 对于大规模集群，推荐 IPVS 模式</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>mode</span>: <span style=color:#e6db74>&#34;ipvs&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>ipvs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>scheduler</span>: <span style=color:#e6db74>&#34;rr&#34;</span>  <span style=color:#75715e># 轮询算法</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>syncPeriod</span>: <span style=color:#e6db74>&#34;30s&#34;</span>
+</span></span></code></pre></div><h3 id=52-故障处理流程>5.2 故障处理流程</h3><ol><li><strong>快速恢复</strong>：重启相关组件</li><li><strong>根因分析</strong>：收集日志和配置</li><li><strong>修复验证</strong>：端到端测试</li><li><strong>预防改进</strong>：更新监控和文档</li></ol><h3 id=53-容量规划建议>5.3 容量规划建议</h3><table><thead><tr><th>组件</th><th>建议配置</th><th>扩展策略</th></tr></thead><tbody><tr><td>CoreDNS</td><td>2 副本起步</td><td>每 50 节点增加 1 副本</td></tr><tr><td>kube-proxy</td><td>DaemonSet</td><td>每节点一个实例</td></tr><tr><td>Flannel</td><td>DaemonSet</td><td>每节点一个实例</td></tr></tbody></table><h2 id=总结>总结</h2><p>Kubernetes 网络排障需要系统性思维和分层诊断方法。本文通过一个真实案例，展示了从基础网络连通性到 DNS 配置问题的完整排查过程。</p><p><strong>关键要点</strong>：</p><ol><li><strong>分层诊断</strong>：从应用层到系统层逐步排查</li><li><strong>工具导向</strong>：善用 kubectl、iptables、dig 等工具</li><li><strong>配置验证</strong>：DNS 配置错误影响超出预期</li><li><strong>监控先行</strong>：建立完善的网络监控体系</li><li><strong>文档化</strong>：将排障过程标准化</li></ol><p><strong>经验总结</strong>：</p><ul><li>80% 的外网访问问题源于 MASQUERADE 规则缺失</li><li>70% 的 Service 网络问题与 kube-proxy 相关</li><li>DNS 配置错误会导致意想不到的连锁反应</li><li>健康检查机制是理解故障传播的关键</li></ul><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/linux-tools/?ref=footer"><span>« Previous</span><br>Linux 网络工具完全指南</a></div><div class=next-post><a href="https://yezihack.github.io/mysql-buffer/?ref=footer"><span>Next »</span><br>MySQL关键参数优化全面指南：从理论到实践</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#案例背景>案例背景</a></li><li><a href=#第一部分容器外网访问故障排查>第一部分：容器外网访问故障排查</a><ul><li><a href=#11-基础网络连通性检查>1.1 基础网络连通性检查</a></li><li><a href=#12-flannel-网络状态检查>1.2 Flannel 网络状态检查</a></li><li><a href=#13-宿主机网络配置验证>1.3 宿主机网络配置验证</a></li><li><a href=#14-iptables-规则诊断与修复>1.4 iptables 规则诊断与修复</a></li></ul></li><li><a href=#第二部分service-网络故障深度排查>第二部分：Service 网络故障深度排查</a><ul><li><a href=#21-service-网络架构理解>2.1 Service 网络架构理解</a></li><li><a href=#22-kube-proxy-状态检查>2.2 kube-proxy 状态检查</a></li><li><a href=#23-service-和-endpoints-验证>2.3 Service 和 Endpoints 验证</a></li><li><a href=#24-iptables-规则深度分析>2.4 iptables 规则深度分析</a></li><li><a href=#25-service-网络故障修复>2.5 Service 网络故障修复</a></li></ul></li><li><a href=#第三部分coredns-配置问题的深度分析>第三部分：CoreDNS 配置问题的深度分析</a><ul><li><a href=#31-问题现象>3.1 问题现象</a></li><li><a href=#32-技术原理深度解释>3.2 技术原理深度解释</a></li><li><a href=#33-coredns-最佳实践配置>3.3 CoreDNS 最佳实践配置</a></li><li><a href=#34-coredns-关键参数详解>3.4 CoreDNS 关键参数详解</a></li><li><a href=#35-故障验证和测试>3.5 故障验证和测试</a></li></ul></li><li><a href=#第四部分综合排障方法论>第四部分：综合排障方法论</a><ul><li><a href=#41-分层排障法>4.1 分层排障法</a></li><li><a href=#42-通用排障工具箱>4.2 通用排障工具箱</a></li><li><a href=#43-预防性监控>4.3 预防性监控</a></li></ul></li><li><a href=#第五部分生产环境最佳实践>第五部分：生产环境最佳实践</a><ul><li><a href=#51-网络配置最佳实践>5.1 网络配置最佳实践</a></li><li><a href=#52-故障处理流程>5.2 故障处理流程</a></li><li><a href=#53-容量规划建议>5.3 容量规划建议</a></li></ul></li><li><a href=#总结>总结</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>
