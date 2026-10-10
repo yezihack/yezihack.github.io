@@ -32,7 +32,7 @@ UUID=f72ecf66-d8b0-456b-9e61-05297b1d4131
 DEVICE=ens33
 ONBOOT=yes # 开机启动
 IPADDR=192.168.9.100 # 设置本机IP
-GATEWAY=192.168.9.2 # 设置本机的网关
+GATEWAY=192.168.9.2 # 设置本机的网关,这是必须是2，ipconfig win机已经占用了1
 NETMASK=255.255.255.0 # 设置本机的掩码
 
 #  设置DNS
@@ -140,7 +140,19 @@ yum install -y open-vm-tools
 vmhgfs-fuse /mnt/hgfs/
 ```
 
-## 6. 参考
+## 6. 远程工具无法连接
+
+```sh
+# 查看这二个参数是否与下面一致。
+grep -E "^(UseDNS|GSSAPIAuthentication)" /etc/ssh/sshd_config
+GSSAPIAuthentication no
+UseDNS no
+
+# 不一致则修改
+vi /etc/ssh/sshd_config
+```
+
+## 7. 参考
 
 - [windows安装vmware.centos7工作流程](https://www.jianshu.com/p/4cbb6d402bcc)
 - [VMware Workstation Pro 15安装CentOS7](https://www.jianshu.com/p/abeb59e3cf61)
