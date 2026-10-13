@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工具软件 on 空树之空</title><link>https://yezihack.github.io/categories/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/</link><description>Recent content in 工具软件 on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 29 Jul 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/categories/%E5%B7%A5%E5%85%B7%E8%BD%AF%E4%BB%B6/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows 实用工具推荐：高效办公与日常使用的好帮手</title><link>https://yezihack.github.io/windows-tools-recommend/</link><pubDate>Wed, 29 Jul 2026 10:00:00 +0800</pubDate><guid>https://yezihack.github.io/windows-tools-recommend/</guid><description>日常使用 Windows 时，少数几个真正好用的软件，就能显著提升工作效率。下面整理了一组我认为值得安装的实用工具，覆盖卸载、磁盘分析、截图、搜索、影音、杀毒、压缩和密码管理等常见场景。
+1. Geek Uninstaller：干净卸载，清理残留 如果你经常安装和卸载软件，Geek Uninstaller 会非常实用。
+文件大小：7.18MB 如何安装：绿色 适合场景：卸载软件时清理残留文件和注册表项 优点：比系统自带卸载更彻底，界面简洁 官网：https://geekuninstaller.com/ 对于长期使用电脑的人来说，很多软件卸载后仍会留下垃圾文件，这个工具能帮你把“残留”清理得更干净。
+2. WizTree：磁盘空间分析，找大文件更快 WizTree 是一款极其高效的磁盘空间分析工具。
+文件大小：4.6MB 如何安装：安装 适合场景：快速找出占用空间最大的文件和目录 优点：扫描速度非常快，界面直观 官网：https://diskanalyzer.com/ 备选地址：https://github.com/Ayx03/WizTree/releases 如果你的电脑硬盘越来越满，先用 WizTree 看看哪些文件最占地方，往往能省下不少时间。
+3. Snipaste：截图与贴图，简单好用 Snipaste 非常适合做屏幕截图、标注和贴图。
+文件大小：46MB 如何安装：绿色 适合场景：记录问题、做教程截图、标记重点内容 优点：截图速度快，支持贴在屏幕上随时查看 官网：https://zh.snipaste.com/ 对于写文章、做教程、汇报内容的人来说，这个工具非常顺手。
+4. Listary：文件搜索和快速启动，效率利器 Listary 可以把文件搜索和程序启动体验提升到一个新的层次。
+大小：12.3MB 如何安装：安装 适合场景：快速定位文件、文件夹、应用程序 优点：搜索速度快，操作非常流畅 官网：https://www.listary.com/ 如果你常常在文件系统里来回找文件，Listary 会让你的操作更轻松。
+5. PotPlayer：影音播放，兼容性强 PotPlayer 是一款非常受欢迎的本地视频播放器。
+大小：54.6MB 如何安装：安装 适合场景：播放电影、电视剧、各种格式视频及3D眼镜 优点：文字字幕、兼容性强，支持丰富的播放设置 官网：https://potplayer.tv/ 即使你已经有其他播放器，PotPlayer 也值得备用，尤其是遇到特殊格式时。
+6. 火绒：杀毒与安全防护 火绒安全软件以轻量、简洁著称，适合大多数普通用户。
+大小：65MB 如何安装：安装 适合场景：日常杀毒、防护和系统清理 优点：占用资源低，操作简单 官网：https://www.huorong.cn/ 如果你不想安装一套过于复杂的安全软件，火绒是一个不错的选择。</description></item></channel></rss>

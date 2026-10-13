@@ -1,0 +1,455 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Linux 网络工具完全指南</title><meta property="og:title" content="百里觅码 - Linux 网络工具完全指南"><meta name=twitter:title content="百里觅码 - Linux 网络工具完全指南"><meta itemprop=name content="百里觅码 - Linux 网络工具完全指南"><meta name=application-name content="百里觅码 - Linux 网络工具完全指南"><meta property="og:site_name" content="空树之空"><meta name=description content="深入了解 Linux 网络工具的使用方法，包括 netstat、ss、lsof、tcpdump 等命令的详细说明和网络故障排查实战案例"><meta itemprop=description content="深入了解 Linux 网络工具的使用方法，包括 netstat、ss、lsof、tcpdump 等命令的详细说明和网络故障排查实战案例"><meta property="og:description" content="深入了解 Linux 网络工具的使用方法，包括 netstat、ss、lsof、tcpdump 等命令的详细说明和网络故障排查实战案例"><meta name=twitter:description content="深入了解 Linux 网络工具的使用方法，包括 netstat、ss、lsof、tcpdump 等命令的详细说明和网络故障排查实战案例"><base href=https://yezihack.github.io/linux-tools/><link rel=canonical href=https://yezihack.github.io/linux-tools/ itemprop=url><meta name=url content="https://yezihack.github.io/linux-tools/"><meta name=twitter:url content="https://yezihack.github.io/linux-tools/"><meta property="og:url" content="https://yezihack.github.io/linux-tools/"><meta property="og:updated_time" content="5009-05-10T911:33:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="5009-05-09T953:28:25+0800"><meta property="article:published_time" content="5009-05-09T953:28:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Linux 网络工具完全指南","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-09-05","description":"深入了解 Linux 网络工具的使用方法，包括 netstat、ss、lsof、tcpdump 等命令的详细说明和网络故障排查实战案例","wordCount":"1399","mainEntityOfPage":"True","dateModified":"2025-09-05","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/linux-tools/>Linux 网络工具完全指南</a></h1><time datetime=2025-09-05T09:53:28+0800 class=post-date>September 5, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>1399</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>7 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-linux><a href=https://yezihack.github.io/tags/linux>linux</a></li><li class=tag-网络工具><a href=https://yezihack.github.io/tags/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7>网络工具</a></li><li class=tag-netstat><a href=https://yezihack.github.io/tags/netstat>netstat</a></li><li class=tag-ss><a href=https://yezihack.github.io/tags/ss>ss</a></li><li class=tag-lsof><a href=https://yezihack.github.io/tags/lsof>lsof</a></li><li class=tag-tcpdump><a href=https://yezihack.github.io/tags/tcpdump>tcpdump</a></li><li class=tag-网络排障><a href=https://yezihack.github.io/tags/%E7%BD%91%E7%BB%9C%E6%8E%92%E9%9A%9C>网络排障</a></li></ul></div><p>Linux 系统提供了丰富的网络工具来帮助管理员监控、诊断和排查网络问题。本文将详细介绍常用的网络工具使用方法，并提供实际的故障排查案例。</p><h2 id=概述>概述</h2><p>网络故障排查是系统管理员的重要技能。掌握以下工具能够帮助快速定位和解决网络问题：</p><ul><li><strong>netstat</strong>：显示网络连接、路由表和网络接口信息</li><li><strong>ss</strong>：现代化的 netstat 替代工具，性能更好</li><li><strong>lsof</strong>：列出打开的文件和网络连接</li><li><strong>tcpdump</strong>：网络数据包捕获和分析工具</li><li><strong>ping/traceroute</strong>：网络连通性测试工具</li><li><strong>nmap</strong>：网络扫描和端口检测工具</li></ul><h2 id=netstat-命令详解>netstat 命令详解</h2><h3 id=基本语法>基本语法</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>netstat <span style=color:#f92672>[</span>选项<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h3 id=常用选项>常用选项</h3><table><thead><tr><th>选项</th><th>描述</th></tr></thead><tbody><tr><td>-a</td><td>显示所有连接和监听端口</td></tr><tr><td>-t</td><td>显示 TCP 连接</td></tr><tr><td>-u</td><td>显示 UDP 连接</td></tr><tr><td>-n</td><td>以数字形式显示地址和端口</td></tr><tr><td>-l</td><td>只显示监听状态的端口</td></tr><tr><td>-p</td><td>显示进程 ID 和名称</td></tr><tr><td>-r</td><td>显示路由表</td></tr><tr><td>-i</td><td>显示网络接口统计</td></tr><tr><td>-s</td><td>显示网络统计信息</td></tr></tbody></table><h3 id=实用示例>实用示例</h3><h4 id=1-查看所有网络连接>1. 查看所有网络连接</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示所有 TCP 和 UDP 连接</span>
+</span></span><span style=display:flex><span>netstat -an
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示所有 TCP 连接，包含进程信息</span>
+</span></span><span style=display:flex><span>netstat -antp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示所有 UDP 连接，包含进程信息</span>
+</span></span><span style=display:flex><span>netstat -anup
+</span></span></code></pre></div><h4 id=2-查看监听端口>2. 查看监听端口</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看所有监听端口</span>
+</span></span><span style=display:flex><span>netstat -ln
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 TCP 监听端口</span>
+</span></span><span style=display:flex><span>netstat -lnt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 UDP 监听端口</span>
+</span></span><span style=display:flex><span>netstat -lnu
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看监听端口及对应进程</span>
+</span></span><span style=display:flex><span>netstat -lntp
+</span></span></code></pre></div><h4 id=3-查看特定端口>3. 查看特定端口</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看端口 80 的连接</span>
+</span></span><span style=display:flex><span>netstat -an | grep :80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看端口 22 的监听状态</span>
+</span></span><span style=display:flex><span>netstat -lnt | grep :22
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看某个进程的网络连接</span>
+</span></span><span style=display:flex><span>netstat -antp | grep nginx
+</span></span></code></pre></div><h4 id=4-网络统计信息>4. 网络统计信息</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示网络统计</span>
+</span></span><span style=display:flex><span>netstat -s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 TCP 统计</span>
+</span></span><span style=display:flex><span>netstat -st
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 UDP 统计</span>
+</span></span><span style=display:flex><span>netstat -su
+</span></span></code></pre></div><h4 id=5-路由表信息>5. 路由表信息</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示路由表</span>
+</span></span><span style=display:flex><span>netstat -r
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示路由表（数字格式）</span>
+</span></span><span style=display:flex><span>netstat -rn
+</span></span></code></pre></div><h2 id=ss-命令详解>ss 命令详解</h2><p><code>ss</code> 是现代 Linux 系统推荐使用的网络状态查看工具，比 <code>netstat</code> 更快更强大。</p><h3 id=基本语法-1>基本语法</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>ss <span style=color:#f92672>[</span>选项<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>过滤器<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h3 id=常用选项-1>常用选项</h3><table><thead><tr><th>选项</th><th>描述</th></tr></thead><tbody><tr><td>-a</td><td>显示所有套接字</td></tr><tr><td>-l</td><td>显示监听状态的套接字</td></tr><tr><td>-t</td><td>显示 TCP 套接字</td></tr><tr><td>-u</td><td>显示 UDP 套接字</td></tr><tr><td>-n</td><td>不解析服务名称</td></tr><tr><td>-p</td><td>显示进程信息</td></tr><tr><td>-s</td><td>显示套接字统计</td></tr><tr><td>-4</td><td>只显示 IPv4</td></tr><tr><td>-6</td><td>只显示 IPv6</td></tr></tbody></table><h3 id=实用示例-1>实用示例</h3><h4 id=1-基本查看>1. 基本查看</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示所有连接</span>
+</span></span><span style=display:flex><span>ss -a
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示所有 TCP 连接</span>
+</span></span><span style=display:flex><span>ss -at
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示所有 UDP 连接</span>
+</span></span><span style=display:flex><span>ss -au
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示监听端口</span>
+</span></span><span style=display:flex><span>ss -lt
+</span></span></code></pre></div><h4 id=2-显示进程信息>2. 显示进程信息</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示 TCP 连接及进程</span>
+</span></span><span style=display:flex><span>ss -ltp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 UDP 连接及进程</span>
+</span></span><span style=display:flex><span>ss -lup
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示所有连接及进程</span>
+</span></span><span style=display:flex><span>ss -ap
+</span></span></code></pre></div><h4 id=3-过滤特定端口>3. 过滤特定端口</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看端口 80 的连接</span>
+</span></span><span style=display:flex><span>ss -tn sport <span style=color:#f92672>=</span> :80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看端口 443 的连接</span>
+</span></span><span style=display:flex><span>ss -tn dport <span style=color:#f92672>=</span> :443
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看端口范围</span>
+</span></span><span style=display:flex><span>ss -tn sport ge :1024
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看特定状态的连接</span>
+</span></span><span style=display:flex><span>ss -t state established
+</span></span></code></pre></div><h4 id=4-高级过滤>4. 高级过滤</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看连接到特定 IP 的连接</span>
+</span></span><span style=display:flex><span>ss -tn dst 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看来自特定 IP 的连接</span>
+</span></span><span style=display:flex><span>ss -tn src 192.168.1.0/24
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 组合条件查询</span>
+</span></span><span style=display:flex><span>ss -tn <span style=color:#e6db74>&#39;( dport = :80 or dport = :443 )&#39;</span>
+</span></span></code></pre></div><h4 id=5-统计信息>5. 统计信息</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示套接字统计</span>
+</span></span><span style=display:flex><span>ss -s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示内存使用情况</span>
+</span></span><span style=display:flex><span>ss -m
+</span></span></code></pre></div><h2 id=lsof-命令详解>lsof 命令详解</h2><p><code>lsof</code>（List Open Files）可以列出系统中被进程打开的文件，包括网络连接。</p><h3 id=基本语法-2>基本语法</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>lsof <span style=color:#f92672>[</span>选项<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>文件<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h3 id=网络相关选项>网络相关选项</h3><table><thead><tr><th>选项</th><th>描述</th></tr></thead><tbody><tr><td>-i</td><td>显示网络连接</td></tr><tr><td>-P</td><td>显示端口号而不是服务名</td></tr><tr><td>-n</td><td>显示 IP 地址而不是主机名</td></tr><tr><td>-p PID</td><td>显示指定进程的文件</td></tr><tr><td>-c 命令</td><td>显示指定命令的文件</td></tr><tr><td>-u 用户</td><td>显示指定用户的文件</td></tr></tbody></table><h3 id=实用示例-2>实用示例</h3><h4 id=1-查看网络连接>1. 查看网络连接</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 显示所有网络连接</span>
+</span></span><span style=display:flex><span>lsof -i
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 TCP 连接</span>
+</span></span><span style=display:flex><span>lsof -i tcp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 UDP 连接</span>
+</span></span><span style=display:flex><span>lsof -i udp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 IPv4 连接</span>
+</span></span><span style=display:flex><span>lsof -i <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示 IPv6 连接</span>
+</span></span><span style=display:flex><span>lsof -i <span style=color:#ae81ff>6</span>
+</span></span></code></pre></div><h4 id=2-查看特定端口>2. 查看特定端口</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看端口 80 的使用情况</span>
+</span></span><span style=display:flex><span>lsof -i :80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看端口 22 的使用情况</span>
+</span></span><span style=display:flex><span>lsof -i :22
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看端口范围</span>
+</span></span><span style=display:flex><span>lsof -i :1-1024
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 TCP 端口 80</span>
+</span></span><span style=display:flex><span>lsof -i tcp:80
+</span></span></code></pre></div><h4 id=3-查看特定进程>3. 查看特定进程</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看进程 ID 1234 打开的文件</span>
+</span></span><span style=display:flex><span>lsof -p <span style=color:#ae81ff>1234</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 nginx 进程的网络连接</span>
+</span></span><span style=display:flex><span>lsof -c nginx -i
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看用户 www-data 的网络连接</span>
+</span></span><span style=display:flex><span>lsof -u www-data -i
+</span></span></code></pre></div><h4 id=4-查看特定-ip>4. 查看特定 IP</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看连接到特定 IP 的连接</span>
+</span></span><span style=display:flex><span>lsof -i @192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看本机特定 IP 的连接</span>
+</span></span><span style=display:flex><span>lsof -i @127.0.0.1:80
+</span></span></code></pre></div><h4 id=5-组合查询>5. 组合查询</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看 nginx 进程在端口 80 的连接</span>
+</span></span><span style=display:flex><span>lsof -c nginx -i :80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看所有 ESTABLISHED 状态的连接</span>
+</span></span><span style=display:flex><span>lsof -i -sTCP:ESTABLISHED
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看所有 LISTEN 状态的连接</span>
+</span></span><span style=display:flex><span>lsof -i -sTCP:LISTEN
+</span></span></code></pre></div><h2 id=tcpdump-命令详解>tcpdump 命令详解</h2><p><code>tcpdump</code> 是强大的网络数据包捕获工具，用于分析网络流量。</p><h3 id=基本语法-3>基本语法</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>tcpdump <span style=color:#f92672>[</span>选项<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>过滤表达式<span style=color:#f92672>]</span>
+</span></span></code></pre></div><h3 id=常用选项-2>常用选项</h3><table><thead><tr><th>选项</th><th>描述</th></tr></thead><tbody><tr><td>-i 接口</td><td>指定网络接口</td></tr><tr><td>-n</td><td>不解析主机名</td></tr><tr><td>-nn</td><td>不解析主机名和端口名</td></tr><tr><td>-v</td><td>详细输出</td></tr><tr><td>-vv</td><td>更详细输出</td></tr><tr><td>-c 数量</td><td>捕获指定数量的包</td></tr><tr><td>-w 文件</td><td>保存到文件</td></tr><tr><td>-r 文件</td><td>从文件读取</td></tr><tr><td>-X</td><td>以十六进制和 ASCII 显示包内容</td></tr><tr><td>-s 长度</td><td>设置捕获包的长度</td></tr></tbody></table><h3 id=实用示例-3>实用示例</h3><h4 id=1-基本捕获>1. 基本捕获</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 捕获所有网络包</span>
+</span></span><span style=display:flex><span>tcpdump
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获指定接口的包</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获 10 个包后停止</span>
+</span></span><span style=display:flex><span>tcpdump -c <span style=color:#ae81ff>10</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 详细显示包信息</span>
+</span></span><span style=display:flex><span>tcpdump -v
+</span></span></code></pre></div><h4 id=2-协议过滤>2. 协议过滤</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 只捕获 TCP 包</span>
+</span></span><span style=display:flex><span>tcpdump tcp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 只捕获 UDP 包</span>
+</span></span><span style=display:flex><span>tcpdump udp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 只捕获 ICMP 包</span>
+</span></span><span style=display:flex><span>tcpdump icmp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 只捕获 ARP 包</span>
+</span></span><span style=display:flex><span>tcpdump arp
+</span></span></code></pre></div><h4 id=3-主机过滤>3. 主机过滤</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 捕获与特定主机的通信</span>
+</span></span><span style=display:flex><span>tcpdump host 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获来自特定主机的包</span>
+</span></span><span style=display:flex><span>tcpdump src host 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获发往特定主机的包</span>
+</span></span><span style=display:flex><span>tcpdump dst host 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获特定网段的包</span>
+</span></span><span style=display:flex><span>tcpdump net 192.168.1.0/24
+</span></span></code></pre></div><h4 id=4-端口过滤>4. 端口过滤</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 捕获特定端口的包</span>
+</span></span><span style=display:flex><span>tcpdump port <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获源端口为 80 的包</span>
+</span></span><span style=display:flex><span>tcpdump src port <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获目标端口为 80 的包</span>
+</span></span><span style=display:flex><span>tcpdump dst port <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获端口范围的包</span>
+</span></span><span style=display:flex><span>tcpdump portrange 1-1024
+</span></span></code></pre></div><h4 id=5-复杂过滤>5. 复杂过滤</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 捕获 HTTP 流量</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 <span style=color:#e6db74>&#39;tcp port 80&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获 SSH 流量</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 <span style=color:#e6db74>&#39;tcp port 22&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获特定主机的 HTTP 流量</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 <span style=color:#e6db74>&#39;host 192.168.1.100 and tcp port 80&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获非 SSH 的 TCP 流量</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 <span style=color:#e6db74>&#39;tcp and not port 22&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 捕获 SYN 包</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 <span style=color:#e6db74>&#39;tcp[tcpflags] &amp; tcp-syn != 0&#39;</span>
+</span></span></code></pre></div><h4 id=6-保存和读取>6. 保存和读取</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 保存捕获的包到文件</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 -w capture.pcap
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 从文件读取包</span>
+</span></span><span style=display:flex><span>tcpdump -r capture.pcap
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 保存特定条件的包</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 -w http.pcap <span style=color:#e6db74>&#39;tcp port 80&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 实时显示并保存</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 -w capture.pcap <span style=color:#e6db74>&#39;tcp port 80&#39;</span> &amp;
+</span></span></code></pre></div><h2 id=其他常用网络工具>其他常用网络工具</h2><h3 id=ping-命令>ping 命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 基本 ping</span>
+</span></span><span style=display:flex><span>ping google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 指定次数</span>
+</span></span><span style=display:flex><span>ping -c <span style=color:#ae81ff>4</span> google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 指定间隔</span>
+</span></span><span style=display:flex><span>ping -i <span style=color:#ae81ff>2</span> google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 指定包大小</span>
+</span></span><span style=display:flex><span>ping -s <span style=color:#ae81ff>1024</span> google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置超时时间</span>
+</span></span><span style=display:flex><span>ping -W <span style=color:#ae81ff>3</span> google.com
+</span></span></code></pre></div><h3 id=traceroute-命令>traceroute 命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 跟踪路由</span>
+</span></span><span style=display:flex><span>traceroute google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用 ICMP 包</span>
+</span></span><span style=display:flex><span>traceroute -I google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用 TCP 包</span>
+</span></span><span style=display:flex><span>traceroute -T -p <span style=color:#ae81ff>80</span> google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置最大跳数</span>
+</span></span><span style=display:flex><span>traceroute -m <span style=color:#ae81ff>15</span> google.com
+</span></span></code></pre></div><h3 id=nmap-命令>nmap 命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 扫描主机</span>
+</span></span><span style=display:flex><span>nmap 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 扫描端口范围</span>
+</span></span><span style=display:flex><span>nmap -p 1-1000 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 扫描网段</span>
+</span></span><span style=display:flex><span>nmap 192.168.1.0/24
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># TCP SYN 扫描</span>
+</span></span><span style=display:flex><span>nmap -sS 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># UDP 扫描</span>
+</span></span><span style=display:flex><span>nmap -sU 192.168.1.100
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务版本检测</span>
+</span></span><span style=display:flex><span>nmap -sV 192.168.1.100
+</span></span></code></pre></div><h3 id=curl-和-wget>curl 和 wget</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 测试 HTTP 连接</span>
+</span></span><span style=display:flex><span>curl -I http://example.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试 HTTPS 连接</span>
+</span></span><span style=display:flex><span>curl -I https://example.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 显示详细信息</span>
+</span></span><span style=display:flex><span>curl -v http://example.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试特定端口</span>
+</span></span><span style=display:flex><span>curl telnet://192.168.1.100:80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 下载文件</span>
+</span></span><span style=display:flex><span>wget http://example.com/file.txt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试下载速度</span>
+</span></span><span style=display:flex><span>wget --spider http://example.com
+</span></span></code></pre></div><h2 id=网络故障排查实战案例>网络故障排查实战案例</h2><h3 id=案例-1web-服务无法访问>案例 1：Web 服务无法访问</h3><p><strong>问题描述</strong>：用户反馈无法访问 Web 服务器</p><p><strong>排查步骤</strong>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 检查服务是否运行</span>
+</span></span><span style=display:flex><span>systemctl status nginx
+</span></span><span style=display:flex><span>ps aux | grep nginx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 检查端口是否监听</span>
+</span></span><span style=display:flex><span>ss -lnt | grep :80
+</span></span><span style=display:flex><span>netstat -lnt | grep :80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 检查防火墙</span>
+</span></span><span style=display:flex><span>iptables -L
+</span></span><span style=display:flex><span>firewall-cmd --list-all
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 测试本地连接</span>
+</span></span><span style=display:flex><span>curl -I http://localhost
+</span></span><span style=display:flex><span>telnet localhost <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 检查网络连通性</span>
+</span></span><span style=display:flex><span>ping 服务器IP
+</span></span><span style=display:flex><span>traceroute 服务器IP
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 分析访问日志</span>
+</span></span><span style=display:flex><span>tail -f /var/log/nginx/access.log
+</span></span><span style=display:flex><span>tail -f /var/log/nginx/error.log
+</span></span></code></pre></div><h3 id=案例-2网络连接异常缓慢>案例 2：网络连接异常缓慢</h3><p><strong>问题描述</strong>：网络连接建立缓慢，响应时间长</p><p><strong>排查步骤</strong>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 检查网络统计</span>
+</span></span><span style=display:flex><span>ss -s
+</span></span><span style=display:flex><span>netstat -s
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 查看连接状态分布</span>
+</span></span><span style=display:flex><span>ss -tan | awk <span style=color:#e6db74>&#39;{print $1}&#39;</span> | sort | uniq -c
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 检查 TIME_WAIT 连接数</span>
+</span></span><span style=display:flex><span>ss -tan | grep TIME-WAIT | wc -l
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 查看网络接口统计</span>
+</span></span><span style=display:flex><span>cat /proc/net/dev
+</span></span><span style=display:flex><span>ip -s link show
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 检查 TCP 参数</span>
+</span></span><span style=display:flex><span>sysctl net.ipv4.tcp_fin_timeout
+</span></span><span style=display:flex><span>sysctl net.ipv4.tcp_tw_reuse
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 抓包分析</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 -n <span style=color:#e6db74>&#39;tcp port 80&#39;</span> -c <span style=color:#ae81ff>100</span>
+</span></span></code></pre></div><h3 id=案例-3端口占用问题>案例 3：端口占用问题</h3><p><strong>问题描述</strong>：启动服务时提示端口已被占用</p><p><strong>排查步骤</strong>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 查看端口占用情况</span>
+</span></span><span style=display:flex><span>lsof -i :80
+</span></span><span style=display:flex><span>ss -lntp | grep :80
+</span></span><span style=display:flex><span>netstat -lntp | grep :80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 查看进程详细信息</span>
+</span></span><span style=display:flex><span>ps aux | grep 进程ID
+</span></span><span style=display:flex><span>cat /proc/进程ID/cmdline
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 查看进程打开的所有文件</span>
+</span></span><span style=display:flex><span>lsof -p 进程ID
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 检查服务配置</span>
+</span></span><span style=display:flex><span>systemctl status 服务名
+</span></span><span style=display:flex><span>journalctl -u 服务名
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 强制释放端口（谨慎使用）</span>
+</span></span><span style=display:flex><span>kill -9 进程ID
+</span></span><span style=display:flex><span>fuser -k 80/tcp
+</span></span></code></pre></div><h3 id=案例-4dns-解析问题>案例 4：DNS 解析问题</h3><p><strong>问题描述</strong>：域名无法解析或解析缓慢</p><p><strong>排查步骤</strong>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 测试 DNS 解析</span>
+</span></span><span style=display:flex><span>nslookup google.com
+</span></span><span style=display:flex><span>dig google.com
+</span></span><span style=display:flex><span>host google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 检查 DNS 配置</span>
+</span></span><span style=display:flex><span>cat /etc/resolv.conf
+</span></span><span style=display:flex><span>cat /etc/hosts
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 测试不同 DNS 服务器</span>
+</span></span><span style=display:flex><span>dig @8.8.8.8 google.com
+</span></span><span style=display:flex><span>dig @114.114.114.114 google.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 检查 DNS 缓存</span>
+</span></span><span style=display:flex><span>systemctl status systemd-resolved
+</span></span><span style=display:flex><span>resolvectl status
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 清除 DNS 缓存</span>
+</span></span><span style=display:flex><span>systemctl flush-dns
+</span></span><span style=display:flex><span>resolvectl flush-caches
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 跟踪 DNS 查询</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 port <span style=color:#ae81ff>53</span>
+</span></span></code></pre></div><h3 id=案例-5网络丢包问题>案例 5：网络丢包问题</h3><p><strong>问题描述</strong>：网络传输出现丢包现象</p><p><strong>排查步骤</strong>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 检查网络接口错误</span>
+</span></span><span style=display:flex><span>ip -s link show
+</span></span><span style=display:flex><span>cat /proc/net/dev
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 使用 ping 测试丢包</span>
+</span></span><span style=display:flex><span>ping -c <span style=color:#ae81ff>100</span> 目标IP
+</span></span><span style=display:flex><span>mtr 目标IP
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 检查网络缓冲区</span>
+</span></span><span style=display:flex><span>cat /proc/sys/net/core/rmem_max
+</span></span><span style=display:flex><span>cat /proc/sys/net/core/wmem_max
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 查看网络统计</span>
+</span></span><span style=display:flex><span>netstat -s | grep -i drop
+</span></span><span style=display:flex><span>netstat -s | grep -i error
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 抓包分析</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 -n -c <span style=color:#ae81ff>1000</span> | grep -i error
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 检查硬件状态</span>
+</span></span><span style=display:flex><span>ethtool eth0
+</span></span><span style=display:flex><span>dmesg | grep -i network
+</span></span></code></pre></div><h2 id=网络监控脚本>网络监控脚本</h2><h3 id=端口监控脚本>端口监控脚本</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e># 监控关键端口状态</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>PORTS<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;22 80 443 3306&#34;</span>
+</span></span><span style=display:flex><span>LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/var/log/port_monitor.log&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>for</span> port in $PORTS; <span style=color:#66d9ef>do</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> ss -lnt | grep -q <span style=color:#e6db74>&#34;:</span>$port<span style=color:#e6db74> &#34;</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date<span style=color:#66d9ef>)</span><span style=color:#e6db74>: Port </span>$port<span style=color:#e6db74> is listening&#34;</span> &gt;&gt; $LOG_FILE
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date<span style=color:#66d9ef>)</span><span style=color:#e6db74>: WARNING - Port </span>$port<span style=color:#e6db74> is not listening&#34;</span> &gt;&gt; $LOG_FILE
+</span></span><span style=display:flex><span>        <span style=color:#75715e># 发送告警</span>
+</span></span><span style=display:flex><span>        echo <span style=color:#e6db74>&#34;Port </span>$port<span style=color:#e6db74> is down&#34;</span> | mail -s <span style=color:#e6db74>&#34;Port Alert&#34;</span> admin@example.com
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>fi</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>done</span>
+</span></span></code></pre></div><h3 id=连接数监控脚本>连接数监控脚本</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e>#!/bin/bash
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#75715e># 监控网络连接数</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>THRESHOLD<span style=color:#f92672>=</span><span style=color:#ae81ff>1000</span>
+</span></span><span style=display:flex><span>CURRENT<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>ss -tan | grep ESTABLISHED | wc -l<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date<span style=color:#66d9ef>)</span><span style=color:#e6db74>: Current connections: </span>$CURRENT<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#f92672>[</span> $CURRENT -gt $THRESHOLD <span style=color:#f92672>]</span>; <span style=color:#66d9ef>then</span>
+</span></span><span style=display:flex><span>    echo <span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>date<span style=color:#66d9ef>)</span><span style=color:#e6db74>: WARNING - Too many connections: </span>$CURRENT<span style=color:#e6db74>&#34;</span> &gt;&gt; /var/log/connection_monitor.log
+</span></span><span style=display:flex><span>    <span style=color:#75715e># 显示连接最多的 IP</span>
+</span></span><span style=display:flex><span>    ss -tan | grep ESTABLISHED | awk <span style=color:#e6db74>&#39;{print $5}&#39;</span> | cut -d: -f1 | sort | uniq -c | sort -nr | head -10
+</span></span><span style=display:flex><span><span style=color:#66d9ef>fi</span>
+</span></span></code></pre></div><h2 id=性能优化建议>性能优化建议</h2><h3 id=网络参数调优>网络参数调优</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># TCP 连接优化</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.ipv4.tcp_fin_timeout = 30&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.ipv4.tcp_tw_reuse = 1&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.ipv4.tcp_max_syn_backlog = 8192&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 网络缓冲区优化</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.core.rmem_max = 16777216&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#39;net.core.wmem_max = 16777216&#39;</span> &gt;&gt; /etc/sysctl.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 应用配置</span>
+</span></span><span style=display:flex><span>sysctl -p
+</span></span></code></pre></div><h3 id=监控最佳实践>监控最佳实践</h3><ol><li><strong>定期检查</strong>：设置定时任务监控关键指标</li><li><strong>日志分析</strong>：定期分析网络日志</li><li><strong>性能基线</strong>：建立网络性能基线</li><li><strong>告警机制</strong>：设置合理的告警阈值</li><li><strong>文档记录</strong>：记录常见问题和解决方案</li></ol><h2 id=常用命令速查表>常用命令速查表</h2><h3 id=连接查看>连接查看</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看所有连接</span>
+</span></span><span style=display:flex><span>ss -tuln
+</span></span><span style=display:flex><span>netstat -tuln
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看进程连接</span>
+</span></span><span style=display:flex><span>lsof -i
+</span></span><span style=display:flex><span>ss -tlnp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看特定端口</span>
+</span></span><span style=display:flex><span>lsof -i :80
+</span></span><span style=display:flex><span>ss -lnt | grep :80
+</span></span></code></pre></div><h3 id=网络测试>网络测试</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 连通性测试</span>
+</span></span><span style=display:flex><span>ping -c <span style=color:#ae81ff>4</span> 目标IP
+</span></span><span style=display:flex><span>traceroute 目标IP
+</span></span><span style=display:flex><span>mtr 目标IP
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 端口测试</span>
+</span></span><span style=display:flex><span>telnet 目标IP 端口
+</span></span><span style=display:flex><span>nmap -p 端口 目标IP
+</span></span></code></pre></div><h3 id=流量分析>流量分析</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 抓包分析</span>
+</span></span><span style=display:flex><span>tcpdump -i eth0 -n
+</span></span><span style=display:flex><span>tcpdump -i eth0 port <span style=color:#ae81ff>80</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 流量统计</span>
+</span></span><span style=display:flex><span>iftop
+</span></span><span style=display:flex><span>nethogs
+</span></span></code></pre></div><h2 id=总结>总结</h2><p>掌握 Linux 网络工具是系统管理员的必备技能。本文介绍的工具各有特色：</p><ol><li><strong>netstat/ss</strong>：查看网络连接状态，ss 性能更好</li><li><strong>lsof</strong>：查看进程打开的文件和网络连接</li><li><strong>tcpdump</strong>：强大的数据包捕获和分析工具</li><li><strong>ping/traceroute</strong>：基础的网络连通性测试</li><li><strong>nmap</strong>：网络扫描和安全检测</li></ol><p>在实际工作中，建议：</p><ul><li>熟练掌握基础命令的常用参数</li><li>建立系统化的故障排查流程</li><li>编写监控脚本自动化检查</li><li>定期分析网络性能数据</li><li>保持学习新工具和技术</li></ul><p>通过系统学习和实践，能够快速定位和解决各种网络问题，提高系统的稳定性和可用性。</p><h2 id=参考资料>参考资料</h2><ol><li><a href=https://linux.die.net/man/ target=_blank>Linux 网络工具参考手册</a></li><li><a href=https://klose911.github.io/html/tii/tii.html target=_blank>TCP/IP 详解</a></li><li><a href=https://www.wireshark.org/docs/ target=_blank>Wireshark 网络分析</a></li><li><a href=https://www.kernel.org/doc/Documentation/networking/ target=_blank>Linux 网络编程</a></li></ol><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/systemctl/?ref=footer"><span>« Previous</span><br>Systemd 和 Systemctl 完全指南</a></div><div class=next-post><a href="https://yezihack.github.io/k8s-troubleshooting-network/?ref=footer"><span>Next »</span><br>Kubernetes 网络排障手册：从容器网络到服务发现的完整解决方案</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#netstat-命令详解>netstat 命令详解</a><ul><li><a href=#基本语法>基本语法</a></li><li><a href=#常用选项>常用选项</a></li><li><a href=#实用示例>实用示例</a></li></ul></li><li><a href=#ss-命令详解>ss 命令详解</a><ul><li><a href=#基本语法-1>基本语法</a></li><li><a href=#常用选项-1>常用选项</a></li><li><a href=#实用示例-1>实用示例</a></li></ul></li><li><a href=#lsof-命令详解>lsof 命令详解</a><ul><li><a href=#基本语法-2>基本语法</a></li><li><a href=#网络相关选项>网络相关选项</a></li><li><a href=#实用示例-2>实用示例</a></li></ul></li><li><a href=#tcpdump-命令详解>tcpdump 命令详解</a><ul><li><a href=#基本语法-3>基本语法</a></li><li><a href=#常用选项-2>常用选项</a></li><li><a href=#实用示例-3>实用示例</a></li></ul></li><li><a href=#其他常用网络工具>其他常用网络工具</a><ul><li><a href=#ping-命令>ping 命令</a></li><li><a href=#traceroute-命令>traceroute 命令</a></li><li><a href=#nmap-命令>nmap 命令</a></li><li><a href=#curl-和-wget>curl 和 wget</a></li></ul></li><li><a href=#网络故障排查实战案例>网络故障排查实战案例</a><ul><li><a href=#案例-1web-服务无法访问>案例 1：Web 服务无法访问</a></li><li><a href=#案例-2网络连接异常缓慢>案例 2：网络连接异常缓慢</a></li><li><a href=#案例-3端口占用问题>案例 3：端口占用问题</a></li><li><a href=#案例-4dns-解析问题>案例 4：DNS 解析问题</a></li><li><a href=#案例-5网络丢包问题>案例 5：网络丢包问题</a></li></ul></li><li><a href=#网络监控脚本>网络监控脚本</a><ul><li><a href=#端口监控脚本>端口监控脚本</a></li><li><a href=#连接数监控脚本>连接数监控脚本</a></li></ul></li><li><a href=#性能优化建议>性能优化建议</a><ul><li><a href=#网络参数调优>网络参数调优</a></li><li><a href=#监控最佳实践>监控最佳实践</a></li></ul></li><li><a href=#常用命令速查表>常用命令速查表</a><ul><li><a href=#连接查看>连接查看</a></li><li><a href=#网络测试>网络测试</a></li><li><a href=#流量分析>流量分析</a></li></ul></li><li><a href=#总结>总结</a></li><li><a href=#参考资料>参考资料</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

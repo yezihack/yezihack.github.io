@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>markdown on 空树之空</title><link>https://yezihack.github.io/tags/markdown/</link><description>Recent content in markdown on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/markdown/index.xml" rel="self" type="application/rss+xml"/><item><title>VSCODE 必装插件指南：从入门到精通</title><link>https://yezihack.github.io/vscode-plugins-guide/</link><pubDate>Mon, 01 Jun 2026 00:00:00 +0800</pubDate><guid>https://yezihack.github.io/vscode-plugins-guide/</guid><description>为什么要使用VSCODE插件？ VSCODE（Visual Studio Code）作为最受欢迎的轻量级代码编辑器，其强大的插件生态系统是其成功的关键。通过插件，我们可以：
+🚀 显著提高代码编写效率 🎨 改善代码阅读体验 🔧 扩展编辑器功能 📝 优化工作流程 本文将介绍如何安装VSCODE插件，以及推荐几款必装的实用插件。
+第一步：了解VSCODE插件安装 标准安装方法 VSCODE提供了三种主要的插件安装方式，我们按难度和兼容性排序：
+方法1：官方应用商店（推荐，最简单） 适用场景：网络正常，能访问官方插件商店
+步骤：
+打开 VSCODE 使用快捷键 Ctrl+Shift+X 打开扩展面板 在搜索框输入插件名称 点击 Install 按钮安装 重启 VSCODE 生效 优点：
+最快最简单的方式 自动检测依赖和兼容性 支持自动更新 方法2：手动下载VSIX（推荐，100%成功） 适用场景：官方商店访问困难、需要特定版本、离线安装
+详细步骤：
+A. 获取VSIX文件
+打开浏览器，访问 VSCODE官方插件市场 搜索你要的插件，比如输入插件名 进入插件详情页 安装浏览器扩展 Visual Studio Marketplace Downloader（推荐使用Chrome） Chrome Web Store 搜索：Visual Studio Marketplace Downloader 或直接访问：https://chrome.google.com/webstore 在插件页面右上角点击 ⬇️ Download 按钮 浏览器会下载一个 .zip 或 .vsix 文件 如果下载的是 .zip 文件，将其改后缀为 .vsix B.</description></item><item><title>鲁班工具之 Markdown 生成目录(一)</title><link>https://yezihack.github.io/toc/</link><pubDate>Thu, 24 Dec 2020 17:06:46 +0800</pubDate><guid>https://yezihack.github.io/toc/</guid><description> 命令行对 markdown 生成目录结构, 主要解决 markdown 不自动生成目录的困扰. 即[TOC]不支持.
+工具源码 https://github.com/ekalinin/github-markdown-toc.go
+下载安装 $ wget https://github.com/ekalinin/github-markdown-toc.go/releases/download/1.1.0/gh-md-toc.linux.amd64.tgz $ tar xzvf gh-md-toc.linux.amd64.tgz gh-md-toc $ ./gh-md-toc --version 1.1.0 mac
+brew install github-markdown-toc 使用方式 gh-md-toc README.md * [音乐开关，true/false](#音乐开关truefalse) * [只支持163的音乐，在生成外链播放器获取ID](#只支持163的音乐在生成外链播放器获取id) * [是否自动播放 1是，0否](#是否自动播放-1是0否) * [weight: 1](#weight-1) * [description: &amp;#34;&amp;#34;](#description-) * [镜像介绍](#镜像介绍) * [获取镜像](#获取镜像) * [查看镜像](#查看镜像) * [查找镜像](#查找镜像) * [删除镜像](#删除镜像) * [清理镜像](#清理镜像) * [创建镜像](#创建镜像) * [基本已有镜像](#基本已有镜像) * [基于Dockefile创建](#基于dockefile创建) * [导入与导出镜像](#导入与导出镜像) * [导出镜像](#导出镜像) * [导入镜像](#导入镜像) * [上传镜像](#上传镜像)</description></item></channel></rss>

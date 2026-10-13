@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>工程流程 on 空树之空</title><link>https://yezihack.github.io/tags/%E5%B7%A5%E7%A8%8B%E6%B5%81%E7%A8%8B/</link><description>Recent content in 工程流程 on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 18 May 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/%E5%B7%A5%E7%A8%8B%E6%B5%81%E7%A8%8B/index.xml" rel="self" type="application/rss+xml"/><item><title>AI Skills 完全指南：把 AI 纳入标准工程流程</title><link>https://yezihack.github.io/ai-skills-workflow/</link><pubDate>Mon, 18 May 2026 10:00:00 +0800</pubDate><guid>https://yezihack.github.io/ai-skills-workflow/</guid><description>这不是一个命令参考。这是关于如何把 AI 纳入标准软件工程流程的完整指南。
+很多人安装完 /grill-me、/tdd，然后陷入迷茫：这些 Skill 怎么融入真实开发？
+本文给你一套真正能落地的工作流。
+为什么需要 Skills？ Matt Pocock 的 AI Skills 仓库 的真正价值不在于命令本身，而在于：
+把隐性的工程经验显式化，变成 AI 可执行的工作流
+以前，只有资深工程师脑子里有：
+如何拆需求 如何调试 Bug 如何重构混乱代码 如何设计架构 现在，这些知识被编码成了 Skills，可以被 AI 执行。
+这就是 AI Native Development 的开始。
+第一部分：新项目开发（最标准的使用方式） 新项目是 Skills 最适合的场景。
+❌ 大多数人的错误方式 直接告诉 AI：
+帮我做一个 AI 导航站 结果：
+AI 直接开写代码 技术栈随意选择 数据库表结构混乱 后面疯狂返工 这就是著名的 Vibe Coding（感觉编程）。
+✅ 正确方式：5 个阶段工作流 阶段 1：/grill-me - 需求澄清 开发前，先：
+/grill-me 我要做一个 AI 导航站 AI 会进入盘问模式，问你一系列问题：</description></item></channel></rss>

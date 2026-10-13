@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Claude Code on 空树之空</title><link>https://yezihack.github.io/tags/claude-code/</link><description>Recent content in Claude Code on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 19 May 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/claude-code/index.xml" rel="self" type="application/rss+xml"/><item><title>Claude-Mem：AI代理的持久化内存系统</title><link>https://yezihack.github.io/claude-mem-guide/</link><pubDate>Tue, 19 May 2026 00:00:00 +0800</pubDate><guid>https://yezihack.github.io/claude-mem-guide/</guid><description>什么是Claude-Mem？ Claude-Mem 是一个为 Claude Code 构建的持久化内存压缩系统，它能够在 AI 代理的多个会话之间无缝地保持和延续上下文。通过自动捕获工具使用观察、生成语义总结，使得 Claude 能够在会话结束后仍然保持对项目的连续性认识。
+核心理念很简单但强大：让你的 AI 代理记住它所做的一切。
+项目特性 🧠 核心功能 跨会话持久化内存 - 即使会话中断或重新连接，上下文也能保持 智能上下文压缩 - 使用 AI 生成语义总结，优化 token 使用 渐进式信息披露 - 分层显示内存内容，控制 token 成本 技能化搜索 - 通过 mem-search 技能使用自然语言查询项目历史 Web 查看器 UI - 在 http://localhost:37777 实时查看内存流 隐私控制 - 使用 &amp;lt;private&amp;gt; 标签排除敏感内容 自动运行 - 无需手动干预，自动捕获和管理上下文 引用链接 - 通过 ID 引用过去的观察 📊 核心特点 77.7k+ Stars - 在 GitHub 上备受瞩目 109+ 贡献者 - 活跃的开源社区 多 IDE 支持 - Claude Code、Gemini CLI、OpenCode 多语言支持 - 简体中文、繁体中文、日语等 Apache 2.</description></item><item><title>Claude Code 完整入门手册：安装、配置与实战指南</title><link>https://yezihack.github.io/claude-code-guide/</link><pubDate>Fri, 03 Apr 2026 00:00:00 +0000</pubDate><guid>https://yezihack.github.io/claude-code-guide/</guid><description>简介 Claude Code 是 Anthropic 推出的代理编码工具，可在终端、VS Code、JetBrains IDE、桌面应用和浏览器中使用。它能够读取代码库、编辑文件、运行命令，并与开发工具集成，帮助你快速构建功能、修复bug和自动化开发任务。
+本手册将详细讲解如何在各操作系统上安装配置Claude Code，并深度集成国内大模型和各类开发工具。
+第一部分：环境准备与基础安装 1.1 前置环境要求 Windows Windows 10 或更高版本 Git for Windows （必需） PowerShell 或 CMD Node.js 14+ （可选，但推荐） macOS macOS 10.12 或更高版本 Xcode Command Line Tools Homebrew （推荐） Node.js 14+ （可选） Linux Ubuntu 18.04+ 或其他主流发行版 curl 或 wget Node.js 14+ （可选） 1.2 Node.js 安装与配置 在安装Claude Code之前，建议先安装Node.js的包管理工具，以便支持更多功能。
+Windows (msi/二进制):
+下载 Node.js 安装包
+运行安装程序，选择LTS版本（推荐）
+安装完成后，打开命令提示符或PowerShell，验证安装：!
+验证 node -v npm -v Windows (PowerShell):
+# 使用winget安装（推荐） winget install OpenJS.</description></item></channel></rss>

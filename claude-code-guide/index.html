@@ -1,0 +1,691 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Claude Code 完整入门手册：安装、配置与实战指南</title><meta property="og:title" content="百里觅码 - Claude Code 完整入门手册：安装、配置与实战指南"><meta name=twitter:title content="百里觅码 - Claude Code 完整入门手册：安装、配置与实战指南"><meta itemprop=name content="百里觅码 - Claude Code 完整入门手册：安装、配置与实战指南"><meta name=application-name content="百里觅码 - Claude Code 完整入门手册：安装、配置与实战指南"><meta property="og:site_name" content="空树之空"><meta name=description content="详细讲解如何在Windows、Linux、Mac上安装配置Claude Code，集成国内大模型，以及使用MCP、Agents、Skills打造专业开发环境"><meta itemprop=description content="详细讲解如何在Windows、Linux、Mac上安装配置Claude Code，集成国内大模型，以及使用MCP、Agents、Skills打造专业开发环境"><meta property="og:description" content="详细讲解如何在Windows、Linux、Mac上安装配置Claude Code，集成国内大模型，以及使用MCP、Agents、Skills打造专业开发环境"><meta name=twitter:description content="详细讲解如何在Windows、Linux、Mac上安装配置Claude Code，集成国内大模型，以及使用MCP、Agents、Skills打造专业开发环境"><base href=https://yezihack.github.io/claude-code-guide/><link rel=canonical href=https://yezihack.github.io/claude-code-guide/ itemprop=url><meta name=url content="https://yezihack.github.io/claude-code-guide/"><meta name=twitter:url content="https://yezihack.github.io/claude-code-guide/"><meta property="og:url" content="https://yezihack.github.io/claude-code-guide/"><meta property="og:updated_time" content="3004-03-12T40:00:26Z"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="3004-03-12T40:00:26Z"><meta property="article:published_time" content="3004-03-12T40:00:26Z"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Claude Code 完整入门手册：安装、配置与实战指南","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2026-04-03","description":"详细讲解如何在Windows、Linux、Mac上安装配置Claude Code，集成国内大模型，以及使用MCP、Agents、Skills打造专业开发环境","wordCount":"2094","mainEntityOfPage":"True","dateModified":"2026-04-03","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/claude-code-guide/>Claude Code 完整入门手册：安装、配置与实战指南</a></h1><time datetime=2026-04-03T00:00:00Z class=post-date>April 3, 2026</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>2094</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>10 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class="tag-Claude Code"><a href=https://yezihack.github.io/tags/claude-code>Claude Code</a></li><li class=tag-Anthropic><a href=https://yezihack.github.io/tags/anthropic>Anthropic</a></li><li class=tag-MCP><a href=https://yezihack.github.io/tags/mcp>MCP</a></li><li class=tag-智谱GLM><a href=https://yezihack.github.io/tags/%E6%99%BA%E8%B0%B1glm>智谱GLM</a></li><li class=tag-开发指南><a href=https://yezihack.github.io/tags/%E5%BC%80%E5%8F%91%E6%8C%87%E5%8D%97>开发指南</a></li></ul></div><h2 id=简介>简介</h2><p>Claude Code 是 Anthropic 推出的代理编码工具，可在终端、VS Code、JetBrains IDE、桌面应用和浏览器中使用。它能够读取代码库、编辑文件、运行命令，并与开发工具集成，帮助你快速构建功能、修复bug和自动化开发任务。</p><p>本手册将详细讲解如何在各操作系统上安装配置Claude Code，并深度集成国内大模型和各类开发工具。</p><hr><h2 id=第一部分环境准备与基础安装>第一部分：环境准备与基础安装</h2><h3 id=11-前置环境要求>1.1 前置环境要求</h3><h4 id=windows>Windows</h4><ul><li>Windows 10 或更高版本</li><li>Git for Windows （必需）</li><li>PowerShell 或 CMD</li><li>Node.js 14+ （可选，但推荐）</li></ul><h4 id=macos>macOS</h4><ul><li>macOS 10.12 或更高版本</li><li>Xcode Command Line Tools</li><li>Homebrew （推荐）</li><li>Node.js 14+ （可选）</li></ul><h4 id=linux>Linux</h4><ul><li>Ubuntu 18.04+ 或其他主流发行版</li><li>curl 或 wget</li><li>Node.js 14+ （可选）</li></ul><h3 id=12-nodejs-安装与配置>1.2 Node.js 安装与配置</h3><p>在安装Claude Code之前，建议先安装Node.js的包管理工具，以便支持更多功能。</p><p><strong>Windows (msi/二进制):</strong></p><ol><li><p>下载 <a href=https://nodejs.org/en/download/ target=_blank>Node.js 安装包</a></p></li><li><p>运行安装程序，选择LTS版本（推荐）</p></li><li><p>安装完成后，打开命令提示符或PowerShell，验证安装：!</p></li></ol><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20260405192352.png alt=20260405192352></p><ol><li>验证</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>node -v
+</span></span><span style=display:flex><span>npm -v
+</span></span></code></pre></div><p><strong>Windows (PowerShell):</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 使用winget安装（推荐）</span>
+</span></span><span style=display:flex><span>winget install OpenJS.NodeJS
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或使用Chocolatey</span>
+</span></span><span style=display:flex><span>choco install nodejs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证安装</span>
+</span></span><span style=display:flex><span>node --version
+</span></span><span style=display:flex><span>npm --version
+</span></span></code></pre></div><p><strong>macOS:</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用Homebrew安装（推荐）</span>
+</span></span><span style=display:flex><span>brew install node
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或使用MacPorts</span>
+</span></span><span style=display:flex><span>sudo port install nodejs20
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证安装</span>
+</span></span><span style=display:flex><span>node --version
+</span></span><span style=display:flex><span>npm --version
+</span></span></code></pre></div><p><strong>Linux (Ubuntu/Debian):</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用包管理器</span>
+</span></span><span style=display:flex><span>sudo apt-get update
+</span></span><span style=display:flex><span>sudo apt-get install nodejs npm
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或使用NodeSource官方仓库（获得最新版本）</span>
+</span></span><span style=display:flex><span>curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+</span></span><span style=display:flex><span>sudo apt-get install -y nodejs
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证安装</span>
+</span></span><span style=display:flex><span>node --version
+</span></span><span style=display:flex><span>npm --version
+</span></span></code></pre></div><p><strong>Linux (Fedora/CentOS):</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo dnf install nodejs npm
+</span></span><span style=display:flex><span><span style=color:#75715e># 或</span>
+</span></span><span style=display:flex><span>sudo yum install nodejs npm
+</span></span></code></pre></div><p>设置国内NPM镜像（加快安装速度）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>npm config set registry https://registry.npmmirror.com
+</span></span><span style=display:flex><span>npm config set disturl https://registry.npmmirror.com/dist
+</span></span><span style=display:flex><span>npm config set sass_binary_site https://registry.npmmirror.com/mirrors/node-sass
+</span></span></code></pre></div><h3 id=13-claude-code-安装>1.3 Claude Code 安装</h3><h4 id=方式一官方安装脚本推荐>方式一：官方安装脚本（推荐）</h4><p><strong>macOS 和 Linux:</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>curl -fsSL https://claude.ai/install.sh | bash
+</span></span></code></pre></div><p><strong>Windows PowerShell:</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>irm https<span style=color:#960050;background-color:#1e0010>:</span>//claude.ai/install.ps1 | iex
+</span></span></code></pre></div><p><strong>Windows CMD:</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-cmd data-lang=cmd><span style=display:flex><span>curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; <span style=color:#66d9ef>del</span> install.cmd
+</span></span></code></pre></div><h4 id=方式二包管理器安装>方式二：包管理器安装</h4><p><strong>macOS (Homebrew):</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>brew install anthropic/claude-code/claude-code
+</span></span></code></pre></div><p><strong>Windows (WinGet):</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>winget install Anthropic.ClaudeCode
+</span></span></code></pre></div><h4 id=方式三手动安装>方式三：手动安装</h4><ol><li>从 <a href=https://code.claude.com target=_blank>code.claude.com</a> 下载最新版本</li><li>解压到指定目录</li><li>将 <code>bin</code> 目录添加到系统 PATH</li></ol><h3 id=14-启动-claude-code>1.4 启动 Claude Code</h3><p>安装完成后，进入任何项目目录启动：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cd your-project
+</span></span><span style=display:flex><span>claude
+</span></span></code></pre></div><p>首次启动时，系统会提示you登录。根据你的需求选择：</p><ul><li><strong>Claude 订阅</strong> - 需要 Claude.ai 账户</li><li><strong>Anthropic API</strong> - 需要 Anthropic 控制台 API Key</li><li><strong>第三方提供商</strong> - 支持集成其他AI服务</li></ul><hr><h2 id=第二部分集成国内大模型>第二部分：集成国内大模型</h2><h3 id=21-智谱-glm-5-集成>2.1 智谱 GLM-5 集成</h3><p>智谱 GLM-5 是国内最强大的通用大模型之一，与Claude代码兼容性很好。</p><h4 id=获取api密钥>获取API密钥</h4><ol><li>访问 <a href=https://open.bigmodel.cn target=_blank>智谱AI开放平台</a></li><li>注册或登录账户</li><li>创建 API Key</li><li>复制并保存密钥</li></ol><h4 id=配置-claude-code>配置 Claude Code</h4><p><strong>方式一：环境变量配置</strong></p><p>Windows PowerShell:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span>$env:ANTHROPIC_API_KEY=<span style=color:#e6db74>&#34;your-zhipu-api-key&#34;</span>
+</span></span><span style=display:flex><span>$env:ANTHROPIC_API_BASE=<span style=color:#e6db74>&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>
+</span></span><span style=display:flex><span>$env:ANTHROPIC_MODEL=<span style=color:#e6db74>&#34;glm-5&#34;</span>
+</span></span></code></pre></div><p>Linux/macOS:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>export ANTHROPIC_API_KEY<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;your-zhipu-api-key&#34;</span>
+</span></span><span style=display:flex><span>export ANTHROPIC_API_BASE<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>
+</span></span><span style=display:flex><span>export ANTHROPIC_MODEL<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;glm-5&#34;</span>
+</span></span></code></pre></div><p><strong>方式二：全局配置文件</strong></p><p>编辑 <code>~/.claude/settings.json</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;glm-5&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiKey&#34;</span>: <span style=color:#e6db74>&#34;your-zhipu-api-key&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiBase&#34;</span>: <span style=color:#e6db74>&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;ANTHROPIC_API_KEY&#34;</span>: <span style=color:#e6db74>&#34;your-zhipu-api-key&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;ANTHROPIC_API_BASE&#34;</span>: <span style=color:#e6db74>&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>方式三：项目级配置</strong></p><p>在项目根目录创建 <code>.claude/settings.json</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;glm-5&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiBase&#34;</span>: <span style=color:#e6db74>&#34;https://open.bigmodel.cn/api/paas/v4&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=22-其他国内大模型支持>2.2 其他国内大模型支持</h3><h4 id=阿里-qwen-系列>阿里 Qwen 系列</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;qwen-max&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiBase&#34;</span>: <span style=color:#e6db74>&#34;https://dashscope.aliyuncs.com/compatible-mode/v1&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiKey&#34;</span>: <span style=color:#e6db74>&#34;your-qwen-api-key&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=百度-文心一言>百度 文心一言</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;ernie-bot-4&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiBase&#34;</span>: <span style=color:#e6db74>&#34;https://aip.baidubce.com/rpc/2.0/ai_custom/v1/chat&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiKey&#34;</span>: <span style=color:#e6db74>&#34;your-baidu-api-key&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=fastapi-本地部署>FastAPI 本地部署</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;local-model&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiBase&#34;</span>: <span style=color:#e6db74>&#34;http://localhost:8000&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiKey&#34;</span>: <span style=color:#e6db74>&#34;optional-key&#34;</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=23-成本优化建议>2.3 成本优化建议</h3><p>创建 <code>~/.claude/settings.json</code> 进行模型选择优化：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;sonnet&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;MAX_THINKING_TOKENS&#34;</span>: <span style=color:#e6db74>&#34;10000&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;CLAUDE_AUTOCOMPACT_PCT_OVERRIDE&#34;</span>: <span style=color:#e6db74>&#34;50&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;CLAUDE_CODE_SUBAGENT_MODEL&#34;</span>: <span style=color:#e6db74>&#34;haiku&#34;</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>配置说明：</strong></p><ul><li><code>model: sonnet</code> - 使用 Sonnet（成本低约60%，处理大部分任务）</li><li><code>MAX_THINKING_TOKENS: 10000</code> - 限制思考tokens，降低成本70%</li><li><code>CLAUDE_AUTOCOMPACT_PCT_OVERRIDE: 50</code> - 更早压缩上下文</li><li><code>CLAUDE_CODE_SUBAGENT_MODEL: haiku</code> - 子代理用Haiku（最便宜）</li></ul><h3 id=24-模型切换命令>2.4 模型切换命令</h3><p>在Claude Code会话中直接切换模型：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看当前模型</span>
+</span></span><span style=display:flex><span>/settings
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 临时切换到Opus（深度推理）</span>
+</span></span><span style=display:flex><span>/model opus
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 临时切换到Sonnet（日常任务）</span>
+</span></span><span style=display:flex><span>/model sonnet
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看成本</span>
+</span></span><span style=display:flex><span>/cost
+</span></span></code></pre></div><hr><h2 id=第三部分everything-claude-code-插件>第三部分：Everything Claude Code 插件</h2><p>Everything Claude Code 是社区维护的超强插件集，包含38个agents、156个skills和72个命令。</p><h3 id=31-快速安装>3.1 快速安装</h3><h4 id=方式一插件形式安装推荐>方式一：插件形式安装（推荐）</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 添加marketplace</span>
+</span></span><span style=display:flex><span>/plugin marketplace add affaan-m/everything-claude-code
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安装插件</span>
+</span></span><span style=display:flex><span>/plugin install everything-claude-code@everything-claude-code
+</span></span></code></pre></div><h4 id=方式二克隆仓库安装>方式二：克隆仓库安装</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 克隆项目</span>
+</span></span><span style=display:flex><span>git clone https://github.com/affaan-m/everything-claude-code.git
+</span></span><span style=display:flex><span>cd everything-claude-code
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安装依赖</span>
+</span></span><span style=display:flex><span>npm install
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Windows PowerShell（完整安装）</span>
+</span></span><span style=display:flex><span>.<span style=color:#ae81ff>\i</span>nstall.ps1 --profile full
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或仅安装特定语言</span>
+</span></span><span style=display:flex><span>.<span style=color:#ae81ff>\i</span>nstall.ps1 typescript python golang
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># macOS/Linux</span>
+</span></span><span style=display:flex><span>./install.sh --profile full
+</span></span><span style=display:flex><span>./install.sh typescript python golang
+</span></span></code></pre></div><h3 id=32-核心功能清单>3.2 核心功能清单</h3><h4 id=代理38个>代理（38个）</h4><ul><li><strong>planner.md</strong> - 功能实现规划</li><li><strong>architect.md</strong> - 系统设计决策</li><li><strong>code-reviewer.md</strong> - 代码质量评审</li><li><strong>security-reviewer.md</strong> - 安全漏洞分析</li><li><strong>tdd-guide.md</strong> - 测试驱动开发</li><li><strong>build-error-resolver.md</strong> - 构建错误修复</li><li><strong>e2e-runner.md</strong> - 端到端测试</li><li><strong>refactor-cleaner.md</strong> - 死代码清理</li><li><strong>语言特定reviewer</strong> - Python/Go/Rust/Kotlin等</li></ul><h4 id=技能156个>技能（156个）</h4><ul><li><strong>前端patterns</strong> - React/Next.js最佳实践</li><li><strong>后端patterns</strong> - API设计、数据库、缓存</li><li><strong>测试框架</strong> - pytest、Jest、Spring Boot测试</li><li><strong>DevOps</strong> - Docker、Kubernetes、CI/CD</li><li><strong>文档</strong> - 文档同步、API reference</li><li><strong>内容创建</strong> - 文章写作、社交媒体</li><li><strong>市场研究</strong> - 竞争对手分析</li><li><strong>数据工程</strong> - ClickHouse、PostgreSQL优化</li></ul><h4 id=命令72个>命令（72个）</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 规划与设计</span>
+</span></span><span style=display:flex><span>/plan <span style=color:#e6db74>&#34;Add user authentication&#34;</span> <span style=color:#75715e># 需求分析-&gt; 风险评估-&gt; 制作实现计划 </span>
+</span></span><span style=display:flex><span>/architect <span style=color:#e6db74>&#34;Design database schema&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开发流程</span>
+</span></span><span style=display:flex><span>/tdd <span style=color:#e6db74>&#34;Design test cases&#34;</span> <span style=color:#75715e># 强制 TDD 流程： 先写测试-》再实现-》验证覆盖率 &gt; 80%</span>
+</span></span><span style=display:flex><span>/code-review <span style=color:#e6db74>&#34;Review my implementation&#34;</span> <span style=color:#75715e># 安全扫描、质量审查</span>
+</span></span><span style=display:flex><span>/build-fix <span style=color:#e6db74>&#34;Fix compilation errors&#34;</span> <span style=color:#75715e># 修复编译错误</span>
+</span></span><span style=display:flex><span>/e2e <span style=color:#e6db74>&#34;Generate Playwright tests&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 学习与优化</span>
+</span></span><span style=display:flex><span>/learn <span style=color:#e6db74>&#34;Extract patterns from session&#34;</span>
+</span></span><span style=display:flex><span>/learn-eval <span style=color:#e6db74>&#34;Evaluate patterns&#34;</span>
+</span></span><span style=display:flex><span>/verify <span style=color:#e6db74>&#34;Run verification loop&#34;</span> <span style=color:#75715e># 全面验证整个代码库， 包括：构建，测试，安全</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 多模型编排</span>
+</span></span><span style=display:flex><span>/multi-plan <span style=color:#e6db74>&#34;Decompose complex task&#34;</span>
+</span></span><span style=display:flex><span>/multi-execute <span style=color:#e6db74>&#34;Execute with team&#34;</span>
+</span></span><span style=display:flex><span>/multi-backend <span style=color:#e6db74>&#34;Backend-focused workflow&#34;</span>
+</span></span><span style=display:flex><span>/multi-frontend <span style=color:#e6db74>&#34;Frontend-focused workflow&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 工具集成</span>
+</span></span><span style=display:flex><span>/setup-pm <span style=color:#e6db74>&#34;Configure package manager&#34;</span>
+</span></span><span style=display:flex><span>/skill-create <span style=color:#e6db74>&#34;Generate skills from git&#34;</span> <span style=color:#75715e># 分析你的 git 历史，自动提取编程模式并生成 SKILL.md</span>
+</span></span><span style=display:flex><span>/pm2 <span style=color:#e6db74>&#34;Manage services with PM2&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 持续学习</span>
+</span></span><span style=display:flex><span>/instinct-status <span style=color:#e6db74>&#34;View learned patterns&#34;</span>
+</span></span><span style=display:flex><span>/instinct-export <span style=color:#e6db74>&#34;Export instincts&#34;</span>
+</span></span><span style=display:flex><span>/instinct-import <span style=color:#e6db74>&#34;Import from others&#34;</span>
+</span></span><span style=display:flex><span>/evolve <span style=color:#e6db74>&#34;Cluster into skills&#34;</span>
+</span></span></code></pre></div><h3 id=33-rules-安装必须>3.3 Rules 安装（必须）</h3><p>Claude Code插件无法自动分发rules，需要手动安装：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 仅安装通用rules</span>
+</span></span><span style=display:flex><span>mkdir -p ~/.claude/rules
+</span></span><span style=display:flex><span>cp -r everything-claude-code/rules/common ~/.claude/rules/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或安装特定语言的rules</span>
+</span></span><span style=display:flex><span>cp -r everything-claude-code/rules/typescript ~/.claude/rules/
+</span></span><span style=display:flex><span>cp -r everything-claude-code/rules/python ~/.claude/rules/
+</span></span><span style=display:flex><span>cp -r everything-claude-code/rules/golang ~/.claude/rules/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 项目级安装（当前项目优先）</span>
+</span></span><span style=display:flex><span>mkdir -p .claude/rules
+</span></span><span style=display:flex><span>cp -r everything-claude-code/rules/common .claude/rules/
+</span></span><span style=display:flex><span>cp -r everything-claude-code/rules/typescript .claude/rules/
+</span></span></code></pre></div><h3 id=34-hooks-配置>3.4 Hooks 配置</h3><p>复制 hooks 到 <code>~/.claude/settings.json</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看hooks</span>
+</span></span><span style=display:flex><span>cat everything-claude-code/hooks/hooks.json
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 复制全部hooks到settings.json的hooks字段</span>
+</span></span></code></pre></div><h3 id=35-mcp-服务器配置>3.5 MCP 服务器配置</h3><p>从 <code>everything-claude-code/mcp-configs/mcp-servers.json</code> 中选择需要的机器人：</p><p>常用MCP服务器：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;mcpServers&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;github&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-github&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;GITHUB_PERSONAL_ACCESS_TOKEN&#34;</span>: <span style=color:#e6db74>&#34;your-token&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;postgres&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-postgres&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;DATABASE_URL&#34;</span>: <span style=color:#e6db74>&#34;postgresql://user:pass@localhost/db&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;supabase&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-supabase&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;SUPABASE_URL&#34;</span>: <span style=color:#e6db74>&#34;your-url&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;SUPABASE_KEY&#34;</span>: <span style=color:#e6db74>&#34;your-key&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><hr><h2 id=第四部分skills-体系详解>第四部分：Skills 体系详解</h2><p>Claude Skills 是可复用的工作流定义，教会Claude如何执行特定任务。</p><h3 id=41-官方skills市场>4.1 官方Skills市场</h3><p>访问 <a href=https://www.claudeskill.site/zh/skills target=_blank>https://www.claudeskill.site/zh/skills</a> 浏览209个技能。</p><h4 id=按类别推荐>按类别推荐</h4><p><strong>开发工具类</strong></p><ul><li><strong>mcp-builder</strong> - 创建高质量MCP服务器</li><li><strong>frontend-design</strong> - 构建生产级前端界面</li><li><strong>web-artifacts-builder</strong> - React/Tailwind多组件制作</li><li><strong>skill-creator</strong> - 创建自定义Skills</li><li><strong>postgresql</strong> - PostgreSQL数据库操作</li></ul><p><strong>文档处理类</strong></p><ul><li><strong>docx</strong> - Word文档创建/编辑</li><li><strong>pdf</strong> - PDF文本提取、合并</li><li><strong>pptx</strong> - 幻灯片制作</li><li><strong>xlsx</strong> - 电子表格处理</li><li><strong>doc-coauthoring</strong> - 文档共创流程</li></ul><p><strong>研究与分析类</strong></p><ul><li><strong>research-lookup</strong> - 当前信息查询</li><li><strong>scientific-writing</strong> - 学术论文写作</li><li><strong>market-research</strong> - 市场竞争分析</li><li><strong>content-research-writer</strong> - 带引用的内容创作</li></ul><p><strong>创意内容类</strong></p><ul><li><strong>canvas-design</strong> - 海报设计</li><li><strong>theme-factory</strong> - 主题应用</li><li><strong>slack-gif-creator</strong> - Slack GIF动画</li></ul><h3 id=42-第三方skills库>4.2 第三方Skills库</h3><h4 id=everything-claude-code-skills>Everything Claude Code Skills</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 已包含在installation中，常用skills：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># continuous-learning-v2 - 自动学习patterns</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># frontend-patterns - React最佳实践  </span>
+</span></span><span style=display:flex><span><span style=color:#75715e># backend-patterns - API/数据库patterns</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># security-scan - 安全审计</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># tdd-workflow - 测试驱动开发</span>
+</span></span></code></pre></div><h4 id=awesome-claude-skillscomposiohq维护>Awesome Claude Skills（ComposioHQ维护）</h4><p>访问 <a href=https://github.com/ComposioHQ/awesome-claude-skills target=_blank>https://github.com/ComposioHQ/awesome-claude-skills</a></p><p>包含78个Composio应用自动化Skills：</p><p><strong>CRM & 销售</strong></p><ul><li>HubSpot/Salesforce/Pipedrive/Zoho automation</li></ul><p><strong>项目管理</strong></p><ul><li>Asana/Jira/Linear/Notion/Todoist/Trello</li></ul><p><strong>沟通协作</strong></p><ul><li>Slack/Gmail/Microsoft Teams/Discord</li></ul><p><strong>DevOps & 代码</strong></p><ul><li>GitHub/GitLab/CircleCI/Datadog/Sentry</li></ul><p><strong>工作流自动化</strong></p><ul><li>Make/n8n/Zapier集成</li></ul><h3 id=43-安装与使用skills>4.3 安装与使用Skills</h3><h4 id=从claudeai添加>从Claude.ai添加</h4><ol><li>点击界面中的技能图标（🧩）</li><li>搜索或浏览Marketplace</li><li>点击"Add"添加技能</li><li>Claude自动激活相关技能</li></ol><h4 id=从claude-code添加>从Claude Code添加</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 将skill放入配置目录</span>
+</span></span><span style=display:flex><span>mkdir -p ~/.claude/skills/
+</span></span><span style=display:flex><span>cp -r skill-name ~/.claude/skills/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证skill元数据</span>
+</span></span><span style=display:flex><span>head ~/.claude/skills/skill-name/SKILL.md
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启动Claude Code会话（自动加载）</span>
+</span></span><span style=display:flex><span>claude
+</span></span></code></pre></div><h4 id=通过api使用skills>通过API使用Skills</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>import</span> anthropic
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>client <span style=color:#f92672>=</span> anthropic<span style=color:#f92672>.</span>Anthropic(api_key<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;your-key&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>response <span style=color:#f92672>=</span> client<span style=color:#f92672>.</span>messages<span style=color:#f92672>.</span>create(
+</span></span><span style=display:flex><span>    model<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;claude-3-5-sonnet-20241022&#34;</span>,
+</span></span><span style=display:flex><span>    skills<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#34;frontend-design&#34;</span>, <span style=color:#e6db74>&#34;research-lookup&#34;</span>],
+</span></span><span style=display:flex><span>    messages<span style=color:#f92672>=</span>[{
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;user&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#e6db74>&#34;content&#34;</span>: <span style=color:#e6db74>&#34;Create a landing page for a SaaS product analyzing climate data&#34;</span>
+</span></span><span style=display:flex><span>    }]
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></div><h3 id=44-创建自定义skill>4.4 创建自定义Skill</h3><p><strong>基础Skill模板</strong></p><p>创建 <code>my-skill/SKILL.md</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=display:flex><span>---
+</span></span><span style=display:flex><span>name: my-awesome-skill
+</span></span><span style=display:flex><span>description: 简洁描述这个skill的用途和何时使用
+</span></span><span style=display:flex><span>keywords: [&#34;keyword1&#34;, &#34;keyword2&#34;]
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># My Awesome Skill
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>完整描述skill的功能和能力。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 何时使用此Skill
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> 使用场景1
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> 使用场景2
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> 使用场景3
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 使用说明
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>详细的Claude执行此skill的指导（写给Claude，不是写给用户）
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 示例
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>展示此skill实际应用的例子
+</span></span></code></pre></div><p>安装自定义skill：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>cp -r my-skill ~/.claude/skills/
+</span></span></code></pre></div><h3 id=45-避免技能重复的最佳实践>4.5 避免技能重复的最佳实践</h3><p><strong>核心原则：不重复安装</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># ✅ 只安装一次通用技能</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># example-skills 已包含于 everything-claude-code</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># document-skills 已包含于 everything-claude-code</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># ❌ 避免重复</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 不要同时安装 anthropic-agent-skills 和 everything-claude-code</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 不要同时安装 awesome-claude-skills 的duplicate skills</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查已安装技能</span>
+</span></span><span style=display:flex><span>ls ~/.claude/skills/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 清理重复技能</span>
+</span></span><span style=display:flex><span>rm -rf ~/.claude/skills/skill-name  <span style=color:#75715e># 保留最常用的版本</span>
+</span></span></code></pre></div><p>推荐安装顺序：</p><ol><li><strong>第一层</strong> - everything-claude-code（最全、最新）</li><li><strong>第二层</strong> - Composer HQ awesome-claude-skills（补充）</li><li><strong>第三层</strong> - 官方skills（必要时）</li></ol><hr><h2 id=第五部分mcp-model-context-protocol>第五部分：MCP (Model Context Protocol)</h2><p>MCP 是一个开放标准，让AI模型可以访问外部工具和数据源。</p><h3 id=51-mcp核心概念>5.1 MCP核心概念</h3><p><strong>关键概念</strong></p><ul><li><strong>Servers</strong> - 暴露tools/resources的服务</li><li><strong>Tools</strong> - Claude可以调用的可执行操作</li><li><strong>Resources</strong> - 外部数据源（文件、API、数据库）</li><li><strong>Prompts</strong> - 预定义的提示模板</li></ul><h3 id=52-配置mcp服务器>5.2 配置MCP服务器</h3><p>编辑 <code>~/.claude/settings.json</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;mcpServers&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;github&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-github&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;GITHUB_PERSONAL_ACCESS_TOKEN&#34;</span>: <span style=color:#e6db74>&#34;ghp_xxxx&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;postgres&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-postgres&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;DATABASE_URL&#34;</span>: <span style=color:#e6db74>&#34;postgresql://user:pass@localhost/mydb&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;memory&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-memory&#34;</span>]
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;supabase&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-supabase&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;SUPABASE_URL&#34;</span>: <span style=color:#e6db74>&#34;https://xxx.supabase.co&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;SUPABASE_KEY&#34;</span>: <span style=color:#e6db74>&#34;eyxxx&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;context7&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@upstash/context7-mcp&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;UPSTASH_REDIS_REST_URL&#34;</span>: <span style=color:#e6db74>&#34;https://xxx.upstash.io&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;UPSTASH_REDIS_REST_TOKEN&#34;</span>: <span style=color:#e6db74>&#34;xxx&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=53-常用mcp服务器>5.3 常用MCP服务器</h3><table><thead><tr><th>MCP服务器</th><th>功能</th><th>安装</th></tr></thead><tbody><tr><td><strong>github</strong></td><td>GitHub repositories、issues、PRs</td><td><code>npx @modelcontextprotocol/server-github</code></td></tr><tr><td><strong>postgres</strong></td><td>SQL查询数据库</td><td><code>npx @modelcontextprotocol/server-postgres</code></td></tr><tr><td><strong>supabase</strong></td><td>Supabase数据库和API</td><td><code>npx @modelcontextprotocol/server-supabase</code></td></tr><tr><td><strong>memory</strong></td><td>持久化会话记忆</td><td><code>npx @modelcontextprotocol/server-memory</code></td></tr><tr><td><strong>context7</strong></td><td>Redis/Upstash集成</td><td><code>npx @upstash/context7-mcp</code></td></tr><tr><td><strong>sequential-thinking</strong></td><td>深度推理</td><td><code>npx @anthropic-ai/mcp-server-sequential-thinking</code></td></tr></tbody></table><h3 id=54-创建自定义mcp服务器>5.4 创建自定义MCP服务器</h3><p><strong>Python FastMCP方案</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=display:flex><span><span style=color:#f92672>from</span> fastmcp <span style=color:#f92672>import</span> FastMCP
+</span></span><span style=display:flex><span><span style=color:#f92672>from</span> typing <span style=color:#f92672>import</span> Any
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>app <span style=color:#f92672>=</span> FastMCP(<span style=color:#e6db74>&#34;my-service&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@app.tool</span>()
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>analyze_code</span>(code: str) <span style=color:#f92672>-&gt;</span> str:
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;分析代码质量&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>f</span><span style=color:#e6db74>&#34;分析结果: </span><span style=color:#e6db74>{</span>code[:<span style=color:#ae81ff>50</span>]<span style=color:#e6db74>}</span><span style=color:#e6db74>...&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>@app.resource</span>(<span style=color:#e6db74>&#34;file:///</span><span style=color:#e6db74>{path}</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>def</span> <span style=color:#a6e22e>read_file</span>(path: str) <span style=color:#f92672>-&gt;</span> str:
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;&#34;&#34;读取文件内容&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>with</span> open(path) <span style=color:#66d9ef>as</span> f:
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> f<span style=color:#f92672>.</span>read()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> __name__ <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;__main__&#34;</span>:
+</span></span><span style=display:flex><span>    app<span style=color:#f92672>.</span>run()
+</span></span></code></pre></div><p><strong>TypeScript SDK方案</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-typescript data-lang=typescript><span style=display:flex><span><span style=color:#66d9ef>import</span> { <span style=color:#a6e22e>MCPServer</span>, <span style=color:#a6e22e>Tool</span> } <span style=color:#66d9ef>from</span> <span style=color:#e6db74>&#34;@modelcontextprotocol/sdk/server/mcp.js&#34;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>const</span> <span style=color:#a6e22e>server</span> <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> <span style=color:#a6e22e>MCPServer</span>({
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>name</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;my-service&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>version</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;1.0.0&#34;</span>
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>server</span>.<span style=color:#a6e22e>tool</span>(<span style=color:#e6db74>&#34;analyze_code&#34;</span>, {
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>description</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;分析代码质量&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>inputSchema</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>type</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;object&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#a6e22e>properties</span><span style=color:#f92672>:</span> {
+</span></span><span style=display:flex><span>      <span style=color:#a6e22e>code</span><span style=color:#f92672>:</span> { <span style=color:#66d9ef>type</span><span style=color:#f92672>:</span> <span style=color:#e6db74>&#34;string&#34;</span> }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#a6e22e>execute</span>: <span style=color:#66d9ef>async</span> (<span style=color:#a6e22e>args</span>) <span style=color:#f92672>=&gt;</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#e6db74>`分析结果: </span><span style=color:#e6db74>${</span><span style=color:#a6e22e>args</span>.<span style=color:#a6e22e>code</span>.<span style=color:#a6e22e>substring</span>(<span style=color:#ae81ff>0</span>, <span style=color:#ae81ff>50</span>)<span style=color:#e6db74>}</span><span style=color:#e6db74>...`</span>;
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>});
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#a6e22e>server</span>.<span style=color:#a6e22e>start</span>();
+</span></span></code></pre></div><p>注册到Claude Code：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;mcpServers&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;my-service&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;python&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;path/to/my_service.py&#34;</span>]
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><hr><h2 id=第六部分agents-与多代理协调>第六部分：Agents 与多代理协调</h2><h3 id=61-什么是agents>6.1 什么是Agents</h3><p>Agents 是具有特定角色和专业领域的子AI助手。每个Agent有：</p><ul><li><strong>专业知识</strong> - 特定领域的instructions</li><li><strong>工具集</strong> - 可用的工具/能力</li><li><strong>上下文</strong> - 保存的状态和记忆</li><li><strong>目标</strong> - 专项任务目标</li></ul><h3 id=62-内置agents概览>6.2 内置Agents概览</h3><p>Everything Claude Code 的38个agents：</p><table><thead><tr><th>Agent</th><th>用途</th></tr></thead><tbody><tr><td><strong>planner</strong></td><td>分解功能、制订实现计划</td></tr><tr><td><strong>architect</strong></td><td>系统设计、技术架构决策</td></tr><tr><td><strong>code-reviewer</strong></td><td>代码质量、可维护性评审</td></tr><tr><td><strong>security-reviewer</strong></td><td>安全漏洞、攻击面分析</td></tr><tr><td><strong>tdd-guide</strong></td><td>TDD流程、测试设计</td></tr><tr><td><strong>build-error-resolver</strong></td><td>编译/构建错误修复</td></tr><tr><td><strong>e2e-runner</strong></td><td>Playwright E2E测试</td></tr><tr><td><strong>refactor-cleaner</strong></td><td>死代码移除、重构</td></tr><tr><td><strong>doc-updater</strong></td><td>文档同步</td></tr><tr><td><strong>python-reviewer</strong></td><td>Python代码专项审查</td></tr><tr><td><strong>go-reviewer</strong></td><td>Go代码专项审查</td></tr><tr><td><strong>rust-reviewer</strong></td><td>Rust代码专项审查</td></tr><tr><td><strong>typescript-reviewer</strong></td><td>TypeScript代码审查</td></tr></tbody></table><h3 id=63-双agent编程范式>6.3 双Agent编程范式</h3><p><strong>协调模式：Planner + Executor</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 使用Planner设计方案</span>
+</span></span><span style=display:flex><span>/planner <span style=color:#e6db74>&#34;Add OAuth2 authentication to Next.js app&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. Claude会生成详细计划</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - 选择OAuth提供商</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - 实现flow</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - 处理token管理</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - 添加错误处理</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - 编写测试</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 执行实现</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Claude自动实现每个步骤</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 使用Code-Reviewer审查</span>
+</span></span><span style=display:flex><span>/code-review <span style=color:#e6db74>&#34;Review my OAuth implementation&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 修复发现的问题</span>
+</span></span></code></pre></div><h3 id=64-多agent编排>6.4 多Agent编排</h3><p>启用高级多Agent协调：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;features&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;multi_agent&#34;</span>: <span style=color:#66d9ef>true</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;agent_delegation&#34;</span>: <span style=color:#66d9ef>true</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;context_sharing&#34;</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;agents&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;planner&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;system designer&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;opus&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;max_iterations&#34;</span>: <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;executor&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;implementation&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;sonnet&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;max_iterations&#34;</span>: <span style=color:#ae81ff>10</span>
+</span></span><span style=display:flex><span>    },
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;reviewer&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;role&#34;</span>: <span style=color:#e6db74>&#34;quality gate&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;opus&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;max_iterations&#34;</span>: <span style=color:#ae81ff>3</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>使用多Agent命令：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 智能分解复杂任务</span>
+</span></span><span style=display:flex><span>/multi-plan <span style=color:#e6db74>&#34;Build production-grade REST API with auth, database, tests, deployment&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 协调执行</span>
+</span></span><span style=display:flex><span>/multi-execute
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 后端specific流程</span>
+</span></span><span style=display:flex><span>/multi-backend <span style=color:#e6db74>&#34;Implement microservices with Docker, K8s, monitoring&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 前端specific流程</span>
+</span></span><span style=display:flex><span>/multi-frontend <span style=color:#e6db74>&#34;Build React dashboard with real-time data, charts, exports&#34;</span>
+</span></span></code></pre></div><h3 id=65-创建自定义agent>6.5 创建自定义Agent</h3><p>创建 <code>~/.claude/agents/my-agent.md</code>:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-markdown data-lang=markdown><span style=display:flex><span>---
+</span></span><span style=display:flex><span>name: my-specialized-agent
+</span></span><span style=display:flex><span>description: 专注于特定领域的agent
+</span></span><span style=display:flex><span>model: opus
+</span></span><span style=display:flex><span>tools: [&#34;Read&#34;, &#34;Grep&#34;, &#34;Bash&#34;, &#34;Edit&#34;]
+</span></span><span style=display:flex><span>---
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span># My Specialized Agent
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>你是一个专营X领域的专家AI助手。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 专业领域
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>详细描述你的专业领域和特殊能力。
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 工作流程
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>列出你处理任务的标准流程：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>1.</span> 第一步 - ...
+</span></span><span style=display:flex><span><span style=color:#66d9ef>2.</span> 第二步 - ...
+</span></span><span style=display:flex><span><span style=color:#66d9ef>3.</span> 第三步 - ...
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 专业知识点
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> 关键概念1及最佳实践
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> 关键概念2及常见坑
+</span></span><span style=display:flex><span><span style=color:#66d9ef>-</span> 关键概念3及性能优化
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 通信风格
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span>你应该如何与用户沟通（正式/非正式/技术性等）
+</span></span></code></pre></div><hr><h2 id=第七部分完整使用工作流>第七部分：完整使用工作流</h2><h3 id=71-从零开始构建功能>7.1 从零开始构建功能</h3><p><strong>场景：构建用户认证系统</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 进入项目</span>
+</span></span><span style=display:flex><span>cd my-project
+</span></span><span style=display:flex><span>claude
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 制订计划</span>
+</span></span><span style=display:flex><span>/multi-plan <span style=color:#e6db74>&#34;Implement OAuth2 + JWT authentication for REST API&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 查看生成的计划</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Claude会分解为10+具体任务</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 执行实现</span>
+</span></span><span style=display:flex><span>/multi-execute
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 运行测试</span>
+</span></span><span style=display:flex><span>npm test
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 代码审查</span>
+</span></span><span style=display:flex><span>/code-review
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 7. 安全审计  </span>
+</span></span><span style=display:flex><span>/security-scan
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 8. 创建提交</span>
+</span></span><span style=display:flex><span>git add .
+</span></span><span style=display:flex><span>git commit -m <span style=color:#e6db74>&#34;feat: OAuth2 authentication&#34;</span>
+</span></span><span style=display:flex><span>git push
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 9. 提交PR</span>
+</span></span><span style=display:flex><span>gh pr create --title <span style=color:#e6db74>&#34;OAuth2 Authentication System&#34;</span>
+</span></span></code></pre></div><h3 id=72-bug修复工作流>7.2 Bug修复工作流</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 启动调试</span>
+</span></span><span style=display:flex><span>claude
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 分析错误</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Claude自动读取错误日志、堆栈跟踪</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 诊断根因</span>
+</span></span><span style=display:flex><span>/root-cause-tracing <span style=color:#e6db74>&#34;Debug memory leak in event listeners&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 实现修复</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># Claude生成修复代码</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 验证修复</span>
+</span></span><span style=display:flex><span>npm test
+</span></span><span style=display:flex><span>npm run dev  <span style=color:#75715e># 本地测试</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. TDD流程（未来bug预防）</span>
+</span></span><span style=display:flex><span>/tdd <span style=color:#e6db74>&#34;Design tests for this component&#34;</span>
+</span></span><span style=display:flex><span>/e2e <span style=color:#e6db74>&#34;Generate integration tests&#34;</span>
+</span></span></code></pre></div><h3 id=73-代码重构工作流>7.3 代码重构工作流</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 启动重构会话</span>
+</span></span><span style=display:flex><span>claude
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 分析现有代码</span>
+</span></span><span style=display:flex><span>/semantic-analysis <span style=color:#e6db74>&#34;Analyze this codebase for improvements&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 制订重构计划</span>
+</span></span><span style=display:flex><span>/plan <span style=color:#e6db74>&#34;Refactor authentication module for testability and performance&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 自动清理</span>
+</span></span><span style=display:flex><span>/refactor-clean <span style=color:#e6db74>&#34;Remove dead code and unused dependencies&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 迁移到新模式</span>
+</span></span><span style=display:flex><span>/code-migration <span style=color:#e6db74>&#34;Migrate from Redux to TanStack Query&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 完整测试</span>
+</span></span><span style=display:flex><span>/verify  <span style=color:#75715e># 运行lint、test、typecheck、security scan</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 7. 性能对比</span>
+</span></span><span style=display:flex><span>/benchmark <span style=color:#e6db74>&#34;Compare performance before and after&#34;</span>
+</span></span></code></pre></div><h3 id=74-文档维护工作流>7.4 文档维护工作流</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 启动会话</span>
+</span></span><span style=display:flex><span>claude
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 自动更新API文档</span>
+</span></span><span style=display:flex><span>/update-docs <span style=color:#e6db74>&#34;Sync API documentation with code changes&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 生成changelog</span>
+</span></span><span style=display:flex><span>/changelog-generator
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 创建migration指南</span>
+</span></span><span style=display:flex><span>/doc-coauthoring <span style=color:#e6db74>&#34;Write migration guide from v2 to v3&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 发布变更</span>
+</span></span><span style=display:flex><span>git add docs/ CHANGELOG.md
+</span></span><span style=display:flex><span>git commit -m <span style=color:#e6db74>&#34;docs: Update API documentation&#34;</span>
+</span></span></code></pre></div><hr><h2 id=第八部分高级优化技巧>第八部分：高级优化技巧</h2><h3 id=81-token成本优化>8.1 Token成本优化</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;sonnet&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;MAX_THINKING_TOKENS&#34;</span>: <span style=color:#e6db74>&#34;10000&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;CLAUDE_AUTOCOMPACT_PCT_OVERRIDE&#34;</span>: <span style=color:#e6db74>&#34;50&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;CLAUDE_CODE_SUBAGENT_MODEL&#34;</span>: <span style=color:#e6db74>&#34;haiku&#34;</span>
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>成本对比：</p><ul><li>Opus全职 = 基准成本</li><li>Sonnet全职 = 基准成本的40%</li><li>上述配置 = 基准成本的13% (40% <em>深度思考降低</em> 子agent降低)</li></ul><h3 id=82-上下文管理技巧>8.2 上下文管理技巧</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 每个无关任务之间清理context</span>
+</span></span><span style=display:flex><span>/clear
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在逻辑断点压缩context  </span>
+</span></span><span style=display:flex><span>/compact
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 只在新会话启用高思考</span>
+</span></span><span style=display:flex><span>/model opus  <span style=color:#75715e># 仅用于架构决策</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 学习完毕后导出instincts</span>
+</span></span><span style=display:flex><span>/instinct-export &gt; my-team-instincts.json
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 其他人导入</span>
+</span></span><span style=display:flex><span>/instinct-import ./my-team-instincts.json
+</span></span></code></pre></div><h3 id=83-持续学习系统>8.3 持续学习系统</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 会话中自动学习patterns</span>
+</span></span><span style=display:flex><span>/learn <span style=color:#e6db74>&#34;Extract best practices from this session&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 评估patterns质量</span>
+</span></span><span style=display:flex><span>/learn-eval <span style=color:#e6db74>&#34;Grade and store high-confidence patterns&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看学到的patterns</span>
+</span></span><span style=display:flex><span>/instinct-status
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 导出供团队使用</span>
+</span></span><span style=display:flex><span>/instinct-export
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 集群相关patterns为skills</span>
+</span></span><span style=display:flex><span>/evolve <span style=color:#e6db74>&#34;Turn learned instincts into reusable skills&#34;</span>
+</span></span></code></pre></div><h3 id=84-团队协作配置>8.4 团队协作配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;sharedContext&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;teamRules&#34;</span>: <span style=color:#e6db74>&#34;.claude/team-rules.md&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;architecture&#34;</span>: <span style=color:#e6db74>&#34;docs/ARCHITECTURE.md&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;conventions&#34;</span>: <span style=color:#e6db74>&#34;docs/CONVENTIONS.md&#34;</span>
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;mcpServers&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;github&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-github&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;GITHUB_PERSONAL_ACCESS_TOKEN&#34;</span>: <span style=color:#e6db74>&#34;team-token&#34;</span>
+</span></span><span style=display:flex><span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><hr><h2 id=第九部分故障排除>第九部分：故障排除</h2><h3 id=常见问题>常见问题</h3><p><strong>问题1：API连接失败</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 验证API Key</span>
+</span></span><span style=display:flex><span>$env:ANTHROPIC_API_KEY  <span style=color:#75715e># Windows PowerShell</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试连接</span>
+</span></span><span style=display:flex><span>curl -X GET https://api.anthropic.com/v1/models <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -H <span style=color:#e6db74>&#34;x-api-key: </span>$ANTHROPIC_API_KEY<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查network</span>
+</span></span><span style=display:flex><span>ping api.anthropic.com
+</span></span></code></pre></div><p><strong>问题2：Plugin无法加载</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 清除插件缓存</span>
+</span></span><span style=display:flex><span>rm -rf ~/.claude/plugins-cache
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重新启动Claude Code</span>
+</span></span><span style=display:flex><span>claude
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证installation</span>
+</span></span><span style=display:flex><span>/plugin list
+</span></span></code></pre></div><p><strong>问题3：MCP服务器连接超时</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span><span style=color:#75715e>// 增加超时时间
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;mcpServers&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;postgres&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-postgres&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;DATABASE_URL&#34;</span>: <span style=color:#e6db74>&#34;...&#34;</span>,
+</span></span><span style=display:flex><span>        <span style=color:#f92672>&#34;TIMEOUT&#34;</span>: <span style=color:#e6db74>&#34;30000&#34;</span>  <span style=color:#75715e>// 30秒
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>      }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>问题4：Token限额超出</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看成本</span>
+</span></span><span style=display:flex><span>/cost
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 切换到更便宜的模型</span>
+</span></span><span style=display:flex><span>/model sonnet
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 压缩context</span>
+</span></span><span style=display:flex><span>/compact
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 清理旧会话</span>
+</span></span><span style=display:flex><span>/sessions  <span style=color:#75715e># 列出所有会话</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 垃圾回收旧会话内存</span>
+</span></span></code></pre></div><hr><h2 id=总结与资源>总结与资源</h2><h3 id=核心要点回顾>核心要点回顾</h3><p>✅ <strong>三步启动</strong></p><ol><li>安装Node.js和Claude Code</li><li>配置大模型API (智谱GLM-5推荐)</li><li>安装Everything Claude Code插件</li></ol><p>✅ <strong>三层能力扩展</strong></p><ol><li><strong>Skills</strong> - 工作流模板库</li><li><strong>MCP</strong> - 外部工具集成</li><li><strong>Agents</strong> - 专业协作伙伴</li></ol><p>✅ <strong>三个必装插件包</strong></p><ol><li>everything-claude-code (通用最强)</li><li>awesome-claude-skills (补充)</li><li>行业特定skills (按需)</li></ol><p>✅ <strong>成本优化到13%</strong> - 通过Sonnet + 思考token限制 + 子agent折扣</p><h3 id=推荐资源>推荐资源</h3><p><strong>官方文档</strong></p><ul><li><a href=https://code.claude.com/docs/zh-CN/ target=_blank>Claude Code官方文档</a> - 各语言详细指南</li><li><a href=https://docs.anthropic.com/ target=_blank>Anthropic API文档</a> - API参考</li></ul><p><strong>社区资源</strong></p><ul><li><a href=https://github.com/affaan-m/everything-claude-code target=_blank>Everything Claude Code</a> - 最全插件包</li><li><a href=https://github.com/ComposioHQ/awesome-claude-skills target=_blank>Awesome Claude Skills</a> - 社区skills合集</li><li><a href=https://www.claudeskill.site/zh/skills target=_blank>Claude Skills市场</a> - 209个官方skills</li></ul><p><strong>学习资源</strong></p><ul><li><a href=https://github.com/affaan-m/everything-claude-code/blob/main/the-shorthand-guide.md target=_blank>Shorthand Guide</a> - 快速入门指南</li><li><a href=https://github.com/affaan-m/everything-claude-code/blob/main/the-longform-guide.md target=_blank>Longform Guide</a> - 深度进阶指南</li><li><a href=https://github.com/affaan-m/everything-claude-code/blob/main/the-security-guide.md target=_blank>Security Guide</a> - 安全最佳实践</li></ul><p><strong>国内大模型</strong></p><ul><li><a href=https://open.bigmodel.cn target=_blank>智谱GLM-5</a> - 国内最强开源模型</li><li><a href=https://dashscope.aliyuncs.com target=_blank>阿里Qwen</a> - 通义千问系列</li><li><a href=https://console.bce.baidu.com/qianfan/ais target=_blank>百度文心一言</a> - 文心一言API</li></ul><hr><h2 id=快速参考卡>快速参考卡</h2><h3 id=常用命令列表>常用命令列表</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 基础</span>
+</span></span><span style=display:flex><span>claude                          <span style=color:#75715e># 启动会话</span>
+</span></span><span style=display:flex><span>/clear                         <span style=color:#75715e># 清理context</span>
+</span></span><span style=display:flex><span>/model sonnet                  <span style=color:#75715e># 切换模型</span>
+</span></span><span style=display:flex><span>/cost                          <span style=color:#75715e># 查看费用</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 规划与设计  </span>
+</span></span><span style=display:flex><span>/plan <span style=color:#e6db74>&#34;your task&#34;</span>              <span style=color:#75715e># 制订实现计划</span>
+</span></span><span style=display:flex><span>/architect <span style=color:#e6db74>&#34;design task&#34;</span>       <span style=color:#75715e># 系统设计</span>
+</span></span><span style=display:flex><span>/tdd <span style=color:#e6db74>&#34;feature&#34;</span>                 <span style=color:#75715e># 测试驱动开发</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开发工作流</span>
+</span></span><span style=display:flex><span>/code-review                   <span style=color:#75715e># 代码审查</span>
+</span></span><span style=display:flex><span>/security-review               <span style=color:#75715e># 安全审查</span>
+</span></span><span style=display:flex><span>/build-fix                     <span style=color:#75715e># 修复构建错误</span>
+</span></span><span style=display:flex><span>/e2e <span style=color:#e6db74>&#34;test spec&#34;</span>              <span style=color:#75715e># E2E测试生成</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 持续学习</span>
+</span></span><span style=display:flex><span>/learn                         <span style=color:#75715e># 提取patterns</span>
+</span></span><span style=display:flex><span>/instinct-status               <span style=color:#75715e># 查看学习内容</span>
+</span></span><span style=display:flex><span>/instinct-export               <span style=color:#75715e># 导出patterns</span>
+</span></span><span style=display:flex><span>/evolve                        <span style=color:#75715e># 聚类为skills</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 多模型协调</span>
+</span></span><span style=display:flex><span>/multi-plan                    <span style=color:#75715e># 多agent规划</span>
+</span></span><span style=display:flex><span>/multi-execute                 <span style=color:#75715e># 多agent执行</span>
+</span></span><span style=display:flex><span>/multi-backend                 <span style=color:#75715e># 后端工作流</span>
+</span></span><span style=display:flex><span>/multi-frontend                <span style=color:#75715e># 前端工作流</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 插件与集成</span>
+</span></span><span style=display:flex><span>/plugin list                   <span style=color:#75715e># 列表已安装插件</span>
+</span></span><span style=display:flex><span>/plugin install X@X            <span style=color:#75715e># 安装插件</span>
+</span></span><span style=display:flex><span>/settings                      <span style=color:#75715e># 查看配置</span>
+</span></span></code></pre></div><h3 id=快速配置模板>快速配置模板</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-json data-lang=json><span style=display:flex><span><span style=color:#75715e>// ~/.claude/settings.json 标准配置
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>{
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;model&#34;</span>: <span style=color:#e6db74>&#34;sonnet&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;apiKey&#34;</span>: <span style=color:#e6db74>&#34;your-api-key&#34;</span>,
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;env&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;MAX_THINKING_TOKENS&#34;</span>: <span style=color:#e6db74>&#34;10000&#34;</span>,
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;CLAUDE_AUTOCOMPACT_PCT_OVERRIDE&#34;</span>: <span style=color:#e6db74>&#34;50&#34;</span>
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;mcpServers&#34;</span>: {
+</span></span><span style=display:flex><span>    <span style=color:#f92672>&#34;github&#34;</span>: {
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;type&#34;</span>: <span style=color:#e6db74>&#34;stdio&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;command&#34;</span>: <span style=color:#e6db74>&#34;npx&#34;</span>,
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;args&#34;</span>: [<span style=color:#e6db74>&#34;@modelcontextprotocol/server-github&#34;</span>],
+</span></span><span style=display:flex><span>      <span style=color:#f92672>&#34;env&#34;</span>: {<span style=color:#f92672>&#34;GITHUB_PERSONAL_ACCESS_TOKEN&#34;</span>: <span style=color:#e6db74>&#34;xxx&#34;</span>}
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>  },
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;rules&#34;</span>: [<span style=color:#e6db74>&#34;.claude/rules&#34;</span>],
+</span></span><span style=display:flex><span>  <span style=color:#f92672>&#34;skills&#34;</span>: [<span style=color:#e6db74>&#34;.claude/skills&#34;</span>]
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>祝你使用Claude Code愉快！🚀</p><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/vercel/?ref=footer"><span>« Previous</span><br>Vercel - 现代化的 AI 云部署平台完全指南</a></div><div class=next-post><a href="https://yezihack.github.io/life50/?ref=footer"><span>Next »</span><br>Life50 - 50个更好生活的建议</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#简介>简介</a></li><li><a href=#第一部分环境准备与基础安装>第一部分：环境准备与基础安装</a><ul><li><a href=#11-前置环境要求>1.1 前置环境要求</a></li><li><a href=#12-nodejs-安装与配置>1.2 Node.js 安装与配置</a></li><li><a href=#13-claude-code-安装>1.3 Claude Code 安装</a></li><li><a href=#14-启动-claude-code>1.4 启动 Claude Code</a></li></ul></li><li><a href=#第二部分集成国内大模型>第二部分：集成国内大模型</a><ul><li><a href=#21-智谱-glm-5-集成>2.1 智谱 GLM-5 集成</a></li><li><a href=#22-其他国内大模型支持>2.2 其他国内大模型支持</a></li><li><a href=#23-成本优化建议>2.3 成本优化建议</a></li><li><a href=#24-模型切换命令>2.4 模型切换命令</a></li></ul></li><li><a href=#第三部分everything-claude-code-插件>第三部分：Everything Claude Code 插件</a><ul><li><a href=#31-快速安装>3.1 快速安装</a></li><li><a href=#32-核心功能清单>3.2 核心功能清单</a></li><li><a href=#33-rules-安装必须>3.3 Rules 安装（必须）</a></li><li><a href=#34-hooks-配置>3.4 Hooks 配置</a></li><li><a href=#35-mcp-服务器配置>3.5 MCP 服务器配置</a></li></ul></li><li><a href=#第四部分skills-体系详解>第四部分：Skills 体系详解</a><ul><li><a href=#41-官方skills市场>4.1 官方Skills市场</a></li><li><a href=#42-第三方skills库>4.2 第三方Skills库</a></li><li><a href=#43-安装与使用skills>4.3 安装与使用Skills</a></li><li><a href=#44-创建自定义skill>4.4 创建自定义Skill</a></li><li><a href=#45-避免技能重复的最佳实践>4.5 避免技能重复的最佳实践</a></li></ul></li><li><a href=#第五部分mcp-model-context-protocol>第五部分：MCP (Model Context Protocol)</a><ul><li><a href=#51-mcp核心概念>5.1 MCP核心概念</a></li><li><a href=#52-配置mcp服务器>5.2 配置MCP服务器</a></li><li><a href=#53-常用mcp服务器>5.3 常用MCP服务器</a></li><li><a href=#54-创建自定义mcp服务器>5.4 创建自定义MCP服务器</a></li></ul></li><li><a href=#第六部分agents-与多代理协调>第六部分：Agents 与多代理协调</a><ul><li><a href=#61-什么是agents>6.1 什么是Agents</a></li><li><a href=#62-内置agents概览>6.2 内置Agents概览</a></li><li><a href=#63-双agent编程范式>6.3 双Agent编程范式</a></li><li><a href=#64-多agent编排>6.4 多Agent编排</a></li><li><a href=#65-创建自定义agent>6.5 创建自定义Agent</a></li></ul></li><li><a href=#第七部分完整使用工作流>第七部分：完整使用工作流</a><ul><li><a href=#71-从零开始构建功能>7.1 从零开始构建功能</a></li><li><a href=#72-bug修复工作流>7.2 Bug修复工作流</a></li><li><a href=#73-代码重构工作流>7.3 代码重构工作流</a></li><li><a href=#74-文档维护工作流>7.4 文档维护工作流</a></li></ul></li><li><a href=#第八部分高级优化技巧>第八部分：高级优化技巧</a><ul><li><a href=#81-token成本优化>8.1 Token成本优化</a></li><li><a href=#82-上下文管理技巧>8.2 上下文管理技巧</a></li><li><a href=#83-持续学习系统>8.3 持续学习系统</a></li><li><a href=#84-团队协作配置>8.4 团队协作配置</a></li></ul></li><li><a href=#第九部分故障排除>第九部分：故障排除</a><ul><li><a href=#常见问题>常见问题</a></li></ul></li><li><a href=#总结与资源>总结与资源</a><ul><li><a href=#核心要点回顾>核心要点回顾</a></li><li><a href=#推荐资源>推荐资源</a></li></ul></li><li><a href=#快速参考卡>快速参考卡</a><ul><li><a href=#常用命令列表>常用命令列表</a></li><li><a href=#快速配置模板>快速配置模板</a></li></ul></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

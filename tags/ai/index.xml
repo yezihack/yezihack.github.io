@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>AI on 空树之空</title><link>https://yezihack.github.io/tags/ai/</link><description>Recent content in AI on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 23 Jul 2026 10:53:07 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/ai/index.xml" rel="self" type="application/rss+xml"/><item><title>Llama.cpp 本地部署与工具接入指南</title><link>https://yezihack.github.io/llama-cpp/</link><pubDate>Thu, 23 Jul 2026 10:53:07 +0800</pubDate><guid>https://yezihack.github.io/llama-cpp/</guid><description>1. 什么是 llama.cpp https://github.com/ggml-org/llama.cpp 始于2023年的llama.cpp 是一个用 C/C++ 从零实现的 LLM 推理引擎，最初由 Georgi Gerganov 为了在 MacBook 上跑 LLaMA 而写，现在已经发展成支持几乎所有主流开源模型架构的通用推理框架。核心特点是零依赖、极致优化、跨平台——CPU、CUDA、Metal、Vulkan、ROCm 都能跑，甚至能在树莓派上跑。
+核心组件:
+llama.cpp 本体:推理引擎和 C API llama-server:内置的 HTTP server,提供 OpenAI 兼容和原生 API 量化格式 GGUF:自家的模型格式,支持 Q4_K_M、IQ2_M、IQ3_XXS 这些你已经在用的量化方案 提供丰富的工具：llama / llama-serve / llama-cli / llama-bench 命令行推理和性能测试工具 2. 安装 llama.cpp 2.1. 一键安装 https://llama.app/ 打开命令行，输入：irm https://llama.app/install.ps1 | iex
+打开命令行方式：Win+ R，输入：powershell 或 wt
+2.2. 手动安装 打开：https://github.com/ggml-org/llama.cpp/releases 下载最新的推理工具
+我的显卡是：NVIDIA 4060Ti 16GB
+首先查看显卡的CUDA版本，我的显卡是CUDA 12.2 使用命令：nvidia-smi 查看显卡信息
+我的操作系统是：Windows 64位 下载：https://github.com/ggml-org/llama.cpp/releases/download/b10082/llama-b10082-bin-win-cuda-12.4-x64.zip 加速库：https://github.com/ggml-org/llama.cpp/releases/download/b10082/cudart-llama-bin-win-cuda-12.4-x64.zip llama-b10082-bin-win-cuda-12.</description></item><item><title>AI Skills 完全指南：把 AI 纳入标准工程流程</title><link>https://yezihack.github.io/ai-skills-workflow/</link><pubDate>Mon, 18 May 2026 10:00:00 +0800</pubDate><guid>https://yezihack.github.io/ai-skills-workflow/</guid><description>这不是一个命令参考。这是关于如何把 AI 纳入标准软件工程流程的完整指南。
+很多人安装完 /grill-me、/tdd，然后陷入迷茫：这些 Skill 怎么融入真实开发？
+本文给你一套真正能落地的工作流。
+为什么需要 Skills？ Matt Pocock 的 AI Skills 仓库 的真正价值不在于命令本身，而在于：
+把隐性的工程经验显式化，变成 AI 可执行的工作流
+以前，只有资深工程师脑子里有：
+如何拆需求 如何调试 Bug 如何重构混乱代码 如何设计架构 现在，这些知识被编码成了 Skills，可以被 AI 执行。
+这就是 AI Native Development 的开始。
+第一部分：新项目开发（最标准的使用方式） 新项目是 Skills 最适合的场景。
+❌ 大多数人的错误方式 直接告诉 AI：
+帮我做一个 AI 导航站 结果：
+AI 直接开写代码 技术栈随意选择 数据库表结构混乱 后面疯狂返工 这就是著名的 Vibe Coding（感觉编程）。
+✅ 正确方式：5 个阶段工作流 阶段 1：/grill-me - 需求澄清 开发前，先：
+/grill-me 我要做一个 AI 导航站 AI 会进入盘问模式，问你一系列问题：</description></item><item><title>Vercel - 现代化的 AI 云部署平台完全指南</title><link>https://yezihack.github.io/vercel/</link><pubDate>Thu, 02 Apr 2026 17:06:36 +0800</pubDate><guid>https://yezihack.github.io/vercel/</guid><description>简介 Vercel 是一个现代化的云部署平台，致力于让开发者能够更快地构建、部署和扩展网络应用。从个人项目到企业级应用，Vercel 提供了完整的工具链和基础设施支持。
+官网地址：https://vercel.com/
+什么是 Vercel？ Vercel 是一个全栈云计算平台，为开发者提供：
+核心功能 一键部署：从 Git 直接部署到全球 CDN AI 云基础设施：支持 AI 应用和模型集成 无服务器函数：轻松创建和部署后端 API 全球边缘网络：自动在全球范围内分发内容 零配置：自动识别项目类型，智能配置 实时预览：每次 Git 推送都自动生成预览链接 自动 HTTPS：所有域名都支持 SSL/TLS Vercel 的核心特点 1. 框架支持 Vercel 支持多种现代前端框架：
+框架 支持状态 推荐指数 Next.js ✅ 官方支持 ⭐⭐⭐⭐⭐ React ✅ 完美支持 ⭐⭐⭐⭐⭐ Svelte ✅ 完整支持 ⭐⭐⭐⭐ Vue/Nuxt ✅ 完整支持 ⭐⭐⭐⭐ Astro ✅ 完整支持 ⭐⭐⭐⭐ Python ✅ 支持 ⭐⭐⭐ Static HTML ✅ 支持 ⭐⭐⭐⭐ 2. 全球基础设施 60+ 个全球节点：确保内容快速交付 自动地理优化：根据用户位置选择最近的服务器 智能缓存：边缘计算和智能缓存策略 高可用性：99.</description></item><item><title>从零打造私人AI知识库：Ollama + AnythingLLM 完全指南</title><link>https://yezihack.github.io/anythingllm/</link><pubDate>Thu, 22 Jan 2026 11:19:37 +0800</pubDate><guid>https://yezihack.github.io/anythingllm/</guid><description>在这个信息爆炸的时代，如何高效管理和利用自己的知识资产？本文将手把手教你搭建一个完全本地化、保护隐私的AI知识库系统。
+🎯 为什么需要私人AI知识库？ 想象这样的场景：
+📚 你有大量的学习资料、工作文档，需要时却找不到 🔍 想快速了解一份长达100页的报告核心内容 💼 公司文档敏感，不能上传到ChatGPT等在线服务 🧠 希望AI成为你的&amp;quot;第二大脑&amp;quot;，随时调取知识 解决方案就是：Ollama + AnythingLLM
+核心优势 ✅ 完全本地化 - 数据不出本地，保护隐私
+✅ 免费开源 - 无需订阅费用，永久免费使用
+✅ 离线运行 - 不依赖网络，随时可用
+✅ 灵活定制 - 可选择不同模型，满足各种需求
+📋 准备工作 系统要求 最低配置：
+CPU: 4核心以上 内存: 8GB（推荐16GB） 硬盘: 20GB可用空间 操作系统: Windows 10/11、macOS、Linux 推荐配置：
+CPU: 8核心以上 内存: 16GB以上 显卡: 支持CUDA的NVIDIA显卡（可选，能大幅提升速度） 需要下载的软件 Ollama - 本地大语言模型运行环境 AnythingLLM - 知识库管理界面 🚀 第一步：安装 Ollama 1.1 下载安装 访问 Ollama 官网：https://ollama.ai
+根据你的操作系统选择对应版本：
+Windows 用户：</description></item></channel></rss>

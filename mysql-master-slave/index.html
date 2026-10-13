@@ -1,0 +1,714 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - MySQL 主从极简教程</title><meta property="og:title" content="百里觅码 - MySQL 主从极简教程"><meta name=twitter:title content="百里觅码 - MySQL 主从极简教程"><meta itemprop=name content="百里觅码 - MySQL 主从极简教程"><meta name=application-name content="百里觅码 - MySQL 主从极简教程"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/mysql-master-slave/><link rel=canonical href=https://yezihack.github.io/mysql-master-slave/ itemprop=url><meta name=url content="https://yezihack.github.io/mysql-master-slave/"><meta name=twitter:url content="https://yezihack.github.io/mysql-master-slave/"><meta property="og:url" content="https://yezihack.github.io/mysql-master-slave/"><meta property="og:updated_time" content="22004-22-07T417:40:24+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="22004-22-07T417:40:24+0800"><meta property="article:published_time" content="22004-22-07T417:40:24+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"MySQL 主从极简教程","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2024-04-22","description":"","wordCount":"2014","mainEntityOfPage":"True","dateModified":"2024-04-22","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/mysql-master-slave/>MySQL 主从极简教程</a></h1><time datetime=2024-04-22T19:17:40+0800 class=post-date>April 22, 2024</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>2014</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>10 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-mysql><a href=https://yezihack.github.io/tags/mysql>mysql</a></li><li class=tag-极简教程><a href=https://yezihack.github.io/tags/%E6%9E%81%E7%AE%80%E6%95%99%E7%A8%8B>极简教程</a></li></ul></div><ul><li><a href=#1-%e4%bb%80%e4%b9%88%e6%98%af-mysql-%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>1. 什么是 MySQL 主从同步</a></li><li><a href=#2-%e4%b8%bb%e4%bb%8e%e5%8e%9f%e7%90%86>2. 主从原理</a></li><li><a href=#3-%e4%b8%bb%e4%bb%8e%e9%85%8d%e7%bd%ae%e5%8f%82%e6%95%b0>3. 主从配置参数</a><ul><li><a href=#31-server_id>3.1. server_id</a></li><li><a href=#32-log_bin>3.2. log_bin</a></li><li><a href=#33-sync_binlog>3.3. sync_binlog</a></li><li><a href=#34-relay_log>3.4. relay_log</a></li><li><a href=#35-log_slave_updates>3.5. log_slave_updates</a></li><li><a href=#36-read_only>3.6. read_only</a></li><li><a href=#37-sync_master_info>3.7. sync_master_info</a></li><li><a href=#38-sync_relay_log>3.8. sync_relay_log</a></li><li><a href=#39-sync_relay_log_info>3.9. sync_relay_log_info</a></li><li><a href=#310-expire_logs_days>3.10. expire_logs_days</a></li><li><a href=#311-max_binlog_size>3.11. max_binlog_size</a></li><li><a href=#312-binlog_format>3.12. binlog_format</a></li><li><a href=#313-%e5%ae%9e%e4%be%8b%e9%85%8d%e7%bd%ae>3.13. 实例配置</a></li></ul></li><li><a href=#4-%e4%b8%bb%e4%bb%8e%e5%b8%b8%e7%94%a8%e5%91%bd%e4%bb%a4>4. 主从常用命令</a></li><li><a href=#5-%e6%b5%8b%e8%af%95%e6%95%b0%e6%8d%ae>5. 测试数据</a></li><li><a href=#6-%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5docker>6. 主从同步(docker)</a><ul><li><a href=#61-%e5%87%86%e5%a4%87>6.1. 准备</a></li><li><a href=#62-%e4%b8%bb%e5%ba%93>6.2. 主库</a></li><li><a href=#63-%e4%bb%8e%e5%ba%93>6.3. 从库</a></li><li><a href=#64-%e5%81%9c%e6%ad%a2%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>6.4. 停止主从同步</a></li><li><a href=#65-%e5%88%a0%e9%99%a4-mysql>6.5. 删除 mysql</a></li></ul></li><li><a href=#7-%e4%b8%80%e4%b8%bb%e5%a4%9a%e4%bb%8e%e5%90%8c%e6%ad%a5docker>7. 一主多从同步(docker)</a><ul><li><a href=#71-%e5%87%86%e5%a4%87>7.1. 准备</a></li><li><a href=#72-%e4%b8%bb%e5%ba%93>7.2. 主库</a></li><li><a href=#73-%e4%bb%8e%e5%ba%9301>7.3. 从库01</a></li><li><a href=#74-%e4%bb%8e%e5%ba%9302>7.4. 从库02</a></li><li><a href=#75-%e5%81%9c%e6%ad%a2%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>7.5. 停止主从同步</a></li><li><a href=#76-%e5%88%a0%e9%99%a4-mysql>7.6. 删除 mysql</a></li></ul></li><li><a href=#8-%e4%b8%bb%e4%bb%8e%e4%b8%bb%e4%bb%8e%e9%83%a8%e7%bd%b2docker>8. 主从(主)从部署(docker)</a><ul><li><a href=#81-%e5%87%86%e5%a4%87>8.1. 准备</a></li><li><a href=#82-%e4%b8%bb%e5%ba%93>8.2. 主库</a></li><li><a href=#83-%e4%bb%8e%e5%ba%9301>8.3. 从库01</a></li><li><a href=#84-%e4%bb%8e%e5%ba%9302>8.4. 从库02</a></li><li><a href=#85-%e5%81%9c%e6%ad%a2%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>8.5. 停止主从同步</a></li><li><a href=#86-%e5%88%a0%e9%99%a4-mysql>8.6. 删除 mysql</a></li></ul></li><li><a href=#9-%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5docker-compose>9. 主从同步(docker-compose)</a><ul><li><a href=#91-%e5%87%86%e5%a4%87>9.1. 准备</a></li><li><a href=#92-%e9%85%8d%e7%bd%ae>9.2. 配置</a></li><li><a href=#93-%e5%88%9b%e5%bb%ba-docker-compose>9.3. 创建 docker-compose</a></li><li><a href=#94-%e5%90%af%e5%8a%a8%e6%9c%8d%e5%8a%a1>9.4. 启动服务</a></li><li><a href=#95-%e8%ae%be%e7%bd%ae%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>9.5. 设置主从同步</a></li><li><a href=#96-%e5%81%9c%e6%ad%a2%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>9.6. 停止主从同步</a></li><li><a href=#97-%e9%87%8d%e5%90%af%e6%9c%8d%e5%8a%a1>9.7. 重启服务</a></li><li><a href=#98-%e5%88%a0%e9%99%a4-mysql>9.8. 删除 mysql</a></li></ul></li><li><a href=#10-%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5docker-compose%e8%87%aa%e5%8a%a8>10. 主从同步(docker-compose自动)</a><ul><li><a href=#101-%e5%87%86%e5%a4%87>10.1. 准备</a></li><li><a href=#102-%e9%85%8d%e7%bd%ae>10.2. 配置</a></li><li><a href=#103-%e8%87%aa%e5%8a%a8%e8%84%9a%e6%9c%ac>10.3. 自动脚本</a></li><li><a href=#104-%e5%88%9b%e5%bb%ba-docker-compose>10.4. 创建 docker-compose</a></li><li><a href=#105-%e5%90%af%e5%8a%a8%e6%9c%8d%e5%8a%a1>10.5. 启动服务</a></li><li><a href=#106-%e6%9f%a5%e7%9c%8b%e4%b8%bb%e5%ba%93%e7%8a%b6%e6%80%81>10.6. 查看主库状态</a></li><li><a href=#107-%e6%9f%a5%e7%9c%8b%e4%bb%8e%e5%ba%93%e7%8a%b6%e6%80%81>10.7. 查看从库状态</a></li><li><a href=#108-%e5%81%9c%e6%ad%a2%e4%b8%bb%e4%bb%8e%e5%90%8c%e6%ad%a5>10.8. 停止主从同步</a></li><li><a href=#109-%e9%87%8d%e5%90%af%e6%9c%8d%e5%8a%a1>10.9. 重启服务</a></li><li><a href=#1010-%e5%88%a0%e9%99%a4-mysql>10.10. 删除 mysql</a></li></ul></li><li><a href=#11-mysqldump-%e5%af%bc%e5%87%ba>11. mysqldump 导出</a></li><li><a href=#12-%e5%8f%82%e8%80%83>12. 参考</a></li></ul><h2 id=1-什么是-mysql-主从同步>1. 什么是 MySQL 主从同步</h2><p>MySQL主从同步，也称作MySQL复制，是数据库管理中的一个核心特性，它允许你从一个MySQL数据库服务器（称为主服务器）复制数据到一个或多个MySQL数据库服务器（称为从服务器）。复制过程是异步的，并且通常实时进行，所以从服务器的数据是对主服务器数据近似实时的镜像。</p><p>这项技术主要用于以下几个目的：</p><ul><li><input disabled type=checkbox> 数据备份：在从服务器上持有主服务器数据的副本，可以在主服务器故障时避免数据丢失。</li><li><input disabled type=checkbox> 故障切换（Failover）：当主服务器宕机时，可以快速切换至从服务器，保证服务的持续可用。</li><li><input disabled type=checkbox> 负载均衡：通过从服务器处理读请求，可以减轻主服务器的负载。</li><li><input disabled type=checkbox> 数据分析和报告：在从服务器上运行查询，可以减少对主服务器操作产生影响。</li><li><input disabled type=checkbox> 地理分布：将数据复制到不同地理位置的服务器上，可以提高用户访问数据时的速度和可靠性。</li></ul><p>MySQL主从复制是一种强大的特性，它可以在不同的用例中使用，以提高数据的可用性和可靠性，同时提供系统和数据的可伸缩性。这对于任何规模的企业环境都是不可或缺的。</p><h2 id=2-主从原理>2. 主从原理</h2><ul><li>主服务器上的操作：主服务器将所有的更改操作记录到二进制日志（binary log）中。这些日志是复制的基础，包含了所有可能影响数据的SQL语句。</li><li>日志传送和读取：从服务器连接到主服务器，并从二进制日志中读取数据更改的事件记录。</li><li>写入中继日志：从服务器接收到这些事件后，它会将它们写入自己的中继日志（relay log）。</li><li>SQL线程应用更改：从服务器上的SQL线程读取中继日志中的事件，然后在从服务器的数据库上应用它们。</li></ul><p><img src=https://cdn.jsdelivr.net/gh/yezihack/assets/b/20240422192037.png alt=20240422192037></p><p>专业术语：</p><ol><li>二进制日志（Binary Log）：记录了导致数据更改的所有语句的日志，主服务器上的每个写操作都会被记录在这里。</li><li>中继日志（Relay Log）：主服务器上的二进制日志传递到从服务器之后，从服务器上的中继日志保存了这些事件。</li><li>I/O线程：这是从服务器上的线程，它连接到主服务器并从二进制日志读取事件，写入中继日志。</li><li>SQL线程：又一个从服务器上的线程，它读取中继日志中的事件，并在本地数据库中执行这些SQL语句。</li></ol><h2 id=3-主从配置参数>3. 主从配置参数</h2><h3 id=31-server_id>3.1. server_id</h3><ol><li>server_id是MySQL服务器的唯一标识符。在MySQL复制架构中，每个服务器（包括主服务器和从服务器）必须有一个唯一的server_id。</li><li>在这个配置里，server_id被设置为10。这个标识符用来标识和区分不同的MySQL服务器，尤其是在多服务器（如主从复制、群集）环境中。</li><li>设定server_id对于开启复制功能是必需的。</li></ol><p>样例：</p><pre tabindex=0><code class=language-conf data-lang=conf>server_id = 10
+</code></pre><h3 id=32-log_bin>3.2. log_bin</h3><ol><li>log_bin选项启用二进制日志功能，这是MySQL复制的基础。二进制日志记录了数据库更改的所有“事件”，如表的更改（DDL）和行的更改（DML），供其他MySQL服务器（从服务器）使用，以使数据保持同步。</li><li>mysql-bin为二进制日志文件的前缀。实际的日志文件会添加上索引号，如mysql-bin.000001。</li><li>开启二进制日志除了对复制有用之外，它还可以用于数据恢复操作。</li></ol><p>样例：</p><pre tabindex=0><code class=language-conf data-lang=conf>log_bin = mysql-bin
+</code></pre><h3 id=33-sync_binlog>3.3. sync_binlog</h3><ol><li>sync_binlog配置项控制着二进制日志写入磁盘的频率。设置为1意味着MySQL会在每次提交事务时都将二进制日志的事件同步写入到磁盘。</li><li>这个设置可以增加MySQL操作的耐久性（Durability），因为确保了在发生崩溃时，事务的记录不会丢失。</li><li>不过，这种耐久性是以性能为代价的，因为每次事务提交时的磁盘同步操作可能会引入额外的延迟。因此，这是数据安全性与性能之间的一个权衡。</li><li>通过将sync_binlog设置为1，它确保了更高水平的数据安全性，尽管可能会稍微影响性能。这通常出现在需要高数据一致性和恢复能力的环境（如金融服务）中。</li></ol><h3 id=34-relay_log>3.4. relay_log</h3><ol><li>中继日志（relay log）保存了主服务器上二进制日志的事件</li></ol><p>样例：</p><pre tabindex=0><code class=language-conf data-lang=conf>relay_log = /var/lib/mysql/mysql-relay-bin
+</code></pre><h3 id=35-log_slave_updates>3.5. log_slave_updates</h3><ol><li>当设置为1时，从服务器上由于复制引起的更改也会被写入从服务器的二进制日志。这在链式复制或双向复制中是必需的。</li></ol><p>样例：</p><pre tabindex=0><code class=language-conf data-lang=conf>log_slave_updates = 1
+</code></pre><h3 id=36-read_only>3.6. read_only</h3><ol><li>这个参数将从服务器设置为只读模式。这意味着只有拥有SUPER权限的用户或具有REPLICATION SLAVE权限的复制线程可以修改数据库。</li></ol><h3 id=37-sync_master_info>3.7. sync_master_info</h3><ol><li>当设置为1时，每次事务提交都会同步更新主服务器信息到磁盘中。这有助于保持关于主服务器状态的信息更新，对恢复数据很重要。</li></ol><h3 id=38-sync_relay_log>3.8. sync_relay_log</h3><ol><li>此参数将导致从服务器在事务提交时同步中继日志到磁盘。这增加了crash-safe能力，但可能对性能有轻微影响。</li></ol><h3 id=39-sync_relay_log_info>3.9. sync_relay_log_info</h3><ol><li>与sync_relay_log相似，在事务提交时，从服务器同步中继日志信息到磁盘，这有助于确保复制的可靠性。</li></ol><h3 id=310-expire_logs_days>3.10. expire_logs_days</h3><ol><li>定义了mysql清除过期日志的时间</li></ol><h3 id=311-max_binlog_size>3.11. max_binlog_size</h3><ol><li>如果二进制日志写入的内容超出给定值，日志就会发生滚动。你不能将该变量设置为大于1GB或小于4096字节。 默认值是1GB。</li></ol><h3 id=312-binlog_format>3.12. binlog_format</h3><p>MySQL的 有三种格式，分别是：</p><ol><li>STATEMENT<ul><li>优点<ul><li>日志文件通常较小，因为只记录了执行的SQL语句。</li><li>执行SQL语句通常比ROW格式快，因为只执行一次即可影响多行。</li></ul></li><li>缺点<ul><li>可能会引起数据不一致的问题，特别是在使用存储函数、触发器、LAST_INSERT_ID()和用户自定义函数等特定SQL场景下。不支持行级的复制过滤器。</li><li>因为只记录了SQL语句而没有上下文，所以在某些情况下可能难以进行故障排查。</li></ul></li></ul></li><li>ROW<ul><li>优点<ul><li>记录了实际更改的行的数据，确保从库与主库的数据一致性，适用于所有复制类型的场景。</li><li>减少了因为执行非确定性SQL语句引起的复制问题。</li></ul></li><li>缺点<ul><li>日志文件可能会很大，因为每一行更改都会被记录下来。</li><li>如果频繁更新大量数据，将对磁盘空间和I/O性能造成较大压力。</li></ul></li></ul></li><li>MIXED<ul><li>优点<ul><li>默认情况下使用STATEMENT格式，但在某些可能引起数据不一致的情况下，如有必要会自动切换至ROW格式。</li><li>结合了STATEMENT和ROW两种模式的优点，旨在优化日志文件大小并保持数据一致性。</li></ul></li><li>缺点<ul><li>在某些特定情况下不容易确定MySQL是否会切换到ROW格式记录，使得预测binlog的内容和大小变得复杂。</li></ul></li></ul></li></ol><h3 id=313-实例配置>3.13. 实例配置</h3><p>主库配置：</p><pre tabindex=0><code class=language-conf data-lang=conf>[mysqld]
+server-id = 10
+log_bin = /var/lib/mysql/mysql-bin
+sync_binlog =1 
+</code></pre><p>从库配置：</p><pre tabindex=0><code class=language-conf data-lang=conf>[mysqld]
+log_bin = mysql-bin
+server_id = 100
+relay_log = /var/lib/mysql/mysql-relay-bin 
+log_slave_updates =1
+read_only = 1
+sync_master_info = 1
+sync_relay_log = 1
+sync_relay_log_info = 1
+</code></pre><h2 id=4-主从常用命令>4. 主从常用命令</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 开始同步</span>
+</span></span><span style=display:flex><span>start slave;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#  查看 master 服务器状态，File 和 Postion 对应的值要记录下来，下面要用到</span>
+</span></span><span style=display:flex><span>show master status;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看有哪些从节点连接到主库上</span>
+</span></span><span style=display:flex><span>show slave hosts;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 进程</span>
+</span></span><span style=display:flex><span>show processlist;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># binlog 事件</span>
+</span></span><span style=display:flex><span>show binlog events;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看变量</span>
+</span></span><span style=display:flex><span>show global variables like <span style=color:#e6db74>&#39;%server%&#39;</span>;
+</span></span><span style=display:flex><span>show global variables like <span style=color:#e6db74>&#39;%read_only%&#39;</span>;
+</span></span><span style=display:flex><span>show global variables like <span style=color:#e6db74>&#39;%log_slave_updates%&#39;</span>;
+</span></span><span style=display:flex><span>show global variables like <span style=color:#e6db74>&#39;%log_bin%&#39;</span>;
+</span></span></code></pre></div><h2 id=5-测试数据>5. 测试数据</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>CREATE DATABASE <span style=color:#e6db74>`</span>test<span style=color:#e6db74>`</span> CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>use test;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>CREATE TABLE test <span style=color:#f92672>(</span>
+</span></span><span style=display:flex><span>  id INT AUTO_INCREMENT PRIMARY KEY,
+</span></span><span style=display:flex><span>  age INT,
+</span></span><span style=display:flex><span>  name VARCHAR<span style=color:#f92672>(</span>100<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>)</span> CHARACTER SET  utf8mb4 COLLATE utf8mb4_general_ci;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>25, <span style=color:#e6db74>&#39;Alice&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>30, <span style=color:#e6db74>&#39;Bob&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>22, <span style=color:#e6db74>&#39;Charlie&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>22, <span style=color:#e6db74>&#39;li&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>25, <span style=color:#e6db74>&#39;lwang&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>23, <span style=color:#e6db74>&#39;zhang&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>INSERT INTO test <span style=color:#f92672>(</span>age, name<span style=color:#f92672>)</span> VALUES <span style=color:#f92672>(</span>8, <span style=color:#e6db74>&#39;pali&#39;</span><span style=color:#f92672>)</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>select</span> * from test;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>show databases;
+</span></span></code></pre></div><h2 id=6-主从同步docker>6. 主从同步(docker)</h2><ul><li>A 同步 B</li></ul><h3 id=61-准备>6.1. 准备</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker pull mysql:5.7
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,slave<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 建一个网络，以便主从容器可以相互通信：</span>
+</span></span><span style=display:flex><span>docker network create mysql-replication-net
+</span></span></code></pre></div><h3 id=62-主库>6.2. 主库</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动主数据库MySQL容器：</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-master <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_master_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_DATABASE<span style=color:#f92672>=</span>mydb <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/master:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log-bin<span style=color:#f92672>=</span>mysql-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>sys <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>infomation_schema <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>performance_schema <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-format<span style=color:#f92672>=</span>ROW
+</span></span></code></pre></div><p>创建复制帐号</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-master /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建复制帐号</span>
+</span></span><span style=display:flex><span>grant replication slave,replication client on *.* to repl@<span style=color:#e6db74>&#39;%&#39;</span> identified by <span style=color:#e6db74>&#39;your_repl_password&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>FLUSH PRIVILEGES;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看帐号列表</span>
+</span></span><span style=display:flex><span>SELECT User, Host FROM mysql.user;
+</span></span></code></pre></div><p>查看状态</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e>#  查看 master 服务器状态，File 和 Postion 对应的值要记录下来，下面要用到</span>
+</span></span><span style=display:flex><span>SHOW MASTER STATUS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看从节点</span>
+</span></span><span style=display:flex><span>SHOW SLAVE HOSTS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 其它</span>
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%server_id%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%log_bin%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%server_uuid%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%datadir%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW PROCESSLIST;
+</span></span><span style=display:flex><span>SHOW BINLOG EVENTS;
+</span></span></code></pre></div><h3 id=63-从库>6.3. 从库</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动从数据库MySQL容器：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务器唯一id，每台服务器的id必须不同，如果配置其他从机，注意修改id</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-slave <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_slave_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/slave:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>2</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --relay-log<span style=color:#f92672>=</span>relay-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log_slave_updates<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --read_only<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><p>设置同步：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 执行以下SQL语句，其中MASTER_LOG_FILE和MASTER_LOG_POS需要根据上一步获得的主库状态进行替换：</span>
+</span></span><span style=display:flex><span>CHANGE MASTER TO
+</span></span><span style=display:flex><span>  MASTER_HOST<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-master&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_USER<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;repl&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_PASSWORD<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;your_repl_password&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-bin.000001&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_POS<span style=color:#f92672>=</span>1,
+</span></span><span style=display:flex><span>  MASTER_CONNECT_RETRY<span style=color:#f92672>=</span>30;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开启主从同步</span>
+</span></span><span style=display:flex><span>START SLAVE;
+</span></span></code></pre></div><p>查看状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span></code></pre></div><h3 id=64-停止主从同步>6.4. 停止主从同步</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：停止I/O 线程和SQL线程的操作。</span>
+</span></span><span style=display:flex><span>stop slave; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：用于删除SLAVE数据库的relaylog日志文件，并重新启用新的relaylog文件。</span>
+</span></span><span style=display:flex><span>reset slave;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在主机上执行。功能说明：删除所有的binglog日志文件，并将日志索引文件清空，重新开始所有新的日志文件。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 用于第一次进行搭建主从库时，进行主库binlog初始化工作；</span>
+</span></span><span style=display:flex><span>reset master;
+</span></span></code></pre></div><h3 id=65-删除-mysql>6.5. 删除 mysql</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker rm -f mysql-master
+</span></span><span style=display:flex><span>docker rm -f mysql-slave
+</span></span><span style=display:flex><span>rm -rf /data/mysql-data/
+</span></span></code></pre></div><h2 id=7-一主多从同步docker>7. 一主多从同步(docker)</h2><ul><li>A 同步 B</li><li>A 同步 C</li></ul><h3 id=71-准备>7.1. 准备</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker pull mysql:5.7
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,slave01,slave02<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 建一个网络，以便主从容器可以相互通信：</span>
+</span></span><span style=display:flex><span>docker network create mysql-replication-net
+</span></span></code></pre></div><h3 id=72-主库>7.2. 主库</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动主数据库MySQL容器：</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-master <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_master_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_DATABASE<span style=color:#f92672>=</span>mydb <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/master:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log-bin<span style=color:#f92672>=</span>mysql-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>sys <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>infomation_schema <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>performance_schema <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-format<span style=color:#f92672>=</span>ROW
+</span></span></code></pre></div><p>创建复制帐号</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-master /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建复制帐号</span>
+</span></span><span style=display:flex><span>grant replication slave,replication client on *.* to repl@<span style=color:#e6db74>&#39;%&#39;</span> identified by <span style=color:#e6db74>&#39;your_repl_password&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>FLUSH PRIVILEGES;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看帐号列表</span>
+</span></span><span style=display:flex><span>SELECT User, Host FROM mysql.user;
+</span></span></code></pre></div><p>查看状态</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e>#  查看 master 服务器状态，File 和 Postion 对应的值要记录下来，下面要用到</span>
+</span></span><span style=display:flex><span>SHOW MASTER STATUS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看有哪些从节点连接到主库上</span>
+</span></span><span style=display:flex><span>SHOW SLAVE HOSTS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 其它</span>
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%server_id%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%log_bin%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%server_uuid%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW VARIABLES LIKE <span style=color:#e6db74>&#39;%datadir%&#39;</span>;
+</span></span><span style=display:flex><span>SHOW PROCESSLIST;
+</span></span><span style=display:flex><span>SHOW BINLOG EVENTS;
+</span></span></code></pre></div><h3 id=73-从库01>7.3. 从库01</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动从数据库MySQL容器：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务器唯一id，每台服务器的id必须不同，如果配置其他从机，注意修改id</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-slave01 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_slave_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/slave01:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --relay-log<span style=color:#f92672>=</span>relay-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log_slave_updates<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --read_only<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><p>设置同步：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave01 /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 执行以下SQL语句，其中MASTER_LOG_FILE和MASTER_LOG_POS需要根据上一步获得的主库状态进行替换：</span>
+</span></span><span style=display:flex><span>CHANGE MASTER TO
+</span></span><span style=display:flex><span>  MASTER_HOST<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-master&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_USER<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;repl&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_PASSWORD<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;your_repl_password&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-bin.000001&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_POS<span style=color:#f92672>=</span>1,
+</span></span><span style=display:flex><span>  MASTER_CONNECT_RETRY<span style=color:#f92672>=</span>30;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开启主从同步</span>
+</span></span><span style=display:flex><span>START SLAVE;
+</span></span></code></pre></div><p>查看状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span></code></pre></div><h3 id=74-从库02>7.4. 从库02</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动从数据库MySQL容器：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务器唯一id，每台服务器的id必须不同，如果配置其他从机，注意修改id</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-slave02 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_slave_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/slave02:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>101</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --relay-log<span style=color:#f92672>=</span>relay-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log_slave_updates<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --read_only<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><p>设置同步：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave02 /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 执行以下SQL语句，其中MASTER_LOG_FILE和MASTER_LOG_POS需要根据上一步获得的主库状态进行替换：</span>
+</span></span><span style=display:flex><span>CHANGE MASTER TO
+</span></span><span style=display:flex><span>  MASTER_HOST<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-master&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_USER<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;repl&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_PASSWORD<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;your_repl_password&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-bin.000001&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_POS<span style=color:#f92672>=</span>1,
+</span></span><span style=display:flex><span>  MASTER_CONNECT_RETRY<span style=color:#f92672>=</span>30;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开启主从同步</span>
+</span></span><span style=display:flex><span>START SLAVE;
+</span></span></code></pre></div><p>查看状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span></code></pre></div><h3 id=75-停止主从同步>7.5. 停止主从同步</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：停止I/O 线程和SQL线程的操作。</span>
+</span></span><span style=display:flex><span>stop slave; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：用于删除SLAVE数据库的relaylog日志文件，并重新启用新的relaylog文件。</span>
+</span></span><span style=display:flex><span>reset slave;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在主机上执行。功能说明：删除所有的binglog日志文件，并将日志索引文件清空，重新开始所有新的日志文件。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 用于第一次进行搭建主从库时，进行主库binlog初始化工作；</span>
+</span></span><span style=display:flex><span>reset master;
+</span></span></code></pre></div><h3 id=76-删除-mysql>7.6. 删除 mysql</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker rm -f mysql-master
+</span></span><span style=display:flex><span>docker rm -f mysql-slave01
+</span></span><span style=display:flex><span>docker rm -f mysql-slave02
+</span></span><span style=display:flex><span>rm -rf /data/mysql-data/
+</span></span></code></pre></div><h2 id=8-主从主从部署docker>8. 主从(主)从部署(docker)</h2><ul><li>A 同步 B</li><li>B 同步 C （B也即允当从库也允当主库）</li></ul><h3 id=81-准备>8.1. 准备</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker pull mysql:5.7
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,master-slave01,slave02<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 建一个网络，以便主从容器可以相互通信：</span>
+</span></span><span style=display:flex><span>docker network create mysql-replication-net
+</span></span></code></pre></div><h3 id=82-主库>8.2. 主库</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动主数据库MySQL容器：</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-master <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_master_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/master:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log-bin<span style=color:#f92672>=</span>mysql-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>sys <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>infomation_schema <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-ignore-db<span style=color:#f92672>=</span>performance_schema <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --binlog-format<span style=color:#f92672>=</span>ROW
+</span></span></code></pre></div><p>创建复制帐号</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-master /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建复制帐号</span>
+</span></span><span style=display:flex><span>grant replication slave,replication client on *.* to repl@<span style=color:#e6db74>&#39;%&#39;</span> identified by <span style=color:#e6db74>&#39;your_repl_password&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>FLUSH PRIVILEGES;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看帐号列表</span>
+</span></span><span style=display:flex><span>SELECT User, Host FROM mysql.user;
+</span></span></code></pre></div><p>查看状态</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e>#  查看 master 服务器状态，File 和 Postion 对应的值要记录下来，下面要用到</span>
+</span></span><span style=display:flex><span>SHOW MASTER STATUS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看有哪些从节点连接到主库上</span>
+</span></span><span style=display:flex><span>SHOW SLAVE HOSTS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 事件</span>
+</span></span><span style=display:flex><span>SHOW BINLOG EVENTS;
+</span></span></code></pre></div><h3 id=83-从库01>8.3. 从库01</h3><ul><li>允当slave02从库的的主库</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动从数据库MySQL容器：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务器唯一id，每台服务器的id必须不同，如果配置其他从机，注意修改id</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-slave01 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_slave_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/slave01:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>100</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log-bin<span style=color:#f92672>=</span>mysql-slave-logbin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --relay-log<span style=color:#f92672>=</span>relay-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log_slave_updates<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --read_only<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><p>设置同步：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave01 /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 执行以下SQL语句，其中MASTER_LOG_FILE和MASTER_LOG_POS需要根据上一步获得的主库状态进行替换：</span>
+</span></span><span style=display:flex><span>CHANGE MASTER TO
+</span></span><span style=display:flex><span>  MASTER_HOST<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-master&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_USER<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;repl&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_PASSWORD<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;your_repl_password&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-bin.000001&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_POS<span style=color:#f92672>=</span>1,
+</span></span><span style=display:flex><span>  MASTER_CONNECT_RETRY<span style=color:#f92672>=</span>30;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开启主从同步</span>
+</span></span><span style=display:flex><span>START SLAVE;
+</span></span></code></pre></div><p>查看状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 从主库的状态</span>
+</span></span><span style=display:flex><span>show master status;
+</span></span></code></pre></div><h3 id=84-从库02>8.4. 从库02</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动从数据库MySQL容器：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务器唯一id，每台服务器的id必须不同，如果配置其他从机，注意修改id</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name mysql-slave02 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --network mysql-replication-net <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -e MYSQL_ROOT_PASSWORD<span style=color:#f92672>=</span>your_slave_password <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/mysql-data/slave02:/var/lib/mysql <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  mysql:5.7 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --server-id<span style=color:#f92672>=</span><span style=color:#ae81ff>101</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --relay-log<span style=color:#f92672>=</span>relay-bin <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --log_slave_updates<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --read_only<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
+</span></span></code></pre></div><p>设置同步：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave02 /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 执行以下SQL语句，其中MASTER_LOG_FILE和MASTER_LOG_POS需要根据上一步获得的主库状态进行替换：</span>
+</span></span><span style=display:flex><span>CHANGE MASTER TO
+</span></span><span style=display:flex><span>  MASTER_HOST<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-slave01&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_USER<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;repl&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_PASSWORD<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;your_repl_password&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-slave-logbin.000001&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_POS<span style=color:#f92672>=</span>1,
+</span></span><span style=display:flex><span>  MASTER_CONNECT_RETRY<span style=color:#f92672>=</span>30;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开启主从同步</span>
+</span></span><span style=display:flex><span>START SLAVE;
+</span></span></code></pre></div><p>查看状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>;
+</span></span></code></pre></div><h3 id=85-停止主从同步>8.5. 停止主从同步</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：停止I/O 线程和SQL线程的操作。</span>
+</span></span><span style=display:flex><span>stop slave; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：用于删除SLAVE数据库的relaylog日志文件，并重新启用新的relaylog文件。</span>
+</span></span><span style=display:flex><span>reset slave;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在主机上执行。功能说明：删除所有的binglog日志文件，并将日志索引文件清空，重新开始所有新的日志文件。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 用于第一次进行搭建主从库时，进行主库binlog初始化工作；</span>
+</span></span><span style=display:flex><span>reset master;
+</span></span></code></pre></div><h3 id=86-删除-mysql>8.6. 删除 mysql</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker rm -f mysql-master
+</span></span><span style=display:flex><span>docker rm -f mysql-slave01
+</span></span><span style=display:flex><span>docker rm -f mysql-slave02
+</span></span><span style=display:flex><span>rm -rf /data/mysql-data/
+</span></span></code></pre></div><h2 id=9-主从同步docker-compose>9. 主从同步(docker-compose)</h2><ul><li>A 同步 B</li></ul><h3 id=91-准备>9.1. 准备</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker pull mysql:5.7
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,slave<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-compose/
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-config/
+</span></span></code></pre></div><h3 id=92-配置>9.2. 配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建 master config</span>
+</span></span><span style=display:flex><span>cat &gt; /data/mysql-config/master.cnf <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[mysqld]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>server_id = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>log_bin = mysql-bin
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_binlog = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_format=ROW
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 清理策略
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>expire_logs_days=7
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>max_binlog_size = 500M
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 不需要写binlog的库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = information_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = performance_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = sys
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 从库不进行同步的库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = information_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = performance_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = sys
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建 slave config</span>
+</span></span><span style=display:flex><span>cat &gt; /data/mysql-config/slave.cnf <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[mysqld]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>server_id = 100
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>relay_log = /var/lib/mysql/mysql-relay-bin
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>log_slave_updates =1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>read_only = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_master_info = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_relay_log = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_relay_log_info = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=93-创建-docker-compose>9.3. 创建 docker-compose</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat &gt; /data/mysql-compose/master-slave.yaml <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>version: &#39;3.1&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>services:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 主库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mysql-master:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    container_name: mysql-master 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    image: mysql:5.7
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    restart: always
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    environment:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      MYSQL_ROOT_PASSWORD: your_master_password
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      MYSQL_DATABASE: mydb
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    ports:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - &#34;3306:3306&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    volumes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-data/master:/var/lib/mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-config/master.cnf:/etc/mysql/conf.d/master.cnf
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    networks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - mysql-master-slave-net
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 从库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mysql-slave:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    image: mysql:5.7
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    container_name: mysql-slave 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    restart: always
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    environment:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      MYSQL_ROOT_PASSWORD: your_slave_password
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    volumes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-data/slave:/var/lib/mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-config/slave.cnf:/etc/mysql/conf.d/slave.cnf
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    networks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - mysql-master-slave-net
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>networks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mysql-master-slave-net:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    driver: bridge
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=94-启动服务>9.4. 启动服务</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动服务</span>
+</span></span><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml up -d
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建复制帐号</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-master /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建复制帐号</span>
+</span></span><span style=display:flex><span>grant replication slave,replication client on *.* to repl@<span style=color:#e6db74>&#39;%&#39;</span> identified by <span style=color:#e6db74>&#39;your_repl_password&#39;</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>FLUSH PRIVILEGES;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看帐号列表</span>
+</span></span><span style=display:flex><span>SELECT User, Host FROM mysql.user;
+</span></span></code></pre></div><p>查看状态</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e>#  查看 master 服务器状态，File 和 Postion 对应的值要记录下来，下面要用到</span>
+</span></span><span style=display:flex><span>SHOW MASTER STATUS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看从节点</span>
+</span></span><span style=display:flex><span>SHOW SLAVE HOSTS;
+</span></span></code></pre></div><h3 id=95-设置主从同步>9.5. 设置主从同步</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 执行以下SQL语句，其中MASTER_LOG_FILE和MASTER_LOG_POS需要根据上一步获得的主库状态进行替换：</span>
+</span></span><span style=display:flex><span>CHANGE MASTER TO
+</span></span><span style=display:flex><span>  MASTER_HOST<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-master&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_USER<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;repl&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_PASSWORD<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;your_repl_password&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_FILE<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;mysql-bin.000001&#39;</span>,
+</span></span><span style=display:flex><span>  MASTER_LOG_POS<span style=color:#f92672>=</span>1,
+</span></span><span style=display:flex><span>  MASTER_CONNECT_RETRY<span style=color:#f92672>=</span>30;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 开启主从同步</span>
+</span></span><span style=display:flex><span>START SLAVE;
+</span></span></code></pre></div><p>查看状态：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 查看从库状态</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span></code></pre></div><h3 id=96-停止主从同步>9.6. 停止主从同步</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：停止I/O 线程和SQL线程的操作。</span>
+</span></span><span style=display:flex><span>stop slave; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：用于删除SLAVE数据库的relaylog日志文件，并重新启用新的relaylog文件。</span>
+</span></span><span style=display:flex><span>reset slave;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在主机上执行。功能说明：删除所有的binglog日志文件，并将日志索引文件清空，重新开始所有新的日志文件。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 用于第一次进行搭建主从库时，进行主库binlog初始化工作；</span>
+</span></span><span style=display:flex><span>reset master;
+</span></span></code></pre></div><h3 id=97-重启服务>9.7. 重启服务</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 重启</span>
+</span></span><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml restart
+</span></span><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml up -d  --force-recreate
+</span></span></code></pre></div><h3 id=98-删除-mysql>9.8. 删除 mysql</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml down -v
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>rm -rf /data/mysql-data/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,slave<span style=color:#f92672>}</span>
+</span></span></code></pre></div><h2 id=10-主从同步docker-compose自动>10. 主从同步(docker-compose自动)</h2><ul><li>A 同步 B</li></ul><h3 id=101-准备>10.1. 准备</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker pull mysql:5.7
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,slave<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-compose/
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-config/
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-script/
+</span></span></code></pre></div><h3 id=102-配置>10.2. 配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建 master config</span>
+</span></span><span style=display:flex><span>cat &gt; /data/mysql-config/master.cnf <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[mysqld]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>server_id = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>log_bin = mysql-bin
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_binlog = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_format=ROW
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 清理策略
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>expire_logs_days=7
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>max_binlog_size = 500M
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 不需要写binlog的库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = information_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = performance_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>binlog_ignore_db = sys
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 从库不进行同步的库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = information_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = performance_schema
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>replicate_ignore_db = sys
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建 slave config</span>
+</span></span><span style=display:flex><span>cat &gt; /data/mysql-config/slave.cnf <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[mysqld]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>server_id = 100
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>relay_log = /var/lib/mysql/mysql-relay-bin
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>log_slave_updates =1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>read_only = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_master_info = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_relay_log = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>sync_relay_log_info = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=103-自动脚本>10.3. 自动脚本</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 主库</span>
+</span></span><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt;EOF | tee /data/mysql-script/master.sql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># 创建复制帐号
+</span></span></span><span style=display:flex><span><span style=color:#e6db74># grant replication slave,replication client on *.* to repl@&#39;%&#39; identified by &#39;your_repl_password&#39;;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>CREATE USER &#39;repl&#39;@&#39;%&#39; IDENTIFIED BY &#39;your_repl_password&#39;;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>GRANT REPLICATION SLAVE ON *.* TO &#39;repl&#39;@&#39;%&#39;;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>FLUSH PRIVILEGES;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 从库</span>
+</span></span><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt;EOF |tee /data/mysql-script/slave.sql 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>CHANGE MASTER TO
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  MASTER_HOST=&#39;mysql-master&#39;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  MASTER_USER=&#39;repl&#39;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  MASTER_PASSWORD=&#39;your_repl_password&#39;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  MASTER_LOG_FILE=&#39;mysql-bin.000001&#39;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  MASTER_LOG_POS=1,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  MASTER_CONNECT_RETRY=30;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>START SLAVE;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看</span>
+</span></span></code></pre></div><h3 id=104-创建-docker-compose>10.4. 创建 docker-compose</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>cat  <span style=color:#e6db74>&lt;&lt;EOF |tee /data/mysql-compose/master-slave.yaml
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>version: &#39;3.1&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>services:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 主库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mysql-master:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    container_name: mysql-master 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    image: mysql:5.7
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    restart: always
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    environment:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      MYSQL_ROOT_PASSWORD: your_master_password
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      MYSQL_DATABASE: mydb
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    ports:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - &#34;3306:3306&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    volumes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-data/master:/var/lib/mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-config/master.cnf:/etc/mysql/conf.d/master.cnf
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-script/master.sql:/docker-entrypoint-initdb.d/master.sql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    networks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - mysql-master-slave-net
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 从库
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mysql-slave:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    image: mysql:5.7
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    container_name: mysql-slave 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    restart: always
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    environment:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      MYSQL_ROOT_PASSWORD: your_slave_password
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    volumes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-data/slave:/var/lib/mysql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-config/slave.cnf:/etc/mysql/conf.d/slave.cnf
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - /data/mysql-script/slave.sql:/docker-entrypoint-initdb.d/slave.sql
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    networks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      - mysql-master-slave-net
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>networks:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  mysql-master-slave-net:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    driver: bridge
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span></code></pre></div><h3 id=105-启动服务>10.5. 启动服务</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 启动服务</span>
+</span></span><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml up -d
+</span></span></code></pre></div><h3 id=106-查看主库状态>10.6. 查看主库状态</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-master /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看帐号列表,检查是否有 repl 帐号</span>
+</span></span><span style=display:flex><span>SELECT User, Host FROM mysql.user;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#  查看 master 服务器状态</span>
+</span></span><span style=display:flex><span>SHOW MASTER STATUS;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看从节点</span>
+</span></span><span style=display:flex><span>SHOW SLAVE HOSTS;
+</span></span></code></pre></div><h3 id=107-查看从库状态>10.7. 查看从库状态</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 进入容器</span>
+</span></span><span style=display:flex><span>docker exec -it mysql-slave /bin/bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 登陆 mysql</span>
+</span></span><span style=display:flex><span>mysql -u root -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 检查  SlaveIORunning 和 SlaveSQLRunning 是不是 YES</span>
+</span></span><span style=display:flex><span>show slave status<span style=color:#ae81ff>\G</span>
+</span></span></code></pre></div><h3 id=108-停止主从同步>10.8. 停止主从同步</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：停止I/O 线程和SQL线程的操作。</span>
+</span></span><span style=display:flex><span>stop slave; 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从机上执行。功能说明：用于删除SLAVE数据库的relaylog日志文件，并重新启用新的relaylog文件。</span>
+</span></span><span style=display:flex><span>reset slave;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在主机上执行。功能说明：删除所有的binglog日志文件，并将日志索引文件清空，重新开始所有新的日志文件。</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 用于第一次进行搭建主从库时，进行主库binlog初始化工作；</span>
+</span></span><span style=display:flex><span>reset master;
+</span></span></code></pre></div><h3 id=109-重启服务>10.9. 重启服务</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 重启</span>
+</span></span><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml restart
+</span></span><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml up -d  --force-recreate
+</span></span></code></pre></div><h3 id=1010-删除-mysql>10.10. 删除 mysql</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>docker-compose -f /data/mysql-compose/master-slave.yaml down -v
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>rm -rf /data/mysql-data/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>mkdir -p /data/mysql-data/<span style=color:#f92672>{</span>master,slave<span style=color:#f92672>}</span>
+</span></span></code></pre></div><h2 id=11-mysqldump-导出>11. mysqldump 导出</h2><ul><li><code>--master-data</code>该参数用于将主库的bin-log信息写入到dump文件中，即当前文件名(filename)和位置（position），用于主从复制的搭建</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e>### 5.1. 加锁导出</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>## 12. 使用--master-data参数的默认行为是先给所有的表加读锁，然后记录其二进制日志位置，并最终写入到转储文件中,执行完后会自动解锁。</span>
+</span></span><span style=display:flex><span>mysqldump --all-databases --master-data &gt; dbdump.db
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 会将change master 语句写入dump文件中</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从库导入后，配置主从无需再指定文件名和位置</span>
+</span></span><span style=display:flex><span>mysqldump --master-data -uroot -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span> test &gt; dbdump-test.db
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 会将change master 语句写入dump文件中，只不过会被注释掉</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在从库导入后，配置主从需要指定文件名和位置</span>
+</span></span><span style=display:flex><span>mysqldump --master-data<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> -uroot -p<span style=color:#e6db74>&#34;</span>$MYSQL_ROOT_PASSWORD<span style=color:#e6db74>&#34;</span> test &gt; dbdump-test.db
+</span></span></code></pre></div><h2 id=12-参考>12. 参考</h2><ol><li><a href=https://www.cnblogs.com/jhxxb/p/14987112.html target=_blank>https://www.cnblogs.com/jhxxb/p/14987112.html</a></li><li><a href=https://www.didispace.com/installation-guide/middleware/mysql-cluster-2.html target=_blank>https://www.didispace.com/installation-guide/middleware/mysql-cluster-2.html</a></li><li><a href=https://dev.mysql.com/doc/refman/5.7/en/replication-configuration.html target=_blank>https://dev.mysql.com/doc/refman/5.7/en/replication-configuration.html</a></li><li><a href=https://learnku.com/articles/30439 target=_blank>https://learnku.com/articles/30439</a></li><li><a href=https://developer.aliyun.com/article/681817 target=_blank>https://developer.aliyun.com/article/681817</a></li></ol><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/mysql-xtrabackup/?ref=footer"><span>« Previous</span><br>Mysql Xtrabackup 极简教程</a></div><div class=next-post><a href="https://yezihack.github.io/mysql-operation/?ref=footer"><span>Next »</span><br>MySQL 操作手册</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#1-什么是-mysql-主从同步>1. 什么是 MySQL 主从同步</a></li><li><a href=#2-主从原理>2. 主从原理</a></li><li><a href=#3-主从配置参数>3. 主从配置参数</a><ul><li><a href=#31-server_id>3.1. server_id</a></li><li><a href=#32-log_bin>3.2. log_bin</a></li><li><a href=#33-sync_binlog>3.3. sync_binlog</a></li><li><a href=#34-relay_log>3.4. relay_log</a></li><li><a href=#35-log_slave_updates>3.5. log_slave_updates</a></li><li><a href=#36-read_only>3.6. read_only</a></li><li><a href=#37-sync_master_info>3.7. sync_master_info</a></li><li><a href=#38-sync_relay_log>3.8. sync_relay_log</a></li><li><a href=#39-sync_relay_log_info>3.9. sync_relay_log_info</a></li><li><a href=#310-expire_logs_days>3.10. expire_logs_days</a></li><li><a href=#311-max_binlog_size>3.11. max_binlog_size</a></li><li><a href=#312-binlog_format>3.12. binlog_format</a></li><li><a href=#313-实例配置>3.13. 实例配置</a></li></ul></li><li><a href=#4-主从常用命令>4. 主从常用命令</a></li><li><a href=#5-测试数据>5. 测试数据</a></li><li><a href=#6-主从同步docker>6. 主从同步(docker)</a><ul><li><a href=#61-准备>6.1. 准备</a></li><li><a href=#62-主库>6.2. 主库</a></li><li><a href=#63-从库>6.3. 从库</a></li><li><a href=#64-停止主从同步>6.4. 停止主从同步</a></li><li><a href=#65-删除-mysql>6.5. 删除 mysql</a></li></ul></li><li><a href=#7-一主多从同步docker>7. 一主多从同步(docker)</a><ul><li><a href=#71-准备>7.1. 准备</a></li><li><a href=#72-主库>7.2. 主库</a></li><li><a href=#73-从库01>7.3. 从库01</a></li><li><a href=#74-从库02>7.4. 从库02</a></li><li><a href=#75-停止主从同步>7.5. 停止主从同步</a></li><li><a href=#76-删除-mysql>7.6. 删除 mysql</a></li></ul></li><li><a href=#8-主从主从部署docker>8. 主从(主)从部署(docker)</a><ul><li><a href=#81-准备>8.1. 准备</a></li><li><a href=#82-主库>8.2. 主库</a></li><li><a href=#83-从库01>8.3. 从库01</a></li><li><a href=#84-从库02>8.4. 从库02</a></li><li><a href=#85-停止主从同步>8.5. 停止主从同步</a></li><li><a href=#86-删除-mysql>8.6. 删除 mysql</a></li></ul></li><li><a href=#9-主从同步docker-compose>9. 主从同步(docker-compose)</a><ul><li><a href=#91-准备>9.1. 准备</a></li><li><a href=#92-配置>9.2. 配置</a></li><li><a href=#93-创建-docker-compose>9.3. 创建 docker-compose</a></li><li><a href=#94-启动服务>9.4. 启动服务</a></li><li><a href=#95-设置主从同步>9.5. 设置主从同步</a></li><li><a href=#96-停止主从同步>9.6. 停止主从同步</a></li><li><a href=#97-重启服务>9.7. 重启服务</a></li><li><a href=#98-删除-mysql>9.8. 删除 mysql</a></li></ul></li><li><a href=#10-主从同步docker-compose自动>10. 主从同步(docker-compose自动)</a><ul><li><a href=#101-准备>10.1. 准备</a></li><li><a href=#102-配置>10.2. 配置</a></li><li><a href=#103-自动脚本>10.3. 自动脚本</a></li><li><a href=#104-创建-docker-compose>10.4. 创建 docker-compose</a></li><li><a href=#105-启动服务>10.5. 启动服务</a></li><li><a href=#106-查看主库状态>10.6. 查看主库状态</a></li><li><a href=#107-查看从库状态>10.7. 查看从库状态</a></li><li><a href=#108-停止主从同步>10.8. 停止主从同步</a></li><li><a href=#109-重启服务>10.9. 重启服务</a></li><li><a href=#1010-删除-mysql>10.10. 删除 mysql</a></li></ul></li><li><a href=#11-mysqldump-导出>11. mysqldump 导出</a></li><li><a href=#12-参考>12. 参考</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

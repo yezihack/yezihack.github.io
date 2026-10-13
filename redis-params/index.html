@@ -1,0 +1,637 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Redis 参数配置详解与优化指南</title><meta property="og:title" content="百里觅码 - Redis 参数配置详解与优化指南"><meta name=twitter:title content="百里觅码 - Redis 参数配置详解与优化指南"><meta itemprop=name content="百里觅码 - Redis 参数配置详解与优化指南"><meta name=application-name content="百里觅码 - Redis 参数配置详解与优化指南"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/redis-params/><link rel=canonical href=https://yezihack.github.io/redis-params/ itemprop=url><meta name=url content="https://yezihack.github.io/redis-params/"><meta name=twitter:url content="https://yezihack.github.io/redis-params/"><meta property="og:url" content="https://yezihack.github.io/redis-params/"><meta property="og:updated_time" content="17010-17-04T1048:48:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="17010-17-04T1048:48:25+0800"><meta property="article:published_time" content="17010-17-04T1048:48:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Redis 参数配置详解与优化指南","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-10-17","description":"","wordCount":"2125","mainEntityOfPage":"True","dateModified":"2025-10-17","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/redis-params/>Redis 参数配置详解与优化指南</a></h1><time datetime=2025-10-17T16:48:48+0800 class=post-date>October 17, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>2125</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>10 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-redis><a href=https://yezihack.github.io/tags/redis>redis</a></li><li class=tag-中间件><a href=https://yezihack.github.io/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6>中间件</a></li><li class=tag-优化><a href=https://yezihack.github.io/tags/%E4%BC%98%E5%8C%96>优化</a></li></ul></div><h2 id=概述>概述</h2><p>Redis 作为高性能的内存数据库，其性能表现很大程度上取决于参数配置的合理性。本文将详细介绍 Redis 的核心参数，并针对不同的部署架构（单机、主从、哨兵、集群）提供优化配置建议。</p><h2 id=一redis-核心参数详解>一、Redis 核心参数详解</h2><h3 id=11-基础配置参数>1.1 基础配置参数</h3><h4 id=bind>bind</h4><ul><li><strong>说明</strong>：指定 Redis 监听的网络接口</li><li><strong>默认值</strong>：<code>127.0.0.1</code></li><li><strong>建议</strong>：生产环境建议绑定内网 IP，避免使用 <code>0.0.0.0</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>bind 192.168.1.100
+</code></pre><h4 id=port>port</h4><ul><li><strong>说明</strong>：Redis 监听端口</li><li><strong>默认值</strong>：<code>6379</code></li><li><strong>建议</strong>：可修改为非默认端口以提高安全性</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>port 6379
+</code></pre><h4 id=protected-mode>protected-mode</h4><ul><li><strong>说明</strong>：保护模式，防止未授权访问</li><li><strong>默认值</strong>：<code>yes</code></li><li><strong>建议</strong>：生产环境必须开启，配合 <code>requirepass</code> 使用</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>protected-mode yes
+</code></pre><h4 id=requirepass>requirepass</h4><ul><li><strong>说明</strong>：设置访问密码</li><li><strong>默认值</strong>：无</li><li><strong>建议</strong>：生产环境必须设置强密码</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>requirepass YourStrongPassword@2025
+</code></pre><h4 id=timeout>timeout</h4><ul><li><strong>说明</strong>：客户端空闲多少秒后关闭连接，0 表示禁用</li><li><strong>默认值</strong>：<code>0</code></li><li><strong>建议</strong>：设置 300 秒，避免僵尸连接</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>timeout 300
+</code></pre><h4 id=tcp-keepalive>tcp-keepalive</h4><ul><li><strong>说明</strong>：TCP 连接保活时间（秒）</li><li><strong>默认值</strong>：<code>300</code></li><li><strong>建议</strong>：保持默认或设置为 60</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>tcp-keepalive 60
+</code></pre><h3 id=12-内存管理参数>1.2 内存管理参数</h3><h4 id=maxmemory>maxmemory</h4><ul><li><strong>说明</strong>：Redis 最大内存使用量</li><li><strong>默认值</strong>：<code>0</code>（不限制）</li><li><strong>建议</strong>：设置为物理内存的 60%-70%，留出空间给系统和持久化</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>maxmemory 4gb
+</code></pre><h4 id=maxmemory-policy>maxmemory-policy</h4><ul><li><strong>说明</strong>：内存淘汰策略</li><li><strong>可选值</strong>：<ul><li><code>noeviction</code>：不淘汰，写入失败（默认）</li><li><code>allkeys-lru</code>：对所有 key 使用 LRU 算法淘汰</li><li><code>volatile-lru</code>：对设置了过期时间的 key 使用 LRU 淘汰</li><li><code>allkeys-random</code>：随机淘汰所有 key</li><li><code>volatile-random</code>：随机淘汰有过期时间的 key</li><li><code>volatile-ttl</code>：淘汰即将过期的 key</li><li><code>allkeys-lfu</code>：对所有 key 使用 LFU 算法淘汰</li><li><code>volatile-lfu</code>：对设置了过期时间的 key 使用 LFU 淘汰</li></ul></li><li><strong>建议</strong>：根据业务场景选择，缓存场景推荐 <code>allkeys-lru</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>maxmemory-policy allkeys-lru
+</code></pre><h4 id=maxmemory-samples>maxmemory-samples</h4><ul><li><strong>说明</strong>：LRU/LFU 算法采样数量</li><li><strong>默认值</strong>：<code>5</code></li><li><strong>建议</strong>：增加到 10 可提高准确性，但会增加 CPU 开销</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>maxmemory-samples 10
+</code></pre><h3 id=13-持久化参数>1.3 持久化参数</h3><h4 id=save>save</h4><ul><li><strong>说明</strong>：RDB 快照保存条件</li><li><strong>默认值</strong>：<pre tabindex=0><code class=language-conf data-lang=conf>save 900 1      # 900秒内至少1个key变化
+save 300 10     # 300秒内至少10个key变化
+save 60 10000   # 60秒内至少10000个key变化
+</code></pre></li><li><strong>建议</strong>：根据数据重要性调整</li></ul><pre tabindex=0><code class=language-conf data-lang=conf># 对数据持久性要求高
+save 900 1
+save 300 10
+save 60 10000
+
+# 对性能要求高，可关闭
+save &#34;&#34;
+</code></pre><h4 id=stop-writes-on-bgsave-error>stop-writes-on-bgsave-error</h4><ul><li><strong>说明</strong>：RDB 快照失败时是否停止写入</li><li><strong>默认值</strong>：<code>yes</code></li><li><strong>建议</strong>：保持默认，避免数据丢失</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>stop-writes-on-bgsave-error yes
+</code></pre><h4 id=rdbcompression>rdbcompression</h4><ul><li><strong>说明</strong>：是否压缩 RDB 文件</li><li><strong>默认值</strong>：<code>yes</code></li><li><strong>建议</strong>：保持开启，节省磁盘空间</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>rdbcompression yes
+</code></pre><h4 id=rdbchecksum>rdbchecksum</h4><ul><li><strong>说明</strong>：是否对 RDB 文件进行校验</li><li><strong>默认值</strong>：<code>yes</code></li><li><strong>建议</strong>：保持开启，确保数据完整性</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>rdbchecksum yes
+</code></pre><h4 id=dbfilename>dbfilename</h4><ul><li><strong>说明</strong>：RDB 文件名</li><li><strong>默认值</strong>：<code>dump.rdb</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>dbfilename dump.rdb
+</code></pre><h4 id=dir>dir</h4><ul><li><strong>说明</strong>：持久化文件存储目录</li><li><strong>默认值</strong>：<code>./</code></li><li><strong>建议</strong>：设置独立目录，确保有足够空间</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>dir /data/redis
+</code></pre><h4 id=appendonly>appendonly</h4><ul><li><strong>说明</strong>：是否开启 AOF 持久化</li><li><strong>默认值</strong>：<code>no</code></li><li><strong>建议</strong>：对数据可靠性要求高的场景必须开启</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>appendonly yes
+</code></pre><h4 id=appendfilename>appendfilename</h4><ul><li><strong>说明</strong>：AOF 文件名</li><li><strong>默认值</strong>：<code>appendonly.aof</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>appendfilename &#34;appendonly.aof&#34;
+</code></pre><h4 id=appendfsync>appendfsync</h4><ul><li><strong>说明</strong>：AOF 文件同步策略</li><li><strong>可选值</strong>：<ul><li><code>always</code>：每次写入都同步（最安全，性能最差）</li><li><code>everysec</code>：每秒同步（推荐，平衡性能和安全）</li><li><code>no</code>：由操作系统决定（性能最好，可能丢失数据）</li></ul></li><li><strong>建议</strong>：使用 <code>everysec</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>appendfsync everysec
+</code></pre><h4 id=no-appendfsync-on-rewrite>no-appendfsync-on-rewrite</h4><ul><li><strong>说明</strong>：重写 AOF 时是否暂停 fsync</li><li><strong>默认值</strong>：<code>no</code></li><li><strong>建议</strong>：设置为 yes，避免磁盘 IO 阻塞</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>no-appendfsync-on-rewrite yes
+</code></pre><h4 id=auto-aof-rewrite-percentage>auto-aof-rewrite-percentage</h4><ul><li><strong>说明</strong>：AOF 文件增长百分比触发重写</li><li><strong>默认值</strong>：<code>100</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>auto-aof-rewrite-percentage 100
+</code></pre><h4 id=auto-aof-rewrite-min-size>auto-aof-rewrite-min-size</h4><ul><li><strong>说明</strong>：触发 AOF 重写的最小文件大小</li><li><strong>默认值</strong>：<code>64mb</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>auto-aof-rewrite-min-size 64mb
+</code></pre><h4 id=aof-load-truncated>aof-load-truncated</h4><ul><li><strong>说明</strong>：AOF 文件末尾损坏时是否加载</li><li><strong>默认值</strong>：<code>yes</code></li><li><strong>建议</strong>：保持默认</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>aof-load-truncated yes
+</code></pre><h4 id=aof-use-rdb-preamble>aof-use-rdb-preamble</h4><ul><li><strong>说明</strong>：AOF 重写时使用 RDB 格式作为前缀</li><li><strong>默认值</strong>：<code>yes</code>（Redis 4.0+）</li><li><strong>建议</strong>：开启可加快加载速度</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>aof-use-rdb-preamble yes
+</code></pre><h3 id=14-性能优化参数>1.4 性能优化参数</h3><h4 id=databases>databases</h4><ul><li><strong>说明</strong>：数据库数量</li><li><strong>默认值</strong>：<code>16</code></li><li><strong>建议</strong>：单机可保持默认，集群模式只有 db0</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>databases 16
+</code></pre><h4 id=maxclients>maxclients</h4><ul><li><strong>说明</strong>：最大客户端连接数</li><li><strong>默认值</strong>：<code>10000</code></li><li><strong>建议</strong>：根据实际需求调整</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>maxclients 10000
+</code></pre><h4 id=tcp-backlog>tcp-backlog</h4><ul><li><strong>说明</strong>：TCP 连接队列长度</li><li><strong>默认值</strong>：<code>511</code></li><li><strong>建议</strong>：高并发场景增大到 2048</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>tcp-backlog 2048
+</code></pre><h4 id=hz>hz</h4><ul><li><strong>说明</strong>：内部定时任务执行频率（1-500）</li><li><strong>默认值</strong>：<code>10</code></li><li><strong>建议</strong>：增大可提高过期 key 清理速度，但会增加 CPU 使用</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>hz 10
+</code></pre><h4 id=dynamic-hz>dynamic-hz</h4><ul><li><strong>说明</strong>：动态调整 hz</li><li><strong>默认值</strong>：<code>yes</code></li><li><strong>建议</strong>：保持开启</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>dynamic-hz yes
+</code></pre><h4 id=lazyfree-lazy-eviction>lazyfree-lazy-eviction</h4><ul><li><strong>说明</strong>：淘汰 key 时使用异步删除</li><li><strong>默认值</strong>：<code>no</code></li><li><strong>建议</strong>：开启，避免阻塞</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>lazyfree-lazy-eviction yes
+</code></pre><h4 id=lazyfree-lazy-expire>lazyfree-lazy-expire</h4><ul><li><strong>说明</strong>：过期 key 使用异步删除</li><li><strong>默认值</strong>：<code>no</code></li><li><strong>建议</strong>：开启，避免阻塞</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>lazyfree-lazy-expire yes
+</code></pre><h4 id=lazyfree-lazy-server-del>lazyfree-lazy-server-del</h4><ul><li><strong>说明</strong>：隐式删除（如 rename）使用异步删除</li><li><strong>默认值</strong>：<code>no</code></li><li><strong>建议</strong>：开启</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>lazyfree-lazy-server-del yes
+</code></pre><h4 id=lazyfree-lazy-user-del>lazyfree-lazy-user-del</h4><ul><li><strong>说明</strong>：用户执行 DEL 时使用异步删除</li><li><strong>默认值</strong>：<code>no</code></li><li><strong>建议</strong>：根据业务需求，可开启</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>lazyfree-lazy-user-del yes
+</code></pre><h3 id=15-日志参数>1.5 日志参数</h3><h4 id=loglevel>loglevel</h4><ul><li><strong>说明</strong>：日志级别</li><li><strong>可选值</strong>：<code>debug</code>、<code>verbose</code>、<code>notice</code>、<code>warning</code></li><li><strong>默认值</strong>：<code>notice</code></li><li><strong>建议</strong>：生产环境使用 <code>notice</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>loglevel notice
+</code></pre><h4 id=logfile>logfile</h4><ul><li><strong>说明</strong>：日志文件路径</li><li><strong>默认值</strong>：<code>""</code>（标准输出）</li><li><strong>建议</strong>：指定日志文件</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>logfile /var/log/redis/redis.log
+</code></pre><h4 id=syslog-enabled>syslog-enabled</h4><ul><li><strong>说明</strong>：是否启用系统日志</li><li><strong>默认值</strong>：<code>no</code></li></ul><pre tabindex=0><code class=language-conf data-lang=conf>syslog-enabled no
+</code></pre><h3 id=16-安全参数>1.6 安全参数</h3><h4 id=rename-command>rename-command</h4><ul><li><strong>说明</strong>：重命名危险命令</li><li><strong>建议</strong>：生产环境禁用或重命名危险命令</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>rename-command FLUSHDB &#34;&#34;
+rename-command FLUSHALL &#34;&#34;
+rename-command CONFIG &#34;CONFIG_8f3a9b2c&#34;
+rename-command KEYS &#34;&#34;
+</code></pre><h4 id=maxmemory-clients>maxmemory-clients</h4><ul><li><strong>说明</strong>：客户端输出缓冲区最大内存（Redis 7.0+）</li><li><strong>建议</strong>：防止客户端缓冲区占用过多内存</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>maxmemory-clients 10%
+</code></pre><h4 id=client-output-buffer-limit>client-output-buffer-limit</h4><ul><li><strong>说明</strong>：客户端输出缓冲区限制</li><li><strong>格式</strong>：<code>&lt;class> &lt;hard limit> &lt;soft limit> &lt;soft seconds></code></li><li><strong>建议</strong>：合理设置，防止内存溢出</li></ul><pre tabindex=0><code class=language-conf data-lang=conf>client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit replica 256mb 64mb 60
+client-output-buffer-limit pubsub 32mb 8mb 60
+</code></pre><h2 id=二单机模式优化配置>二、单机模式优化配置</h2><p>单机模式适用于开发环境、小型应用或对可用性要求不高的场景。</p><h3 id=21-配置示例>2.1 配置示例</h3><pre tabindex=0><code class=language-conf data-lang=conf># 基础配置
+bind 0.0.0.0
+port 6379
+protected-mode yes
+requirepass StrongPassword@2025
+timeout 300
+tcp-keepalive 60
+daemonize yes
+pidfile /var/run/redis_6379.pid
+
+# 日志配置
+loglevel notice
+logfile /var/log/redis/redis.log
+
+# 内存配置
+maxmemory 4gb
+maxmemory-policy allkeys-lru
+maxmemory-samples 10
+
+# 持久化配置（数据安全优先）
+# RDB配置
+save 900 1
+save 300 10
+save 60 10000
+stop-writes-on-bgsave-error yes
+rdbcompression yes
+rdbchecksum yes
+dbfilename dump.rdb
+
+# AOF配置
+appendonly yes
+appendfilename &#34;appendonly.aof&#34;
+appendfsync everysec
+no-appendfsync-on-rewrite yes
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+aof-load-truncated yes
+aof-use-rdb-preamble yes
+
+# 工作目录
+dir /data/redis
+
+# 连接配置
+maxclients 10000
+tcp-backlog 2048
+
+# 性能优化
+hz 10
+dynamic-hz yes
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+lazyfree-lazy-server-del yes
+lazyfree-lazy-user-del no
+
+# 安全配置
+rename-command FLUSHDB &#34;&#34;
+rename-command FLUSHALL &#34;&#34;
+rename-command CONFIG &#34;CONFIG_SECRET&#34;
+rename-command KEYS &#34;&#34;
+
+# 数据库数量
+databases 16
+</code></pre><h3 id=22-性能优先配置>2.2 性能优先配置</h3><p>如果对性能要求极高，可以牺牲部分数据安全性：</p><pre tabindex=0><code class=language-conf data-lang=conf># 关闭RDB
+save &#34;&#34;
+
+# AOF使用no策略或关闭
+appendonly no
+# 或
+appendfsync no
+
+# 其他优化
+maxmemory-policy allkeys-lru
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+</code></pre><h3 id=23-数据安全优先配置>2.3 数据安全优先配置</h3><p>如果对数据可靠性要求极高：</p><pre tabindex=0><code class=language-conf data-lang=conf># RDB更频繁
+save 900 1
+save 300 10
+save 60 10000
+save 30 1000
+
+# AOF使用always策略
+appendonly yes
+appendfsync always
+no-appendfsync-on-rewrite no
+
+# 错误时停止写入
+stop-writes-on-bgsave-error yes
+</code></pre><h2 id=三主从模式优化配置>三、主从模式优化配置</h2><p>主从模式提供数据备份和读写分离能力，适用于读多写少的场景。</p><h3 id=31-主节点配置>3.1 主节点配置</h3><pre tabindex=0><code class=language-conf data-lang=conf># 基础配置
+bind 192.168.1.100
+port 6379
+protected-mode yes
+requirepass MasterPassword@2025
+masterauth MasterPassword@2025  # 用于主从切换
+timeout 300
+
+# 日志配置
+loglevel notice
+logfile /var/log/redis/redis-master.log
+
+# 内存配置
+maxmemory 8gb
+maxmemory-policy allkeys-lru
+
+# 持久化配置（主节点建议开启）
+# RDB配置
+save 900 1
+save 300 10
+save 60 10000
+rdbcompression yes
+rdbchecksum yes
+dbfilename dump.rdb
+
+# AOF配置
+appendonly yes
+appendfilename &#34;appendonly.aof&#34;
+appendfsync everysec
+no-appendfsync-on-rewrite yes
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 128mb
+aof-use-rdb-preamble yes
+
+# 工作目录
+dir /data/redis/master
+
+# 连接配置
+maxclients 20000
+tcp-backlog 2048
+
+# 复制配置
+repl-diskless-sync no  # 是否使用无盘复制
+repl-diskless-sync-delay 5  # 无盘复制延迟
+repl-diskless-load disabled  # 从节点是否无盘加载
+repl-ping-replica-period 10  # ping从节点周期
+repl-timeout 60  # 复制超时时间
+repl-disable-tcp-nodelay no  # 是否禁用TCP_NODELAY
+repl-backlog-size 256mb  # 复制积压缓冲区大小（重要）
+repl-backlog-ttl 3600  # 复制积压缓冲区保留时间
+replica-priority 100  # 从节点优先级
+
+# 从节点配置
+min-replicas-to-write 1  # 最少从节点数才允许写入
+min-replicas-max-lag 10  # 从节点最大延迟（秒）
+
+# 性能优化
+hz 10
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+lazyfree-lazy-server-del yes
+
+# 安全配置
+rename-command FLUSHDB &#34;&#34;
+rename-command FLUSHALL &#34;&#34;
+rename-command CONFIG &#34;CONFIG_SECRET&#34;
+
+# 客户端输出缓冲区（重要：防止慢从节点）
+client-output-buffer-limit replica 512mb 128mb 60
+</code></pre><h3 id=32-从节点配置>3.2 从节点配置</h3><pre tabindex=0><code class=language-conf data-lang=conf># 基础配置
+bind 192.168.1.101
+port 6379
+protected-mode yes
+requirepass SlavePassword@2025
+masterauth MasterPassword@2025
+timeout 300
+
+# 日志配置
+loglevel notice
+logfile /var/log/redis/redis-slave.log
+
+# 复制配置（关键）
+replicaof 192.168.1.100 6379  # 主节点地址
+replica-read-only yes  # 从节点只读
+replica-serve-stale-data yes  # 断线时是否继续服务
+replica-priority 100  # 优先级（越小越优先）
+
+# 内存配置
+maxmemory 8gb
+maxmemory-policy allkeys-lru
+
+# 持久化配置（从节点可选择性关闭以提高性能）
+# 方案1：关闭持久化（推荐，主节点已有持久化）
+save &#34;&#34;
+appendonly no
+
+# 方案2：开启持久化（数据安全优先）
+# save 900 1
+# appendonly yes
+# appendfsync everysec
+
+# 工作目录
+dir /data/redis/slave
+
+# 连接配置
+maxclients 20000
+tcp-backlog 2048
+
+# 复制配置
+repl-diskless-load disabled
+repl-ping-replica-period 10
+repl-timeout 60
+repl-disable-tcp-nodelay no
+repl-backlog-size 256mb
+
+# 性能优化
+hz 10
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+lazyfree-lazy-server-del yes
+
+# 安全配置
+rename-command FLUSHDB &#34;&#34;
+rename-command FLUSHALL &#34;&#34;
+rename-command CONFIG &#34;CONFIG_SECRET&#34;
+</code></pre><h3 id=33-主从模式关键参数说明>3.3 主从模式关键参数说明</h3><h4 id=repl-backlog-size>repl-backlog-size</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐⭐</li><li><strong>作用</strong>：主节点维护的复制积压缓冲区，用于部分重同步</li><li><strong>建议</strong>：设置为峰值写入速率 × 预期网络中断时间</li><li><strong>计算示例</strong>：写入速率 10MB/s，容忍中断 60 秒，则设置 <code>600mb</code></li></ul><h4 id=min-replicas-to-write--min-replicas-max-lag>min-replicas-to-write & min-replicas-max-lag</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐</li><li><strong>作用</strong>：保证数据安全，至少有 N 个从节点延迟小于 M 秒才允许写入</li><li><strong>建议</strong>：<code>min-replicas-to-write 1</code> + <code>min-replicas-max-lag 10</code></li></ul><h4 id=client-output-buffer-limit-replica>client-output-buffer-limit replica</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐⭐</li><li><strong>作用</strong>：控制从节点输出缓冲区，防止慢从节点导致主节点内存溢出</li><li><strong>建议</strong>：根据数据量调整，大数据量场景设置为 <code>512mb 128mb 60</code></li></ul><h2 id=四哨兵模式优化配置>四、哨兵模式优化配置</h2><p>哨兵模式在主从复制基础上增加了自动故障转移能力，适用于高可用场景。</p><h3 id=41-redis-主从节点配置>4.1 Redis 主从节点配置</h3><p>主从节点配置与第三章相同，额外注意以下配置：</p><pre tabindex=0><code class=language-conf data-lang=conf># 主节点和从节点都需要设置
+masterauth MasterPassword@2025  # 用于故障转移后的认证
+
+# 从节点优先级设置（数值越小越优先成为主节点）
+replica-priority 100  # 可以为不同从节点设置不同优先级
+</code></pre><h3 id=42-哨兵配置文件sentinelconf>4.2 哨兵配置文件（sentinel.conf）</h3><pre tabindex=0><code class=language-conf data-lang=conf># 基础配置
+port 26379
+bind 0.0.0.0
+protected-mode yes
+daemonize yes
+pidfile /var/run/redis-sentinel.pid
+logfile /var/log/redis/sentinel.log
+dir /data/redis/sentinel
+
+# 哨兵监控配置（核心）
+# sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;port&gt; &lt;quorum&gt;
+sentinel monitor mymaster 192.168.1.100 6379 2
+
+# 认证配置
+sentinel auth-pass mymaster MasterPassword@2025
+
+# 故障判定配置
+sentinel down-after-milliseconds mymaster 5000  # 5秒无响应判定下线
+sentinel parallel-syncs mymaster 1  # 故障转移时同时同步的从节点数
+sentinel failover-timeout mymaster 30000  # 故障转移超时时间（毫秒）
+
+# 通知脚本（可选）
+# sentinel notification-script mymaster /path/to/notification.sh
+# sentinel client-reconfig-script mymaster /path/to/reconfig.sh
+
+# 哨兵自身配置
+sentinel deny-scripts-reconfig yes  # 禁止运行时重配置脚本
+
+# 性能配置
+# 哨兵之间的通信
+sentinel resolve-hostnames no
+sentinel announce-hostnames no
+</code></pre><h3 id=43-多哨兵部署推荐至少-3-个>4.3 多哨兵部署（推荐至少 3 个）</h3><p><strong>哨兵 1（192.168.1.201:26379）：</strong></p><pre tabindex=0><code class=language-conf data-lang=conf>port 26379
+bind 192.168.1.201
+sentinel monitor mymaster 192.168.1.100 6379 2
+sentinel auth-pass mymaster MasterPassword@2025
+sentinel down-after-milliseconds mymaster 5000
+sentinel parallel-syncs mymaster 1
+sentinel failover-timeout mymaster 30000
+</code></pre><p><strong>哨兵 2（192.168.1.202:26379）：</strong></p><pre tabindex=0><code class=language-conf data-lang=conf>port 26379
+bind 192.168.1.202
+sentinel monitor mymaster 192.168.1.100 6379 2
+sentinel auth-pass mymaster MasterPassword@2025
+sentinel down-after-milliseconds mymaster 5000
+sentinel parallel-syncs mymaster 1
+sentinel failover-timeout mymaster 30000
+</code></pre><p><strong>哨兵 3（192.168.1.203:26379）：</strong></p><pre tabindex=0><code class=language-conf data-lang=conf>port 26379
+bind 192.168.1.203
+sentinel monitor mymaster 192.168.1.100 6379 2
+sentinel auth-pass mymaster MasterPassword@2025
+sentinel down-after-milliseconds mymaster 5000
+sentinel parallel-syncs mymaster 1
+sentinel failover-timeout mymaster 30000
+</code></pre><h3 id=44-哨兵模式关键参数说明>4.4 哨兵模式关键参数说明</h3><h4 id=quorum法定人数>quorum（法定人数）</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐⭐</li><li><strong>说明</strong>：至少多少个哨兵同意主节点下线才进行故障转移</li><li><strong>建议</strong>：<ul><li>3 个哨兵：设置为 2</li><li>5 个哨兵：设置为 3</li><li>公式：<code>quorum = (哨兵总数 / 2) + 1</code></li></ul></li></ul><h4 id=down-after-milliseconds>down-after-milliseconds</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐⭐</li><li><strong>说明</strong>：多少毫秒无响应后判定主节点主观下线</li><li><strong>建议</strong>：<ul><li>网络稳定：3000-5000ms</li><li>网络不稳定：10000-30000ms</li><li>过小会导致误判，过大会延长故障转移时间</li></ul></li></ul><h4 id=parallel-syncs>parallel-syncs</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐</li><li><strong>说明</strong>：故障转移时同时向新主节点同步的从节点数</li><li><strong>建议</strong>：<ul><li>设置为 1：避免所有从节点同时同步导致服务不可用</li><li>从节点较多且网络好：可设置为 2-3</li></ul></li></ul><h4 id=failover-timeout>failover-timeout</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐</li><li><strong>说明</strong>：故障转移超时时间</li><li><strong>建议</strong>：30000ms（30 秒），大数据集可适当增加</li></ul><h3 id=45-哨兵模式部署建议>4.5 哨兵模式部署建议</h3><ol><li><strong>哨兵数量</strong>：建议部署奇数个（3、5、7），最少 3 个</li><li><strong>哨兵部署位置</strong>：与 Redis 节点分开部署，避免单点故障</li><li><strong>网络要求</strong>：哨兵之间、哨兵与 Redis 之间网络要稳定</li><li><strong>资源需求</strong>：哨兵占用资源少，可与其他服务共存</li></ol><h2 id=五集群模式优化配置>五、集群模式优化配置</h2><p>Redis Cluster 提供了数据分片和高可用能力，适用于大规模、高并发场景。</p><h3 id=51-集群节点配置>5.1 集群节点配置</h3><p>每个集群节点的配置文件（建议至少 6 个节点：3 主 3 从）：</p><p><strong>节点 1（192.168.1.101:7001）：</strong></p><pre tabindex=0><code class=language-conf data-lang=conf># 基础配置
+bind 192.168.1.101
+port 7001
+protected-mode yes
+requirepass ClusterPassword@2025
+masterauth ClusterPassword@2025  # 集群节点间认证
+timeout 300
+daemonize yes
+pidfile /var/run/redis_7001.pid
+
+# 日志配置
+loglevel notice
+logfile /var/log/redis/redis-7001.log
+
+# 集群配置（核心）
+cluster-enabled yes  # 启用集群模式
+cluster-config-file nodes-7001.conf  # 集群配置文件（自动生成）
+cluster-node-timeout 15000  # 节点超时时间（毫秒）
+cluster-replica-validity-factor 10  # 从节点有效性因子
+cluster-migration-barrier 1  # 主节点最少保留从节点数
+cluster-require-full-coverage no  # 部分槽位不可用时是否继续服务
+cluster-replica-no-failover no  # 从节点是否参与故障转移
+cluster-allow-reads-when-down no  # 集群下线时是否允许读
+
+# 内存配置
+maxmemory 4gb
+maxmemory-policy allkeys-lru
+maxmemory-samples 10
+
+# 持久化配置
+# 方案1：AOF（推荐）
+appendonly yes
+appendfilename &#34;appendonly-7001.aof&#34;
+appendfsync everysec
+no-appendfsync-on-rewrite yes
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 128mb
+aof-use-rdb-preamble yes
+
+# 方案2：RDB（性能优先）
+# save 900 1
+# save 300 10
+# save 60 10000
+
+# 方案3：混合持久化（推荐）
+save 900 1
+appendonly yes
+appendfsync everysec
+aof-use-rdb-preamble yes
+
+# 工作目录
+dir /data/redis/cluster/7001
+
+# 连接配置
+maxclients 10000
+tcp-backlog 2048
+
+# 性能优化
+hz 10
+dynamic-hz yes
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+lazyfree-lazy-server-del yes
+lazyfree-lazy-user-del yes
+
+# 复制配置（集群内部主从）
+repl-backlog-size 256mb
+repl-timeout 60
+repl-disable-tcp-nodelay no
+client-output-buffer-limit replica 512mb 128mb 60
+
+# 安全配置
+rename-command FLUSHDB &#34;&#34;
+rename-command FLUSHALL &#34;&#34;
+rename-command CONFIG &#34;&#34;
+
+# 集群模式下只有 db0
+databases 1
+</code></pre><p><strong>其他节点配置类似，需要修改：</strong></p><ul><li><code>bind</code>：对应的 IP 地址</li><li><code>port</code>：不同的端口（7001-7006）</li><li><code>pidfile</code>：不同的 PID 文件</li><li><code>logfile</code>：不同的日志文件</li><li><code>cluster-config-file</code>：不同的集群配置文件</li><li><code>appendfilename</code>：不同的 AOF 文件（如果使用）</li><li><code>dir</code>：不同的数据目录</li></ul><h3 id=52-集群节点配置示例6-节点>5.2 集群节点配置示例（6 节点）</h3><table><thead><tr><th>节点</th><th>IP</th><th>端口</th><th>角色</th><th>配置要点</th></tr></thead><tbody><tr><td>节点1</td><td>192.168.1.101</td><td>7001</td><td>主</td><td>完整配置</td></tr><tr><td>节点2</td><td>192.168.1.102</td><td>7002</td><td>主</td><td>完整配置</td></tr><tr><td>节点3</td><td>192.168.1.103</td><td>7003</td><td>主</td><td>完整配置</td></tr><tr><td>节点4</td><td>192.168.1.104</td><td>7004</td><td>从</td><td>完整配置</td></tr><tr><td>节点5</td><td>192.168.1.105</td><td>7005</td><td>从</td><td>完整配置</td></tr><tr><td>节点6</td><td>192.168.1.106</td><td>7006</td><td>从</td><td>完整配置</td></tr></tbody></table><h3 id=53-集群创建命令>5.3 集群创建命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Redis 5.0+ 使用 redis-cli 创建集群</span>
+</span></span><span style=display:flex><span>redis-cli --cluster create <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  192.168.1.101:7001 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  192.168.1.102:7002 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  192.168.1.103:7003 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  192.168.1.104:7004 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  192.168.1.105:7005 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  192.168.1.106:7006 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --cluster-replicas <span style=color:#ae81ff>1</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -a ClusterPassword@2025
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># --cluster-replicas 1 表示每个主节点有 1 个从节点</span>
+</span></span></code></pre></div><h3 id=54-集群模式关键参数说明>5.4 集群模式关键参数说明</h3><h4 id=cluster-node-timeout>cluster-node-timeout</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐⭐</li><li><strong>说明</strong>：节点间心跳超时时间，超过此时间判定节点下线</li><li><strong>建议</strong>：<ul><li>网络稳定：10000-15000ms</li><li>网络不稳定：20000-30000ms</li><li>公式：<code>cluster-node-timeout = down-after-milliseconds * 3</code></li></ul></li></ul><h4 id=cluster-require-full-coverage>cluster-require-full-coverage</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐⭐</li><li><strong>说明</strong>：是否要求所有槽位可用才提供服务</li><li><strong>建议</strong>：<ul><li><code>no</code>：部分节点故障时继续服务（推荐）</li><li><code>yes</code>：保证数据完整性，但可用性降低</li></ul></li></ul><h4 id=cluster-migration-barrier>cluster-migration-barrier</h4><ul><li><strong>重要性</strong>：⭐⭐⭐⭐</li><li><strong>说明</strong>：主节点最少保留的从节点数，用于自动迁移</li><li><strong>建议</strong>：设置为 1，保证每个主节点至少有 1 个从节点</li></ul><h4 id=cluster-replica-validity-factor>cluster-replica-validity-factor</h4><ul><li><strong>重要性</strong>：⭐⭐⭐</li><li><strong>说明</strong>：从节点数据过期时间因子</li><li><strong>计算</strong>：<code>有效时间 = cluster-node-timeout × factor</code></li><li><strong>建议</strong>：保持默认值 10</li></ul><h4 id=cluster-allow-reads-when-down>cluster-allow-reads-when-down</h4><ul><li><strong>重要性</strong>：⭐⭐⭐</li><li><strong>说明</strong>：集群下线时是否允许读取</li><li><strong>建议</strong>：<code>no</code>，避免读取到不一致数据</li></ul><h3 id=55-集群模式性能优化>5.5 集群模式性能优化</h3><h4 id=1-内存优化>1. 内存优化</h4><pre tabindex=0><code class=language-conf data-lang=conf># 合理设置最大内存
+maxmemory 4gb
+maxmemory-policy allkeys-lru
+
+# 启用懒删除
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+lazyfree-lazy-server-del yes
+lazyfree-lazy-user-del yes
+</code></pre><h4 id=2-网络优化>2. 网络优化</h4><pre tabindex=0><code class=language-conf data-lang=conf># 禁用 TCP_NODELAY 可以减少小包，但会增加延迟
+repl-disable-tcp-nodelay no
+
+# 增加客户端连接数
+maxclients 10000
+tcp-backlog 2048
+
+# 客户端输出缓冲区
+client-output-buffer-limit normal 0 0 0
+client-output-buffer-limit replica 512mb 128mb 60
+</code></pre><h4 id=3-持久化优化>3. 持久化优化</h4><pre tabindex=0><code class=language-conf data-lang=conf># 推荐混合持久化
+appendonly yes
+appendfsync everysec
+aof-use-rdb-preamble yes
+
+# AOF 重写时不阻塞
+no-appendfsync-on-rewrite yes
+
+# 合理设置重写触发条件
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 128mb
+</code></pre><h4 id=4-复制优化>4. 复制优化</h4><pre tabindex=0><code class=language-conf data-lang=conf># 增大复制积压缓冲区
+repl-backlog-size 256mb
+
+# 设置合理的超时时间
+repl-timeout 60
+</code></pre><h3 id=56-集群模式部署建议>5.6 集群模式部署建议</h3><h4 id=1-节点数量规划>1. 节点数量规划</h4><ul><li><strong>最小配置</strong>：6 个节点（3 主 3 从）</li><li><strong>推荐配置</strong>：9 个节点（3 主 6 从）或更多</li><li><strong>扩展规则</strong>：节点数应为 3 的倍数，便于槽位分配</li></ul><h4 id=2-硬件规划>2. 硬件规划</h4><ul><li><strong>CPU</strong>：8 核+（Redis 是单线程，但集群有多个实例）</li><li><strong>内存</strong>：根据数据量规划，每个节点建议 8GB-32GB</li><li><strong>磁盘</strong>：SSD，确保持久化性能</li><li><strong>网络</strong>：万兆网卡，低延迟</li></ul><h4 id=3-分片策略>3. 分片策略</h4><ul><li><strong>均匀分布</strong>：确保 16384 个槽位均匀分配</li><li><strong>考虑业务</strong>：相关的 key 使用 Hash Tag 分配到同一槽位<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 例如：{user:1000}:name 和 {user:1000}:age 会分配到同一槽位</span>
+</span></span></code></pre></div></li></ul><h4 id=4-监控指标>4. 监控指标</h4><ul><li>节点状态：<code>cluster nodes</code></li><li>槽位分布：<code>cluster slots</code></li><li>内存使用：<code>info memory</code></li><li>复制延迟：<code>info replication</code></li><li>性能指标：<code>info stats</code></li></ul><h2 id=六系统参数优化>六、系统参数优化</h2><p>除了 Redis 自身配置，操作系统参数也对性能有重要影响。</p><h3 id=61-linux-内核参数优化>6.1 Linux 内核参数优化</h3><p><strong>文件：/etc/sysctl.conf</strong></p><pre tabindex=0><code class=language-conf data-lang=conf># 网络优化
+net.core.somaxconn = 2048  # 增大连接队列
+net.ipv4.tcp_max_syn_backlog = 2048  # SYN 队列长度
+net.ipv4.tcp_tw_reuse = 1  # TIME_WAIT 重用
+net.ipv4.tcp_fin_timeout = 30  # FIN_WAIT 超时
+net.ipv4.tcp_keepalive_time = 300  # TCP keepalive 时间
+net.ipv4.tcp_keepalive_probes = 3  # keepalive 探测次数
+net.ipv4.tcp_keepalive_intvl = 30  # keepalive 探测间隔
+
+# 内存优化
+vm.overcommit_memory = 1  # 允许内存超配（重要）
+vm.swappiness = 0  # 减少使用 swap
+vm.dirty_background_ratio = 5  # 后台写入比例
+vm.dirty_ratio = 10  # 强制写入比例
+
+# 文件描述符
+fs.file-max = 1000000  # 系统最大文件描述符
+</code></pre><p>应用内核参数：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sysctl -p
+</span></span></code></pre></div><h3 id=62-系统限制优化>6.2 系统限制优化</h3><p><strong>文件：/etc/security/limits.conf</strong></p><pre tabindex=0><code class=language-conf data-lang=conf># 为 redis 用户设置资源限制
+redis soft nofile 65535
+redis hard nofile 65535
+redis soft nproc 65535
+redis hard nproc 65535
+</code></pre><h3 id=63-透明大页thp优化>6.3 透明大页（THP）优化</h3><p>Redis 官方建议禁用透明大页：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 临时禁用</span>
+</span></span><span style=display:flex><span>echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 永久禁用（添加到 /etc/rc.local）</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#!/bin/bash</span>
+</span></span><span style=display:flex><span>echo never &gt; /sys/kernel/mm/transparent_hugepage/enabled
+</span></span><span style=display:flex><span>echo never &gt; /sys/kernel/mm/transparent_hugepage/defrag
+</span></span></code></pre></div><h3 id=64-文件系统优化>6.4 文件系统优化</h3><p>建议使用 ext4 或 xfs 文件系统，挂载选项：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># /etc/fstab</span>
+</span></span><span style=display:flex><span>/dev/sdb1 /data ext4 defaults,noatime,nodiratime <span style=color:#ae81ff>0</span> <span style=color:#ae81ff>0</span>
+</span></span></code></pre></div><ul><li><code>noatime</code>：不更新访问时间，减少 IO</li><li><code>nodiratime</code>：不更新目录访问时间</li></ul><h3 id=65-进程优先级优化>6.5 进程优先级优化</h3><p>提高 Redis 进程优先级：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 设置 nice 值</span>
+</span></span><span style=display:flex><span>renice -n -10 -p <span style=color:#66d9ef>$(</span>pidof redis-server<span style=color:#66d9ef>)</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或在启动脚本中设置</span>
+</span></span><span style=display:flex><span>nice -n -10 redis-server /etc/redis/redis.conf
+</span></span></code></pre></div><h2 id=七不同场景配置选择建议>七、不同场景配置选择建议</h2><h3 id=71-缓存场景>7.1 缓存场景</h3><p><strong>特点</strong>：数据可丢失，性能优先</p><pre tabindex=0><code class=language-conf data-lang=conf># 内存策略
+maxmemory 8gb
+maxmemory-policy allkeys-lru
+
+# 关闭持久化
+save &#34;&#34;
+appendonly no
+
+# 异步删除
+lazyfree-lazy-eviction yes
+lazyfree-lazy-expire yes
+
+# 架构选择
+# - 单机：简单场景
+# - 主从：读多写少
+# - 集群：大容量、高并发
+</code></pre><h3 id=72-数据库场景>7.2 数据库场景</h3><p><strong>特点</strong>：数据不能丢失，可靠性优先</p><pre tabindex=0><code class=language-conf data-lang=conf># 内存策略
+maxmemory-policy noeviction  # 不淘汰
+
+# 持久化
+appendonly yes
+appendfsync everysec  # 或 always
+save 900 1
+save 300 10
+
+# 主从复制
+min-replicas-to-write 1
+min-replicas-max-lag 10
+
+# 架构选择
+# - 单机：不推荐
+# - 主从+哨兵：推荐
+# - 集群：大数据量场景
+</code></pre><h3 id=73-消息队列场景>7.3 消息队列场景</h3><p><strong>特点</strong>：吞吐量大，需要持久化</p><pre tabindex=0><code class=language-conf data-lang=conf># 内存策略
+maxmemory 16gb
+maxmemory-policy noeviction
+
+# 持久化（AOF）
+appendonly yes
+appendfsync everysec
+
+# 性能优化
+hz 100  # 提高频率，快速处理过期 key
+lazyfree-lazy-expire yes
+
+# 连接数
+maxclients 20000
+
+# 架构选择
+# - 单机：小规模
+# - 主从：读取多
+# - 集群：大规模、高并发
+</code></pre><h3 id=74-会话存储场景>7.4 会话存储场景</h3><p><strong>特点</strong>：中等重要性，需要快速访问</p><pre tabindex=0><code class=language-conf data-lang=conf># 内存策略
+maxmemory 4gb
+maxmemory-policy volatile-lru
+
+# 持久化（可选）
+appendonly yes
+appendfsync everysec
+
+# 过期策略
+hz 10
+lazyfree-lazy-expire yes
+
+# 架构选择
+# - 单机：小型应用
+# - 主从+哨兵：中大型应用
+</code></pre><h2 id=八配置验证与监控>八、配置验证与监控</h2><h3 id=81-配置验证>8.1 配置验证</h3><p>启动 Redis 后验证配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 连接 Redis</span>
+</span></span><span style=display:flex><span>redis-cli -h 192.168.1.100 -p <span style=color:#ae81ff>6379</span> -a password
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看所有配置</span>
+</span></span><span style=display:flex><span>CONFIG GET *
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看特定配置</span>
+</span></span><span style=display:flex><span>CONFIG GET maxmemory
+</span></span><span style=display:flex><span>CONFIG GET appendonly
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 运行时修改配置（临时）</span>
+</span></span><span style=display:flex><span>CONFIG SET maxmemory 4gb
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 持久化配置修改</span>
+</span></span><span style=display:flex><span>CONFIG REWRITE
+</span></span></code></pre></div><h3 id=82-关键监控指标>8.2 关键监控指标</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 基础信息</span>
+</span></span><span style=display:flex><span>INFO server
+</span></span><span style=display:flex><span>INFO clients
+</span></span><span style=display:flex><span>INFO memory
+</span></span><span style=display:flex><span>INFO persistence
+</span></span><span style=display:flex><span>INFO stats
+</span></span><span style=display:flex><span>INFO replication
+</span></span><span style=display:flex><span>INFO cpu
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 集群信息</span>
+</span></span><span style=display:flex><span>CLUSTER INFO
+</span></span><span style=display:flex><span>CLUSTER NODES
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 哨兵信息</span>
+</span></span><span style=display:flex><span>SENTINEL masters
+</span></span><span style=display:flex><span>SENTINEL master mymaster
+</span></span><span style=display:flex><span>SENTINEL replicas mymaster
+</span></span><span style=display:flex><span>SENTINEL sentinels mymaster
+</span></span></code></pre></div><h3 id=83-性能测试>8.3 性能测试</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用 redis-benchmark 进行性能测试</span>
+</span></span><span style=display:flex><span>redis-benchmark -h 192.168.1.100 -p <span style=color:#ae81ff>6379</span> -a password -c <span style=color:#ae81ff>100</span> -n <span style=color:#ae81ff>100000</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试特定命令</span>
+</span></span><span style=display:flex><span>redis-benchmark -h 192.168.1.100 -p <span style=color:#ae81ff>6379</span> -a password -t set,get -n <span style=color:#ae81ff>1000000</span> -q
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试集群</span>
+</span></span><span style=display:flex><span>redis-benchmark -h 192.168.1.101 -p <span style=color:#ae81ff>7001</span> -a password -c <span style=color:#ae81ff>100</span> -n <span style=color:#ae81ff>100000</span> --cluster
+</span></span></code></pre></div><h3 id=84-常见问题排查>8.4 常见问题排查</h3><h4 id=1-内存不足>1. 内存不足</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看内存使用</span>
+</span></span><span style=display:flex><span>INFO memory
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查大 key</span>
+</span></span><span style=display:flex><span>redis-cli --bigkeys
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 分析内存</span>
+</span></span><span style=display:flex><span>redis-cli --memkeys
+</span></span></code></pre></div><h4 id=2-慢查询>2. 慢查询</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 配置慢查询</span>
+</span></span><span style=display:flex><span>CONFIG SET slowlog-log-slower-than <span style=color:#ae81ff>10000</span>  <span style=color:#75715e># 微秒</span>
+</span></span><span style=display:flex><span>CONFIG SET slowlog-max-len <span style=color:#ae81ff>128</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看慢查询</span>
+</span></span><span style=display:flex><span>SLOWLOG GET <span style=color:#ae81ff>10</span>
+</span></span></code></pre></div><h4 id=3-连接数过多>3. 连接数过多</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看当前连接数</span>
+</span></span><span style=display:flex><span>INFO clients
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看连接列表</span>
+</span></span><span style=display:flex><span>CLIENT LIST
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 关闭空闲连接</span>
+</span></span><span style=display:flex><span>CONFIG SET timeout <span style=color:#ae81ff>300</span>
+</span></span></code></pre></div><h2 id=九最佳实践总结>九、最佳实践总结</h2><h3 id=91-安全最佳实践>9.1 安全最佳实践</h3><ol><li>✅ 必须设置强密码（<code>requirepass</code>）</li><li>✅ 绑定内网 IP，禁止外网直接访问</li><li>✅ 开启保护模式（<code>protected-mode yes</code>）</li><li>✅ 禁用或重命名危险命令（FLUSHALL、CONFIG 等）</li><li>✅ 使用防火墙限制访问</li><li>✅ 定期更新 Redis 版本，修复安全漏洞</li></ol><h3 id=92-性能最佳实践>9.2 性能最佳实践</h3><ol><li>✅ 合理设置 <code>maxmemory</code> 和淘汰策略</li><li>✅ 启用 lazyfree 机制，避免阻塞</li><li>✅ 禁用 THP（透明大页）</li><li>✅ 优化系统内核参数</li><li>✅ 使用 SSD 存储，提升持久化性能</li><li>✅ 避免使用 KEYS 命令，使用 SCAN 替代</li><li>✅ 合理使用数据结构，避免大 key</li></ol><h3 id=93-可靠性最佳实践>9.3 可靠性最佳实践</h3><ol><li>✅ 生产环境必须开启持久化（推荐 AOF）</li><li>✅ 使用主从复制，实现数据备份</li><li>✅ 部署哨兵或集群，实现高可用</li><li>✅ 设置 <code>min-replicas-to-write</code>，保证写入安全</li><li>✅ 定期备份 RDB/AOF 文件</li><li>✅ 监控磁盘空间，防止持久化失败</li><li>✅ 设置合理的 <code>repl-backlog-size</code></li></ol><h3 id=94-运维最佳实践>9.4 运维最佳实践</h3><ol><li>✅ 使用配置管理工具（Ansible、Salt 等）管理配置</li><li>✅ 建立完善的监控体系（Prometheus + Grafana）</li><li>✅ 设置告警规则，及时发现问题</li><li>✅ 定期进行性能测试和压力测试</li><li>✅ 制定应急预案，演练故障转移流程</li><li>✅ 记录配置变更，便于问题排查</li><li>✅ 定期审查和优化配置</li></ol><h2 id=十参考资源>十、参考资源</h2><ul><li><a href=https://redis.io/documentation target=_blank>Redis 官方文档</a></li><li><a href=https://redis.io/topics/config target=_blank>Redis 配置文件详解</a></li><li><a href=https://redis.io/topics/admin target=_blank>Redis 最佳实践</a></li><li><a href=https://redis.io/topics/cluster-spec target=_blank>Redis Cluster 规范</a></li><li><a href=https://redis.io/topics/sentinel target=_blank>Redis Sentinel 文档</a></li></ul><hr><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/redis-cluster/?ref=footer"><span>« Previous</span><br>Redis 集群完全指南：从原理到实战</a></div><div class=next-post><a href="https://yezihack.github.io/k8s-dns-diagnosis/?ref=footer"><span>Next »</span><br>Kubernetes 集群 DNS 解析与网络问题排查完整指南</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#概述>概述</a></li><li><a href=#一redis-核心参数详解>一、Redis 核心参数详解</a><ul><li><a href=#11-基础配置参数>1.1 基础配置参数</a></li><li><a href=#12-内存管理参数>1.2 内存管理参数</a></li><li><a href=#13-持久化参数>1.3 持久化参数</a></li><li><a href=#14-性能优化参数>1.4 性能优化参数</a></li><li><a href=#15-日志参数>1.5 日志参数</a></li><li><a href=#16-安全参数>1.6 安全参数</a></li></ul></li><li><a href=#二单机模式优化配置>二、单机模式优化配置</a><ul><li><a href=#21-配置示例>2.1 配置示例</a></li><li><a href=#22-性能优先配置>2.2 性能优先配置</a></li><li><a href=#23-数据安全优先配置>2.3 数据安全优先配置</a></li></ul></li><li><a href=#三主从模式优化配置>三、主从模式优化配置</a><ul><li><a href=#31-主节点配置>3.1 主节点配置</a></li><li><a href=#32-从节点配置>3.2 从节点配置</a></li><li><a href=#33-主从模式关键参数说明>3.3 主从模式关键参数说明</a></li></ul></li><li><a href=#四哨兵模式优化配置>四、哨兵模式优化配置</a><ul><li><a href=#41-redis-主从节点配置>4.1 Redis 主从节点配置</a></li><li><a href=#42-哨兵配置文件sentinelconf>4.2 哨兵配置文件（sentinel.conf）</a></li><li><a href=#43-多哨兵部署推荐至少-3-个>4.3 多哨兵部署（推荐至少 3 个）</a></li><li><a href=#44-哨兵模式关键参数说明>4.4 哨兵模式关键参数说明</a></li><li><a href=#45-哨兵模式部署建议>4.5 哨兵模式部署建议</a></li></ul></li><li><a href=#五集群模式优化配置>五、集群模式优化配置</a><ul><li><a href=#51-集群节点配置>5.1 集群节点配置</a></li><li><a href=#52-集群节点配置示例6-节点>5.2 集群节点配置示例（6 节点）</a></li><li><a href=#53-集群创建命令>5.3 集群创建命令</a></li><li><a href=#54-集群模式关键参数说明>5.4 集群模式关键参数说明</a></li><li><a href=#55-集群模式性能优化>5.5 集群模式性能优化</a></li><li><a href=#56-集群模式部署建议>5.6 集群模式部署建议</a></li></ul></li><li><a href=#六系统参数优化>六、系统参数优化</a><ul><li><a href=#61-linux-内核参数优化>6.1 Linux 内核参数优化</a></li><li><a href=#62-系统限制优化>6.2 系统限制优化</a></li><li><a href=#63-透明大页thp优化>6.3 透明大页（THP）优化</a></li><li><a href=#64-文件系统优化>6.4 文件系统优化</a></li><li><a href=#65-进程优先级优化>6.5 进程优先级优化</a></li></ul></li><li><a href=#七不同场景配置选择建议>七、不同场景配置选择建议</a><ul><li><a href=#71-缓存场景>7.1 缓存场景</a></li><li><a href=#72-数据库场景>7.2 数据库场景</a></li><li><a href=#73-消息队列场景>7.3 消息队列场景</a></li><li><a href=#74-会话存储场景>7.4 会话存储场景</a></li></ul></li><li><a href=#八配置验证与监控>八、配置验证与监控</a><ul><li><a href=#81-配置验证>8.1 配置验证</a></li><li><a href=#82-关键监控指标>8.2 关键监控指标</a></li><li><a href=#83-性能测试>8.3 性能测试</a></li><li><a href=#84-常见问题排查>8.4 常见问题排查</a></li></ul></li><li><a href=#九最佳实践总结>九、最佳实践总结</a><ul><li><a href=#91-安全最佳实践>9.1 安全最佳实践</a></li><li><a href=#92-性能最佳实践>9.2 性能最佳实践</a></li><li><a href=#93-可靠性最佳实践>9.3 可靠性最佳实践</a></li><li><a href=#94-运维最佳实践>9.4 运维最佳实践</a></li></ul></li><li><a href=#十参考资源>十、参考资源</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

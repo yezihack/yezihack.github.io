@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>vscode on 空树之空</title><link>https://yezihack.github.io/categories/vscode/</link><description>Recent content in vscode on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Jun 2026 00:00:00 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/categories/vscode/index.xml" rel="self" type="application/rss+xml"/><item><title>VSCODE 必装插件指南：从入门到精通</title><link>https://yezihack.github.io/vscode-plugins-guide/</link><pubDate>Mon, 01 Jun 2026 00:00:00 +0800</pubDate><guid>https://yezihack.github.io/vscode-plugins-guide/</guid><description>为什么要使用VSCODE插件？ VSCODE（Visual Studio Code）作为最受欢迎的轻量级代码编辑器，其强大的插件生态系统是其成功的关键。通过插件，我们可以：
+🚀 显著提高代码编写效率 🎨 改善代码阅读体验 🔧 扩展编辑器功能 📝 优化工作流程 本文将介绍如何安装VSCODE插件，以及推荐几款必装的实用插件。
+第一步：了解VSCODE插件安装 标准安装方法 VSCODE提供了三种主要的插件安装方式，我们按难度和兼容性排序：
+方法1：官方应用商店（推荐，最简单） 适用场景：网络正常，能访问官方插件商店
+步骤：
+打开 VSCODE 使用快捷键 Ctrl+Shift+X 打开扩展面板 在搜索框输入插件名称 点击 Install 按钮安装 重启 VSCODE 生效 优点：
+最快最简单的方式 自动检测依赖和兼容性 支持自动更新 方法2：手动下载VSIX（推荐，100%成功） 适用场景：官方商店访问困难、需要特定版本、离线安装
+详细步骤：
+A. 获取VSIX文件
+打开浏览器，访问 VSCODE官方插件市场 搜索你要的插件，比如输入插件名 进入插件详情页 安装浏览器扩展 Visual Studio Marketplace Downloader（推荐使用Chrome） Chrome Web Store 搜索：Visual Studio Marketplace Downloader 或直接访问：https://chrome.google.com/webstore 在插件页面右上角点击 ⬇️ Download 按钮 浏览器会下载一个 .zip 或 .vsix 文件 如果下载的是 .zip 文件，将其改后缀为 .vsix B.</description></item><item><title>告别插件！VS Code 原生实现 Ctrl+V 粘贴图片并自定义存储路径</title><link>https://yezihack.github.io/vscode-imgs/</link><pubDate>Fri, 10 Apr 2026 15:08:33 +0800</pubDate><guid>https://yezihack.github.io/vscode-imgs/</guid><description>告别插件！VS Code 原生实现 Ctrl+V 粘贴图片并自定义存储路径 VS Code 从 1.79 版本开始，已经内置了强大的文件粘贴功能。这意味着我们不再需要安装繁琐的插件，就能直接在 Markdown 文件中 Ctrl+V 粘贴图片，VS Code 会自动将剪贴板中的图片保存为文件并生成链接。
+但默认情况下，图片可能会保存在当前文件夹下，导致项目结构混乱。本文将教你如何通过简单的设置，将粘贴的图片统一存储到你想要的位置，例如项目的根目录或专门的资源文件夹。
+核心配置项 要实现自定义存储路径，我们需要修改 VS Code 的设置项：Markdown &amp;gt; Copy Files: Destination。
+这个设置项接受一个 JSON 对象，由“匹配模式（Key）”和“目标路径（Value）”组成。
+关键变量解释 在配置路径时，VS Code 提供了一系列变量来帮助我们动态生成路径。以下是几个最常用的变量及其含义：
+变量名 含义 示例（假设文件在 docs/guide.md） ${documentWorkspaceFolder} 当前项目的根目录 D:/MyProject ${documentDirName} 当前 Markdown 文件所在的绝对目录 D:/MyProject/docs ${documentBaseName} 当前 Markdown 文件的文件名（不含后缀） guide ${fileName} 粘贴的图片原始文件名 image.png ${fileExtName} 粘贴的图片扩展名 png ${documentRelativeDirName} 当前文件相对于项目根目录的路径 docs 如何设置图片存储到项目根目录 如果你希望无论 Markdown 文件位于项目的哪个子文件夹中，粘贴的图片都统一保存到项目的最顶层（根目录），请按照以下步骤操作：
+打开设置 按下快捷键 Ctrl + , 打开 VS Code 设置，搜索 markdown.</description></item></channel></rss>
