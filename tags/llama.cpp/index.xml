@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>llama.cpp on 空树之空</title><link>https://yezihack.github.io/tags/llama.cpp/</link><description>Recent content in llama.cpp on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 23 Jul 2026 10:53:07 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/llama.cpp/index.xml" rel="self" type="application/rss+xml"/><item><title>Llama.cpp 本地部署与工具接入指南</title><link>https://yezihack.github.io/llama-cpp/</link><pubDate>Thu, 23 Jul 2026 10:53:07 +0800</pubDate><guid>https://yezihack.github.io/llama-cpp/</guid><description>1. 什么是 llama.cpp https://github.com/ggml-org/llama.cpp 始于2023年的llama.cpp 是一个用 C/C++ 从零实现的 LLM 推理引擎，最初由 Georgi Gerganov 为了在 MacBook 上跑 LLaMA 而写，现在已经发展成支持几乎所有主流开源模型架构的通用推理框架。核心特点是零依赖、极致优化、跨平台——CPU、CUDA、Metal、Vulkan、ROCm 都能跑，甚至能在树莓派上跑。
+核心组件:
+llama.cpp 本体:推理引擎和 C API llama-server:内置的 HTTP server,提供 OpenAI 兼容和原生 API 量化格式 GGUF:自家的模型格式,支持 Q4_K_M、IQ2_M、IQ3_XXS 这些你已经在用的量化方案 提供丰富的工具：llama / llama-serve / llama-cli / llama-bench 命令行推理和性能测试工具 2. 安装 llama.cpp 2.1. 一键安装 https://llama.app/ 打开命令行，输入：irm https://llama.app/install.ps1 | iex
+打开命令行方式：Win+ R，输入：powershell 或 wt
+2.2. 手动安装 打开：https://github.com/ggml-org/llama.cpp/releases 下载最新的推理工具
+我的显卡是：NVIDIA 4060Ti 16GB
+首先查看显卡的CUDA版本，我的显卡是CUDA 12.2 使用命令：nvidia-smi 查看显卡信息
+我的操作系统是：Windows 64位 下载：https://github.com/ggml-org/llama.cpp/releases/download/b10082/llama-b10082-bin-win-cuda-12.4-x64.zip 加速库：https://github.com/ggml-org/llama.cpp/releases/download/b10082/cudart-llama-bin-win-cuda-12.4-x64.zip llama-b10082-bin-win-cuda-12.</description></item></channel></rss>

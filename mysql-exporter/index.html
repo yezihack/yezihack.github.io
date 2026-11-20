@@ -1,0 +1,401 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - MySQL 监控与告警</title><meta property="og:title" content="百里觅码 - MySQL 监控与告警"><meta name=twitter:title content="百里觅码 - MySQL 监控与告警"><meta itemprop=name content="百里觅码 - MySQL 监控与告警"><meta name=application-name content="百里觅码 - MySQL 监控与告警"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/mysql-exporter/><link rel=canonical href=https://yezihack.github.io/mysql-exporter/ itemprop=url><meta name=url content="https://yezihack.github.io/mysql-exporter/"><meta name=twitter:url content="https://yezihack.github.io/mysql-exporter/"><meta property="og:url" content="https://yezihack.github.io/mysql-exporter/"><meta property="og:updated_time" content="22009-22-03T922:04:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="22009-22-03T922:04:25+0800"><meta property="article:published_time" content="22009-22-03T922:04:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"MySQL 监控与告警","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-09-22","description":"","wordCount":"1190","mainEntityOfPage":"True","dateModified":"2025-09-22","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/mysql-exporter/>MySQL 监控与告警</a></h1><time datetime=2025-09-22T15:22:04+0800 class=post-date>September 22, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>1190</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>6 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-mysql><a href=https://yezihack.github.io/tags/mysql>mysql</a></li><li class=tag-监控><a href=https://yezihack.github.io/tags/%E7%9B%91%E6%8E%A7>监控</a></li><li class=tag-告警><a href=https://yezihack.github.io/tags/%E5%91%8A%E8%AD%A6>告警</a></li></ul></div><ul><li><a href=#1-%E5%BC%80%E5%90%AF%E6%80%A7%E8%83%BD%E6%A8%A1%E5%BC%8F>1. 开启性能模式</a></li><li><a href=#2-%E9%83%A8%E7%BD%B2-mysqld-exporter>2. 部署 mysqld-exporter</a><ul><li><a href=#21-collectors-%E8%A7%A3%E8%AF%BB>2.1. collectors 解读</a></li><li><a href=#22-%E5%8D%95%E5%AE%9E%E4%BE%8B>2.2. 单实例</a></li><li><a href=#23-%E4%B8%BB%E4%BB%8E%E5%AE%9E%E4%BE%8B>2.3. 主从实例</a></li></ul></li><li><a href=#3-%E5%91%8A%E8%AD%A6%E8%A7%84%E5%88%99>3. 告警规则</a><ul><li><a href=#31-mysql-%E6%9C%8D%E5%8A%A1%E5%8F%AF%E7%94%A8%E6%80%A7%E5%91%8A%E8%AD%A6>3.1. MySQL 服务可用性告警</a></li><li><a href=#32-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E7%8A%B6%E6%80%81%E5%91%8A%E8%AD%A6>3.2. 主从复制状态告警</a></li><li><a href=#33-%E8%BF%9E%E6%8E%A5%E6%95%B0%E5%91%8A%E8%AD%A6>3.3. 连接数告警</a></li><li><a href=#34-innodb-%E7%BC%93%E5%86%B2%E6%B1%A0%E5%91%8A%E8%AD%A6>3.4. InnoDB 缓冲池告警</a></li><li><a href=#35-%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E5%91%8A%E8%AD%A6>3.5. 查询性能告警</a></li><li><a href=#36-%E9%94%81%E7%AD%89%E5%BE%85%E5%91%8A%E8%AD%A6>3.6. 锁等待告警</a></li><li><a href=#37-%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%97%A5%E5%BF%97%E5%91%8A%E8%AD%A6>3.7. 二进制日志告警</a></li><li><a href=#38-%E5%A4%8D%E5%88%B6%E9%94%99%E8%AF%AF%E5%91%8A%E8%AD%A6>3.8. 复制错误告警</a></li></ul></li><li><a href=#4-%E9%83%A8%E7%BD%B2%E5%BB%BA%E8%AE%AE>4. 部署建议</a></li><li><a href=#5-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9>5. 注意事项</a></li></ul><h2 id=1-开启性能模式>1. 开启性能模式</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#f92672>[</span>mysqld<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>performance_schema<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>optimizer_search_depth <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>optimizer_switch <span style=color:#f92672>=</span> index_merge<span style=color:#f92672>=</span>on,index_merge_union<span style=color:#f92672>=</span>on,index_merge_sort_union<span style=color:#f92672>=</span>on,index_merge_intersection<span style=color:#f92672>=</span>on
+</span></span></code></pre></div><p><code>performance_schema</code> 解释：</p><ol><li>1 或 ON：启用（推荐）</li><li>0 或 OFF：禁用</li></ol><p><code>optimizer_search_depth</code> 解释：</p><ol><li>控制 MySQL 查询优化器在探索执行计划时的搜索深度</li><li>默认值：62（表示“自动”）</li><li>设置为 0：表示“自动深度”</li><li>设置为 1-62：限制搜索范围</li></ol><p><code>optimizer_switch</code> 解释：</p><ol><li><code>index_merge=on</code> 启用索引合并优化（总开关）</li><li>&lsquo;index_merge_union=on&rsquo; 启用 OR 条件下的索引联合（如 WHERE a=1 OR b=2）</li><li>&lsquo;index_merge_sort_union=on&rsquo; 启用排序后的索引联合（适用于无索引排序的 OR）</li><li>&lsquo;index_merge_intersection=on&rsquo; 启用 AND 条件下的索引交集（如 WHERE a=1 AND b=2，但 a、b 分属不同索引）</li></ol><h2 id=2-部署-mysqld-exporter>2. 部署 mysqld-exporter</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># 添加 Helm 仓库</span>
+</span></span><span style=display:flex><span>helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+</span></span><span style=display:flex><span><span style=color:#75715e># 更新 Helm 仓库</span>
+</span></span><span style=display:flex><span>helm repo update
+</span></span><span style=display:flex><span><span style=color:#75715e># 搜索</span>
+</span></span><span style=display:flex><span>helm search repo prometheus-mysql-exporter
+</span></span><span style=display:flex><span><span style=color:#75715e># 下载</span>
+</span></span><span style=display:flex><span>helm pull prometheus-community/prometheus-mysql-exporter --version 2.11.0 
+</span></span><span style=display:flex><span><span style=color:#75715e># 下载并解压</span>
+</span></span><span style=display:flex><span>helm pull prometheus-community/prometheus-mysql-exporter --version 2.11.0 --untar
+</span></span></code></pre></div><h3 id=21-collectors-解读>2.1. collectors 解读</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>collectors</span>: {}
+</span></span><span style=display:flex><span>  <span style=color:#75715e># auto_increment.columns: false # 抓取自增列使用情况（接近上限会告警）。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># binlog_size: false # 当前 binlog 文件大小，👉 用于监控 binlog 膨胀，防止磁盘爆掉。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># engine_innodb_status: false # 解析 SHOW ENGINE INNODB STATUS（锁等待、死锁、事务信息）。👉 对调优事务和死锁有用。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># engine_tokudb_status: false # </span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># global_status: true # 从 SHOW GLOBAL STATUS 抓取 MySQL 的运行状态（QPS、TPS、连接数、缓冲池使用等核心指标）。👉 生产强烈建议开启。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># global_variables: true # 从 SHOW GLOBAL VARIABLES 抓取配置参数。👉 用于监控参数变动。</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.innodb_metrics: false # 采集 information_schema.innodb_metrics 的数据，更细粒度的 InnoDB 指标（buffer pool、事务、IO）。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.innodb_tablespaces: false # 各个表空间大小、空间使用。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.innodb_cmp: false # InnoDB 压缩表相关的指标。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.innodb_cmpmem: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.processlist: false # 当前连接信息（类似 SHOW PROCESSLIST）。👉 可看阻塞线程、长事务。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.processlist.min_time: 0 # 只采集运行超过 N 秒的 SQL，避免噪音。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.query_response_time: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.tables: true # 采集表大小、行数、索引大小等。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.tables.databases: &#39;*&#39; # 表示采集所有库的表。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.tablestats: false # 表级别的统计数据。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.schemastats: false # 库级别的统计数据。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.userstats: false # 用户维度维度的连接/查询统计（需要 userstat=1 编译 MySQL）。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># info_schema.clientstats: false # 客户端维度的连接/查询统计（需要 userstat=1 编译 MySQL）。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements.digest_text_limit: 120</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements.limit: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements.timelimit: 86400</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventswaits: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.file_events: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.file_instances: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.indexiowaits: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.tableiowaits: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.tablelocks: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.replication_group_member_stats: false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># slave_status: true # 采集 SHOW SLAVE STATUS，监控主从复制延迟。👉 必须开。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># slave_hosts: false # 采集 SHOW SLAVE HOSTS，查看从库信息。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># heartbeat: false # 配合 pt-heartbeat 或自建心跳表，计算主从复制延迟（比 Seconds_Behind_Master 更准确）。</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># heartbeat.database: heartbeat</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># heartbeat.table: heartbeat</span>
+</span></span></code></pre></div><p>必开:
+global_status, global_variables, slave_status, info_schema.tables
+（这是 QPS/TPS/连接数/表大小/复制延迟的核心指标）</p><p>视情况开:</p><p>高并发事务库：engine_innodb_status, info_schema.innodb_metrics</p><p>调优/慢 SQL 分析：perf_schema.eventsstatements</p><p>有复制心跳表：heartbeat</p><p>存储膨胀风险：binlog_size, info_schema.innodb_tablespaces</p><p>一般不开:
+innodb_cmp, userstats, 各种 iowaits （指标太多，Prometheus 压力大，除非专门调优）。</p><p>推荐配置：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>collectors</span>:
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 基础状态</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>global_status</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>global_variables</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 表大小监控</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.tables</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.tables.databases</span>: <span style=color:#e6db74>&#39;*&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 主从复制</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>slave_status</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 如果有 pt-heartbeat 或自建心跳表，启用下面</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># heartbeat: true</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># heartbeat.database: heartbeat</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># heartbeat.table: heartbeat</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># InnoDB 引擎</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>engine_innodb_status</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.innodb_metrics</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># Binlog 监控（防止磁盘爆掉）</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>binlog_size</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># SQL 分析（可选，打开会有较大开销）</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.eventsstatements</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements.digest_text_limit: 120</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements.limit: 500</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># perf_schema.eventsstatements.timelimit: 86400</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 进程/长事务（只监控运行超过30s的SQL）</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.processlist</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.processlist.min_time</span>: <span style=color:#ae81ff>30</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 不常用，默认关闭（需要时再开）</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>auto_increment.columns</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.userstats</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.clientstats</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.innodb_tablespaces</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.innodb_cmp</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>info_schema.innodb_cmpmem</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.eventswaits</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.file_events</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.file_instances</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.indexiowaits</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.tableiowaits</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.tablelocks</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>perf_schema.replication_group_member_stats</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>slave_hosts</span>: <span style=color:#66d9ef>false</span>
+</span></span></code></pre></div><h3 id=22-单实例>2.2. 单实例</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># set values</span>
+</span></span><span style=display:flex><span>cat &gt; mysqld-exporter-standalone-values.yaml <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>image:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  registry: quay.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  repository: prometheus/mysqld-exporter
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  tag: &#34;v0.17.2&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>mysql:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  host: &#34;localhost&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  port: 3306
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  pass: &#34;password&#34;  
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>collectors: 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 基础状态
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  global_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  global_variables: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 表大小监控
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.tables: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.tables.databases: &#39;*&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 主从复制
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  slave_status: false
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  slave_hosts: false
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # InnoDB 引擎
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  engine_innodb_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.innodb_metrics: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # Binlog 监控（防止磁盘爆掉）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  binlog_size: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 进程/长事务（只监控运行超过30s的SQL）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.processlist: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.processlist.min_time: 30
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># install</span>
+</span></span><span style=display:flex><span>helm upgrade --install prometheus-mysql-exporter <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  prometheus-community/prometheus-mysql-exporter <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --version 2.11.0 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -n db <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --set serviceMonitor.enabled<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -f mysqld-exporter-standalone-values.yaml
+</span></span></code></pre></div><h3 id=23-主从实例>2.3. 主从实例</h3><p>主服务器 exporter</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># set values</span>
+</span></span><span style=display:flex><span>cat &gt; mysqld-exporter-standalone-values.yaml <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>image:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  registry: quay.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  repository: prometheus/mysqld-exporter
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  tag: &#34;v0.17.2&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>mysql:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  host: &#34;localhost&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  port: 3306
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  pass: &#34;password&#34;  
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>collectors: 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 基础状态
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  global_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  global_variables: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 表大小监控
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.tables: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.tables.databases: &#39;*&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 主从复制
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  slave_status: false
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  slave_hosts: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # InnoDB 引擎
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  engine_innodb_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.innodb_metrics: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # Binlog 监控（防止磁盘爆掉）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  binlog_size: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 进程/长事务（只监控运行超过30s的SQL）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.processlist: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.processlist.min_time: 30
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># install</span>
+</span></span><span style=display:flex><span>helm upgrade --install prometheus-mysql-exporter <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  prometheus-community/prometheus-mysql-exporter <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --version 2.11.0 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -n db <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --set serviceMonitor.enabled<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -f mysqld-exporter-standalone-values.yaml
+</span></span></code></pre></div><p>从服务器 exporter</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span><span style=color:#75715e># set values</span>
+</span></span><span style=display:flex><span>cat &gt; mysqld-exporter-standalone-values.yaml <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>image:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  registry: quay.io
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  repository: prometheus/mysqld-exporter
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  tag: &#34;v0.17.2&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>mysql:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  host: &#34;localhost&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  port: 3306
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  pass: &#34;password&#34;  
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>collectors: 
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 基础状态
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  global_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  global_variables: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 表大小监控
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.tables: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.tables.databases: &#39;*&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 主从复制
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  slave_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  slave_hosts: false
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # InnoDB 引擎
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  engine_innodb_status: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.innodb_metrics: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # Binlog 监控（防止磁盘爆掉）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  binlog_size: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  # 进程/长事务（只监控运行超过30s的SQL）
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.processlist: true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  info_schema.processlist.min_time: 30
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># install</span>
+</span></span><span style=display:flex><span>helm upgrade --install prometheus-mysql-exporter <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  prometheus-community/prometheus-mysql-exporter <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --version 2.11.0 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -n db <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --set serviceMonitor.enabled<span style=color:#f92672>=</span>true <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -f mysqld-exporter-standalone-values.yaml
+</span></span></code></pre></div><h2 id=3-告警规则>3. 告警规则</h2><h3 id=31-mysql-服务可用性告警>3.1. MySQL 服务可用性告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span>- <span style=color:#f92672>alert</span>:  
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_up == 0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 服务不可用&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} MySQL 服务已停止运行&#34;</span>
+</span></span></code></pre></div><h3 id=32-主从复制状态告警>3.2. 主从复制状态告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 从库 IO 线程停止</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSlaveIOThreadStopped</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_slave_sql_running == 0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 从库 IO 线程停止&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 从库 IO 线程已停止，复制中断&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 从库 SQL 线程停止</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSlaveSQLThreadStopped</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_slave_io_running == 0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 从库 SQL 线程停止&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 从库 SQL 线程已停止，复制中断&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 主从延迟过高</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSlaveReplicationLag</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_slave_lag_seconds &gt; 300</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>2m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 主从复制延迟过高&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 主从复制延迟 {{ $value }} 秒，超过 5 分钟&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 主从延迟严重</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSlaveReplicationLagCritical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_slave_lag_seconds &gt; 3600</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 主从复制延迟严重&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 主从复制延迟 {{ $value }} 秒，超过 1 小时&#34;</span>
+</span></span></code></pre></div><h3 id=33-连接数告警>3.3. 连接数告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 连接数过高</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLTooManyConnections</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_status_threads_connected / mysql_global_variables_max_connections * 100 &gt; 80</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>2m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 连接数过高&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 当前连接数占最大连接数的 {{ $value }}%，超过 80%&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 连接数达到上限</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLConnectionsNearLimit</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_status_threads_connected / mysql_global_variables_max_connections * 100 &gt; 95</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 连接数接近上限&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 当前连接数占最大连接数的 {{ $value }}%，超过 95%&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 异常连接中断</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLAbortedConnections</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>rate(mysql_global_status_aborted_connects[5m]) &gt; 5</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>2m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 异常连接中断过多&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 连接中断速率 {{ $value }}/秒，超过正常水平&#34;</span>
+</span></span></code></pre></div><h3 id=34-innodb-缓冲池告警>3.4. InnoDB 缓冲池告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 缓冲池命中率低</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLInnoDBBufferPoolHitRateLow</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>(mysql_global_status_innodb_buffer_pool_read_requests - mysql_global_status_innodb_buffer_pool_reads) / mysql_global_status_innodb_buffer_pool_read_requests * 100 &lt; 95</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>5m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL InnoDB 缓冲池命中率低&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} InnoDB 缓冲池命中率 {{ $value }}%，低于 95%&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 脏页比例过高</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLInnoDBDirtyPagesHigh</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_status_buffer_pool_dirty_pages / (mysql_global_status_buffer_pool_pages{state=&#34;data&#34;} + mysql_global_status_buffer_pool_pages{state=&#34;free&#34;} + mysql_global_status_buffer_pool_pages{state=&#34;misc&#34;}) * 100 &gt; 75</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>5m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL InnoDB 脏页比例过高&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} InnoDB 脏页占比 {{ $value }}%，超过 75%&#34;</span>
+</span></span></code></pre></div><h3 id=35-查询性能告警>3.5. 查询性能告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 慢查询增长过快</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSlowQueriesHigh</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>rate(mysql_global_status_slow_queries[5m]) &gt; 2</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>5m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 慢查询过多&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 慢查询频率 {{ $value }}/秒，需要优化查询&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 全表扫描过多</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSelectScanHigh</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>rate(mysql_global_status_select_scan[5m]) &gt; 100</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>5m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 全表扫描过多&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 全表扫描频率 {{ $value }}/秒，建议优化索引&#34;</span>
+</span></span></code></pre></div><h3 id=36-锁等待告警>3.6. 锁等待告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># InnoDB 行锁等待时间过长</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLInnoDBRowLockWaitHigh</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_status_innodb_row_lock_time_avg &gt; 5000</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>2m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL InnoDB 行锁等待时间过长&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 平均行锁等待时间 {{ $value }} 毫秒，超过 5 秒&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 表锁等待</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLTableLocksWaitingHigh</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_status_table_locks_waited &gt; 0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 表锁等待&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 存在表锁等待情况&#34;</span>
+</span></span></code></pre></div><h3 id=37-二进制日志告警>3.7. 二进制日志告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 二进制日志空间使用率高（适用于主库）</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLBinlogSpaceHigh</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_variables_binlog_cache_use / mysql_global_variables_max_binlog_cache_size * 100 &gt; 80</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>5m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>warning</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 二进制日志缓存使用率高&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 二进制日志缓存使用率 {{ $value }}%，超过 80%&#34;</span>
+</span></span></code></pre></div><h3 id=38-复制错误告警>3.8. 复制错误告警</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 检测主从数据不一致（基于 mysqld-exporter 0.11+ 版本）</span>
+</span></span><span style=display:flex><span>- <span style=color:#f92672>alert</span>: <span style=color:#ae81ff>MySQLSlaveReplicationError</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>expr</span>: <span style=color:#ae81ff>mysql_global_status_slave_retried_transactions &gt; 0</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>for</span>: <span style=color:#ae81ff>1m</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>labels</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>severity</span>: <span style=color:#ae81ff>critical</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>annotations</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>summary</span>: <span style=color:#e6db74>&#34;MySQL 从库复制出现错误&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>description</span>: <span style=color:#e6db74>&#34;{{ $labels.instance }} 从库复制出现错误，需要人工介入&#34;</span>
+</span></span></code></pre></div><h2 id=4-部署建议>4. 部署建议</h2><ol><li><strong>阈值调整</strong>：根据业务实际情况调整各项告警阈值</li><li><strong>告警分级</strong>：critical 级别需要立即处理，warning 级别需要关注</li><li><strong>监控频率</strong>：建议 mysqld-exporter 抓取间隔设置为 15-30 秒</li><li><strong>标签管理</strong>：为主库和从库实例添加适当的标签区分</li></ol><h2 id=5-注意事项>5. 注意事项</h2><ul><li>某些指标（如 <code>mysql_slave_*</code>）仅在从库实例中存在</li><li>根据实际的 mysqld-exporter 版本，部分指标名称可能需要调整</li><li>建议结合业务监控一起使用，形成完整的监控体系</li></ul><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/mysql-binlog-use/?ref=footer"><span>« Previous</span><br>MySQL 开启 Binlog 与误删除后的数据库恢复实战</a></div><div class=next-post><a href="https://yezihack.github.io/license/?ref=footer"><span>Next »</span><br>GitHub 开源协议完全指南：个人项目如何选择合适的许可证</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#1-开启性能模式>1. 开启性能模式</a></li><li><a href=#2-部署-mysqld-exporter>2. 部署 mysqld-exporter</a><ul><li><a href=#21-collectors-解读>2.1. collectors 解读</a></li><li><a href=#22-单实例>2.2. 单实例</a></li><li><a href=#23-主从实例>2.3. 主从实例</a></li></ul></li><li><a href=#3-告警规则>3. 告警规则</a><ul><li><a href=#31-mysql-服务可用性告警>3.1. MySQL 服务可用性告警</a></li><li><a href=#32-主从复制状态告警>3.2. 主从复制状态告警</a></li><li><a href=#33-连接数告警>3.3. 连接数告警</a></li><li><a href=#34-innodb-缓冲池告警>3.4. InnoDB 缓冲池告警</a></li><li><a href=#35-查询性能告警>3.5. 查询性能告警</a></li><li><a href=#36-锁等待告警>3.6. 锁等待告警</a></li><li><a href=#37-二进制日志告警>3.7. 二进制日志告警</a></li><li><a href=#38-复制错误告警>3.8. 复制错误告警</a></li></ul></li><li><a href=#4-部署建议>4. 部署建议</a></li><li><a href=#5-注意事项>5. 注意事项</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

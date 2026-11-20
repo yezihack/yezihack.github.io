@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ingress on 空树之空</title><link>https://yezihack.github.io/tags/ingress/</link><description>Recent content in ingress on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 08 Nov 2022 16:47:30 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/ingress/index.xml" rel="self" type="application/rss+xml"/><item><title>云运维笔记(3) k8s 安装 dashboard 配置 ingress</title><link>https://yezihack.github.io/k8s-dashboard-ingress/</link><pubDate>Tue, 08 Nov 2022 16:47:30 +0800</pubDate><guid>https://yezihack.github.io/k8s-dashboard-ingress/</guid><description>1. 回顾 之前写过一篇 kuberntes-dashboard 的文章，介绍如何使用 nodeport 方式部署与访问。
+参考：第十一章 Kubernetes Dashboard
+本次介绍使用 ingress 域名方式访问 dashboard。
+采用 tls 方式配置 ingress-nginx 访问 dashboard。 2. 下载对应的版本 访问 github 仓库：https://github.com/kubernetes/dashboard/
+如何安装合适自己 kuberntes 版本的 Dashboard 的呢？官方发布 release 时，每个版本都有测试，当前版本支持哪些范围的 kubernetes 版本。还特意列出不完全兼容的版本信息。
+在 https://github.com/kubernetes/dashboard/releases 找到&amp;quot;Compatibility&amp;quot;能找到完合兼容的版本信息，如图：
+本次安装使用的 kubernetes 版本为：1.20
+找到适合的 dashboard 版本：https://github.com/kubernetes/dashboard/releases/tag/v20
+# 下载 YAML wget -O dashboard.yaml https://raw.githubusercontent.com/kubernetes/dashboard/v20/aio/deploy/recommended.yaml # YAML 里含有的镜像： kubernetesui/dashboard:v20 kubernetesui/metrics-scraper:v17 3. 生成自签名的证书 如果是公网证书则跳过
+使用自签名证书，去掉 dashboard.yaml 生成证书。 # 创建目录 mkdir certs # 进入目录，准备生成证书 cd certs # req 生成证书签名请求 # -newkey 生成新的私钥文件 # -keyout 生成新的私钥文件 # -out 生成的CS文件 # -days 证书有效期，3650天，即10年 # -subj 生成CSR证书的参数 openssl req -newkey rsa:2048 -nodes -keyout dash.</description></item></channel></rss>

@@ -1,0 +1,1345 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Rocky Linux 完全指南：从入门到实践</title><meta property="og:title" content="百里觅码 - Rocky Linux 完全指南：从入门到实践"><meta name=twitter:title content="百里觅码 - Rocky Linux 完全指南：从入门到实践"><meta itemprop=name content="百里觅码 - Rocky Linux 完全指南：从入门到实践"><meta name=application-name content="百里觅码 - Rocky Linux 完全指南：从入门到实践"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/rocky-linux/><link rel=canonical href=https://yezihack.github.io/rocky-linux/ itemprop=url><meta name=url content="https://yezihack.github.io/rocky-linux/"><meta name=twitter:url content="https://yezihack.github.io/rocky-linux/"><meta property="og:url" content="https://yezihack.github.io/rocky-linux/"><meta property="og:updated_time" content="22012-22-10T1230:17:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="22012-22-10T1230:17:25+0800"><meta property="article:published_time" content="22012-22-10T1230:17:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Rocky Linux 完全指南：从入门到实践","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-12-22","description":"","wordCount":"4121","mainEntityOfPage":"True","dateModified":"2025-12-22","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/rocky-linux/>Rocky Linux 完全指南：从入门到实践</a></h1><time datetime=2025-12-22T10:30:17+0800 class=post-date>December 22, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>4121</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>20 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-linux><a href=https://yezihack.github.io/tags/linux>linux</a></li><li class=tag-rocky><a href=https://yezihack.github.io/tags/rocky>rocky</a></li><li class=tag-centos7><a href=https://yezihack.github.io/tags/centos7>centos7</a></li><li class=tag-centos8><a href=https://yezihack.github.io/tags/centos8>centos8</a></li></ul></div><h2 id=1-目录>1. 目录</h2><ol><li><a href=#%e4%bb%80%e4%b9%88%e6%98%af-rocky-linux>什么是 Rocky Linux</a></li><li><a href=#rocky-linux-%e4%b8%8e-centos-%e7%9a%84%e5%85%b3%e7%b3%bb>Rocky Linux 与 CentOS 的关系</a></li><li><a href=#%e7%89%88%e6%9c%ac%e9%80%89%e6%8b%a9%e6%8c%87%e5%8d%97>版本选择指南</a></li><li><a href=#%e9%95%9c%e5%83%8f%e7%b1%bb%e5%9e%8b%e8%af%a6%e8%a7%a3>镜像类型详解</a></li><li><a href=#%e5%ae%89%e8%a3%85%e6%95%99%e7%a8%8b>安装教程</a></li><li><a href=#%e5%88%9d%e5%a7%8b%e9%85%8d%e7%bd%ae%e4%b8%8e%e4%bd%bf%e7%94%a8>初始配置与使用</a></li><li><a href=#%e5%ae%9e%e7%94%a8%e5%9c%ba%e6%99%af>实用场景</a></li><li><a href=#%e6%80%bb%e7%bb%93%e4%b8%8e%e5%bb%ba%e8%ae%ae>总结与建议</a></li></ol><hr><h2 id=2-什么是-rocky-linux>2. 什么是 Rocky Linux</h2><p>Rocky Linux 是一个企业级 Linux 发行版，由 CentOS 原创始人 Gregory Kurtzer 于 2020 年创建。它的诞生源于 Red Hat 宣布停止传统 CentOS 开发并转向 CentOS Stream 的决定。</p><h3 id=21-核心特点>2.1. 核心特点</h3><p><strong>完全开源免费</strong></p><ul><li>100% 开源，无商业限制</li><li>社区驱动，不受单一公司控制</li><li>可用于生产环境，无需付费</li></ul><p><strong>企业级稳定性</strong></p><ul><li>与 Red Hat Enterprise Linux (RHEL) 完全二进制兼容</li><li>为 RHEL 编译的软件可直接在 Rocky Linux 上运行</li><li>长期支持周期（10+ 年）</li></ul><p><strong>生产就绪</strong></p><ul><li>经过严格测试和验证</li><li>适合关键业务应用</li><li>广泛的企业级应用支持</li></ul><h3 id=22-应用场景>2.2. 应用场景</h3><p>Rocky Linux 适用于：</p><ul><li>企业服务器部署</li><li>数据中心基础设施</li><li>云计算平台</li><li>容器化环境</li><li>开发测试环境</li><li>学习和教育用途</li></ul><hr><h2 id=3-rocky-linux-与-centos-的关系>3. Rocky Linux 与 CentOS 的关系</h2><h3 id=31-历史演变>3.1. 历史演变</h3><p><strong>传统 CentOS 时代（2004-2020）</strong></p><ul><li>CentOS 作为 RHEL 的下游（downstream）重建版本</li><li>免费提供与 RHEL 完全兼容的企业级 Linux</li><li>成为中小企业和开发者的首选</li></ul><p><strong>转折点（2020 年底）</strong></p><ul><li>Red Hat 宣布停止传统 CentOS 开发</li><li>CentOS 8 支持提前至 2021 年底结束</li><li>CentOS Stream 成为唯一官方版本</li></ul><p><strong>Rocky Linux 的诞生（2021）</strong></p><ul><li>填补传统 CentOS 留下的空白</li><li>继承 CentOS 的使命和精神</li><li>成为 RHEL 的新免费替代品</li></ul><h3 id=32-三者对比>3.2. 三者对比</h3><table><thead><tr><th>特性</th><th>RHEL</th><th>Rocky Linux</th><th>CentOS Stream</th></tr></thead><tbody><tr><td><strong>定位</strong></td><td>商业产品</td><td>RHEL 下游重建</td><td>RHEL 上游测试</td></tr><tr><td><strong>发布时机</strong></td><td>正式发布</td><td>RHEL 发布后</td><td>RHEL 发布前</td></tr><tr><td><strong>稳定性</strong></td><td>生产就绪</td><td>生产就绪</td><td>持续测试</td></tr><tr><td><strong>更新频率</strong></td><td>定期维护</td><td>跟随 RHEL</td><td>滚动更新</td></tr><tr><td><strong>费用</strong></td><td>需要订阅</td><td>完全免费</td><td>完全免费</td></tr><tr><td><strong>支持周期</strong></td><td>10+ 年</td><td>10+ 年</td><td>较短</td></tr><tr><td><strong>适用场景</strong></td><td>企业生产</td><td>企业生产</td><td>开发测试</td></tr><tr><td><strong>二进制兼容</strong></td><td>标准</td><td>完全兼容</td><td>预览版本</td></tr></tbody></table><h3 id=33-为什么选择-rocky-linux>3.3. 为什么选择 Rocky Linux</h3><p><strong>相比传统 CentOS</strong></p><ul><li>继承了 CentOS 的所有优点</li><li>社区更加独立和开放</li><li>得到原 CentOS 创始人的支持</li><li>有明确的长期发展路线</li></ul><p><strong>相比 CentOS Stream</strong></p><ul><li>提供稳定的生产版本，而非滚动测试版</li><li>更新更加可预测和可控</li><li>更适合关键业务系统</li><li>减少意外变更的风险</li></ul><p><strong>相比 RHEL</strong></p><ul><li>完全免费，无需订阅</li><li>功能完全相同</li><li>社区支持充足</li><li>适合预算有限的场景</li></ul><hr><h2 id=4-版本选择指南>4. 版本选择指南</h2><p>Rocky Linux 目前提供三个主要版本，每个版本都有其适用场景。</p><h3 id=41-rocky-linux-8>4.1. Rocky Linux 8</h3><p><strong>基本信息</strong></p><ul><li>基于 RHEL 8.x</li><li>当前版本：8.10</li><li>支持至：2029 年 5 月</li><li>内核版本：4.18.x</li></ul><p><strong>技术特性</strong></p><ul><li>Python 3.6/3.8/3.9</li><li>PHP 7.2/7.3/7.4/8.0</li><li>Node.js 10/12/14/16</li><li>Podman 容器引擎</li><li>传统系统管理工具</li></ul><p><strong>适用场景</strong></p><pre tabindex=0><code>✅ 推荐使用：
+- 需要兼容旧版 CentOS 8 的应用
+- 现有 CentOS 8 系统迁移
+- 对稳定性要求极高的环境
+- 有特定软件版本依赖（如旧版 Python、PHP）
+
+⚠️ 不推荐：
+- 新项目（建议直接用 Rocky 9）
+- 需要最新软件版本
+</code></pre><h3 id=42-rocky-linux-9--推荐>4.2. Rocky Linux 9 ⭐ 推荐</h3><p><strong>基本信息</strong></p><ul><li>基于 RHEL 9.x</li><li>当前版本：9.5</li><li>支持至：2032 年 5 月</li><li>内核版本：5.14.x</li></ul><p><strong>技术特性</strong></p><ul><li>Python 3.9/3.11/3.12</li><li>PHP 8.0/8.1/8.2</li><li>Node.js 16/18/20</li><li>改进的安全特性</li><li>更好的容器支持</li><li>性能优化</li></ul><p><strong>适用场景</strong></p><pre tabindex=0><code>✅ 强烈推荐：
+- 所有新项目和新部署
+- 生产环境标准选择
+- 云原生应用
+- 容器化部署
+- 微服务架构
+- 长期稳定运行的服务器
+
+优势：
+- 最佳的稳定性和支持周期平衡
+- 成熟的生态系统
+- 活跃的社区支持
+- 充足的文档和资源
+</code></pre><h3 id=43-rocky-linux-10>4.3. Rocky Linux 10</h3><p><strong>基本信息</strong></p><ul><li>基于 RHEL 10.x</li><li>当前版本：10.1（2025 年发布）</li><li>预计支持至：2035 年</li><li>内核版本：6.x</li></ul><p><strong>技术特性</strong></p><ul><li>最新的软件栈</li><li>增强的安全功能</li><li>改进的硬件支持</li><li>最新的容器和云技术</li><li>AI/ML 工具链升级</li></ul><p><strong>适用场景</strong></p><pre tabindex=0><code>✅ 适合尝鲜：
+- 试验最新技术
+- 非关键业务系统
+- 开发测试环境
+- 技术预研项目
+
+⚠️ 暂缓使用：
+- 生产环境（建议等 6-12 个月后更稳定）
+- 关键业务系统
+- 需要大量第三方软件支持的场景
+</code></pre><h3 id=44-版本选择决策树>4.4. 版本选择决策树</h3><pre tabindex=0><code>开始
+  │
+  ├─ 是新项目吗？
+  │   ├─ 是 → Rocky Linux 9 ✓
+  │   └─ 否 → 需要兼容旧系统吗？
+  │          ├─ 是 → Rocky Linux 8
+  │          └─ 否 → Rocky Linux 9 ✓
+  │
+  ├─ 对新技术有需求吗？
+  │   ├─ 是 → 生产环境吗？
+  │   │      ├─ 是 → Rocky Linux 9（稳妥）
+  │   │      └─ 否 → Rocky Linux 10（尝鲜）
+  │   └─ 否 → Rocky Linux 9 ✓
+  │
+  └─ 默认选择 → Rocky Linux 9 ✓
+</code></pre><h3 id=45-综合建议>4.5. 综合建议</h3><p><strong>最佳实践</strong></p><ul><li>90% 的场景选择 Rocky Linux 9</li><li>仅在有明确理由时选择 8 或 10</li><li>生产环境避免使用刚发布的版本</li><li>规划升级路径（8→9→10）</li></ul><hr><h2 id=5-镜像类型详解>5. 镜像类型详解</h2><p>Rocky Linux 提供多种镜像类型，适应不同的使用场景。选择正确的镜像可以节省时间和带宽。</p><p>参考官网提供的下载：<a href=https://rockylinux.org/zh-CN/download target=_blank>https://rockylinux.org/zh-CN/download</a></p><h3 id=51-一服务器安装镜像rocky-9>5.1. 一、服务器安装镜像(rocky 9)</h3><h4 id=511-dvd-iso完整镜像>5.1.1. DVD ISO（完整镜像）</h4><p><strong>特点</strong></p><ul><li>体积：约 10GB</li><li>包含完整的软件包仓库</li><li>无需网络即可完成安装</li><li>可选择各种软件组合</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 推荐使用：
+</span></span><span style=display:flex><span>- 无网络或网络较慢的环境
+</span></span><span style=display:flex><span>- 企业内网批量部署
+</span></span><span style=display:flex><span>- 实验室环境
+</span></span><span style=display:flex><span>- 需要离线安装多个软件包
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>示例场景：
+</span></span><span style=display:flex><span>- 数据中心新机房部署
+</span></span><span style=display:flex><span>- 内网服务器搭建
+</span></span><span style=display:flex><span>- 教学实验室环境
+</span></span></code></pre></div><p><strong>下载命令</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用 wget 下载</span>
+</span></span><span style=display:flex><span>wget -c https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.7-x86_64-dvd.iso
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用 curl 下载</span>
+</span></span><span style=display:flex><span>curl -O https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.7-x86_64-dvd.iso
+</span></span></code></pre></div><h4 id=512-boot-iso网络安装镜像>5.1.2. Boot ISO（网络安装镜像）</h4><p><strong>特点</strong></p><ul><li>体积：约 700MB-1GB</li><li>仅包含引导和安装程序</li><li>安装时从网络下载软件包</li><li>始终获取最新版本</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 推荐使用：
+</span></span><span style=display:flex><span>- 网络状况良好的环境
+</span></span><span style=display:flex><span>- 需要最新软件包
+</span></span><span style=display:flex><span>- 快速下载安装介质
+</span></span><span style=display:flex><span>- 带宽充足的数据中心
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>⚠️ 注意事项：
+</span></span><span style=display:flex><span>- 安装过程需要稳定网络
+</span></span><span style=display:flex><span>- 总下载量可能更大（取决于选择的软件）
+</span></span><span style=display:flex><span>- 安装时间较长
+</span></span></code></pre></div><h4 id=513-minimal-iso最小化镜像>5.1.3. Minimal ISO（最小化镜像）</h4><p><strong>特点</strong></p><ul><li>体积：约 2-3GB</li><li>包含基本系统所需的最少软件包</li><li>无需联网即可完成基础安装</li><li>系统占用空间小</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 强烈推荐（服务器最佳选择）：
+</span></span><span style=display:flex><span>- 生产服务器环境
+</span></span><span style=display:flex><span>- 容器宿主机
+</span></span><span style=display:flex><span>- 云服务器部署
+</span></span><span style=display:flex><span>- 安全敏感环境
+</span></span><span style=display:flex><span>- 资源受限的系统
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>优势：
+</span></span><span style=display:flex><span>- 减少攻击面（安全性更好）
+</span></span><span style=display:flex><span>- 系统更精简
+</span></span><span style=display:flex><span>- 启动更快
+</span></span><span style=display:flex><span>- 易于管理和维护
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>安装后可按需添加软件：
+</span></span><span style=display:flex><span>sudo dnf install httpd mariadb-server php
+</span></span></code></pre></div><h4 id=514-镜像选择快速决策>5.1.4. 镜像选择快速决策</h4><pre tabindex=0><code>服务器部署场景
+  │
+  ├─ 网络环境如何？
+  │   ├─ 快速稳定 → Boot ISO（最小下载）
+  │   ├─ 较慢/不稳定 → DVD ISO 或 Minimal ISO
+  │   └─ 无网络 → DVD ISO
+  │
+  ├─ 用途是什么？
+  │   ├─ 生产服务器 → Minimal ISO ✓✓✓
+  │   ├─ 开发测试 → DVD ISO（工具齐全）
+  │   └─ 学习使用 → DVD ISO（包含图形界面选项）
+  │
+  └─ 默认推荐 → Minimal ISO（90% 场景适用）
+</code></pre><h3 id=52-二桌面-live-镜像>5.2. 二、桌面 Live 镜像</h3><p>如果你需要图形桌面环境，Rocky Linux 提供三种 Live 镜像：</p><h4 id=521-live-image-gnome---完整版>5.2.1. Live Image (GNOME) - 完整版</h4><p><strong>特点</strong></p><ul><li>体积：约 2-3GB</li><li>GNOME 桌面环境（官方默认）</li><li>现代化界面设计</li><li>功能完整，开箱即用</li><li>内存占用：约 1.5GB</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 推荐使用：
+</span></span><span style=display:flex><span>- Linux 初学者
+</span></span><span style=display:flex><span>- 需要完整桌面体验
+</span></span><span style=display:flex><span>- 日常办公使用
+</span></span><span style=display:flex><span>- 多媒体处理
+</span></span><span style=display:flex><span>- 图形设计工作
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>特点：
+</span></span><span style=display:flex><span>- 类似 macOS 的界面风格
+</span></span><span style=display:flex><span>- 顶部栏 + 活动视图
+</span></span><span style=display:flex><span>- 工作区管理流畅
+</span></span><span style=display:flex><span>- 预装完整办公套件
+</span></span></code></pre></div><h4 id=522-live-image-gnome-lite---轻量版>5.2.2. Live Image (GNOME Lite) - 轻量版</h4><p><strong>特点</strong></p><ul><li>体积：约 1.5-2GB</li><li>GNOME 精简版</li><li>移除不常用应用</li><li>内存占用：约 1.2GB</li><li>启动速度更快</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 推荐使用（性价比最高）：
+</span></span><span style=display:flex><span>- 配置较低的电脑（2-4GB 内存）
+</span></span><span style=display:flex><span>- 虚拟机使用
+</span></span><span style=display:flex><span>- 追求流畅体验
+</span></span><span style=display:flex><span>- 不需要太多预装软件
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>优势：
+</span></span><span style=display:flex><span>- 占用资源少
+</span></span><span style=display:flex><span>- 运行更流畅
+</span></span><span style=display:flex><span>- 可后续按需安装软件
+</span></span><span style=display:flex><span>- 适合老旧电脑复活
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>性能对比：
+</span></span><span style=display:flex><span>标准版 1.5GB 内存 vs 轻量版 1.2GB 内存
+</span></span><span style=display:flex><span>节省约 20-30% 资源
+</span></span></code></pre></div><h4 id=523-live-image-kde---高度定制>5.2.3. Live Image (KDE) - 高度定制</h4><p><strong>特点</strong></p><ul><li>体积：约 2.5-3.5GB</li><li>KDE Plasma 桌面环境</li><li>类似 Windows 的界面布局</li><li>高度可定制化</li><li>内存占用：约 1.3GB</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 推荐使用：
+</span></span><span style=display:flex><span>- 从 Windows 迁移的用户
+</span></span><span style=display:flex><span>- 喜欢自定义界面
+</span></span><span style=display:flex><span>- 需要华丽视觉效果
+</span></span><span style=display:flex><span>- 配置较好的电脑
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>特点：
+</span></span><span style=display:flex><span>- 底部任务栏（类似 Windows）
+</span></span><span style=display:flex><span>- 开始菜单式启动器
+</span></span><span style=display:flex><span>- 丰富的主题和插件
+</span></span><span style=display:flex><span>- 窗口管理功能强大
+</span></span><span style=display:flex><span>- 多屏幕支持优秀
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>界面布局：
+</span></span><span style=display:flex><span>┌────────────────────────────┐
+</span></span><span style=display:flex><span>│  应用程序  文件  编辑  查看  │ ← 菜单栏
+</span></span><span style=display:flex><span>├────────────────────────────┤
+</span></span><span style=display:flex><span>│                            │
+</span></span><span style=display:flex><span>│      工作区域              │
+</span></span><span style=display:flex><span>│                            │
+</span></span><span style=display:flex><span>├────────────────────────────┤
+</span></span><span style=display:flex><span>│ <span style=color:#f92672>[</span>开始<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>应用<span style=color:#f92672>]</span> <span style=color:#f92672>[</span>系统托盘<span style=color:#f92672>]</span>   │ ← 任务栏
+</span></span><span style=display:flex><span>└────────────────────────────┘
+</span></span></code></pre></div><h4 id=524-桌面环境对比表>5.2.4. 桌面环境对比表</h4><table><thead><tr><th>特性</th><th>GNOME</th><th>GNOME Lite</th><th>KDE</th></tr></thead><tbody><tr><td><strong>内存占用</strong></td><td>~1.5GB</td><td>~1.2GB</td><td>~1.3GB</td></tr><tr><td><strong>磁盘空间</strong></td><td>~15GB</td><td>~10GB</td><td>~18GB</td></tr><tr><td><strong>启动速度</strong></td><td>中等</td><td>快</td><td>中等</td></tr><tr><td><strong>定制性</strong></td><td>中等</td><td>中等</td><td>很高</td></tr><tr><td><strong>易用性</strong></td><td>简单</td><td>简单</td><td>中等</td></tr><tr><td><strong>适合新手</strong></td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td></tr><tr><td><strong>适合 Windows 用户</strong></td><td>⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td></tr></tbody></table><h4 id=525-live-镜像的多种用途>5.2.5. Live 镜像的多种用途</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>1. 试用系统
+</span></span><span style=display:flex><span>   - 从 USB 启动
+</span></span><span style=display:flex><span>   - 无需安装即可体验
+</span></span><span style=display:flex><span>   - 不影响现有系统
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>2. 安装到硬盘
+</span></span><span style=display:flex><span>   - 试用满意后一键安装
+</span></span><span style=display:flex><span>   - 保留个性化设置
+</span></span><span style=display:flex><span>   - 图形化安装向导
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>3. 系统急救
+</span></span><span style=display:flex><span>   - 当系统无法启动时
+</span></span><span style=display:flex><span>   - 可以挂载硬盘修复
+</span></span><span style=display:flex><span>   - 备份重要数据
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>4. 便携系统
+</span></span><span style=display:flex><span>   - 在 USB 上运行完整系统
+</span></span><span style=display:flex><span>   - 随身携带工作环境
+</span></span><span style=display:flex><span>   - 在任何电脑上使用
+</span></span></code></pre></div><h3 id=53-三云平台镜像>5.3. 三、云平台镜像</h3><h4 id=531-通用云镜像qcow2>5.3.1. 通用云镜像（QCOW2）</h4><p><strong>特点</strong></p><ul><li>格式：QCOW2（QEMU/KVM 虚拟磁盘）</li><li>体积：约 500MB-1GB</li><li>预配置云环境</li><li>支持 cloud-init 自动化</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>✅ 推荐使用：
+</span></span><span style=display:flex><span>- OpenStack 云平台
+</span></span><span style=display:flex><span>- KVM/QEMU 虚拟化
+</span></span><span style=display:flex><span>- libvirt 管理的虚拟机
+</span></span><span style=display:flex><span>- 私有云部署
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>使用示例：
+</span></span><span style=display:flex><span><span style=color:#75715e># 下载镜像</span>
+</span></span><span style=display:flex><span>wget -c https://dl.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建虚拟机</span>
+</span></span><span style=display:flex><span>virt-install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name rocky9-vm <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --memory <span style=color:#ae81ff>2048</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --vcpus <span style=color:#ae81ff>2</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --disk path<span style=color:#f92672>=</span>Rocky-9-GenericCloud-Base.latest.x86_64.qcow2 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --import <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --os-variant rocky9
+</span></span></code></pre></div><h4 id=532-公有云平台镜像>5.3.2. 公有云平台镜像</h4><p><strong>AWS AMI</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>适用：Amazon Web Services
+</span></span><span style=display:flex><span>特点：
+</span></span><span style=display:flex><span>- EC2 优化版本
+</span></span><span style=display:flex><span>- 预配置 AWS 工具
+</span></span><span style=display:flex><span>- 区域特定 AMI ID
+</span></span><span style=display:flex><span>- 支持各种实例类型
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>使用方法：
+</span></span><span style=display:flex><span>1. 登录 AWS Console
+</span></span><span style=display:flex><span>2. 进入 EC2 服务
+</span></span><span style=display:flex><span>3. 选择 <span style=color:#e6db74>&#34;Launch Instance&#34;</span>
+</span></span><span style=display:flex><span>4. 搜索 <span style=color:#e6db74>&#34;Rocky Linux&#34;</span>
+</span></span><span style=display:flex><span>5. 选择对应版本和区域
+</span></span></code></pre></div><p><strong>阿里云</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>适用：阿里云 ECS
+</span></span><span style=display:flex><span>特点：
+</span></span><span style=display:flex><span>- 针对阿里云优化
+</span></span><span style=display:flex><span>- 预装 aliyun-cli
+</span></span><span style=display:flex><span>- 国内网络优化
+</span></span><span style=display:flex><span>- 镜像市场提供
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>使用方法：
+</span></span><span style=display:flex><span>1. 登录阿里云控制台
+</span></span><span style=display:flex><span>2. 进入 ECS 实例创建页面
+</span></span><span style=display:flex><span>3. 镜像类型选择 <span style=color:#e6db74>&#34;镜像市场&#34;</span>
+</span></span><span style=display:flex><span>4. 搜索 <span style=color:#e6db74>&#34;Rocky Linux&#34;</span>
+</span></span><span style=display:flex><span>5. 选择官方镜像
+</span></span></code></pre></div><p><strong>Azure</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>适用：Microsoft Azure
+</span></span><span style=display:flex><span>特点：
+</span></span><span style=display:flex><span>- Azure 平台优化
+</span></span><span style=display:flex><span>- 支持各种 VM 大小
+</span></span><span style=display:flex><span>- 预配置 waagent
+</span></span><span style=display:flex><span>- Marketplace 提供
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>使用方法：
+</span></span><span style=display:flex><span>1. 登录 Azure Portal
+</span></span><span style=display:flex><span>2. 创建虚拟机
+</span></span><span style=display:flex><span>3. 选择 <span style=color:#e6db74>&#34;Marketplace&#34;</span>
+</span></span><span style=display:flex><span>4. 搜索 <span style=color:#e6db74>&#34;Rocky Linux&#34;</span>
+</span></span><span style=display:flex><span>5. 选择对应版本
+</span></span></code></pre></div><h3 id=54-四容器镜像dockeroci>5.4. 四、容器镜像（Docker/OCI）</h3><h4 id=541-完整镜像full-image>5.4.1. 完整镜像（Full Image）</h4><p><strong>特点</strong></p><ul><li>体积：约 500MB-1GB</li><li>包含完整的包管理器和工具</li><li>适合复杂应用</li><li>更多的系统工具</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span>✅ 推荐使用：<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 复杂的应用部署<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 需要多种开发工具<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 调试和开发环境<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 传统应用容器化<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>使用示例：<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> rockylinux:9</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> dnf install -y <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    httpd <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    php <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    php-mysqlnd <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    mariadb-server <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#f92672>&amp;&amp;</span> dnf clean all<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> app/ /var/www/html/<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>EXPOSE</span><span style=color:#e6db74> 80</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [<span style=color:#e6db74>&#34;httpd&#34;</span>, <span style=color:#e6db74>&#34;-DFOREGROUND&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><h4 id=542-最小化镜像minimal-image>5.4.2. 最小化镜像（Minimal Image）</h4><p><strong>特点</strong></p><ul><li>体积：约 100-200MB</li><li>仅包含核心组件</li><li>极致精简</li><li>安全性更高</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span>✅ 强烈推荐（生产环境最佳）：<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 微服务架构<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 云原生应用<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 追求镜像体积<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 安全敏感场景<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>使用示例：<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> rockylinux:9-minimal</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># 仅安装必要的包</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> microdnf install -y <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    nginx <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    <span style=color:#f92672>&amp;&amp;</span> microdnf clean all<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> nginx.conf /etc/nginx/<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> app/ /usr/share/nginx/html/<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>EXPOSE</span><span style=color:#e6db74> 80</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [<span style=color:#e6db74>&#34;nginx&#34;</span>, <span style=color:#e6db74>&#34;-g&#34;</span>, <span style=color:#e6db74>&#34;daemon off;&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>优势：<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 镜像构建速度快 50%+<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 体积减少 60-70%<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 漏洞扫描问题更少<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span>- 拉取速度更快<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><h4 id=543-容器镜像对比>5.4.3. 容器镜像对比</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>场景对比：
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>开发环境：
+</span></span><span style=display:flex><span>rockylinux:9 <span style=color:#f92672>(</span>完整版<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>- 体积大但工具齐全
+</span></span><span style=display:flex><span>- 方便调试和开发
+</span></span><span style=display:flex><span>- 可以临时安装各种工具
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>生产环境：
+</span></span><span style=display:flex><span>rockylinux:9-minimal <span style=color:#f92672>(</span>最小化<span style=color:#f92672>)</span>
+</span></span><span style=display:flex><span>- 体积小，拉取快
+</span></span><span style=display:flex><span>- 攻击面小，更安全
+</span></span><span style=display:flex><span>- 符合容器最佳实践
+</span></span><span style=display:flex><span>- 减少漏洞风险
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>构建时间对比：
+</span></span><span style=display:flex><span>完整版：~5 分钟
+</span></span><span style=display:flex><span>最小化：~2 分钟
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>镜像大小对比：
+</span></span><span style=display:flex><span>完整版：850MB
+</span></span><span style=display:flex><span>最小化：180MB
+</span></span><span style=display:flex><span>节省：~70%
+</span></span></code></pre></div><h3 id=55-五wsl-镜像>5.5. 五、WSL 镜像</h3><p><strong>特点</strong></p><ul><li>Windows Subsystem for Linux 专用</li><li>体积：约 300-500MB</li><li>深度集成 Windows</li><li>无需虚拟机</li></ul><p><strong>适用场景</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>✅</span> <span style=color:#960050;background-color:#1e0010>推荐使用：</span>
+</span></span><span style=display:flex><span>- Windows <span style=color:#960050;background-color:#1e0010>开发者</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>需要</span> Linux <span style=color:#960050;background-color:#1e0010>工具链</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>跨平台开发</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>学习</span> Linux
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>优势：</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>启动速度极快（秒级）</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>资源占用低</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>文件系统互通</span>
+</span></span><span style=display:flex><span>- <span style=color:#960050;background-color:#1e0010>网络直接共享</span>
+</span></span><span style=display:flex><span>- VS Code <span style=color:#960050;background-color:#1e0010>完美集成</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>使用示例：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安装</span>
+</span></span><span style=display:flex><span>wsl --import RockyLinux C:\WSL\Rocky rocky-wsl.tar.gz
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启动</span>
+</span></span><span style=display:flex><span>wsl -d RockyLinux
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在 Windows 访问 Linux 文件</span>
+</span></span><span style=display:flex><span>\\wsl$\RockyLinux
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在 Linux 访问 Windows 文件</span>
+</span></span><span style=display:flex><span>cd /mnt/c/Users/YourName
+</span></span></code></pre></div><h3 id=56-镜像选择总结>5.6. 镜像选择总结</h3><pre tabindex=0><code>快速决策指南：
+
+物理机/虚拟机服务器
+└→ Minimal ISO (90% 场景)
+
+桌面使用
+├→ 新手：GNOME
+├→ 老电脑：GNOME Lite
+└→ Windows 用户：KDE
+
+云平台
+├→ OpenStack/KVM：QCOW2
+├→ AWS：AMI
+├→ 阿里云：ECS 镜像
+└→ Azure：Marketplace 镜像
+
+容器部署
+├→ 开发：rockylinux:9
+└→ 生产：rockylinux:9-minimal
+
+Windows 开发
+└→ WSL 镜像
+
+默认推荐：
+- 服务器：Minimal ISO
+- 桌面：GNOME Lite
+- 容器：Minimal Image
+- Windows：WSL
+</code></pre><hr><h2 id=6-安装教程>6. 安装教程</h2><h3 id=61-一服务器安装minimal-iso>6.1. 一、服务器安装（Minimal ISO）</h3><p>这是最常见的安装方式，适用于 90% 的服务器场景。</p><h4 id=611-准备工作>6.1.1. 准备工作</h4><p><strong>1. 下载镜像</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 从官方网站下载</span>
+</span></span><span style=display:flex><span>wget https://download.rockylinux.org/pub/rocky/9/isos/x86_64/Rocky-9.5-x86_64-minimal.iso
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证校验和（推荐）</span>
+</span></span><span style=display:flex><span>sha256sum Rocky-9.5-x86_64-minimal.iso
+</span></span><span style=display:flex><span><span style=color:#75715e># 与官网 CHECKSUM 文件对比</span>
+</span></span></code></pre></div><p><strong>2. 制作启动盘</strong></p><p><strong>Linux/macOS 系统：</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看 USB 设备</span>
+</span></span><span style=display:flex><span>lsblk
+</span></span><span style=display:flex><span><span style=color:#75715e># 或</span>
+</span></span><span style=display:flex><span>diskutil list  <span style=color:#75715e># macOS</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 写入镜像（假设 USB 是 /dev/sdb）</span>
+</span></span><span style=display:flex><span>sudo dd <span style=color:#66d9ef>if</span><span style=color:#f92672>=</span>Rocky-9.5-x86_64-minimal.iso of<span style=color:#f92672>=</span>/dev/sdb bs<span style=color:#f92672>=</span>4M status<span style=color:#f92672>=</span>progress
+</span></span><span style=display:flex><span>sudo sync
+</span></span></code></pre></div><p><strong>Windows 系统：</strong></p><pre tabindex=0><code>推荐工具：
+1. Rufus (推荐)
+   - 下载：https://rufus.ie
+   - 选择 ISO 镜像
+   - 选择 USB 设备
+   - 点击开始
+
+2. Etcher
+   - 下载：https://www.balena.io/etcher
+   - 跨平台支持
+   - 界面简单直观
+</code></pre><h4 id=612-安装步骤>6.1.2. 安装步骤</h4><p><strong>1. 启动安装程序</strong></p><pre tabindex=0><code>1. 插入 USB 启动盘
+2. 重启电脑
+3. 进入 BIOS/UEFI (通常按 F2/F12/DEL)
+4. 设置从 USB 启动
+5. 选择 &#34;Install Rocky Linux 9&#34;
+</code></pre><p><strong>2. 语言和键盘设置</strong></p><pre tabindex=0><code>- 选择语言：中文（简体）或 English
+- 键盘布局：根据实际情况选择
+- 时区：Asia/Shanghai（或 Asia/Taipei）
+</code></pre><p><strong>3. 安装目标</strong></p><pre tabindex=0><code>磁盘分区方案（推荐）：
+
+服务器标准分区：
+/boot      - 1GB   (XFS)
+/boot/efi  - 512MB (FAT32, UEFI 系统)
+swap       - 8GB   (根据内存大小)
+/          - 剩余空间 (XFS)
+
+或使用 LVM（推荐）：
+/boot      - 1GB
+/boot/efi  - 512MB
+PV (物理卷) - 剩余空间
+  └─ VG (卷组)
+      ├─ LV swap  - 8GB
+      ├─ LV root  - 50GB  (/)
+      └─ LV data  - 剩余  (/data)
+
+优势：
+- 灵活调整分区大小
+- 支持快照和备份
+- 易于扩展存储
+</code></pre><p><strong>4. 网络配置</strong></p><pre tabindex=0><code>点击网络和主机名：
+1. 打开以太网开关
+2. 配置静态 IP（生产环境推荐）
+   - IP 地址：192.168.1.100
+   - 子网掩码：255.255.255.0
+   - 网关：192.168.1.1
+   - DNS：8.8.8.8, 114.114.114.114
+3. 设置主机名：rocky-server-01
+</code></pre><p><strong>5. 软件选择</strong></p><pre tabindex=0><code>最小化安装：
+- 基本环境：Minimal Install
+- 附加软件：
+  ☑ Standard（推荐，包含基本工具）
+  ☐ Guest Agents（虚拟机需要）
+  ☐ Development Tools（开发需要）
+</code></pre><p><strong>6. 用户设置</strong></p><pre tabindex=0><code>Root 密码：
+- 设置强密码
+- 生产环境建议禁用 root 远程登录
+
+创建用户：
+- 用户名：admin
+- ☑ 使此用户成为管理员
+- 设置密码
+</code></pre><p><strong>7. 开始安装</strong></p><pre tabindex=0><code>点击&#34;开始安装&#34;
+等待 5-15 分钟
+完成后重启系统
+</code></pre><h3 id=62-二桌面安装gnome-live>6.2. 二、桌面安装（GNOME Live）</h3><p>适合需要图形界面的用户。</p><h4 id=621-安装步骤>6.2.1. 安装步骤</h4><p><strong>1. 启动 Live 环境</strong></p><pre tabindex=0><code>1. 从 USB 启动
+2. 选择 &#34;Start Rocky Linux&#34;
+3. 直接进入桌面环境
+4. 可以先体验系统
+</code></pre><p><strong>2. 开始安装</strong></p><pre tabindex=0><code>1. 双击桌面上的 &#34;Install to Hard Drive&#34;
+2. 语言选择：中文（简体）
+3. 进入安装摘要界面
+</code></pre><p><strong>3. 安装目标</strong></p><pre tabindex=0><code>磁盘分区（桌面推荐）：
+/boot      - 1GB
+/boot/efi  - 512MB (UEFI)
+swap       - 16GB (桌面建议更大)
+/          - 80GB
+/home      - 剩余空间 (存放用户数据)
+</code></pre><p><strong>4. 软件选择</strong></p><pre tabindex=0><code>已自动选择 GNOME 桌面
+可以在附加软件中选择：
+☑ GNOME 应用程序
+☑ 办公套件和生产力
+☑ 开发工具
+</code></pre><p><strong>5. 完成安装</strong></p><pre tabindex=0><code>- 等待安装完成（15-30 分钟）
+- 重启系统
+- 首次启动配置向导
+</code></pre><h3 id=63-三虚拟机安装快速方法>6.3. 三、虚拟机安装（快速方法）</h3><p>使用虚拟化软件如 VirtualBox、VMware、KVM。</p><h4 id=631-virtualbox-安装示例>6.3.1. VirtualBox 安装示例</h4><p><strong>1. 创建虚拟机</strong></p><pre tabindex=0><code>名称：Rocky-Linux-9
+类型：Linux
+版本：Red Hat (64-bit)
+内存：2048 MB (最小)
+硬盘：20 GB (动态分配)
+</code></pre><p><strong>2. 配置虚拟机</strong></p><pre tabindex=0><code>设置 → 系统：
+- 启用 EFI
+- 处理器：2 核心
+
+设置 → 存储：
+- 控制器 IDE：加载 ISO 镜像
+
+设置 → 网络：
+- 网卡 1：桥接网卡（或 NAT）
+</code></pre><p><strong>3. 启动安装</strong></p><pre tabindex=0><code>启动虚拟机
+按常规步骤安装
+完成后移除 ISO
+</code></pre><h3 id=64-四云平台部署>6.4. 四、云平台部署</h3><h4 id=641-aws-ec2-部署>6.4.1. AWS EC2 部署</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用 AWS CLI</span>
+</span></span><span style=display:flex><span>aws ec2 run-instances <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --image-id ami-xxxxxxxxx <span style=color:#ae81ff>\ </span> <span style=color:#75715e># Rocky Linux 9 AMI ID</span>
+</span></span><span style=display:flex><span>    --instance-type t3.micro <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --key-name your-key <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --security-groups rocky-sg <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --region us-east-1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或在 AWS Console 中：</span>
+</span></span><span style=display:flex><span>1. EC2 → Launch Instance
+</span></span><span style=display:flex><span>2. 搜索 <span style=color:#e6db74>&#34;Rocky Linux&#34;</span>
+</span></span><span style=display:flex><span>3. 选择实例类型
+</span></span><span style=display:flex><span>4. 配置网络和安全组
+</span></span><span style=display:flex><span>5. 添加存储
+</span></span><span style=display:flex><span>6. 启动实例
+</span></span></code></pre></div><h4 id=642-openstackkvm-部署>6.4.2. OpenStack/KVM 部署</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 下载云镜像</span>
+</span></span><span style=display:flex><span>wget https://download.rockylinux.org/pub/rocky/9/images/x86_64/Rocky-9-GenericCloud-Base.latest.x86_64.qcow2
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用 virt-install</span>
+</span></span><span style=display:flex><span>virt-install <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --name rocky9-cloud <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --memory <span style=color:#ae81ff>2048</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --vcpus <span style=color:#ae81ff>2</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --disk Rocky-9-GenericCloud-Base.latest.x86_64.qcow2 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --import <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --os-variant rocky9 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --network bridge<span style=color:#f92672>=</span>virbr0 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --graphics none <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    --cloud-init user-data<span style=color:#f92672>=</span>cloud-init.yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># cloud-init.yaml 示例</span>
+</span></span><span style=display:flex><span><span style=color:#75715e>#cloud-config</span>
+</span></span><span style=display:flex><span>users:
+</span></span><span style=display:flex><span>  - name: admin
+</span></span><span style=display:flex><span>    groups: wheel
+</span></span><span style=display:flex><span>    sudo: ALL<span style=color:#f92672>=(</span>ALL<span style=color:#f92672>)</span> NOPASSWD:ALL
+</span></span><span style=display:flex><span>    ssh_authorized_keys:
+</span></span><span style=display:flex><span>      - ssh-rsa AAAAB3NzaC1yc2E... your-key
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>packages:
+</span></span><span style=display:flex><span>  - vim
+</span></span><span style=display:flex><span>  - git
+</span></span><span style=display:flex><span>  - htop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>runcmd:
+</span></span><span style=display:flex><span>  - dnf update -y
+</span></span></code></pre></div><h3 id=65-五容器部署>6.5. 五、容器部署</h3><h4 id=651-docker-使用>6.5.1. Docker 使用</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 拉取最小化镜像（推荐）</span>
+</span></span><span style=display:flex><span>docker pull rockylinux:9-minimal
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 拉取完整镜像</span>
+</span></span><span style=display:flex><span>docker pull rockylinux:9
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 运行容器</span>
+</span></span><span style=display:flex><span>docker run -it --name rocky9 rockylinux:9-minimal bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 构建自定义镜像</span>
+</span></span><span style=display:flex><span>cat &gt; Dockerfile <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>FROM rockylinux:9-minimal
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>RUN microdnf install -y nginx \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &amp;&amp; microdnf clean all
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>COPY app/ /usr/share/nginx/html/
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EXPOSE 80
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>CMD [&#34;nginx&#34;, &#34;-g&#34;, &#34;daemon off;&#34;]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>docker build -t my-rocky-app .
+</span></span><span style=display:flex><span>docker run -d -p 80:80 my-rocky-app
+</span></span></code></pre></div><h4 id=652-podman-使用rocky-linux-原生>6.5.2. Podman 使用（Rocky Linux 原生）</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Podman 是 Rocky Linux 推荐的容器引擎</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 无守护进程，更安全</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 拉取镜像</span>
+</span></span><span style=display:flex><span>podman pull rockylinux:9-minimal
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 运行容器</span>
+</span></span><span style=display:flex><span>podman run -it rockylinux:9-minimal bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建 Pod</span>
+</span></span><span style=display:flex><span>podman pod create --name mypod -p 8080:80
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 在 Pod 中运行容器</span>
+</span></span><span style=display:flex><span>podman run -d --pod mypod rockylinux:9-minimal
+</span></span></code></pre></div><h3 id=66-六wsl-安装>6.6. 六、WSL 安装</h3><p><strong>1. 启用 WSL</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 以管理员身份运行 PowerShell</span>
+</span></span><span style=display:flex><span>wsl --install
+</span></span></code></pre></div><p><strong>2. 下载并导入 Rocky Linux</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-powershell data-lang=powershell><span style=display:flex><span><span style=color:#75715e># 创建安装目录</span>
+</span></span><span style=display:flex><span>mkdir C:\WSL\RockyLinux
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 下载 WSL 镜像</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 从官网下载 rocky-wsl.tar.gz</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 导入镜像</span>
+</span></span><span style=display:flex><span>wsl --import RockyLinux C:\WSL\RockyLinux C:\Users\YourName\Downloads\rocky-wsl.tar.gz
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启动</span>
+</span></span><span style=display:flex><span>wsl -d RockyLinux
+</span></span></code></pre></div><p><strong>3. 初始配置</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 创建用户</span>
+</span></span><span style=display:flex><span>useradd -m -G wheel yourusername
+</span></span><span style=display:flex><span>passwd yourusername
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 退出后在 PowerShell 设置默认用户</span>
+</span></span><span style=display:flex><span>wsl --terminate RockyLinux
+</span></span><span style=display:flex><span>rocky config --default-user yourusername
+</span></span></code></pre></div><hr><h2 id=7-初始配置与使用>7. 初始配置与使用</h2><p>安装完成后，需要进行一些基础配置以确保系统安全和易用。</p><h3 id=71-一系统更新>7.1. 一、系统更新</h3><p><strong>首次更新（必须）</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 更新所有软件包</span>
+</span></span><span style=display:flex><span>sudo dnf update -y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重启系统（如果有内核更新）</span>
+</span></span><span style=display:flex><span>sudo reboot
+</span></span></code></pre></div><p><strong>配置自动更新</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 安装自动更新工具</span>
+</span></span><span style=display:flex><span>sudo dnf install -y dnf-automatic
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 配置自动更新</span>
+</span></span><span style=display:flex><span>sudo vim /etc/dnf/automatic.conf
+</span></span><span style=display:flex><span><span style=color:#75715e># 修改：</span>
+</span></span><span style=display:flex><span>apply_updates <span style=color:#f92672>=</span> yes
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启用自动更新服务</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now dnf-automatic.timer
+</span></span></code></pre></div><h3 id=72-二软件源配置>7.2. 二、软件源配置</h3><p><strong>使用国内镜像（加速访问）</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 备份原有源</span>
+</span></span><span style=display:flex><span>sudo cp /etc/yum.repos.d/rocky.repo /etc/yum.repos.d/rocky.repo.backup
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用阿里云镜像（推荐）</span>
+</span></span><span style=display:flex><span>sudo sed -e <span style=color:#e6db74>&#39;s|^mirrorlist=|#mirrorlist=|g&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>         -e <span style=color:#e6db74>&#39;s|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.aliyun.com/rockylinux|g&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>         -i.bak <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>         /etc/yum.repos.d/rocky*.repo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或使用清华大学镜像</span>
+</span></span><span style=display:flex><span>sudo sed -e <span style=color:#e6db74>&#39;s|^mirrorlist=|#mirrorlist=|g&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>         -e <span style=color:#e6db74>&#39;s|^#baseurl=http://dl.rockylinux.org/$contentdir|baseurl=https://mirrors.tuna.tsinghua.edu.cn/rockylinux|g&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>         -i.bak <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>         /etc/yum.repos.d/rocky*.repo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 清理并重建缓存</span>
+</span></span><span style=display:flex><span>sudo dnf clean all
+</span></span><span style=display:flex><span>sudo dnf makecache
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 测试速度</span>
+</span></span><span style=display:flex><span>sudo dnf repolist
+</span></span></code></pre></div><p><strong>启用 EPEL 仓库（扩展软件）</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># EPEL 提供额外的软件包</span>
+</span></span><span style=display:flex><span>sudo dnf install -y epel-release
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 更新缓存</span>
+</span></span><span style=display:flex><span>sudo dnf makecache
+</span></span></code></pre></div><h3 id=73-三基础工具安装>7.3. 三、基础工具安装</h3><p><strong>开发工具包</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 安装编译工具链</span>
+</span></span><span style=display:flex><span>sudo dnf groupinstall <span style=color:#e6db74>&#34;Development Tools&#34;</span> -y
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 包含：gcc, make, git, etc.</span>
+</span></span></code></pre></div><p><strong>常用系统工具</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 系统管理工具</span>
+</span></span><span style=display:flex><span>sudo dnf install -y <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    vim <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    nano <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    wget <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    curl <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    htop <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    tmux <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    screen <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    tree <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    net-tools <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    bind-utils <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    telnet <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    traceroute <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    tcpdump <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    rsync <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    zip <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    unzip <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    tar
+</span></span></code></pre></div><p><strong>网络工具</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>sudo dnf install -y <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    nmap <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    netcat <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    iptables-services <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>    firewalld
+</span></span></code></pre></div><h3 id=74-四安全配置>7.4. 四、安全配置</h3><p><strong>1. 防火墙配置</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 启动防火墙</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now firewalld
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看状态</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --state
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 允许 SSH</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-service<span style=color:#f92672>=</span>ssh
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 允许 HTTP/HTTPS</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-service<span style=color:#f92672>=</span>http
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-service<span style=color:#f92672>=</span>https
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 允许特定端口</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-port<span style=color:#f92672>=</span>8080/tcp
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重载配置</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --reload
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看规则</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --list-all
+</span></span></code></pre></div><p><strong>2. SELinux 配置</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看 SELinux 状态</span>
+</span></span><span style=display:flex><span>getenforce
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># SELinux 模式：</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - Enforcing（强制）：推荐，最安全</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - Permissive（宽容）：记录违规但不阻止</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># - Disabled（禁用）：不推荐</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 临时设置为宽容模式（调试用）</span>
+</span></span><span style=display:flex><span>sudo setenforce <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 永久配置</span>
+</span></span><span style=display:flex><span>sudo vim /etc/selinux/config
+</span></span><span style=display:flex><span><span style=color:#75715e># SELINUX=enforcing  # 生产环境推荐</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看 SELinux 日志</span>
+</span></span><span style=display:flex><span>sudo tail -f /var/log/audit/audit.log
+</span></span></code></pre></div><p><strong>3. SSH 安全配置</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 编辑 SSH 配置</span>
+</span></span><span style=display:flex><span>sudo vim /etc/ssh/sshd_config
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 推荐配置：</span>
+</span></span><span style=display:flex><span>Port <span style=color:#ae81ff>22</span>                          <span style=color:#75715e># 可改为非标准端口</span>
+</span></span><span style=display:flex><span>PermitRootLogin no               <span style=color:#75715e># 禁止 root 登录</span>
+</span></span><span style=display:flex><span>PasswordAuthentication no        <span style=color:#75715e># 仅允许密钥登录</span>
+</span></span><span style=display:flex><span>PubkeyAuthentication yes         <span style=color:#75715e># 启用公钥认证</span>
+</span></span><span style=display:flex><span>MaxAuthTries <span style=color:#ae81ff>3</span>                   <span style=color:#75715e># 最大认证次数</span>
+</span></span><span style=display:flex><span>ClientAliveInterval <span style=color:#ae81ff>300</span>          <span style=color:#75715e># 客户端保活时间</span>
+</span></span><span style=display:flex><span>ClientAliveCountMax <span style=color:#ae81ff>2</span>            <span style=color:#75715e># 保活最大次数</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重启 SSH 服务</span>
+</span></span><span style=display:flex><span>sudo systemctl restart sshd
+</span></span></code></pre></div><p><strong>4. 配置 SSH 密钥登录</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 在客户端生成密钥对</span>
+</span></span><span style=display:flex><span>ssh-keygen -t ed25519 -C <span style=color:#e6db74>&#34;your_email@example.com&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 上传公钥到服务器</span>
+</span></span><span style=display:flex><span>ssh-copy-id user@server-ip
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或手动添加</span>
+</span></span><span style=display:flex><span>mkdir -p ~/.ssh
+</span></span><span style=display:flex><span>chmod <span style=color:#ae81ff>700</span> ~/.ssh
+</span></span><span style=display:flex><span>vim ~/.ssh/authorized_keys  <span style=color:#75715e># 粘贴公钥</span>
+</span></span><span style=display:flex><span>chmod <span style=color:#ae81ff>600</span> ~/.ssh/authorized_keys
+</span></span></code></pre></div><p><strong>5. 配置 Fail2Ban（防暴力破解）</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 安装 Fail2Ban</span>
+</span></span><span style=display:flex><span>sudo dnf install -y fail2ban
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 创建本地配置</span>
+</span></span><span style=display:flex><span>sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+</span></span><span style=display:flex><span>sudo vim /etc/fail2ban/jail.local
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># SSH 防护配置：</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>sshd<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>enabled <span style=color:#f92672>=</span> true
+</span></span><span style=display:flex><span>port <span style=color:#f92672>=</span> <span style=color:#ae81ff>22</span>
+</span></span><span style=display:flex><span>logpath <span style=color:#f92672>=</span> /var/log/secure
+</span></span><span style=display:flex><span>maxretry <span style=color:#f92672>=</span> <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>bantime <span style=color:#f92672>=</span> <span style=color:#ae81ff>3600</span>
+</span></span><span style=display:flex><span>findtime <span style=color:#f92672>=</span> <span style=color:#ae81ff>600</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启动服务</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now fail2ban
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看状态</span>
+</span></span><span style=display:flex><span>sudo fail2ban-client status
+</span></span><span style=display:flex><span>sudo fail2ban-client status sshd
+</span></span></code></pre></div><h3 id=75-五用户和权限管理>7.5. 五、用户和权限管理</h3><p><strong>创建用户</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 创建用户</span>
+</span></span><span style=display:flex><span>sudo useradd -m -s /bin/bash newuser
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置密码</span>
+</span></span><span style=display:flex><span>sudo passwd newuser
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 添加到 wheel 组（sudo 权限）</span>
+</span></span><span style=display:flex><span>sudo usermod -aG wheel newuser
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看用户信息</span>
+</span></span><span style=display:flex><span>id newuser
+</span></span></code></pre></div><p><strong>配置 sudo</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 编辑 sudoers</span>
+</span></span><span style=display:flex><span>sudo visudo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 允许 wheel 组无密码 sudo（可选）</span>
+</span></span><span style=display:flex><span>%wheel  ALL<span style=color:#f92672>=(</span>ALL<span style=color:#f92672>)</span>  NOPASSWD: ALL
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 或为特定用户配置</span>
+</span></span><span style=display:flex><span>newuser ALL<span style=color:#f92672>=(</span>ALL<span style=color:#f92672>)</span> ALL
+</span></span></code></pre></div><p><strong>设置用户资源限制</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 编辑限制文件</span>
+</span></span><span style=display:flex><span>sudo vim /etc/security/limits.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 示例配置：</span>
+</span></span><span style=display:flex><span>*    soft    nofile    <span style=color:#ae81ff>65536</span>
+</span></span><span style=display:flex><span>*    hard    nofile    <span style=color:#ae81ff>65536</span>
+</span></span><span style=display:flex><span>*    soft    nproc     <span style=color:#ae81ff>4096</span>
+</span></span><span style=display:flex><span>*    hard    nproc     <span style=color:#ae81ff>4096</span>
+</span></span></code></pre></div><h3 id=76-六时间同步配置>7.6. 六、时间同步配置</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 安装 chrony（时间同步）</span>
+</span></span><span style=display:flex><span>sudo dnf install -y chrony
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 启动服务</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now chronyd
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看时间同步状态</span>
+</span></span><span style=display:flex><span>chronyc tracking
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看时间服务器</span>
+</span></span><span style=display:flex><span>chronyc sources -v
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 手动同步</span>
+</span></span><span style=display:flex><span>sudo chronyc makestep
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 设置时区</span>
+</span></span><span style=display:flex><span>sudo timedatectl set-timezone Asia/Shanghai
+</span></span><span style=display:flex><span><span style=color:#75715e># 或</span>
+</span></span><span style=display:flex><span>sudo timedatectl set-timezone Asia/Taipei
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看时间设置</span>
+</span></span><span style=display:flex><span>timedatectl
+</span></span></code></pre></div><h3 id=77-七系统监控>7.7. 七、系统监控</h3><p><strong>安装监控工具</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 系统监控</span>
+</span></span><span style=display:flex><span>sudo dnf install -y htop iotop iftop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 使用方法</span>
+</span></span><span style=display:flex><span>htop    <span style=color:#75715e># 进程监控</span>
+</span></span><span style=display:flex><span>iotop   <span style=color:#75715e># IO 监控</span>
+</span></span><span style=display:flex><span>iftop   <span style=color:#75715e># 网络监控</span>
+</span></span></code></pre></div><p><strong>配置日志管理</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看系统日志</span>
+</span></span><span style=display:flex><span>sudo journalctl -f              <span style=color:#75715e># 实时日志</span>
+</span></span><span style=display:flex><span>sudo journalctl -u sshd         <span style=color:#75715e># SSH 服务日志</span>
+</span></span><span style=display:flex><span>sudo journalctl --since <span style=color:#e6db74>&#34;1 hour ago&#34;</span>  <span style=color:#75715e># 最近1小时</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看传统日志</span>
+</span></span><span style=display:flex><span>sudo tail -f /var/log/messages  <span style=color:#75715e># 系统日志</span>
+</span></span><span style=display:flex><span>sudo tail -f /var/log/secure    <span style=color:#75715e># 安全日志</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 配置日志轮转</span>
+</span></span><span style=display:flex><span>sudo vim /etc/logrotate.d/custom-logs
+</span></span></code></pre></div><h3 id=78-八性能优化>7.8. 八、性能优化</h3><p><strong>系统参数优化</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 编辑内核参数</span>
+</span></span><span style=display:flex><span>sudo vim /etc/sysctl.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 网络优化（高并发场景）</span>
+</span></span><span style=display:flex><span>net.core.somaxconn <span style=color:#f92672>=</span> <span style=color:#ae81ff>65535</span>
+</span></span><span style=display:flex><span>net.ipv4.tcp_max_syn_backlog <span style=color:#f92672>=</span> <span style=color:#ae81ff>8192</span>
+</span></span><span style=display:flex><span>net.ipv4.tcp_tw_reuse <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>net.ipv4.ip_local_port_range <span style=color:#f92672>=</span> <span style=color:#ae81ff>1024</span> <span style=color:#ae81ff>65535</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 文件系统优化</span>
+</span></span><span style=display:flex><span>fs.file-max <span style=color:#f92672>=</span> <span style=color:#ae81ff>1000000</span>
+</span></span><span style=display:flex><span>fs.inotify.max_user_watches <span style=color:#f92672>=</span> <span style=color:#ae81ff>524288</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 应用配置</span>
+</span></span><span style=display:flex><span>sudo sysctl -p
+</span></span></code></pre></div><p><strong>禁用不需要的服务</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看所有服务</span>
+</span></span><span style=display:flex><span>systemctl list-unit-files --type<span style=color:#f92672>=</span>service
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 禁用不需要的服务</span>
+</span></span><span style=display:flex><span>sudo systemctl disable postfix  <span style=color:#75715e># 邮件服务（如不需要）</span>
+</span></span><span style=display:flex><span>sudo systemctl disable bluetooth  <span style=color:#75715e># 蓝牙（服务器）</span>
+</span></span></code></pre></div><hr><h2 id=8-实用场景>8. 实用场景</h2><h3 id=81-场景一web-服务器lamplemp>8.1. 场景一：Web 服务器（LAMP/LEMP）</h3><p><strong>LEMP Stack (Nginx + PHP + MariaDB)</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 安装软件包</span>
+</span></span><span style=display:flex><span>sudo dnf install -y nginx php php-fpm php-mysqlnd php-json php-opcache mariadb-server
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 启动服务</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now nginx php-fpm mariadb
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 配置 Nginx</span>
+</span></span><span style=display:flex><span>sudo vim /etc/nginx/conf.d/default.conf
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>server <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    listen 80;
+</span></span><span style=display:flex><span>    server_name example.com;
+</span></span><span style=display:flex><span>    root /var/www/html;
+</span></span><span style=display:flex><span>    index index.php index.html;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    location / <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>        try_files $uri $uri/ <span style=color:#f92672>=</span>404;
+</span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    location ~ <span style=color:#ae81ff>\.</span>php$ <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>        fastcgi_pass unix:/run/php-fpm/www.sock;
+</span></span><span style=display:flex><span>        fastcgi_index index.php;
+</span></span><span style=display:flex><span>        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+</span></span><span style=display:flex><span>        include fastcgi_params;
+</span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 配置 PHP-FPM</span>
+</span></span><span style=display:flex><span>sudo vim /etc/php-fpm.d/www.conf
+</span></span><span style=display:flex><span><span style=color:#75715e># 确保：</span>
+</span></span><span style=display:flex><span>user <span style=color:#f92672>=</span> nginx
+</span></span><span style=display:flex><span>group <span style=color:#f92672>=</span> nginx
+</span></span><span style=display:flex><span>listen.owner <span style=color:#f92672>=</span> nginx
+</span></span><span style=display:flex><span>listen.group <span style=color:#f92672>=</span> nginx
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 初始化数据库</span>
+</span></span><span style=display:flex><span>sudo mysql_secure_installation
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 测试</span>
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;&lt;?php phpinfo(); ?&gt;&#34;</span> | sudo tee /var/www/html/info.php
+</span></span><span style=display:flex><span>curl http://localhost/info.php
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 7. 防火墙开放</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-service<span style=color:#f92672>=</span>http
+</span></span><span style=display:flex><span>sudo firewall-cmd --reload
+</span></span></code></pre></div><h3 id=82-场景二docker-容器主机>8.2. 场景二：Docker 容器主机</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 安装 Docker</span>
+</span></span><span style=display:flex><span>sudo dnf config-manager --add-repo<span style=color:#f92672>=</span>https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span style=display:flex><span>sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 启动 Docker</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now docker
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 配置用户权限</span>
+</span></span><span style=display:flex><span>sudo usermod -aG docker $USER
+</span></span><span style=display:flex><span>newgrp docker
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 配置镜像加速（国内）</span>
+</span></span><span style=display:flex><span>sudo mkdir -p /etc/docker
+</span></span><span style=display:flex><span>sudo tee /etc/docker/daemon.json <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>{
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;registry-mirrors&#34;: [
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;https://mirror.ccs.tencentyun.com&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;https://dockerproxy.com&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  ],
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;log-driver&#34;: &#34;json-file&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  &#34;log-opts&#34;: {
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;max-size&#34;: &#34;10m&#34;,
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    &#34;max-file&#34;: &#34;3&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  }
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>}
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo systemctl restart docker
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 测试</span>
+</span></span><span style=display:flex><span>docker run hello-world
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 部署应用示例</span>
+</span></span><span style=display:flex><span>docker run -d <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --name nginx-app <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -p 80:80 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  -v /data/html:/usr/share/nginx/html:ro <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  nginx:alpine
+</span></span></code></pre></div><h3 id=83-场景三数据库服务器postgresql>8.3. 场景三：数据库服务器（PostgreSQL）</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 安装 PostgreSQL</span>
+</span></span><span style=display:flex><span>sudo dnf install -y postgresql-server postgresql-contrib
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 初始化数据库</span>
+</span></span><span style=display:flex><span>sudo postgresql-setup --initdb
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 配置远程访问</span>
+</span></span><span style=display:flex><span>sudo vim /var/lib/pgsql/data/postgresql.conf
+</span></span><span style=display:flex><span><span style=color:#75715e># 修改：</span>
+</span></span><span style=display:flex><span>listen_addresses <span style=color:#f92672>=</span> <span style=color:#e6db74>&#39;*&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo vim /var/lib/pgsql/data/pg_hba.conf
+</span></span><span style=display:flex><span><span style=color:#75715e># 添加：</span>
+</span></span><span style=display:flex><span>host    all             all             0.0.0.0/0               md5
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 启动服务</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now postgresql
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 创建用户和数据库</span>
+</span></span><span style=display:flex><span>sudo -u postgres psql
+</span></span><span style=display:flex><span>CREATE USER myuser WITH PASSWORD <span style=color:#e6db74>&#39;password&#39;</span>;
+</span></span><span style=display:flex><span>CREATE DATABASE mydb OWNER myuser;
+</span></span><span style=display:flex><span>GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+</span></span><span style=display:flex><span><span style=color:#ae81ff>\q</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 防火墙配置</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-port<span style=color:#f92672>=</span>5432/tcp
+</span></span><span style=display:flex><span>sudo firewall-cmd --reload
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 7. 性能优化</span>
+</span></span><span style=display:flex><span>sudo vim /var/lib/pgsql/data/postgresql.conf
+</span></span><span style=display:flex><span>shared_buffers <span style=color:#f92672>=</span> 256MB
+</span></span><span style=display:flex><span>effective_cache_size <span style=color:#f92672>=</span> 1GB
+</span></span><span style=display:flex><span>maintenance_work_mem <span style=color:#f92672>=</span> 64MB
+</span></span><span style=display:flex><span>checkpoint_completion_target <span style=color:#f92672>=</span> 0.9
+</span></span><span style=display:flex><span>wal_buffers <span style=color:#f92672>=</span> 16MB
+</span></span><span style=display:flex><span>default_statistics_target <span style=color:#f92672>=</span> <span style=color:#ae81ff>100</span>
+</span></span><span style=display:flex><span>random_page_cost <span style=color:#f92672>=</span> 1.1
+</span></span><span style=display:flex><span>effective_io_concurrency <span style=color:#f92672>=</span> <span style=color:#ae81ff>200</span>
+</span></span><span style=display:flex><span>work_mem <span style=color:#f92672>=</span> 4MB
+</span></span><span style=display:flex><span>min_wal_size <span style=color:#f92672>=</span> 1GB
+</span></span><span style=display:flex><span>max_wal_size <span style=color:#f92672>=</span> 4GB
+</span></span></code></pre></div><h3 id=84-场景四git-服务器gitea>8.4. 场景四：Git 服务器（Gitea）</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 安装依赖</span>
+</span></span><span style=display:flex><span>sudo dnf install -y git
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 创建用户</span>
+</span></span><span style=display:flex><span>sudo adduser <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --system <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --shell /bin/bash <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --comment <span style=color:#e6db74>&#39;Git Version Control&#39;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --user-group <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   --home-dir /home/git <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>   git
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 下载 Gitea</span>
+</span></span><span style=display:flex><span>wget -O /tmp/gitea https://dl.gitea.com/gitea/1.21/gitea-1.21-linux-amd64
+</span></span><span style=display:flex><span>sudo mv /tmp/gitea /usr/local/bin/gitea
+</span></span><span style=display:flex><span>sudo chmod +x /usr/local/bin/gitea
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 创建目录结构</span>
+</span></span><span style=display:flex><span>sudo mkdir -p /var/lib/gitea/<span style=color:#f92672>{</span>custom,data,log<span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>sudo chown -R git:git /var/lib/gitea/
+</span></span><span style=display:flex><span>sudo chmod -R <span style=color:#ae81ff>750</span> /var/lib/gitea/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 创建 systemd 服务</span>
+</span></span><span style=display:flex><span>sudo vim /etc/systemd/system/gitea.service
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>Unit<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>Description<span style=color:#f92672>=</span>Gitea
+</span></span><span style=display:flex><span>After<span style=color:#f92672>=</span>syslog.target
+</span></span><span style=display:flex><span>After<span style=color:#f92672>=</span>network.target
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>Service<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>Type<span style=color:#f92672>=</span>simple
+</span></span><span style=display:flex><span>User<span style=color:#f92672>=</span>git
+</span></span><span style=display:flex><span>Group<span style=color:#f92672>=</span>git
+</span></span><span style=display:flex><span>WorkingDirectory<span style=color:#f92672>=</span>/var/lib/gitea/
+</span></span><span style=display:flex><span>ExecStart<span style=color:#f92672>=</span>/usr/local/bin/gitea web -c /etc/gitea/app.ini
+</span></span><span style=display:flex><span>Restart<span style=color:#f92672>=</span>always
+</span></span><span style=display:flex><span>Environment<span style=color:#f92672>=</span>USER<span style=color:#f92672>=</span>git HOME<span style=color:#f92672>=</span>/home/git
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>[</span>Install<span style=color:#f92672>]</span>
+</span></span><span style=display:flex><span>WantedBy<span style=color:#f92672>=</span>multi-user.target
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 启动服务</span>
+</span></span><span style=display:flex><span>sudo systemctl enable --now gitea
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 7. 防火墙配置</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-port<span style=color:#f92672>=</span>3000/tcp
+</span></span><span style=display:flex><span>sudo firewall-cmd --reload
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 8. 访问 Web 界面完成配置</span>
+</span></span><span style=display:flex><span><span style=color:#75715e># http://server-ip:3000</span>
+</span></span></code></pre></div><h3 id=85-场景五kubernetes-节点>8.5. 场景五：Kubernetes 节点</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 1. 禁用 swap</span>
+</span></span><span style=display:flex><span>sudo swapoff -a
+</span></span><span style=display:flex><span>sudo sed -i <span style=color:#e6db74>&#39;/ swap / s/^\(.*\)$/#\1/g&#39;</span> /etc/fstab
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 2. 配置内核参数</span>
+</span></span><span style=display:flex><span>sudo tee /etc/modules-load.d/k8s.conf <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>overlay
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>br_netfilter
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo modprobe overlay
+</span></span><span style=display:flex><span>sudo modprobe br_netfilter
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo tee /etc/sysctl.d/k8s.conf <span style=color:#e6db74>&lt;&lt;EOF
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>net.bridge.bridge-nf-call-iptables  = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>net.bridge.bridge-nf-call-ip6tables = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>net.ipv4.ip_forward                 = 1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo sysctl --system
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 3. 安装容器运行时（containerd）</span>
+</span></span><span style=display:flex><span>sudo dnf config-manager --add-repo<span style=color:#f92672>=</span>https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span style=display:flex><span>sudo dnf install -y containerd.io
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo mkdir -p /etc/containerd
+</span></span><span style=display:flex><span>containerd config default | sudo tee /etc/containerd/config.toml
+</span></span><span style=display:flex><span>sudo systemctl enable --now containerd
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 4. 安装 kubeadm, kubelet, kubectl</span>
+</span></span><span style=display:flex><span>cat <span style=color:#e6db74>&lt;&lt;EOF | sudo tee /etc/yum.repos.d/kubernetes.repo
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>[kubernetes]
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>name=Kubernetes
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>baseurl=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>enabled=1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>gpgcheck=1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>gpgkey=https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>EOF</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>sudo dnf install -y kubelet kubeadm kubectl --disableexcludes<span style=color:#f92672>=</span>kubernetes
+</span></span><span style=display:flex><span>sudo systemctl enable --now kubelet
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 5. 初始化集群（master 节点）</span>
+</span></span><span style=display:flex><span>sudo kubeadm init --pod-network-cidr<span style=color:#f92672>=</span>10.244.0.0/16
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 6. 配置 kubectl</span>
+</span></span><span style=display:flex><span>mkdir -p $HOME/.kube
+</span></span><span style=display:flex><span>sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+</span></span><span style=display:flex><span>sudo chown <span style=color:#66d9ef>$(</span>id -u<span style=color:#66d9ef>)</span>:<span style=color:#66d9ef>$(</span>id -g<span style=color:#66d9ef>)</span> $HOME/.kube/config
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 7. 安装网络插件（Flannel）</span>
+</span></span><span style=display:flex><span>kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+</span></span></code></pre></div><hr><h2 id=9-总结与建议>9. 总结与建议</h2><h3 id=91-版本选择建议>9.1. 版本选择建议</h3><p><strong>生产环境首选：Rocky Linux 9</strong></p><ul><li>最佳的稳定性和支持周期平衡</li><li>支持至 2032 年，足够长的生命周期</li><li>成熟的生态系统和社区支持</li><li>适合 90% 的企业应用场景</li></ul><p><strong>特殊场景：</strong></p><ul><li>需要兼容旧系统 → Rocky Linux 8</li><li>尝鲜最新技术 → Rocky Linux 10（非生产）</li><li>开发测试 → 任何版本都可以</li></ul><h3 id=92-镜像选择建议>9.2. 镜像选择建议</h3><p><strong>服务器部署：</strong></p><pre tabindex=0><code>首选：Minimal ISO
+- 体积适中（2-3GB）
+- 无需联网即可完成基础安装
+- 系统精简，安全性高
+- 适合 90% 的服务器场景
+</code></pre><p><strong>桌面使用：</strong></p><pre tabindex=0><code>新手：GNOME Live
+配置低：GNOME Lite Live
+Windows 用户：KDE Live
+</code></pre><p><strong>容器部署：</strong></p><pre tabindex=0><code>生产环境：rockylinux:9-minimal
+开发环境：rockylinux:9
+</code></pre><p><strong>云平台：</strong></p><pre tabindex=0><code>使用对应平台的官方镜像
+- AWS：AMI
+- 阿里云：ECS 镜像
+- Azure：Marketplace 镜像
+- OpenStack/KVM：QCOW2
+</code></pre><h3 id=93-安全最佳实践>9.3. 安全最佳实践</h3><ol><li><p><strong>及时更新</strong></p><ul><li>启用自动安全更新</li><li>定期检查系统更新</li></ul></li><li><p><strong>最小化原则</strong></p><ul><li>只安装必要的服务</li><li>禁用不需要的端口</li><li>使用 Minimal ISO 安装</li></ul></li><li><p><strong>访问控制</strong></p><ul><li>禁用 root 远程登录</li><li>使用 SSH 密钥认证</li><li>配置 Fail2Ban</li></ul></li><li><p><strong>防火墙配置</strong></p><ul><li>默认拒绝策略</li><li>只开放必要端口</li><li>定期审查规则</li></ul></li><li><p><strong>保持 SELinux 启用</strong></p><ul><li>提供额外的安全层</li><li>不要轻易禁用</li></ul></li></ol><h3 id=94-性能优化建议>9.4. 性能优化建议</h3><ol><li><p><strong>选择合适的文件系统</strong></p><ul><li>XFS：默认选择，性能均衡</li><li>ext4：兼容性好</li><li>Btrfs：需要快照功能时</li></ul></li><li><p><strong>使用 LVM</strong></p><ul><li>灵活调整分区大小</li><li>支持快照和备份</li><li>易于扩展</li></ul></li><li><p><strong>合理配置 swap</strong></p><ul><li>物理内存 &lt; 2GB：swap = 2倍内存</li><li>物理内存 2-8GB：swap = 内存大小</li><li>物理内存 > 8GB：swap = 8GB 或更少</li></ul></li><li><p><strong>启用 BBR 拥塞控制</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>echo <span style=color:#e6db74>&#34;net.core.default_qdisc=fq&#34;</span> | sudo tee -a /etc/sysctl.conf
+</span></span><span style=display:flex><span>echo <span style=color:#e6db74>&#34;net.ipv4.tcp_congestion_control=bbr&#34;</span> | sudo tee -a /etc/sysctl.conf
+</span></span><span style=display:flex><span>sudo sysctl -p
+</span></span></code></pre></div></li></ol><h3 id=95-监控和维护>9.5. 监控和维护</h3><p><strong>定期检查：</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 磁盘空间</span>
+</span></span><span style=display:flex><span>df -h
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 内存使用</span>
+</span></span><span style=display:flex><span>free -h
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 系统负载</span>
+</span></span><span style=display:flex><span>uptime
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 日志检查</span>
+</span></span><span style=display:flex><span>sudo journalctl -p err -b
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安全更新</span>
+</span></span><span style=display:flex><span>sudo dnf check-update --security
+</span></span></code></pre></div><p><strong>备份策略：</strong></p><ul><li>系统配置：/etc</li><li>用户数据：/home</li><li>应用数据：/var</li><li>数据库：定期导出</li></ul><h3 id=96-学习资源>9.6. 学习资源</h3><p><strong>官方文档：</strong></p><ul><li>Rocky Linux 文档：<a href=https://docs.rockylinux.org target=_blank>https://docs.rockylinux.org</a></li><li>RHEL 文档：<a href=https://access.redhat.com/documentation target=_blank>https://access.redhat.com/documentation</a></li></ul><p><strong>社区支持：</strong></p><ul><li>论坛：<a href=https://forums.rockylinux.org target=_blank>https://forums.rockylinux.org</a></li><li>Mattermost：<a href=https://chat.rockylinux.org target=_blank>https://chat.rockylinux.org</a></li><li>Reddit：r/RockyLinux</li></ul><p><strong>中文社区：</strong></p><ul><li>Rocky Linux 中文文档</li><li>CentOS 中文社区（大部分内容适用）</li></ul><h3 id=97-迁移指南>9.7. 迁移指南</h3><p><strong>从 CentOS 7/8 迁移：</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 使用官方迁移工具</span>
+</span></span><span style=display:flex><span>curl -O https://raw.githubusercontent.com/rocky-linux/rocky-tools/main/migrate2rocky/migrate2rocky.sh
+</span></span><span style=display:flex><span>sudo bash migrate2rocky.sh -r
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证迁移</span>
+</span></span><span style=display:flex><span>cat /etc/os-release
+</span></span></code></pre></div><p><strong>升级路径：</strong></p><ul><li>CentOS 7 → Rocky Linux 8 → Rocky Linux 9</li><li>CentOS 8 → Rocky Linux 8 → Rocky Linux 9</li><li>建议在测试环境先验证</li></ul><h3 id=98-常见问题>9.8. 常见问题</h3><p><strong>Q: Rocky Linux 和 AlmaLinux 哪个更好？</strong>
+A: 两者技术上几乎相同，都是 RHEL 的完美替代。Rocky Linux 由 CentOS 原创始人创建，社区更独立；AlmaLinux 由 CloudLinux 赞助。选择任何一个都可以。</p><p><strong>Q: Rocky Linux 支持多久？</strong>
+A: 每个主版本支持 10+ 年，与 RHEL 保持一致。</p><p><strong>Q: 可以用于商业环境吗？</strong>
+A: 完全可以，Rocky Linux 100% 开源免费，无商业限制。</p><p><strong>Q: 如何获取技术支持？</strong>
+A: 社区免费支持（论坛、聊天室）；也有第三方公司提供付费支持服务。</p><p><strong>Q: 性能如何？</strong>
+A: 与 RHEL 完全相同，因为是二进制兼容的重建版本。</p><h3 id=99-结语>9.9. 结语</h3><p>Rocky Linux 是企业级 Linux 的优秀选择，完美继承了 CentOS 的衣钵。无论你是：</p><ul><li>企业 IT 管理员</li><li>独立开发者</li><li>运维工程师</li><li>云架构师</li><li>Linux 学习者</li></ul><p>Rocky Linux 都能为你提供稳定、可靠、免费的企业级 Linux 体验。</p><p><strong>立即开始：</strong></p><ol><li>访问官网：<a href=https://rockylinux.org target=_blank>https://rockylinux.org</a></li><li>下载适合你的镜像</li><li>按照本指南安装配置</li><li>加入社区，获取帮助和分享经验</li></ol><p><strong>记住关键原则：</strong></p><ul><li>生产环境优先选择 Rocky Linux 9</li><li>服务器首选 Minimal ISO 安装</li><li>始终保持系统更新</li><li>重视安全配置</li><li>做好备份</li></ul><p>祝你使用愉快！如有问题，欢迎在 Rocky Linux 社区寻求帮助。</p><hr><h2 id=10-附录快速参考命令>10. 附录：快速参考命令</h2><h3 id=101-系统管理>10.1. 系统管理</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看系统信息</span>
+</span></span><span style=display:flex><span>cat /etc/os-release
+</span></span><span style=display:flex><span>hostnamectl
+</span></span><span style=display:flex><span>uname -r
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看硬件信息</span>
+</span></span><span style=display:flex><span>lscpu
+</span></span><span style=display:flex><span>free -h
+</span></span><span style=display:flex><span>df -h
+</span></span><span style=display:flex><span>lsblk
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 系统更新</span>
+</span></span><span style=display:flex><span>sudo dnf update
+</span></span><span style=display:flex><span>sudo dnf upgrade
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务管理</span>
+</span></span><span style=display:flex><span>sudo systemctl start service_name
+</span></span><span style=display:flex><span>sudo systemctl stop service_name
+</span></span><span style=display:flex><span>sudo systemctl restart service_name
+</span></span><span style=display:flex><span>sudo systemctl enable service_name
+</span></span><span style=display:flex><span>sudo systemctl status service_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看日志</span>
+</span></span><span style=display:flex><span>sudo journalctl -xe
+</span></span><span style=display:flex><span>sudo journalctl -u service_name -f
+</span></span><span style=display:flex><span>sudo tail -f /var/log/messages
+</span></span></code></pre></div><h3 id=102-网络管理>10.2. 网络管理</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看网络接口</span>
+</span></span><span style=display:flex><span>ip addr show
+</span></span><span style=display:flex><span>ip link show
+</span></span><span style=display:flex><span>nmcli device status
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 配置网络（NetworkManager）</span>
+</span></span><span style=display:flex><span>sudo nmcli con mod eth0 ipv4.addresses 192.168.1.100/24
+</span></span><span style=display:flex><span>sudo nmcli con mod eth0 ipv4.gateway 192.168.1.1
+</span></span><span style=display:flex><span>sudo nmcli con mod eth0 ipv4.dns <span style=color:#e6db74>&#34;8.8.8.8 8.8.4.4&#34;</span>
+</span></span><span style=display:flex><span>sudo nmcli con mod eth0 ipv4.method manual
+</span></span><span style=display:flex><span>sudo nmcli con up eth0
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 防火墙</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --list-all
+</span></span><span style=display:flex><span>sudo firewall-cmd --permanent --add-port<span style=color:#f92672>=</span>8080/tcp
+</span></span><span style=display:flex><span>sudo firewall-cmd --reload
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 网络测试</span>
+</span></span><span style=display:flex><span>ping google.com
+</span></span><span style=display:flex><span>traceroute google.com
+</span></span><span style=display:flex><span>nslookup google.com
+</span></span><span style=display:flex><span>curl -I https://example.com
+</span></span></code></pre></div><h3 id=103-软件包管理>10.3. 软件包管理</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 搜索软件包</span>
+</span></span><span style=display:flex><span>dnf search package_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 安装软件包</span>
+</span></span><span style=display:flex><span>sudo dnf install package_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 删除软件包</span>
+</span></span><span style=display:flex><span>sudo dnf remove package_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看已安装的包</span>
+</span></span><span style=display:flex><span>dnf list installed
+</span></span><span style=display:flex><span>rpm -qa
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看包信息</span>
+</span></span><span style=display:flex><span>dnf info package_name
+</span></span><span style=display:flex><span>rpm -qi package_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看包文件列表</span>
+</span></span><span style=display:flex><span>rpm -ql package_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查找文件属于哪个包</span>
+</span></span><span style=display:flex><span>rpm -qf /path/to/file
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 清理缓存</span>
+</span></span><span style=display:flex><span>sudo dnf clean all
+</span></span></code></pre></div><h3 id=104-用户和权限>10.4. 用户和权限</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 用户管理</span>
+</span></span><span style=display:flex><span>sudo useradd username
+</span></span><span style=display:flex><span>sudo passwd username
+</span></span><span style=display:flex><span>sudo userdel username
+</span></span><span style=display:flex><span>sudo usermod -aG groupname username
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看用户信息</span>
+</span></span><span style=display:flex><span>id username
+</span></span><span style=display:flex><span>groups username
+</span></span><span style=display:flex><span>who
+</span></span><span style=display:flex><span>w
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 权限管理</span>
+</span></span><span style=display:flex><span>chmod <span style=color:#ae81ff>755</span> file
+</span></span><span style=display:flex><span>chmod u+x file
+</span></span><span style=display:flex><span>chown user:group file
+</span></span><span style=display:flex><span>chown -R user:group directory/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># sudo 配置</span>
+</span></span><span style=display:flex><span>sudo visudo
+</span></span></code></pre></div><h3 id=105-文件和目录>10.5. 文件和目录</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查找文件</span>
+</span></span><span style=display:flex><span>find /path -name <span style=color:#e6db74>&#34;filename&#34;</span>
+</span></span><span style=display:flex><span>find /path -type f -mtime -7  <span style=color:#75715e># 7天内修改的文件</span>
+</span></span><span style=display:flex><span>locate filename
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 文件内容搜索</span>
+</span></span><span style=display:flex><span>grep <span style=color:#e6db74>&#34;pattern&#34;</span> file
+</span></span><span style=display:flex><span>grep -r <span style=color:#e6db74>&#34;pattern&#34;</span> directory/
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 压缩和解压</span>
+</span></span><span style=display:flex><span>tar -czf archive.tar.gz directory/
+</span></span><span style=display:flex><span>tar -xzf archive.tar.gz
+</span></span><span style=display:flex><span>zip -r archive.zip directory/
+</span></span><span style=display:flex><span>unzip archive.zip
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 同步和备份</span>
+</span></span><span style=display:flex><span>rsync -avz source/ destination/
+</span></span><span style=display:flex><span>rsync -avz -e ssh source/ user@remote:/destination/
+</span></span></code></pre></div><h3 id=106-进程管理>10.6. 进程管理</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看进程</span>
+</span></span><span style=display:flex><span>ps aux
+</span></span><span style=display:flex><span>ps -ef
+</span></span><span style=display:flex><span>top
+</span></span><span style=display:flex><span>htop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查找进程</span>
+</span></span><span style=display:flex><span>pgrep process_name
+</span></span><span style=display:flex><span>pidof process_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 终止进程</span>
+</span></span><span style=display:flex><span>kill PID
+</span></span><span style=display:flex><span>killall process_name
+</span></span><span style=display:flex><span>pkill process_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 后台运行</span>
+</span></span><span style=display:flex><span>command &amp;
+</span></span><span style=display:flex><span>nohup command &amp;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看端口占用</span>
+</span></span><span style=display:flex><span>sudo netstat -tulpn
+</span></span><span style=display:flex><span>sudo ss -tulpn
+</span></span><span style=display:flex><span>sudo lsof -i :8080
+</span></span></code></pre></div><h3 id=107-磁盘管理>10.7. 磁盘管理</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 查看磁盘使用</span>
+</span></span><span style=display:flex><span>df -h
+</span></span><span style=display:flex><span>du -sh directory/
+</span></span><span style=display:flex><span>du -h --max-depth<span style=color:#f92672>=</span><span style=color:#ae81ff>1</span> /
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 挂载</span>
+</span></span><span style=display:flex><span>sudo mount /dev/sdb1 /mnt
+</span></span><span style=display:flex><span>sudo umount /mnt
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看分区</span>
+</span></span><span style=display:flex><span>lsblk
+</span></span><span style=display:flex><span>fdisk -l
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># LVM 管理</span>
+</span></span><span style=display:flex><span>sudo pvcreate /dev/sdb
+</span></span><span style=display:flex><span>sudo vgcreate vg_name /dev/sdb
+</span></span><span style=display:flex><span>sudo lvcreate -L 10G -n lv_name vg_name
+</span></span><span style=display:flex><span>sudo mkfs.xfs /dev/vg_name/lv_name
+</span></span></code></pre></div><h3 id=108-性能监控>10.8. 性能监控</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># CPU 和负载</span>
+</span></span><span style=display:flex><span>uptime
+</span></span><span style=display:flex><span>top
+</span></span><span style=display:flex><span>htop
+</span></span><span style=display:flex><span>mpstat
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 内存</span>
+</span></span><span style=display:flex><span>free -h
+</span></span><span style=display:flex><span>vmstat <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 磁盘 IO</span>
+</span></span><span style=display:flex><span>iostat
+</span></span><span style=display:flex><span>iotop
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 网络</span>
+</span></span><span style=display:flex><span>iftop
+</span></span><span style=display:flex><span>nethogs
+</span></span><span style=display:flex><span>ss -s
+</span></span></code></pre></div><h3 id=109-安全相关>10.9. 安全相关</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># SELinux</span>
+</span></span><span style=display:flex><span>getenforce
+</span></span><span style=display:flex><span>sudo setenforce <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>sudo setenforce <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>sestatus
+</span></span><span style=display:flex><span>ls -Z file
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 防火墙</span>
+</span></span><span style=display:flex><span>sudo firewall-cmd --state
+</span></span><span style=display:flex><span>sudo firewall-cmd --list-all
+</span></span><span style=display:flex><span>sudo firewall-cmd --list-services
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 检查开放端口</span>
+</span></span><span style=display:flex><span>sudo netstat -tulpn
+</span></span><span style=display:flex><span>sudo ss -tulpn
+</span></span><span style=display:flex><span>nmap localhost
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看登录历史</span>
+</span></span><span style=display:flex><span>last
+</span></span><span style=display:flex><span>lastb
+</span></span><span style=display:flex><span>who
+</span></span><span style=display:flex><span>w
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 审计日志</span>
+</span></span><span style=display:flex><span>sudo ausearch -m user_login
+</span></span><span style=display:flex><span>sudo tail -f /var/log/secure
+</span></span></code></pre></div><h3 id=1010-docker-常用命令>10.10. Docker 常用命令</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 镜像管理</span>
+</span></span><span style=display:flex><span>docker pull image:tag
+</span></span><span style=display:flex><span>docker images
+</span></span><span style=display:flex><span>docker rmi image:tag
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 容器管理</span>
+</span></span><span style=display:flex><span>docker run -d --name container_name image:tag
+</span></span><span style=display:flex><span>docker ps
+</span></span><span style=display:flex><span>docker ps -a
+</span></span><span style=display:flex><span>docker stop container_name
+</span></span><span style=display:flex><span>docker start container_name
+</span></span><span style=display:flex><span>docker restart container_name
+</span></span><span style=display:flex><span>docker rm container_name
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 日志和执行</span>
+</span></span><span style=display:flex><span>docker logs -f container_name
+</span></span><span style=display:flex><span>docker exec -it container_name bash
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 清理</span>
+</span></span><span style=display:flex><span>docker system prune -a
+</span></span></code></pre></div><h3 id=1011-故障排查>10.11. 故障排查</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 系统启动问题</span>
+</span></span><span style=display:flex><span>sudo journalctl -xb
+</span></span><span style=display:flex><span>sudo systemctl --failed
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 服务问题</span>
+</span></span><span style=display:flex><span>sudo systemctl status service_name
+</span></span><span style=display:flex><span>sudo journalctl -u service_name -xe
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 网络问题</span>
+</span></span><span style=display:flex><span>ping gateway_ip
+</span></span><span style=display:flex><span>traceroute target_ip
+</span></span><span style=display:flex><span>dig domain.com
+</span></span><span style=display:flex><span>nslookup domain.com
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 磁盘问题</span>
+</span></span><span style=display:flex><span>df -h
+</span></span><span style=display:flex><span>du -sh /*
+</span></span><span style=display:flex><span>sudo fsck /dev/sdb1
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 内存问题</span>
+</span></span><span style=display:flex><span>free -h
+</span></span><span style=display:flex><span>ps aux --sort<span style=color:#f92672>=</span>-%mem | head
+</span></span><span style=display:flex><span>top -o %MEM
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 查看系统错误</span>
+</span></span><span style=display:flex><span>sudo journalctl -p err
+</span></span><span style=display:flex><span>sudo tail -f /var/log/messages
+</span></span><span style=display:flex><span>dmesg | tail
+</span></span></code></pre></div><hr><h2 id=11-版本历史>11. 版本历史</h2><p><strong>文档版本：</strong> 2.0<br><strong>最后更新：</strong> 2024年12月<br><strong>适用版本：</strong> Rocky Linux 8.x, 9.x, 10.x<br><strong>作者：</strong> Rocky Linux 中文社区</p><p><strong>更新日志：</strong></p><ul><li>v2.0 (2024-12): 添加 Rocky Linux 10 信息，更新最佳实践</li><li>v1.5 (2024-06): 增强安全配置章节，添加容器部署指南</li><li>v1.0 (2023-12): 初始版本发布</li></ul><p><strong>参考资源：</strong></p><ul><li>Rocky Linux 官方文档: <a href=https://docs.rockylinux.org target=_blank>https://docs.rockylinux.org</a></li><li>RHEL 9 文档: <a href=https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9 target=_blank>https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9</a></li><li>Rocky Linux GitHub: <a href=https://github.com/rocky-linux target=_blank>https://github.com/rocky-linux</a></li></ul><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/k8s-servicemonitor-fix/?ref=footer"><span>« Previous</span><br>Prometheus ServiceMonitor 无法发现指标问题排查与解决方案</a></div><div class=next-post><a href="https://yezihack.github.io/argo-start/?ref=footer"><span>Next »</span><br>Argo 家族完全入门指南：Kubernetes 的 GitOps 利器</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#1-目录>1. 目录</a></li><li><a href=#2-什么是-rocky-linux>2. 什么是 Rocky Linux</a><ul><li><a href=#21-核心特点>2.1. 核心特点</a></li><li><a href=#22-应用场景>2.2. 应用场景</a></li></ul></li><li><a href=#3-rocky-linux-与-centos-的关系>3. Rocky Linux 与 CentOS 的关系</a><ul><li><a href=#31-历史演变>3.1. 历史演变</a></li><li><a href=#32-三者对比>3.2. 三者对比</a></li><li><a href=#33-为什么选择-rocky-linux>3.3. 为什么选择 Rocky Linux</a></li></ul></li><li><a href=#4-版本选择指南>4. 版本选择指南</a><ul><li><a href=#41-rocky-linux-8>4.1. Rocky Linux 8</a></li><li><a href=#42-rocky-linux-9--推荐>4.2. Rocky Linux 9 ⭐ 推荐</a></li><li><a href=#43-rocky-linux-10>4.3. Rocky Linux 10</a></li><li><a href=#44-版本选择决策树>4.4. 版本选择决策树</a></li><li><a href=#45-综合建议>4.5. 综合建议</a></li></ul></li><li><a href=#5-镜像类型详解>5. 镜像类型详解</a><ul><li><a href=#51-一服务器安装镜像rocky-9>5.1. 一、服务器安装镜像(rocky 9)</a></li><li><a href=#52-二桌面-live-镜像>5.2. 二、桌面 Live 镜像</a></li><li><a href=#53-三云平台镜像>5.3. 三、云平台镜像</a></li><li><a href=#54-四容器镜像dockeroci>5.4. 四、容器镜像（Docker/OCI）</a></li><li><a href=#55-五wsl-镜像>5.5. 五、WSL 镜像</a></li><li><a href=#56-镜像选择总结>5.6. 镜像选择总结</a></li></ul></li><li><a href=#6-安装教程>6. 安装教程</a><ul><li><a href=#61-一服务器安装minimal-iso>6.1. 一、服务器安装（Minimal ISO）</a></li><li><a href=#62-二桌面安装gnome-live>6.2. 二、桌面安装（GNOME Live）</a></li><li><a href=#63-三虚拟机安装快速方法>6.3. 三、虚拟机安装（快速方法）</a></li><li><a href=#64-四云平台部署>6.4. 四、云平台部署</a></li><li><a href=#65-五容器部署>6.5. 五、容器部署</a></li><li><a href=#66-六wsl-安装>6.6. 六、WSL 安装</a></li></ul></li><li><a href=#7-初始配置与使用>7. 初始配置与使用</a><ul><li><a href=#71-一系统更新>7.1. 一、系统更新</a></li><li><a href=#72-二软件源配置>7.2. 二、软件源配置</a></li><li><a href=#73-三基础工具安装>7.3. 三、基础工具安装</a></li><li><a href=#74-四安全配置>7.4. 四、安全配置</a></li><li><a href=#75-五用户和权限管理>7.5. 五、用户和权限管理</a></li><li><a href=#76-六时间同步配置>7.6. 六、时间同步配置</a></li><li><a href=#77-七系统监控>7.7. 七、系统监控</a></li><li><a href=#78-八性能优化>7.8. 八、性能优化</a></li></ul></li><li><a href=#8-实用场景>8. 实用场景</a><ul><li><a href=#81-场景一web-服务器lamplemp>8.1. 场景一：Web 服务器（LAMP/LEMP）</a></li><li><a href=#82-场景二docker-容器主机>8.2. 场景二：Docker 容器主机</a></li><li><a href=#83-场景三数据库服务器postgresql>8.3. 场景三：数据库服务器（PostgreSQL）</a></li><li><a href=#84-场景四git-服务器gitea>8.4. 场景四：Git 服务器（Gitea）</a></li><li><a href=#85-场景五kubernetes-节点>8.5. 场景五：Kubernetes 节点</a></li></ul></li><li><a href=#9-总结与建议>9. 总结与建议</a><ul><li><a href=#91-版本选择建议>9.1. 版本选择建议</a></li><li><a href=#92-镜像选择建议>9.2. 镜像选择建议</a></li><li><a href=#93-安全最佳实践>9.3. 安全最佳实践</a></li><li><a href=#94-性能优化建议>9.4. 性能优化建议</a></li><li><a href=#95-监控和维护>9.5. 监控和维护</a></li><li><a href=#96-学习资源>9.6. 学习资源</a></li><li><a href=#97-迁移指南>9.7. 迁移指南</a></li><li><a href=#98-常见问题>9.8. 常见问题</a></li><li><a href=#99-结语>9.9. 结语</a></li></ul></li><li><a href=#10-附录快速参考命令>10. 附录：快速参考命令</a><ul><li><a href=#101-系统管理>10.1. 系统管理</a></li><li><a href=#102-网络管理>10.2. 网络管理</a></li><li><a href=#103-软件包管理>10.3. 软件包管理</a></li><li><a href=#104-用户和权限>10.4. 用户和权限</a></li><li><a href=#105-文件和目录>10.5. 文件和目录</a></li><li><a href=#106-进程管理>10.6. 进程管理</a></li><li><a href=#107-磁盘管理>10.7. 磁盘管理</a></li><li><a href=#108-性能监控>10.8. 性能监控</a></li><li><a href=#109-安全相关>10.9. 安全相关</a></li><li><a href=#1010-docker-常用命令>10.10. Docker 常用命令</a></li><li><a href=#1011-故障排查>10.11. 故障排查</a></li></ul></li><li><a href=#11-版本历史>11. 版本历史</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

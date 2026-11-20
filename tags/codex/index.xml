@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>codex on 空树之空</title><link>https://yezihack.github.io/tags/codex/</link><description>Recent content in codex on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 13 Oct 2026 15:14:54 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/codex/index.xml" rel="self" type="application/rss+xml"/><item><title>我用 WorkBuddy 装了一套「营销外挂」：50 个 AI 营销技能一键部署</title><link>https://yezihack.github.io/skill-marketingskills/</link><pubDate>Tue, 13 Oct 2026 15:14:54 +0800</pubDate><guid>https://yezihack.github.io/skill-marketingskills/</guid><description>一套面向 AI Agent 的营销技能集 marketingskills，覆盖 CRO、文案、SEO、投放、邮件、定价……我把它部署进了 WorkBuddy，从此让 AI 帮我做增长。
+这是什么？ 最近在 GitHub 上刷到一个很有意思的项目：coreyhaines31/marketingskills（当前版本 v2.11.26）。
+它本质上是一套 Skills（技能）——也就是给 AI Agent 看的「专项工作手册」。每个技能都是一个 SKILL.md 文件，里面写好了某一个营销场景的方法论、检查清单和工作流。当你在对话里提到相关任务，Agent 就能自动识别并加载对应的技能，按专业框架来干活。
+换句话说：它不是某个具体的 App，而是一摞「营销专家的操作手册」。装上之后，你的 AI 助手就相当于同时雇了 50 个营销领域的顾问。
+都有哪 50 个技能？ 我把它们按用途分了个类，方便检索：
+🎯 转化与增长 cro（转化率优化）、signup（注册流程）、onboarding（新用户激活）、popups（弹窗）、paywalls（付费墙）、churn-prevention（流失预警）、ab-testing（A/B 测试）
+✍️ 内容与文案 copywriting（文案）、copy-editing（文案润色）、content-strategy（内容策略）、emails（邮件序列）、sms（短信）、social（社媒）
+📣 投放与获客 ads（广告投放）、ad-creative（广告创意）、cold-email（冷邮件）、directory-submissions（目录提交）、programmatic-seo（程序化 SEO）、launch（发布策划）
+📊 分析与调研 analytics（数据分析）、attribution（归因）、customer-research（用户调研）、competitor-profiling（竞品画像）、marketing-plan（营销计划）
+🔧 其他细分 pricing（定价）、seo-audit（SEO 审计）、schema（结构化数据）、ai-seo（AI 搜索优化）、lead-magnets（诱饵内容）、influencer-marketing、community-marketing、referrals（推荐计划）、revops、sales-enablement…… 等等。
+完整 50 个，这里就不一一展开了。
+怎么部署到 WorkBuddy？ 官方推荐用 npx skills add，但在 WorkBuddy 里，我们走的是用户级技能目录这条路——一次安装，所有项目对话都能用。
+# 1. 克隆仓库到临时目录 git clone --depth 1 https://github.</description></item></channel></rss>

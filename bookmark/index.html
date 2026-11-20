@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空树导航</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 导航栏 -->
+        <header class="navbar">
+            <div class="nav-content">
+                <h1 class="logo">🔖 空树导航</h1>
+                <div class="nav-controls">
+                    <input type="text" id="searchInput" class="search-box" placeholder="搜索网站...">
+                    <a href="/" class="back-to-blog" title="返回博客">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        <span>返回博客</span>
+                    </a>
+                    <button id="themeToggle" class="theme-toggle" title="切换主题">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="main-content">
+            <!-- 分类导航 -->
+            <aside class="categories">
+                <h2>分类</h2>
+                <div id="categoryList" class="category-list">
+                    <button class="category-btn active" data-category="all">全部</button>
+                </div>
+            </aside>
+
+            <!-- 网站卡片区域 -->
+            <section class="bookmarks-section">
+                <div id="bookmarksContainer" class="bookmarks-grid">
+                    <!-- 网站卡片将通过 JS 动态生成 -->
+                </div>
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <p>😕 没有找到相关网站</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 悬浮球菜单 -->
+    <div class="floating-menu-container">
+        <!-- 悬浮球按钮 -->
+        <button class="floating-btn" id="floatingBtn" aria-label="打开导航菜单">
+            <svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <!-- 菜单项 -->
+        <div class="floating-menu-items" id="floatingMenuItems">
+            <a href="/" class="menu-item" title="返回博客">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <span>博客</span>
+            </a>
+            <a href="/posts/" class="menu-item" title="文章列表">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <span>文章</span>
+            </a>
+            <a href="/categories/" class="menu-item" title="分类">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                <span>分类</span>
+            </a>
+            <a href="/tags/" class="menu-item" title="标签">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                <span>标签</span>
+            </a>
+            <button class="menu-item scroll-top-btn" id="scrollTopBtn" title="返回顶部">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="19" x2="12" y2="5"></line>
+                    <polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+                <span>顶部</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 加载 JS-YAML 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="script.js"></script>
+
+    <!-- 悬浮球菜单脚本 -->
+    <script>
+    (function() {
+        const floatingBtn = document.getElementById('floatingBtn');
+        const menuItems = document.getElementById('floatingMenuItems');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        let isMenuOpen = false;
+
+        // 切换菜单
+        floatingBtn.addEventListener('click', function() {
+            isMenuOpen = !isMenuOpen;
+            floatingBtn.classList.toggle('active', isMenuOpen);
+            menuItems.classList.toggle('active', isMenuOpen);
+        });
+
+        // 点击页面其他地方关闭菜单
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.floating-menu-container') && isMenuOpen) {
+                isMenuOpen = false;
+                floatingBtn.classList.remove('active');
+                menuItems.classList.remove('active');
+            }
+        });
+
+        // 返回顶部
+        scrollTopBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+            // 关闭菜单
+            isMenuOpen = false;
+            floatingBtn.classList.remove('active');
+            menuItems.classList.remove('active');
+        });
+    })();
+    </script>
+</body>
+</html>

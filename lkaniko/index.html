@@ -1,0 +1,356 @@
+<!doctype html><html xmlns=http://www.w3.org/1999/xhtml xml:lang=en-us lang=en-us><head><script defer language=javascript type=text/javascript src=/js/bundle.min.b9e8b6a14a43306a5b529d9285137271e89fcf835039006d8725867b0d79b0c9.js></script>
+<script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?09ae5d3bb096d3e2cdf68ed4a01e8c8a",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script><script defer src=https://events.vercount.one/js></script><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/images/favicon.png><title itemprop=name>百里觅码 - Kaniko 完全指南：在 Kubernetes 中构建容器镜像</title><meta property="og:title" content="百里觅码 - Kaniko 完全指南：在 Kubernetes 中构建容器镜像"><meta name=twitter:title content="百里觅码 - Kaniko 完全指南：在 Kubernetes 中构建容器镜像"><meta itemprop=name content="百里觅码 - Kaniko 完全指南：在 Kubernetes 中构建容器镜像"><meta name=application-name content="百里觅码 - Kaniko 完全指南：在 Kubernetes 中构建容器镜像"><meta property="og:site_name" content="空树之空"><meta name=description content><meta itemprop=description content><meta property="og:description" content><meta name=twitter:description content><base href=https://yezihack.github.io/lkaniko/><link rel=canonical href=https://yezihack.github.io/lkaniko/ itemprop=url><meta name=url content="https://yezihack.github.io/lkaniko/"><meta name=twitter:url content="https://yezihack.github.io/lkaniko/"><meta property="og:url" content="https://yezihack.github.io/lkaniko/"><meta property="og:updated_time" content="25012-25-03T1230:38:25+0800"><link rel=sitemap type=application/xml title=Sitemap href=https://yezihack.github.io/sitemap.xml><meta name=robots content="index,follow"><meta name=googlebot content="index,follow"><meta name=twitter:site content><meta name=twitter:creator content><meta property="fb:admins" content><meta name=apple-mobile-web-app-title content="空树之空"><meta name=apple-mobile-web-app-capable content="yes"><meta name=apple-mobile-web-app-status-bar-style content="black"><meta property="og:type" content="article"><meta property="article:publisher" content><meta property="og:article:published_time" content="25012-25-03T1230:38:25+0800"><meta property="article:published_time" content="25012-25-03T1230:38:25+0800"><meta property="og:article:author" content="百里"><meta property="article:author" content="百里"><meta name=author content="百里"><script defer type=application/ld+json>{"@context":"http://schema.org","@type":"Article","headline":"Kaniko 完全指南：在 Kubernetes 中构建容器镜像","author":{"@type":"Person","name":"https:\/\/github.com\/yezihack"},"datePublished":"2025-12-25","description":"","wordCount":"951","mainEntityOfPage":"True","dateModified":"2025-12-25","image":{"@type":"imageObject","url":""},"publisher":{"@type":"Organization","name":"空树之空","logo":{"@type":"imageObject","url":"\/images\/favicon.png"}}}</script><meta name=generator content="Hugo 0.114.0"><link type=text/css rel=stylesheet href=/css/bundle.min.53ebec7eb5602ac42251a1d71579b1573c7ce90c12d44cdf96cfa1075f90091d.css><style>body{--sidebar-bg-color:#202020;--sidebar-img-border-color:#515151;--sidebar-p-color:#909090;--sidebar-h1-color:#FFF;--sidebar-a-color:#FFF;--sidebar-socials-color:#FFF;--text-color:#222;--bkg-color:#f5f7fa;--post-title-color:#303030;--list-color:#5a5a5a;--link-color:#667eea;--date-color:#718096;--table-border-color:#e8eaf6;--table-stripe-color:#f8f9fb;--code-color:#bf616a;--code-background-color:#E5E5E5;--moon-sun-color:#FFF;--moon-sun-background-color:#515151}body.dark-theme{--text-color:#e8eaf6;--bkg-color:#1e1e2e;--post-title-color:#e8eaf6;--list-color:#b4b7c9;--link-color:#a78bfa;--date-color:#b4b7c9;--table-border-color:#2a2a3e;--table-stripe-color:#252535;--code-color:#ff7f7f;--code-background-color:#393D47}body{background-color:var(--bkg-color)}</style></head><body class=dark-theme><div class=wrapper><aside class=sidebar><div class="container sidebar-sticky"><div class=light-dark align=right><button class=btn-light-dark title="Toggle light/dark mode"><svg class="moon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M6 .278a.768.768.0 01.08.858 7.208 7.208.0 00-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527.0 1.04-.055 1.533-.16a.787.787.0 01.81.316.733.733.0 01-.031.893A8.349 8.349.0 018.344 16C3.734 16 0 12.286.0 7.71.0 4.266 2.114 1.312 5.124.06A.752.752.0 016 .278z"/></svg><svg class="sun" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentcolor" d="M8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 0zm0 13a.5.5.0 01.5.5v2a.5.5.0 01-1 0v-2A.5.5.0 018 13zm8-5a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2a.5.5.0 01.5.5zM3 8a.5.5.0 01-.5.5h-2a.5.5.0 010-1h2A.5.5.0 013 8zm10.657-5.657a.5.5.0 010 .707l-1.414 1.415a.5.5.0 11-.707-.708l1.414-1.414a.5.5.0 01.707.0zm-9.193 9.193a.5.5.0 010 .707L3.05 13.657a.5.5.0 01-.707-.707l1.414-1.414a.5.5.0 01.707.0zm9.193 2.121a.5.5.0 01-.707.0l-1.414-1.414a.5.5.0 01.707-.707l1.414 1.414a.5.5.0 010 .707zM4.464 4.465a.5.5.0 01-.707.0L2.343 3.05a.5.5.0 11.707-.707l1.414 1.414a.5.5.0 010 .708z"/></svg></button></div><div class=sidebar-about><h1 class=brand><a href=https://yezihack.github.io/><img src=/images/logo-code.png alt="brand image"></a>
+<a href=https://yezihack.github.io/><h1>百里觅码</h1></a></h1><p class=lead>《百里觅码》博客是一个技术导向的平台，聚焦于Kubernetes、DevOps和Linux等领域。通过简洁而优美的文字，我们提供对这些技术主题的深入探索和实用的指南。</p></div><nav><div class=sidebar-search-container><a href=/search/ class=sidebar-search-box title="搜索文章 (Ctrl+K)"><svg class="search-icon-sidebar" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class=search-text>搜索文章</span>
+<span class=search-shortcut>Ctrl+K</span></a></div><div class=sidebar-random-container><button id=random-post-btn class=sidebar-random-box title=随机访问一篇文章><svg class="random-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+<span class=random-text>随机文章</span></button></div><a href=/posts/>Posts</a>
+<a href=/categories/>Categories</a>
+<a href=/tags/>Tags</a>
+<a href=/bookmark/>Bookmark</a></nav><a target=_blank class=social title=GitHub href=https://github.com/yezihack><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="-2 -2 24 24"><path fill="currentcolor" d="M18.88 1.099C18.147.366 17.265.0 16.233.0H3.746C2.714.0 1.832.366 1.099 1.099.366 1.832.0 2.714.0 3.746v12.487c0 1.032.366 1.914 1.099 2.647.733.733 1.615 1.099 2.647 1.099H6.66c.19.0.333-.007.429-.02a.504.504.0 00.286-.169c.095-.1.143-.245.143-.435l-.007-.885c-.004-.564-.006-1.01-.006-1.34l-.3.052c-.19.035-.43.05-.721.046a5.555 5.555.0 01-.904-.091 2.026 2.026.0 01-.872-.39 1.651 1.651.0 01-.572-.8l-.13-.3a3.25 3.25.0 00-.41-.663c-.186-.243-.375-.407-.566-.494l-.09-.065a.956.956.0 01-.17-.156.723.723.0 01-.117-.182c-.026-.061-.004-.111.065-.15.07-.04.195-.059.378-.059l.26.04c.173.034.388.138.643.311a2.1 2.1.0 01.631.677c.2.355.44.626.722.813.282.186.566.28.852.28.286.0.533-.022.742-.065a2.59 2.59.0 00.585-.196c.078-.58.29-1.028.637-1.34a8.907 8.907.0 01-1.333-.234 5.314 5.314.0 01-1.223-.507 3.5 3.5.0 01-1.047-.872c-.277-.347-.505-.802-.683-1.365-.177-.564-.266-1.215-.266-1.952.0-1.049.342-1.942 1.027-2.68-.32-.788-.29-1.673.091-2.652.252-.079.625-.02 1.119.175.494.195.856.362 1.086.5.23.14.414.257.553.352a9.233 9.233.0 012.497-.338c.859.0 1.691.113 2.498.338l.494-.312a6.997 6.997.0 011.197-.572c.46-.174.81-.221 1.054-.143.39.98.424 1.864.103 2.653.685.737 1.028 1.63 1.028 2.68.0.737-.089 1.39-.267 1.957-.177.568-.407 1.023-.689 1.366a3.65 3.65.0 01-1.053.865c-.42.234-.828.403-1.223.507a8.9 8.9.0 01-1.333.235c.45.39.676 1.005.676 1.846v3.11c0 .147.021.266.065.357a.36.36.0 00.208.189c.096.034.18.056.254.064.074.01.18.013.318.013h2.914c1.032.0 1.914-.366 2.647-1.099.732-.732 1.099-1.615 1.099-2.647V3.746c0-1.032-.367-1.914-1.1-2.647z"/></svg></a><a target=_blank class=social title=YouTube href=https://youtube.com/@bailicode><svg xmlns="http://www.w3.org/2000/svg" width="1.2em" height="1.2em" viewBox="0 0 24 24"><path fill="currentcolor" d="M12.006 19.012h-.02c-.062.0-6.265-.012-7.83-.437A2.5 2.5.0 012.392 16.81 26.494 26.494.0 011.986 12a26.646 26.646.0 01.417-4.817A2.564 2.564.0 014.169 5.4c1.522-.4 7.554-.4 7.81-.4H12c.063.0 6.282.012 7.831.437.859.233 1.53.904 1.762 1.763.29 1.594.427 3.211.407 4.831a26.568 26.568.0 01-.418 4.811 2.51 2.51.0 01-1.767 1.763c-1.52.403-7.553.407-7.809.407zm-2-10.007-.005 6 5.212-3-5.207-3z"/></svg></a><a target=_blank class=social title="RSS Feed" href=https://yezihack.github.io/index.xml><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1.2em" viewBox="0 0 1280 1280"><g transform="translate(0.000000,1280.000000) scale(0.100000,-0.100000)" fill="currentcolor"><path d="M2295 11929c-284-12-642-45-707-65-17-5-18-63-18-1039 0-569 4-1036 8-1039 5-3 74 6 153 19 510 86 1168 95 1789 25 1348-153 2602-677 3670-1531 385-308 820-744 1126-1129 842-1060 1362-2313 1514-3650 70-621 61-1279-25-1789-13-79-22-148-19-153 3-4 471-8 1039-8h1035l5 23c51 225 85 942 67 1419-23 605-77 1044-198 1617-294 14e2-927 2734-1823 3846-1043 1295-2364 2259-3909 2854-1158 447-2451 656-3707 6e2z"/><path d="M2255 7845c-269-25-620-81-667-106-17-9-18-55-18-899 0-706 3-890 13-890 6 0 66 18 132 41 130 44 288 79 467 105 154 21 577 30 749 15 1207-107 2267-823 2814-1902 166-327 268-637 330-1001 38-227 48-384 42-662-8-348-44-590-126-831-23-66-41-126-41-132 0-10 184-13 890-13 844 0 890 1 899 18 27 50 88 452 110 725 14 162 14 624 1 782-59 703-233 1323-545 1945-481 956-1313 1788-2270 2268-620 310-1239 483-1940 542-165 14-669 10-840-5z"/><path d="M2519 3815c-391-66-725-336-868-703-79-201-96-462-45-677 83-344 338-641 666-774 116-47 205-69 330-80 412-39 811 153 1040 5e2 193 292 240 648 128 981-135 403-492 699-914 757-1e2 14-241 12-337-4z"/></g></svg></a><div class=site-stats><div class=stats-title>📊 站点统计</div><div class=stats-content><div class=stats-row><span class=stats-label>访问量:</span>
+<span class=stats-value id=busuanzi_value_site_pv>-</span></div><div class=stats-row><span class=stats-label>访客数:</span>
+<span class=stats-value id=busuanzi_value_site_uv>-</span></div></div></div><p class=footnote>powered by <a target=_blank href=https://gohugo.io>Hugo</a> | themed with <a target=_blank href=https://github.com/yezihack/kong-htop>kong-htop</a><br>&copy; 2026 百里江山. All rights reserved.</p></div></aside><main class="content container"><div class=post><div class=info><h1 class=post-title><a href=https://yezihack.github.io/lkaniko/>Kaniko 完全指南：在 Kubernetes 中构建容器镜像</a></h1><time datetime=2025-12-25T15:30:38+0800 class=post-date>December 25, 2025</time><div class=post-stats><span class=stat-item><span class=stat-label>字数:</span>
+<span class=stat-value>951</span></span>
+<span class=stat-separator>·</span>
+<span class=stat-item><span class=stat-label>阅读:</span>
+<span class=stat-value>5 分钟</span></span>
+<span class=stat-separator>·</span>
+<span class="stat-item busuanzi-item"><span class=stat-label>访问:</span>
+<span class=stat-value id=busuanzi_value_page_pv>-</span></span></div><div style=clear:both></div><ul class=tags><li class=tag-k8s><a href=https://yezihack.github.io/tags/k8s>k8s</a></li><li class=tag-kubernetes><a href=https://yezihack.github.io/tags/kubernetes>kubernetes</a></li><li class=tag-kiniko><a href=https://yezihack.github.io/tags/kiniko>kiniko</a></li><li class=tag-cicd><a href=https://yezihack.github.io/tags/cicd>cicd</a></li><li class=tag-devops><a href=https://yezihack.github.io/tags/devops>devops</a></li><li class=tag-gitops><a href=https://yezihack.github.io/tags/gitops>gitops</a></li></ul></div><h2 id=引言>引言</h2><p>在容器化时代，构建 Docker 镜像是开发流程中不可或缺的一环。传统上，我们依赖 Docker daemon 来构建镜像，但在 Kubernetes 集群或容器环境中，运行 Docker daemon 会带来安全隐患和权限问题。这就是 Kaniko 诞生的背景——一个无需 Docker daemon 就能在容器内构建镜像的革命性工具。</p><h2 id=什么是-kaniko>什么是 Kaniko？</h2><p>Kaniko 是 Google 开发的开源工具，它能够在容器或 Kubernetes Pod 中从 Dockerfile 构建容器镜像，而无需依赖 Docker daemon。Kaniko 以普通用户权限运行，不需要特权访问，这使它成为 CI/CD 流水线中构建镜像的理想选择。</p><h3 id=核心特性>核心特性</h3><ul><li><strong>无需 Docker daemon</strong>：完全在用户空间执行，避免了 Docker-in-Docker 的复杂性</li><li><strong>安全性</strong>：不需要特权容器，降低安全风险</li><li><strong>Kubernetes 原生</strong>：专为 Kubernetes 环境设计</li><li><strong>多种缓存策略</strong>：支持层缓存以加速构建</li><li><strong>多镜像仓库支持</strong>：可推送到 Docker Hub、GCR、ECR、Harbor 等</li></ul><h3 id=kaniko-vs-docker>Kaniko vs Docker</h3><table><thead><tr><th>特性</th><th>Docker</th><th>Kaniko</th></tr></thead><tbody><tr><td>需要 daemon</td><td>是</td><td>否</td></tr><tr><td>特权模式</td><td>通常需要</td><td>不需要</td></tr><tr><td>运行环境</td><td>主机或特权容器</td><td>普通容器</td></tr><tr><td>Kubernetes 集成</td><td>需要额外配置</td><td>原生支持</td></tr><tr><td>安全性</td><td>中等</td><td>高</td></tr></tbody></table><h2 id=快速入门>快速入门</h2><h3 id=工作原理>工作原理</h3><p>Kaniko 的工作流程可以分为以下步骤：</p><ol><li>读取 Dockerfile 中的指令</li><li>逐层解析并执行每个指令</li><li>提取文件系统变化并创建镜像层</li><li>将构建的镜像推送到指定的镜像仓库</li></ol><h3 id=基本用法>基本用法</h3><p>Kaniko 的核心是 <code>executor</code> 镜像。最简单的使用方式是在容器中运行：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>docker run -v <span style=color:#66d9ef>$(</span>pwd<span style=color:#66d9ef>)</span>:/workspace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  gcr.io/kaniko-project/executor:latest <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --dockerfile<span style=color:#f92672>=</span>/workspace/Dockerfile <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --context<span style=color:#f92672>=</span>/workspace <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --destination<span style=color:#f92672>=</span>myregistry/myimage:tag <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --no-push
+</span></span></code></pre></div><h3 id=命令行参数说明>命令行参数说明</h3><ul><li><code>--dockerfile</code>：Dockerfile 的路径</li><li><code>--context</code>：构建上下文的路径</li><li><code>--destination</code>：目标镜像仓库地址和标签</li><li><code>--no-push</code>：只构建不推送（用于测试）</li><li><code>--cache</code>：启用层缓存</li><li><code>--cache-repo</code>：缓存镜像的仓库地址</li></ul><h2 id=在-kubernetes-中使用-kaniko>在 Kubernetes 中使用 Kaniko</h2><h3 id=准备工作配置镜像仓库认证>准备工作：配置镜像仓库认证</h3><p>首先，我们需要创建一个 Secret 来存储镜像仓库的认证信息。</p><h4 id=docker-hub-认证>Docker Hub 认证</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Secret</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-registry-secret</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>default</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>type</span>: <span style=color:#ae81ff>kubernetes.io/dockerconfigjson</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>.dockerconfigjson</span>: <span style=color:#ae81ff>&lt;base64-encoded-docker-config&gt;</span>
+</span></span></code></pre></div><p>创建 Secret 的简便方法：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl create secret docker-registry docker-registry-secret <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-server<span style=color:#f92672>=</span>https://index.docker.io/v1/ <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-username<span style=color:#f92672>=</span>YOUR_USERNAME <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-password<span style=color:#f92672>=</span>YOUR_PASSWORD <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-email<span style=color:#f92672>=</span>YOUR_EMAIL
+</span></span></code></pre></div><h4 id=其他镜像仓库>其他镜像仓库</h4><p>对于 GCR、ECR 或私有 Harbor：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Google Container Registry</span>
+</span></span><span style=display:flex><span>kubectl create secret docker-registry gcr-secret <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-server<span style=color:#f92672>=</span>gcr.io <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-username<span style=color:#f92672>=</span>_json_key <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-password<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span><span style=color:#66d9ef>$(</span>cat keyfile.json<span style=color:#66d9ef>)</span><span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># AWS ECR</span>
+</span></span><span style=display:flex><span>kubectl create secret docker-registry ecr-secret <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-server<span style=color:#f92672>=</span>AWS_ACCOUNT_ID.dkr.ecr.REGION.amazonaws.com <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-username<span style=color:#f92672>=</span>AWS <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --docker-password<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>aws ecr get-login-password<span style=color:#66d9ef>)</span>
+</span></span></code></pre></div><h3 id=基础示例使用-pod-构建镜像>基础示例：使用 Pod 构建镜像</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Pod</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kaniko-build</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kaniko</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>gcr.io/kaniko-project/executor:latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>args</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--dockerfile=/workspace/Dockerfile&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--context=dir://workspace&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--destination=myregistry/myapp:1.0.0&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumeMounts</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>dockerfile</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/workspace</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-config</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/kaniko/.docker/</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>restartPolicy</span>: <span style=color:#ae81ff>Never</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>dockerfile</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>configMap</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>name</span>: <span style=color:#ae81ff>dockerfile-configmap</span>
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-config</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>secret</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>secretName</span>: <span style=color:#ae81ff>docker-registry-secret</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>items</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>key</span>: <span style=color:#ae81ff>.dockerconfigjson</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>path</span>: <span style=color:#ae81ff>config.json</span>
+</span></span></code></pre></div><h3 id=使用-configmap-存储-dockerfile>使用 ConfigMap 存储 Dockerfile</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ConfigMap</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>dockerfile-configmap</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>data</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>Dockerfile</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    FROM node:18-alpine
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    WORKDIR /app
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    COPY package*.json ./
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    RUN npm install
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    COPY . .
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    EXPOSE 3000
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    CMD [&#34;node&#34;, &#34;server.js&#34;]</span>    
+</span></span></code></pre></div><h2 id=在-cicd-流水线中集成-kaniko>在 CI/CD 流水线中集成 Kaniko</h2><h3 id=gitlab-cicd-示例>GitLab CI/CD 示例</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># .gitlab-ci.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>stages</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#ae81ff>build</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>build-image</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>stage</span>: <span style=color:#ae81ff>build</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>image</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>name</span>: <span style=color:#ae81ff>gcr.io/kaniko-project/executor:debug</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>entrypoint</span>: [<span style=color:#e6db74>&#34;&#34;</span>]
+</span></span><span style=display:flex><span>  <span style=color:#f92672>script</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>mkdir -p /kaniko/.docker</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>echo &#34;{\&#34;auths\&#34;:{\&#34;$CI_REGISTRY\&#34;:{\&#34;auth\&#34;:\&#34;$(echo -n ${CI_REGISTRY_USER}:${CI_REGISTRY_PASSWORD} | base64)\&#34;}}}&#34; &gt; /kaniko/.docker/config.json</span>
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>/kaniko/executor</span>
+</span></span><span style=display:flex><span>      --<span style=color:#ae81ff>context $CI_PROJECT_DIR</span>
+</span></span><span style=display:flex><span>      --<span style=color:#ae81ff>dockerfile $CI_PROJECT_DIR/Dockerfile</span>
+</span></span><span style=display:flex><span>      --<span style=color:#ae81ff>destination $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG</span>
+</span></span><span style=display:flex><span>      --<span style=color:#ae81ff>cache=true</span>
+</span></span><span style=display:flex><span>      --<span style=color:#ae81ff>cache-repo=$CI_REGISTRY_IMAGE/cache</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>only</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#ae81ff>tags</span>
+</span></span></code></pre></div><h3 id=github-actions-示例>GitHub Actions 示例</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># .github/workflows/build.yml</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build and Push Image</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>tags</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#e6db74>&#39;v*&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>build</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Checkout code</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v3</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build and push with Kaniko</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>aevea/action-kaniko@master</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>image</span>: <span style=color:#ae81ff>myregistry/myapp</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>tag</span>: <span style=color:#ae81ff>${{ github.ref_name }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>username</span>: <span style=color:#ae81ff>${{ secrets.DOCKER_USERNAME }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>password</span>: <span style=color:#ae81ff>${{ secrets.DOCKER_PASSWORD }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache_registry</span>: <span style=color:#ae81ff>myregistry/myapp/cache</span>
+</span></span></code></pre></div><h3 id=jenkins-pipeline-示例>Jenkins Pipeline 示例</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-groovy data-lang=groovy><span style=display:flex><span><span style=color:#75715e>// Jenkinsfile
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>pipeline <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>    agent <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>        kubernetes <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>            yaml <span style=color:#e6db74>&#34;&#34;&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>apiVersion: v1
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>kind: Pod
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>spec:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  containers:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: kaniko
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    image: gcr.io/kaniko-project/executor:debug
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    command:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    - sleep
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    args:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    - 9999999
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    volumeMounts:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    - name: docker-config
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      mountPath: /kaniko/.docker
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  volumes:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>  - name: docker-config
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>    secret:
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>      secretName: docker-registry-secret
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>&#34;&#34;&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    stages <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>        stage<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;Build Image&#39;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>            steps <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>                container<span style=color:#f92672>(</span><span style=color:#e6db74>&#39;kaniko&#39;</span><span style=color:#f92672>)</span> <span style=color:#f92672>{</span>
+</span></span><span style=display:flex><span>                    sh <span style=color:#e6db74>&#39;&#39;&#39;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>                    /kaniko/executor \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>                      --context=git://github.com/myorg/myrepo.git#refs/heads/main \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>                      --dockerfile=Dockerfile \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>                      --destination=myregistry/myapp:${BUILD_NUMBER} \
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>                      --cache=true
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>                    &#39;&#39;&#39;</span>
+</span></span><span style=display:flex><span>                <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>}</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>}</span>
+</span></span></code></pre></div><h2 id=高级用法>高级用法</h2><h3 id=使用-git-仓库作为构建上下文>使用 Git 仓库作为构建上下文</h3><p>Kaniko 支持直接从 Git 仓库构建：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>/kaniko/executor <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --context<span style=color:#f92672>=</span>git://github.com/username/repo.git#refs/heads/main <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --context-sub-path<span style=color:#f92672>=</span>path/to/dockerfile/dir <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --dockerfile<span style=color:#f92672>=</span>Dockerfile <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --destination<span style=color:#f92672>=</span>myregistry/myapp:latest
+</span></span></code></pre></div><h3 id=启用层缓存优化构建速度>启用层缓存优化构建速度</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Pod</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kaniko-cached-build</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kaniko</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>image</span>: <span style=color:#ae81ff>gcr.io/kaniko-project/executor:latest</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>args</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--dockerfile=/workspace/Dockerfile&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--context=dir://workspace&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--destination=myregistry/myapp:1.0.0&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--cache=true&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--cache-repo=myregistry/myapp/cache&#34;</span>
+</span></span><span style=display:flex><span>    - <span style=color:#e6db74>&#34;--cache-ttl=168h&#34;</span>  <span style=color:#75715e># 缓存保留7天</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>volumeMounts</span>:
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>workspace</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/workspace</span>
+</span></span><span style=display:flex><span>    - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-config</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/kaniko/.docker/</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>workspace</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>emptyDir</span>: {}
+</span></span><span style=display:flex><span>  - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-config</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>secret</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>secretName</span>: <span style=color:#ae81ff>docker-registry-secret</span>
+</span></span></code></pre></div><h3 id=多阶段构建优化>多阶段构建优化</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#75715e># 多阶段 Dockerfile 示例</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> golang:1.21 AS builder</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> go.* ./<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> go mod download<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> . .<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> CGO_ENABLED<span style=color:#f92672>=</span><span style=color:#ae81ff>0</span> go build -o /app/server<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> alpine:latest</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> apk --no-cache add ca-certificates<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /root/</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> --from<span style=color:#f92672>=</span>builder /app/server .<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>EXPOSE</span><span style=color:#e6db74> 8080</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [<span style=color:#e6db74>&#34;./server&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><p>Kaniko 完美支持多阶段构建，并能有效利用缓存。</p><h3 id=构建多架构镜像>构建多架构镜像</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 构建 ARM64 镜像</span>
+</span></span><span style=display:flex><span>/kaniko/executor <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --dockerfile<span style=color:#f92672>=</span>Dockerfile <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --context<span style=color:#f92672>=</span>. <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --destination<span style=color:#f92672>=</span>myregistry/myapp:arm64 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --customPlatform<span style=color:#f92672>=</span>linux/arm64
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 构建 AMD64 镜像</span>
+</span></span><span style=display:flex><span>/kaniko/executor <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --dockerfile<span style=color:#f92672>=</span>Dockerfile <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --context<span style=color:#f92672>=</span>. <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --destination<span style=color:#f92672>=</span>myregistry/myapp:amd64 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span><span style=color:#ae81ff></span>  --customPlatform<span style=color:#f92672>=</span>linux/amd64
+</span></span></code></pre></div><h2 id=实战案例构建-nodejs-应用>实战案例：构建 Node.js 应用</h2><h3 id=项目结构>项目结构</h3><pre tabindex=0><code>myapp/
+├── Dockerfile
+├── package.json
+├── package-lock.json
+└── src/
+    └── index.js
+</code></pre><h3 id=dockerfile>Dockerfile</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> node:18-alpine AS builder</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> package*.json ./<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm ci --only<span style=color:#f92672>=</span>production<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>FROM</span><span style=color:#e6db74> node:18-alpine</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>WORKDIR</span><span style=color:#e6db74> /app</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> --from<span style=color:#f92672>=</span>builder /app/node_modules ./node_modules<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> src ./src<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> package.json ./<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>USER</span><span style=color:#e6db74> node</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>EXPOSE</span><span style=color:#e6db74> 3000</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>CMD</span> [<span style=color:#e6db74>&#34;node&#34;</span>, <span style=color:#e6db74>&#34;src/index.js&#34;</span>]<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><h3 id=kubernetes-job-完整示例>Kubernetes Job 完整示例</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>batch/v1</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Job</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>metadata</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kaniko-nodejs-build</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>template</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>spec</span>:
+</span></span><span style=display:flex><span>      <span style=color:#f92672>initContainers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>git-clone</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>alpine/git</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>command</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>git</span>
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>clone</span>
+</span></span><span style=display:flex><span>        - --<span style=color:#ae81ff>single-branch</span>
+</span></span><span style=display:flex><span>        - --<span style=color:#ae81ff>branch</span>
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>main</span>
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>https://github.com/username/myapp.git</span>
+</span></span><span style=display:flex><span>        - <span style=color:#ae81ff>/workspace</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>volumeMounts</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>workspace</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/workspace</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#f92672>containers</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>kaniko</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>gcr.io/kaniko-project/executor:latest</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>args</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--dockerfile=/workspace/Dockerfile&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--context=/workspace&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--destination=myregistry/nodejs-app:${GIT_COMMIT}&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--destination=myregistry/nodejs-app:latest&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--cache=true&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--cache-repo=myregistry/nodejs-app/cache&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--snapshot-mode=redo&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--log-format=text&#34;</span>
+</span></span><span style=display:flex><span>        - <span style=color:#e6db74>&#34;--verbosity=info&#34;</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>volumeMounts</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>workspace</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/workspace</span>
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-config</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>mountPath</span>: <span style=color:#ae81ff>/kaniko/.docker/</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>        - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>GIT_COMMIT</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>value</span>: <span style=color:#e6db74>&#34;abc123&#34;</span>
+</span></span><span style=display:flex><span>      
+</span></span><span style=display:flex><span>      <span style=color:#f92672>restartPolicy</span>: <span style=color:#ae81ff>Never</span>
+</span></span><span style=display:flex><span>      <span style=color:#f92672>volumes</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>workspace</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>emptyDir</span>: {}
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>docker-config</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>secret</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>secretName</span>: <span style=color:#ae81ff>docker-registry-secret</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>items</span>:
+</span></span><span style=display:flex><span>          - <span style=color:#f92672>key</span>: <span style=color:#ae81ff>.dockerconfigjson</span>
+</span></span><span style=display:flex><span>            <span style=color:#f92672>path</span>: <span style=color:#ae81ff>config.json</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>backoffLimit</span>: <span style=color:#ae81ff>3</span>
+</span></span></code></pre></div><h2 id=故障排查>故障排查</h2><h3 id=常见问题>常见问题</h3><p><strong>1. 推送镜像失败：认证错误</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 检查 Secret 是否正确创建</span>
+</span></span><span style=display:flex><span>kubectl get secret docker-registry-secret -o yaml
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 验证 base64 编码的配置</span>
+</span></span><span style=display:flex><span>kubectl get secret docker-registry-secret -o jsonpath<span style=color:#f92672>=</span><span style=color:#e6db74>&#39;{.data.\.dockerconfigjson}&#39;</span> | base64 -d
+</span></span></code></pre></div><p><strong>2. 构建速度慢</strong></p><ul><li>启用缓存：<code>--cache=true</code></li><li>使用 <code>.dockerignore</code> 文件减少上下文大小</li><li>优化 Dockerfile 层顺序，将变化较少的层放在前面</li></ul><p><strong>3. 权限问题</strong></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#75715e># 如果遇到文件权限问题，可以调整 securityContext</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>securityContext</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>runAsUser</span>: <span style=color:#ae81ff>0</span>  <span style=color:#75715e># 以 root 运行（不推荐）</span>
+</span></span><span style=display:flex><span>  <span style=color:#75715e># 或者</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>fsGroup</span>: <span style=color:#ae81ff>1000</span>
+</span></span></code></pre></div><p><strong>4. Debug 模式</strong></p><p>使用 debug 版本的镜像进行调试：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>image</span>: <span style=color:#ae81ff>gcr.io/kaniko-project/executor:debug</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>command</span>: [<span style=color:#e6db74>&#34;/busybox/sh&#34;</span>]
+</span></span><span style=display:flex><span><span style=color:#f92672>args</span>: [<span style=color:#e6db74>&#34;-c&#34;</span>, <span style=color:#e6db74>&#34;sleep 3600&#34;</span>]  <span style=color:#75715e># 保持容器运行以便调试</span>
+</span></span></code></pre></div><p>然后进入容器手动执行构建：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span>kubectl exec -it kaniko-pod -- /bin/sh
+</span></span><span style=display:flex><span>/kaniko/executor --dockerfile<span style=color:#f92672>=</span>/workspace/Dockerfile --context<span style=color:#f92672>=</span>/workspace --destination<span style=color:#f92672>=</span>... --verbosity<span style=color:#f92672>=</span>debug
+</span></span></code></pre></div><h2 id=性能优化建议>性能优化建议</h2><h3 id=1-精简构建上下文>1. 精简构建上下文</h3><p>创建 <code>.dockerignore</code> 文件：</p><pre tabindex=0><code>.git
+.gitignore
+node_modules
+*.md
+.env
+tests/
+docs/
+</code></pre><h3 id=2-优化-dockerfile>2. 优化 Dockerfile</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-dockerfile data-lang=dockerfile><span style=display:flex><span><span style=color:#75715e># 不推荐：每次都重新安装依赖</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> . .<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#75715e># 推荐：利用缓存层</span><span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> package*.json ./<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>RUN</span> npm install<span style=color:#960050;background-color:#1e0010>
+</span></span></span><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>COPY</span> . .<span style=color:#960050;background-color:#1e0010>
+</span></span></span></code></pre></div><h3 id=3-使用适当的快照模式>3. 使用适当的快照模式</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># 默认模式（最慢但最准确）</span>
+</span></span><span style=display:flex><span>--snapshot-mode<span style=color:#f92672>=</span>full
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 重做模式（平衡）</span>
+</span></span><span style=display:flex><span>--snapshot-mode<span style=color:#f92672>=</span>redo
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># 时间模式（最快）</span>
+</span></span><span style=display:flex><span>--snapshot-mode<span style=color:#f92672>=</span>time
+</span></span></code></pre></div><h2 id=安全最佳实践>安全最佳实践</h2><ol><li><strong>使用最小权限原则</strong>：不要授予 Kaniko Pod 不必要的权限</li><li><strong>Secret 管理</strong>：使用 Kubernetes Secrets 或外部 secret 管理工具</li><li><strong>镜像扫描</strong>：构建后对镜像进行安全扫描</li><li><strong>网络策略</strong>：限制 Kaniko Pod 的网络访问</li><li><strong>资源限制</strong>：设置 CPU 和内存限制</li></ol><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>resources</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>requests</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>memory</span>: <span style=color:#e6db74>&#34;512Mi&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>cpu</span>: <span style=color:#e6db74>&#34;500m&#34;</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>limits</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>memory</span>: <span style=color:#e6db74>&#34;2Gi&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>cpu</span>: <span style=color:#e6db74>&#34;2&#34;</span>
+</span></span></code></pre></div><h2 id=总结>总结</h2><p>Kaniko 为在 Kubernetes 环境中构建容器镜像提供了一个安全、高效的解决方案。它的无 daemon 架构使其特别适合 CI/CD 流水线，而丰富的功能和灵活的配置选项让它能够满足各种复杂场景的需求。</p><h3 id=何时使用-kaniko>何时使用 Kaniko</h3><ul><li>✅ 在 Kubernetes 集群中构建镜像</li><li>✅ CI/CD 流水线中的自动化构建</li><li>✅ 需要避免特权容器的场景</li><li>✅ 多租户环境中的安全构建</li></ul><h3 id=何时不使用-kaniko>何时不使用 Kaniko</h3><ul><li>❌ 本地开发环境（Docker 更方便）</li><li>❌ 需要 Docker 特定功能的场景</li><li>❌ 构建极其复杂的遗留应用</li></ul><p>通过本文的介绍，相信你已经掌握了 Kaniko 的基础知识和实战技巧。开始在你的项目中尝试 Kaniko，体验无 daemon 构建的便利吧！</p><h2 id=参考资源>参考资源</h2><ul><li><a href=https://github.com/GoogleContainerTools/kaniko target=_blank>Kaniko GitHub 仓库</a></li><li><a href=https://github.com/GoogleContainerTools/kaniko/blob/main/README.md target=_blank>Kaniko 官方文档</a></li><li><a href=https://kubernetes.io/docs/ target=_blank>Kubernetes 官方文档</a></li><li><a href=https://docs.docker.com/develop/dev-best-practices/ target=_blank>Docker 最佳实践</a></li></ul><hr><div class=footer><div class=previous-post><a href="https://yezihack.github.io/jenkins-pipeline/?ref=footer"><span>« Previous</span><br>Jenkins Pipeline 完全入门指南：从零到精通</a></div><div class=next-post><a href="https://yezihack.github.io/kubebuilder-start/?ref=footer"><span>Next »</span><br>Kubebuilder 入门教程:从零构建 Kubernetes Operator</a></div></div></div></main><div class=article-toc><div class=toc-wrapper><h4 id=contents></h4><nav id=TableOfContents><ul><li><a href=#引言>引言</a></li><li><a href=#什么是-kaniko>什么是 Kaniko？</a><ul><li><a href=#核心特性>核心特性</a></li><li><a href=#kaniko-vs-docker>Kaniko vs Docker</a></li></ul></li><li><a href=#快速入门>快速入门</a><ul><li><a href=#工作原理>工作原理</a></li><li><a href=#基本用法>基本用法</a></li><li><a href=#命令行参数说明>命令行参数说明</a></li></ul></li><li><a href=#在-kubernetes-中使用-kaniko>在 Kubernetes 中使用 Kaniko</a><ul><li><a href=#准备工作配置镜像仓库认证>准备工作：配置镜像仓库认证</a></li><li><a href=#基础示例使用-pod-构建镜像>基础示例：使用 Pod 构建镜像</a></li><li><a href=#使用-configmap-存储-dockerfile>使用 ConfigMap 存储 Dockerfile</a></li></ul></li><li><a href=#在-cicd-流水线中集成-kaniko>在 CI/CD 流水线中集成 Kaniko</a><ul><li><a href=#gitlab-cicd-示例>GitLab CI/CD 示例</a></li><li><a href=#github-actions-示例>GitHub Actions 示例</a></li><li><a href=#jenkins-pipeline-示例>Jenkins Pipeline 示例</a></li></ul></li><li><a href=#高级用法>高级用法</a><ul><li><a href=#使用-git-仓库作为构建上下文>使用 Git 仓库作为构建上下文</a></li><li><a href=#启用层缓存优化构建速度>启用层缓存优化构建速度</a></li><li><a href=#多阶段构建优化>多阶段构建优化</a></li><li><a href=#构建多架构镜像>构建多架构镜像</a></li></ul></li><li><a href=#实战案例构建-nodejs-应用>实战案例：构建 Node.js 应用</a><ul><li><a href=#项目结构>项目结构</a></li><li><a href=#dockerfile>Dockerfile</a></li><li><a href=#kubernetes-job-完整示例>Kubernetes Job 完整示例</a></li></ul></li><li><a href=#故障排查>故障排查</a><ul><li><a href=#常见问题>常见问题</a></li></ul></li><li><a href=#性能优化建议>性能优化建议</a><ul><li><a href=#1-精简构建上下文>1. 精简构建上下文</a></li><li><a href=#2-优化-dockerfile>2. 优化 Dockerfile</a></li><li><a href=#3-使用适当的快照模式>3. 使用适当的快照模式</a></li></ul></li><li><a href=#安全最佳实践>安全最佳实践</a></li><li><a href=#总结>总结</a><ul><li><a href=#何时使用-kaniko>何时使用 Kaniko</a></li><li><a href=#何时不使用-kaniko>何时不使用 Kaniko</a></li></ul></li><li><a href=#参考资源>参考资源</a></li></ul></nav></div></div></div><div class=floating-menu-container><button class=floating-btn id=floatingBtn aria-label=打开导航菜单><svg class="icon-menu" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class=floating-menu-items id=floatingMenuItems><a href=/bookmark/ class=menu-item title=网站导航><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg><span>导航</span></a>
+<a href=/posts/ class=menu-item title=文章列表><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M14 2H6A2 2 0 004 4v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>文章</span></a>
+<a href=/categories/ class=menu-item title=分类><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>分类</span></a>
+<a href=/tags/ class=menu-item title=标签><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83.0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>标签</span></a>
+<button class="menu-item scroll-top-btn" id=scrollTopBtn title=返回顶部><svg viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+<span>顶部</span></button></div></div><script>(function(){const t=document.getElementById("floatingBtn"),n=document.getElementById("floatingMenuItems"),s=document.getElementById("scrollTopBtn");let e=!1;t.addEventListener("click",function(){e=!e,t.classList.toggle("active",e),n.classList.toggle("active",e)}),document.addEventListener("click",function(s){!s.target.closest(".floating-menu-container")&&e&&(e=!1,t.classList.remove("active"),n.classList.remove("active"))}),s.addEventListener("click",function(s){s.preventDefault(),window.scrollTo({top:0,behavior:"smooth"}),e=!1,t.classList.remove("active"),n.classList.remove("active")});let o=0;window.addEventListener("scroll",function(){const e=window.pageYOffset||document.documentElement.scrollTop,t=document.querySelector(".floating-menu-container");e>300?t.classList.add("visible"):t.classList.remove("visible"),o=e})})()</script></body></html>

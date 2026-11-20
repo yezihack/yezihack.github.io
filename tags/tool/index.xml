@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tool on 空树之空</title><link>https://yezihack.github.io/tags/tool/</link><description>Recent content in tool on 空树之空</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 28 Nov 2025 19:29:51 +0800</lastBuildDate><atom:link href="https://yezihack.github.io/tags/tool/index.xml" rel="self" type="application/rss+xml"/><item><title>Docker Daemon 配置代理完整指南</title><link>https://yezihack.github.io/docker-proxy/</link><pubDate>Fri, 28 Nov 2025 19:29:51 +0800</pubDate><guid>https://yezihack.github.io/docker-proxy/</guid><description>1. 问题背景 当 Docker daemon 需要访问外网资源（如 Docker Hub）时，但本地只能通过代理访问，直接运行 docker login 或 docker pull 会出现连接超时错误。这是因为设置在 shell 中的代理环境变量对 Docker daemon 服务无效。
+Error response from daemon: Get &amp;#34;https://registry-1.docker.io/v2/&amp;#34;: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers) 2. 解决方案 2.1. 第一步：创建 Docker daemon 配置目录 sudo mkdir -p /etc/systemd/system/docker.service.d 2.2. 第二步：编辑代理配置文件 sudo vim /etc/systemd/system/docker.service.d/http-proxy.conf 在文件中添加以下内容：
+[Service] Environment=&amp;#34;HTTP_PROXY=http://PROXY_HOST:PROXY_PORT&amp;#34; Environment=&amp;#34;HTTPS_PROXY=http://PROXY_HOST:PROXY_PORT&amp;#34; Environment=&amp;#34;NO_PROXY=localhost,127.0.0.1&amp;#34; 参数说明：
+HTTP_PROXY - HTTP 连接代理地址 HTTPS_PROXY - HTTPS 连接代理地址 NO_PROXY - 不经过代理的地址列表（本地地址无需代理） 2.</description></item><item><title>万能工具箱</title><link>https://yezihack.github.io/tools/</link><pubDate>Thu, 29 Oct 2020 17:11:51 +0800</pubDate><guid>https://yezihack.github.io/tools/</guid><description>脚本工具 名称 安装/下载 备注 检查 shell 工具 yum -y install ShellCheck 下载 能检查sh语法</description></item><item><title>github-webhook工具实现github自动构建</title><link>https://yezihack.github.io/github-webhook/</link><pubDate>Fri, 24 Apr 2020 15:04:27 +0800</pubDate><guid>https://yezihack.github.io/github-webhook/</guid><description>原理 当本地git push origin master向Github远程仓库提交代码时，可以通过配置github自带webhook向服务器发送请求， 利用github-webhook工具在服务器端接到请求后，调用自定义shell脚本来实现自动构建 github-webhook 文档 更多详情文档 https://github.com/yezihack/github-webhook 使用github-webhook 源码: https://github.com/yezihack/github-webhook 别忘记点个小星星哦.
+1. 下载github-webhook工具 https://github.com/yezihack/github-webhook/releases
+github release下载太慢, 试试这个
+wget https://cdn.jsdelivr.net/gh/yezihack/assets/github-webhook1.4.1.linux-amd64.tar.gz 2. 运行github-webhook 安装
+tar -zxvf github-webhook1.4.1.linux-amd64.tar.gz
+cp github-webhook /usr/bin/
+chmod u+x /usr/bin/github-webhook 运行
+默认端口: 2020 有效访问地址: http://ip:2020/web-hook -b 是shell脚本路径参数 -s 是github webhook设置的密码 # 非后台运行
+github-webhook -b [shell脚本路径] -s [github webhook设置的密码]
+# 后台运行
+nohup github-webhook -b [shell脚本路径] -s [github webhook设置的密码] &amp;amp; # 定向日志输出
+nohup github-webhook -b ~/sh/hugo2www.sh -s qweqwe &amp;gt;&amp;gt; ~/logs/webhook.</description></item></channel></rss>
